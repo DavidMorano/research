@@ -1,0 +1,32 @@
+To: David Morano <morano@computer.org>
+Subject: Issues regarding commit
+
+Here are a couple of issues regarding what methods need to be called 
+to load, execute and commit ASes.
+
+1) in my current build the "lifetch_fetch" method is responsible for
+reading each instruction, decoding it and loading the load buffer.  After
+all the entries in the load buffer are filled, it will call
+"llb_load_complete" method which indicates that it is ok to start loading
+the LASes.  You can ckeck the status of llb by calling
+"llb_readyread" that returns 1 if the llb is loaded and ready to be read.
+
+2) The "las_load" method of each AS in the main column needs to be called
+to load the AS.  the index parameter specifies the corresponding entry in
+the Load buffer that AS has to be loaded from.
+
+3) after all ASes in a column are loaded, the "llb_read_complete" needs to
+be called to make the load buffer ready for the next round.
+
+4) In each clock After loading the ASes, A call to "las_readycommit" needs
+to be done to see if ASes are ready to commit.  (If you make calls
+starting from last AS to the top and stop calls once one of the ASes is
+not commited, you might save a few calls :)
+
+5) once all ASes are ready to commit, wait for two clock cycles and then
+call "las_commit".  I am already calling lbusint_done from within each AS.
+Once you finish coding that method, The extra wait wouldn't really be
+necessary.
+
+I guess that would be all.  Let me know if you find any problem with the
+above procedure.

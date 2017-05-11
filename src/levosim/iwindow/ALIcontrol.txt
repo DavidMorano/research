@@ -1,0 +1,534 @@
+CONTOL
+Mon Jan  8 16:05:43 EST 2001
+
+
+This files contains the various methods that are needed to facilitate
+pipelined control and sequencing of the Levo i-window ASes and related
+units.
+
+
+*******************************************************************************
+
+#include	"instrclass.h"
+
+int llb_used(op,i)
+LLB	*op ;
+int	i ;
+
+
+This is called by IW to determine if one of the indexed LLB slots
+is currently loaded with an instruction or not.  Actually it should
+return :
+
+<0	error
+0	unused (no instruction loaded)
+1	null-instruction, predicate-only
+2	regular ALU or otherwise nonspecial instruction loaded
+3	conditional branch instruction is loaded
+4	unconditional jump but not a call
+5	an unconditional call
+6	a store memory type instruction
+
+
+#define	INSTRCLASS_UNUSED	0	/* unused, no instruction loaded */
+#define	INSTRCLASS_NULL		1	/* null-instruction, predicate-only */
+#define	INSTRCLASS_REG		2	/* regular ALU or nonspecial */
+#define	INSTRCLASS_CBR		3	/* conditional branch */
+#define	INSTRCLASS_JMP		4	/* unconditional jump but not a call */
+#define	INSTRCLASS_CALL		5	/* an unconditional call */
+#define	INSTRCLASS_STORE	6	/* a store memory type instruction */
+
+Inside the LBB, this call should query the *current* HW state and respond
+accordingly.  This call should be able to be made in *any* phase of the
+clock since it is only querying the *current* state of the HW.
+
+
+*******************************************************************************
+
+#include	"instrclass.h"
+
+int las_used(op)
+LAS	*op ;
+
+
+This is called by IW to determine the state of the taget AS.
+
+
+Returns :
+
+<0	error
+	0	unused (no instruction loaded)
+	1	null-instruction, predicate-only
+	2	regular ALU or otherwise nonspecial instruction loaded
+	3	conditional branch instruction is loaded
+	4	unconditional jump but not a call
+	5	an unconditional call
+	6	a store memory type instruction
+
+	Inside the LAS object, this call should query the *current* HW state and
+	respond accordingly.  This call should be able to be made in *any*
+	phase of the clock since it is only querying the *current* state of the
+	HW.
+
+
+	*******************************************************************************
+
+	int las_load(op,llbp,i,path)
+	LAS	*op ;
+	LLB	*llbp ;
+	int	i ;
+	int	path ;
+
+	This is called by the IW to tell the LAS that it should load itself
+	from the LLB to be effective on the *next* clock edge.  The LAS should
+	initiate loading itself in *this* clock so that it is loaded after
+	the next clock edge.
+
+	Arguments :
+
+	op	pointer to LAS object
+	llbp	pointer to LLB object to load from
+	i	index of row in LLB object to load from
+	path	the path ID that the target AS will become a part of
+
+	Returns:
+
+	<0	error
+	>=0	OK
+
+	This will be called in about phase 2 or 3 of the clock.  Please give me
+	some feedback about what phase this should be called in.
+
+
+	*******************************************************************************
+
+	int lbusint_done(op)
+	LBUSINT	*op ;
+
+	This subroutine can be called in order to determine if a bus
+	transaction initiated previously has actually been written out to the
+	associated but and that, further, and that an extra two clocks has also
+	passed.  The extra clocks are needed to ensure that any readers of the
+	bus have read the value and have computed their next state already so
+	that the following clock's current state can indicate whether an AS is
+	ready to commit or not.
+
+	This subroutine should be called by an AS to determine if it's
+	forward operations are completed and have been seen and acted upon
+	by ASes forward in time.
+
+
+*******************************************************************************
+
+int las_readycommit(op)
+LAS	*op ;
+
+
+Arguments:
+
+op	LAS object pointer
+
+Returns:
+
+In addition to the existing return codes, the follow is added or changed :
+
+SR_EMPTY	no instruction is loaded into this AS
+0		not ready to commit
+1		ready to cmmmit and this is not a conditional branch
+2		ready to commit and this instruction was a conditional branch
+<0		some other problem (usually a coding problem)
+
+This subroutine is used by the IW component to query as AS about
+whether it is ready to commit its instruction or not.  If the AS is not
+ready to commit anything, it would return a '0' (barring other error
+conditions -- usually program errors).  If it is ready to commit a
+non-conditional-branch instruction, it should return a '1', otherwise
+it is ready to commit a conditional-branch and it should return a '2'.
+
+Before returning any indication of commitment, an AS should first make
+sure that :
+
+1) it has executed its instruction at least once (if it even has an
+   instruction)
+
+2) is is not in the process of wanting to execute again for any reason
+
+3) it has confirmed (through calls to 'lbusint_done()' above) that
+   its forward operations are both done and have had time to be seen
+   by other ASes
+
+4) that it is not busy with any other operation that might indicate
+   that further work on forward ASes in time but within the same
+   Levo i-window column might also need to execute further
+
+This subroutine represents a question to the AS about its ability
+to commit.  The possible returns should be :
+
+
+
+*******************************************************************************
+
+int las_commit(op,ipval,bdir,btarget,faddr)
+LAS	*op ;
+int	*ipval ;
+int	*bdir ;
+uint	*btarget ;
+uint	*faddr ;
+
+
+This subroutine will be called by the IW code to tell an AS that
+it should commit it's 'write' memory values to the write store queue.
+
+Arguments :
+
+int * ipval 
+	input predicate value for the instruction in the AS.  This is 
+	the final commited value for the predicate input of the
+	instruction.  If this is 0, then the instruction is void because
+	it is on the non-executed path.  if this is 1 then the
+	instruction has been on the executed path.
+
+int * bdir
+	for a branch or jump instruction, it shows whether the branch is
+	taken or not.  a value of 1 means that it is taken, while 0 means
+	not-taken. 
+
+uint * btarget
+	the target address of the branch.  
+
+uint * faddr:
+	instruction address in the actual code.
+
+
+Retutns :
+
+SR_EMPTY	no instruction is currently loaded
+<0		bad error (usually a programming bug !)
+==0		instruction was not a control flow change
+==1		instruction was a control flow change
+
+
+
+*******************************************************************************
+
+= load AS from load buffer
+
+int las_loadfromlb(op,llbp,i,path,f_invert)
+LAS	*op ;
+LLB	*llbp ;
+int	i ;
+int	path ;
+int	f_invert ;
+
+This is called by the IW to tell the LAS that it should load itself
+from the LLB (specified by a pointer in the call) to be effective on
+the *next* clock edge.  The LAS should initiate loading itself in
+*this* clock so that it is loaded after the next clock edge.
+
+Arguments :
+
+op		pointer to LAS object
+llbp		pointer to LLB object to load from
+i		index of row in LLB object to load from
+path		the path ID that the target AS will become a part of
+f_invert        a flag to specify that a load of any conditional branch
+		should occur with execution and output predicates set
+		inverted with respect to the initially predicted
+		outcome of the conditional branch ; if the instruction
+		is not a conditional branch then this flag should be
+		ignored
+
+Returns:
+
+<0	error
+>=0	OK
+
+
+Also, note the 'path' argument above.  Please ensure that the 'path'
+is used in the AS for snooping and another purposes that are appropriate.
+
+Please note that if the instruction being loaded is a conditional
+branch of any kind then the 'f_invert' flag should be used to determine
+if the instruction execution predicate and output predicates should
+be inverted with respect to the predicted path or set upright with respect
+to the initially predicted path.  If 'f_invert' variable
+is FALSE then the predicates should be set according to the initially
+predicted path.  If the 'f_invert' variable is TRUE, then the execution
+and output predicates should be inverted with respect to the initially
+predicted outcome of the branch.
+
+
+*******************************************************************************
+
+= set an AS to the unused state
+
+int las_unused(op)
+LAS	*op ;
+
+
+This subroutine will be called from the IW to to the LAS code in order
+to have the designated AS object become unused in the next clock
+period.  All current LAS work and state should be abandoned starting
+with the next clock.  This subroutine may be called to terminate AS
+activity for paths (or parts of paths) that have been determined to not
+contribute constructively to the execution of the target program.
+
+Returns :
+
+<0	error
+>=0	OK
+
+I would have called this subroutine 'las_kill()' but this subroutine
+was previously documented and I forgot about it so I will honor
+the original subroutine name for this function !
+
+
+*******************************************************************************
+
+= load an AS from another previous AS
+
+int las_loadfromas(op,lasp,path,f_invert)
+LAS	*op ;
+LAS	*lasp ;
+int	path ;
+int	f_invert ;
+
+
+Arguments :
+
+op		pointer to LAS object
+llbp		pointer to LLB object to load from
+i		index of row in LLB object to load from
+pathid		the path ID that the target AS will become a part of
+f_invert        a flag to specify that a load of any conditional branch
+		should occur with execution and output predicates set
+		inverted with respect to the initially predicted
+		outcome of the conditional branch ; if the instruction
+		is not a conditional branch then this flag should be
+		ignored
+
+Returns:
+
+<0	error
+>=0	OK
+
+
+Also, note the 'path' argument above.  Please ensure that the 'path'
+is used in the AS for snooping and another purposes that are appropriate.
+
+Please note that if the instruction being loaded is a conditional
+branch of any kind then the 'f_invert' flag should be used to determine
+if the instruction execution predicate and output predicates should
+be inverted with respect to the predicted path or set upright with respect
+to the initially predicted path.  If 'f_invert' variable
+is FALSE then the predicates should be set according to the initially
+predicted path.  If the 'f_invert' variable is TRUE, then the execution
+and output predicates should be inverted with respect to the initially
+predicted outcome of the branch.
+
+
+*******************************************************************************
+
+int lwq_readycommit(op,i)
+LWQ	*op ;
+int	i ;
+
+This subroutine will be called by the IW code in order to determine if
+a LWQ row is ready to take committed writes from the output of the
+associated row AS (that is apparently ready to commit).  The LWQ should
+first make sure that it has enough space in its FIFO for the specified
+row (passed in variable 'i') to accept one additional write from an AS
+that is committing a write.  If the LWQ is ready to take a committed
+write on the specified row, then it should return a '1'.  If it is not
+ready to take a committed write on the specified row (most likely due
+to space limitations) then it should return '0'.  Otherwise, it may
+return an arbitrary error that normally represents a programming error
+or some other operational error with the object.
+
+The possible returns should be :
+
+Returns :
+1		ready to commit
+0		not ready to commit
+<0		some other problem (usually a coding problem)
+
+
+
+*******************************************************************************
+
+= subroutine to indicate control flow out of the execution window
+
+int lifetch_goto(op,ta)
+LIFETCH	*op ;
+uint	ta ;
+
+
+Arguments :
+
+op	pointer to LIFETCH object
+ta	new absolute address to start fetching from
+
+Returns :
+>=0	no program errors encounters
+<0	some program error (indicated by the return code) was encountered ;
+	no current program errors are anticipated in correctly working
+	code but some debug possibilities are :
+	SR_FAULT	NULL object pointer
+	SR_BADFMT	format error discovered in object data
+	SR_NOTOPEN	object was not initialized
+
+
+This subroutine will be called by the IW component to signal to the
+i-fetch unit (LIFETCH) that a new target instruction trace needs to be
+fetched to satisfy a mispredicted branch that did not already have
+instructions in the execution window that were available for issue to
+ASes.
+
+This subroutine may be called as frequently as every clock of the
+machine or may not be called for a period of many clocks (where no
+out-of-window branch misprediction occurs).  The subroutine will always
+be called in phase 1 (as per emerging conventions for methods that
+request target object updates of some sort).  If the fetch unit is
+already prepared to load instructions starting at the given target
+address, it may ignore the present call.
+
+
+*******************************************************************************
+
+= subroutine to update the branch predictor(s) used by i-fetch
+
+int lifetch_bu(op,ba,type,bc)
+LIFETCH	*op ;
+uint	ba ;
+int	type ;
+int	bc ;
+
+
+Arguments :
+
+op	pointer to LIFETCH object
+ba	address of branch instruction
+type	type of branch (needed to determine how to update predictor)
+bc	resolved branch condition (==0 is not_taken, !=0 is taken)
+
+Returns :
+	** same as for 'lifetch_goto()' above **
+
+
+This subroutine will be called by the IW component to notify
+the i-fetch unit of resolved branch outcomes.
+
+This subroutine will be called in phase 1 for any clock period where a
+committed branch is resolved to jump to instructions that are not
+already availble for issue from within the AS array execution window.
+
+
+*******************************************************************************
+
+= subroutine to indicate Levo i-load buffer status
+
+int lifetch_loadstatus(op,sw)
+LIFETCH	*op ;
+uint	sw ;
+
+
+Arguments :
+
+op	pointer to LIFETCH object
+sw	status word containing bit vector of i-load buffer load status
+	bit==0		do not load i-load buffer identified by bit number
+	bit=1		optionally load i-load buffer identified by
+			bit number
+
+Returns :
+	** save as for 'lifetch_got()' above **
+
+
+This subroutine will be called by the IW component to indicate to the
+Levo i-fetch unit which Levo i-load buffers are available to load in
+the current clock period to take effect after the next clock
+transition.  Since any given i-load buffer may be full during the
+current clock period, the i-fetch unit does not know if it should
+replace the i-load buffer with new data effective after the next clock
+transition or not.  This subroutine will provide the necessary
+information to the i-fetch unit about those i-load buffers
+are available to be loaded in the present clock and completed after
+the next clock transition.
+
+Several i-load buffers are potentially supported, up to a maximum of 32
+with this API (an integer may have as few as 32 bits in the current
+programming model).  The argument 'sw' (status word) is a bit vector
+that contains a one bit indication of the load status for each of the
+possibly i-load buffers coinfigured into the current LevoSim simulated
+machine.  Levo i-load buffers are logically number 0 through some
+uppper limit (currently 31) and each bit in the bit vector provides the
+load indication for its corresponding i-load buffer unit.  Bits are
+numbered 0 for the least significant bit (LSB) in the status word and
+proceed up to at least 31 for the more significant bits.  
+
+This subroutine may be called in every clock or may not be called for a
+period of many clocks depending on the need by the execution window
+control logic to request Levo i-load buffer loads from the i-fetch
+unit.  Since commitments are targets (by design goal) to occur no less
+frequent than every two clock period, this subroutine will probably be
+called with a frquency of at least every two clock periods.
+
+
+
+*******************************************************************************
+
+= subroutine to get the instruction addresses out of the LLB rows
+
+This subroutine is used to read out the instruction address (if an
+instruction is loaded) from a row of the Levo Load Buffer (LLB).
+This subroutine should query the CURRENT state of the LLB, not its
+possible NEXT state.
+
+	int llb_getia(llbp,i,iap)
+	LLB	*llbp ;
+	int	i ;
+	uint	*iap ;
+
+
+Arguments:
+
+llbp		pointer to the LLB object
+i		index specifying which row of the LLB to query
+iap		pointer to the caller's unsigned integer to receive the 
+		instruction address
+
+Returns:
+
+>=0		an instruction was present and its address was returned
+SR_EMPTY	no instruction is currently loaded
+<0		some other bad error
+
+
+
+*******************************************************************************
+
+= subroutine to get the instruction addresses out of an AS
+
+This subroutine is used to read out the instruction address (if an
+instruction is loaded) from a Levo Action Station (LAS object).
+This subroutine should query the CURRENT state of the LAS, not its
+possible NEXT state.
+
+	int las_getia(llbp,iap)
+	LLB	*llbp ;
+	uint	*iap ;
+
+
+Arguments:
+
+lasp		pointer to the LAS object
+iap		pointer to the caller's unsigned integer to receive the 
+		instruction address
+
+Returns:
+
+>=0		an instruction was present and its address was returned
+SR_EMPTY	no instruction is currently loaded
+<0		some other bad error
+
+

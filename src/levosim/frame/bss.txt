@@ -1,0 +1,35 @@
+/****
+
+There is one little requirement in UNIX-land that has to do with the
+BSS link-time section.  I have to take care of this requirement
+specially.
+
+The requirement states that all BSS data memory must be initialized to
+zero!  (I guess that too many people's bad programming habits have now
+become institutionalized!)  This means that the last virtual page of
+any load-time mapped segment that contains the link-time section that
+preceeded (in program virtual address space) the link-time BSS section
+might contain a partial page of BSS memory.  We have to zero out the
+last part of that last page because it is really part of the program's
+BSS memory.  If there are any virtual address space holes occurring
+before the BSS memory then the whole of BSS memory will be mapped in a
+single one of the load-time mapped segments and no other action is
+needed since it will all be demand-zero mapped.  I am not checking for
+this specifically (I'm too lazy) so I have to assume the worst, that
+BSS memory is contiguous with some previous link-time section (usually
+writeable "DATA" but who really cares).
+
+Anyway, it is tiresome to find the exact program mapped segment whose
+last page is part of a BSS link-time section (if there is any), so we
+will simply clear out to zero the unused part of the last page (our
+native page in this case) of ALL writeable segments!  Although this is
+not required by UNIX it is allowable.  This will cause that page to be
+copied by the OS (copy-on-write) right now since this program segment
+has some mapping from the ELF file and I requested copy-on-write action
+(ELF files are really never usually written to at run-time so a write
+to it causes the copy-on-write action).  Further, I opened the ELF file
+read-only so we are definitely getting a copy-on-write here anyway.
+This will all work pretty transparently at this point because
+everything is already set up with the OS for this to work.
+
+****/

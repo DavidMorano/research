@@ -1,0 +1,71 @@
+OBJECT:
+
+predforward (Predicate Forwarding Unit)
+
+
+CURRENT OWNER:
+
+Dave Morano
+
+
+SOURCE FILES:
+
+predforward.c
+predforward.h
+
+
+INCLUDE FILES AND DEPENDENCIES:
+
+<sys/types.h>
+<stdlib.h>
+<string.h>
+<vsystem.h>
+misc.h
+config.h
+defs.h
+mintinfo.h
+levoinfo.h
+bus.h
+predforward.h
+
+This code is dependent on the 'frame' and 'mint' subsystems of
+the simulator program as well as the 'iw' object that instantiates
+it and provides the initial basis for the information contained in
+the 'levoinfo' data structure.
+
+
+OVERVIEW DESCRIPTION:
+
+This object forms a Levo component that is used for the forwarding of
+predicate values to later time tagged value ASes.  The componet is used
+to break up long predicate forwarding buses into smaller (programmable
+sized) pieces.  This component has two buses coming to it, an input
+Predicate Forwarding Bus and an output Predicate Forwarding Bus.  We
+copy all predicate forwarding transactions on our input Predicate
+Forwarding Bus for forwarding to our out-going Predicate Forwarding
+Bus.  When we get a value to forward, we queue it up in our internal
+out-going FIFO for forwarding on the out-going Predicate forwarding
+bus.
+
+
+INPUTS:
+
+Primary inputs to this code are :
+a pointer to program information ('proginfo' data structure)
+a pointer to the simulator information ('mintinfo')
+a pointer to the Levo machine information ('levoinfo')
+pointers to the various Levo buses that we connect to
+
+
+OUTPUTS:
+
+The primary code output is a possible failure of the machine
+instantiation either directly by this code or by any of the subobjects
+created.
+
+
+IDENTIFY UNDER WHICH COMPONENT THIS CODE FALLS:
+
+This code forms its own category ; namely, the PREDFORWARD category.
+
+

@@ -1,0 +1,112 @@
+OBJECT:
+
+regfilter (Register Filter Unit)
+
+
+CURRENT OWNER:
+
+Dave Morano
+
+
+SOURCE FILES:
+
+regfilter.c
+regfilter.h
+
+
+INCLUDE FILES AND DEPENDENCIES:
+
+<sys/types.h>
+<stdlib.h>
+<string.h>
+<vsystem.h>
+misc.h
+config.h
+defs.h
+mintinfo.h
+levoinfo.h
+bus.h
+
+This code is dependent on the 'frame' and 'mint' subsystems of
+the simulator program as well as the 'iw' object that instantiates
+it and provides the initial basis for the information contained in
+the 'levoinfo' data structure.
+
+
+OVERVIEW DESCRIPTION:
+
+This object forms a Levo component that is used for the following main
+purposes :
+
+1) separate long register forwarding and register backwarding buses
+   into smaller pieces (of programmable length)
+2) provide the initial registers for newly loaded instructions
+3) preserving bandwidth of backwarding and forwarding memory buses
+   by keeping a cache of recently used values that may meet a specific
+   request requirement
+
+The Levo inputs to this object are two Register Forwarding Buses (as a
+'bus' object) and two Register Backwarding Buses.  We read one of the
+Register Forwarding Buses that comes to us from lower valued time tags
+in the machine.  The other Register Forwarding Bus is written by us and
+proceeds on to higher valued time tags with in the i-window.  We also
+read one of the Register Backwarding Buses (the from higher valued time
+tags) and write the other one (that proceeds backwards to lower valued
+time tags).
+
+We implement FIFO queues on each outgoing bus that is written by us.
+We also implement a register file of all ISA architected registers for
+all paths that may be configured into the machine.  We have to stall
+all incoming buses if our FIFO gets nearly full.  All output
+buses must be contended for so this necessitates the FIFO queues
+for performance reasons.
+
+Our basic operation is to snoop the incoming Register Forwarding Bus
+for forwards and to only forward those forwarding transactions that
+contain a later valued time tag than the current register (on that
+execution path) that we previously had stored.  We forward the register
+by placing it in the output FIFO going to the output Register
+Forwarding Bus.  Eventually that FIFO's contents are all dumped to the
+output bus as bandwidth permits.
+
+We also snoop the incoming Register Backwarding bus for requests
+for register values.  When we get a request, we see if we have a 
+register value for that register and if we do we forward it on the
+outgoing Register Forwarding Bus.  If we do not have a value for
+the register, then we "backward" the request on our Register Backwarding
+Bus to propagate the request backwards.  This backwarding request
+gets queued up in a FIFO that is serviced by available bandwidth
+on our out-going Register Backwarding Bus (the one proceeding towards
+earlier time tag values than ourselves).
+
+We obviously have to be aware of our current column time tag value.  We
+get renamed as our current column time tag value can change at any
+clock.  Also, we do not have to do any backwarding operations if we are
+currently located any place except the right-most column of the Levo
+i-window.  This should be automatic.  We also participate in all
+machine shift operations by decrementing our column time tag values.
+
+
+INPUTS:
+
+Primary inputs to this code are :
+a pointer to program information ('proginfo' data structure)
+a pointer to the simulator information ('mintinfo')
+a pointer to the Levo machine information ('levoinfo')
+pointers to the various Levo buses that we connect to
+
+
+OUTPUTS:
+
+The primary code output is a possible failure of the machine
+instantiation either directly by this code or by any of the subobjects
+created.
+
+
+IDENTIFY UNDER WHICH COMPONENT THIS CODE FALLS:
+
++ subsystem 'iwindow'
+
+This code forms its own category ; namely, the REGFILTER category.
+
+

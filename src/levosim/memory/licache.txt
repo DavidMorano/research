@@ -1,0 +1,13 @@
+LICACHE
+
+
+This is the I-cache object for the Levo machine.
+
+Let's see, we have to poll in each clock the Instruction Fetch Bus
+(IFB) for requests.  Process those requests and then respond by placing
+results on the Instruction Response Bus (IRB).  If we have to interact
+with a main memory store or if there are multiple levels of caches, all
+of those details and interactions have to be managed as well.
+
+
+

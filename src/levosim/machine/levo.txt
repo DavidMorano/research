@@ -1,0 +1,85 @@
+OBJECT:
+
+levo
+
+
+CURRENT OWNER:
+
+Dave Morano
+
+
+SOURCE FILES:
+
+levo.c
+levo.h
+
+
+INCLUDE FILES AND DEPENDENCIES:
+
+<sys/types.h>
+<stdlib.h>
+<string.h>
+<vsystem.h>
+misc.h
+paramfile.h
+config.h
+defs.h
+mintinfo.h
+levoinfo.h
+bus.h
+iw.h
+mem.h
+levo.h
+
+This code is dependent on the 'frame' and 'mint' subsystems of
+the simulator program.
+
+
+OVERVIEW DESCRIPTION:
+
+This object forms the top of the Levo machine object hierarchy.  Under
+this object all other Levo machine specific objects are eventually
+instantiated.  This object instantiates only the most top level
+objects.  All other objects making up the machine are instantiated as
+subobjects from the top most ones.
+
+The major Levo subobjects of this object are the Levo Instruction
+Window ('iw'), the Levo Memory System ('mem'), and several buses that
+interconnect memory with the instruction window.  The Instruction Fetch
+Bus, the Instruction Response Bus, the Memory Write buses, some Memory
+Backwarding Buses (for load requests), and some Memory Forwarding Buses
+(for load responses).  Currently, all buses except for the Instruction
+Response Bus are made using the Levo Bus ('bus') object as the most
+primitive underlying component.  The Instruction Response Bus is
+currently made up from the Levo Instruction Bus ('libus') object.
+
+Besides instantiating the main object that instantiate the rest of the
+whole machine, this object also extracts several of the most important
+and common parameters from a parameter object that has collected them
+previously.  Most of these parsed parameters along with pointers to
+newly instantiated objects are placed into the 'levoinfo' data
+structure that is shared with lower level objects.
+
+
+INPUTS:
+
+Primary inputs to this code are pointers to: program information
+('proginfo' data structure) and the parameter object ('PARAMFILE').
+This code uses the parameter object to extract most of the main
+parameters for the currentlt Levo machine being simulated.  This
+includes all of the primary and most important parameters that
+constitute the Levo machine geometry.
+
+
+OUTPUTS:
+
+The primary code output is a possible failure of the machine
+instantiation either directly by this code or by any of the subobjects
+created.
+
+
+IDENTIFY UNDER WHICH COMPONENT THIS CODE FALLS:
+
+This code forms its own category ; namely, the top of the
+Levo machine object hierarchy.
+

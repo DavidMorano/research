@@ -1,0 +1,62 @@
+OBJECT:
+
+lpe (Levo Processing Element)
+
+
+CURRENT OWNER:
+
+Dave Morano
+
+
+SOURCE FILES:
+
+lpe.c
+lpe.h
+
+
+OVERVIEW DESCRIPTION:
+
+This object implements the Processing Element component in the Levo
+machine.  Its services are requested by Levo Active Stations (ASes) and
+it has to send its responses back to the active station that requested
+its services in the first place.  Actually, the AS should poll the LPE
+for a response.  In cases where certain DEE to ML switches occur and
+when there was also an outstanding execution occurring in the LPE, the
+LPE (in this particular circumstance) should put the result on the
+Register Horizontal Bus in order to get the result back to the AS that
+originated it.  Only DEE to ML switches that involve an actual transfer
+of the AS state from one column to another (not a renaming operation)
+does the LPE have to put the result on the Register Horizontal Bus.
+This is a good thing also since contending for that bus may take a few
+clocks so we would not want to do that for every execution !!
+
+LPEes are instantiated and initialized by (in the current thinking) the
+IW object.  This is so because, only the IW object (for the most part)
+knows the connectivity between the component of the Levo i-window and
+what components for sharing groups.  The 'init', 'free', 'clock' and
+'comb' methods of LPEs are therefor all called by the IW object that
+instantiates the LPE in the first place.
+
+Details of how an AS will request the service of a PE is not worked out
+in detail but the flavor of the thing will most likely resemble how an
+object requests a multi-master bus.  This is so because the services of
+an LPE object may be requested by several ASes at the same time and
+only one AS can "win" for any given clock period.  Also, to the extent
+possible, all operation of a PE should be pipelined, clock for clock,
+so that many ASes can get a request in over successive clocks even
+though any single instruction may take more than one or several clocks
+to execute !  The exact methods (names) for requesting services (and
+polling for a given result) are not yet determined.
+
+Actual execution of a MIPS instruction occurs by the LPE object
+setting up operands and calling the 'lexec' subroutine.
+
+Enjoy !
+
+
+
+IDENTIFY UNDER WHICH COMPONENT THIS CODE FALLS:
+
+iwindow
+
+

@@ -1,0 +1,263 @@
+OBJECT:
+
+lsim
+
+
+CURRENT OWNER:
+
+Dave Morano
+
+
+SOURCE FILES:
+
+lsim.c
+mintinfo.h
+
+
+INCLUDE FILES AND DEPENDENCIES:
+
+misc.h
+config.h
+defs.h
+plainq.h
+lmapprog.h
+
+
+OVERVIEW DESCRIPTION:
+
+This code now forms the top of the main simulator loop.  Alireza first
+indirectly suggested abandoning MINT for this function and who was I to
+disagree !
+
+This code is not part of the Levo machine but rather provides some
+simulation utilities for it.  We loop calling the Levo machine every
+clock and provide support for call-outs from Levo machine component
+objects.
+
+
+INPUTS:
+
+There are few needed inputs to this code.  The main inputs are :  a
+pointer to the program information ('proginfo' data structure -- mostly
+for debugging), and a pointer to a PARAMFILE object for passing
+down to sub-objects.  Currently this code instantiates the top
+Levo machine object know as 'levo'.
+
+
+OUTPUTS:
+
+This code return a failure if any of our sub-objects cannot be properly
+initialized.  This code exits exit when the Levo machine finally
+executes an '_exit(2)' system call.
+
+
+UNDER COMPONENT:
+
+lsim
+
+
+UNDER SUBSYSTEM:
+
+framework
+
+
+PUBLIC SUBROUTINES:
+
+lsim_init()
+lsim_free()
+lsim_readint()
+lsim_readinstr()
+lsim_callout()
+
+
+INTERACTION WITH OTHER CODE :
+
+lmapprog:
+
+This LSIM code creates one instance of an LMAPPROG object.
+This object is used to map the program under simulation to
+simulator memory.
+
+
+DETAILED SUBROUTINE DESCRIPTIONS:
+
+
+*******************************************************************************
+
+int lsim_readinstr(mip,iaddr,vp)
+struct mintinfo	*mip ;
+uint		iaddr ;
+uint		*vp ;
+
+This subroutine is used to read the instruction memory of the simulated
+program.  It reads a single instruction from the address specified in
+the 'addr' argument (above).  The resulting instruction occupying a
+single 32-bit unsigned integer is placed into the location pointed to
+by the 'vp' variable.
+
+The subroutine should be called with a valid address argument that
+meets the following restrictions :
+
++ it should be integer word (32 bit) aligned
++ it should address simulated program memory that is holding instructions
+
+Any attempt to call the subroutine with an address that does not meet
+the above restrictions will return some sort of error.
+The subroutine will return "greater than or equal to zero' on success
+and some negative number on failure.
+
+Arguments should be :
+
++ mip		pointer to 'mintinfo' structure that you received at
+		initialization
++ iaddr		instruction address
++ vp		pointer to integer value to hold result
+
+Possible return values include :
+
+SR_INVALID		the given address was not 4-byte aligned
+SR_FAULT		unmapped access was attempted
+SR_ACCESS		the access was mapped but was not instruction memory
+
+
+*******************************************************************************
+
+int lsim_readint(mip,addr,vp)
+struct mintinfo	*mip ;
+uint		addr ;
+uint		*vp ;
+
+
+This is pretty much exactly the same as 'lsim_readinstr()' above
+except that it checks to see if the memory is "readable" rather
+than executable.
+
+
+*******************************************************************************
+
+int lsim_writeint(mip,addr,data,dp)
+LSIM	*mip ;
+uint	addr ;
+uint	data ;
+uint	dp ;
+
+This subroutine is similar to 'lsim_readint()' above except that
+it writes data to memory rather than reading anything.
+
+Arguments should be :
+
++ mip		pointer to 'mintinfo' structure that you received at
+		initialization
++ addr		address of integer aligned location to write
++ data		integer data containing bytes to be written
++ dp		integer whose lowest four bits contain data present bits
+		specifying which bytes are to be written ; the lowest
+		bit represents the lowest valued address byte
+
+Possible return values include :
+
+SR_INVALID		the given address was not 4-byte aligned
+SR_FAULT		unmapped access was attempted
+SR_ACCESS		the access was mapped but was not writable
+
+
+*******************************************************************************
+
+int lsim_issyscall(mip,addr,npp)
+LSIM		*mip ;
+uint		addr ;
+const char	**npp ;
+
+This subroutine tests to see if the address passed point to the start
+of a pseudo system call.
+
+Arguments :
+
++ mip		pointer to 'mintinfo' structure that you received at
+		initialization
++ addr		address to test to see if it is the start of a pseudo 
+		system call
++ npp		optional pointer to a pointer to const char to receive
+		the name of the symbol ; set to NULL if not needed
+
+Returns :
+
+<0		something bad ; bail out
+0		the address did NOT point to a pseudo system call
+>0		the address DID point to a pseudo system call
+
+
+*******************************************************************************
+
+int lsim_memaccess(mip,addr,mode)
+LSIM	*mip ;
+uint	addr ;
+uint	mode ;
+
+This subroutine tests the specified memory address for the accessibility
+specified with the 'mode' paramter.
+
+Arguments :
+
++ mip		pointer to 'mintinfo' structure that you received at
+		initialization
++ addr		address to test to see if it is the start of a pseudo 
+		system call
++ mode		this variable should contain one or more of
+		the constants (defined in 'unistd.h') :
+		F_OK		(address mapped)
+		R_OK		(address is readable)
+		W_OK		(address is writeable)
+		X_OK		(address is executable)
+
+Returns :
+
+SR_OK		memory address has specified permissions
+SR_FAULT	memory address is not mapped
+SR_ACCESS	memory adddress does not correct access permissions
+
+
+*******************************************************************************
+
+int lsim_getsymval(mip,name,vp)
+struct mintinfo	*mip ;
+char		name[] ;
+unsigned int	*vp ;
+
+this subroutine is used to get the value of a symbol that meets the
+following requirements :
+
+	1) it is a symbol that refers to a C function or a C variable
+	2) is is a symbol with either a strong or weak binding
+
+These two requirements cover the most usual cases for what you might
+want.  Other symbols that do not meet these requirements are ignored.
+The first symbol found that meets the requirements is used and its
+value is returned.  Using this function, there is no way to retrieve a
+subsequent symbol with the same name that also meets these requirements
+but that is not a typical case in most regular (naive -- to use a UNIX
+term !) code.
+
+Returns :
+
+SR_OK		a symbol meeting the requirements was found
+SR_NOTFOUND	no symbol meeting the requirements was found
+<0		some other error (like a coding error of some sort)
+
+Example :
+
+	{
+		uint	addrval ;
+
+		int	rs ;
+
+
+		rs = lsim_getsymval(mip,"main",&addrval) ;
+
+		if (rs < 0)
+			printf("no symbol was found\n") ;
+
+		else
+			printf("symbol main=%08x\n",addrval) ;
+
+

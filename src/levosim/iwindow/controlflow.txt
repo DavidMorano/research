@@ -1,0 +1,36 @@
+
+Branch Instructions:
+
+BEQ
+
+BCZF      For this four 
+BCZFL     instructions
+BCZT      Z can be 
+BCZTL     0 or 1, the "Coprocessor number" in our case the FP unit #
+
+BEQL
+BGEZ
+BGEZAL
+BGEZALL
+BGEZL
+BGTZ
+BGTZL
+BLEZ
+BLEZL
+BLTZ
+BLTZL
+BLTZAL
+BLTZALL
+BNE 
+BNEL
+
+
+Jump instructions:
+
+J
+JAL
+JALR
+JR
+
+
+

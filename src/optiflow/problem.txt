@@ -1,0 +1,16 @@
+From dam Sat Nov 29 19:30:48 EST 2003
+return-path: dam
+received: (from dam@localhost)  
+	by mail.rightcore.com (8.10.1/dam0)
+	id hAU0Umf27052
+	for dam 
+	; Sat, 29 Nov 2003 19:30:48 -0500 (EST)
+content-length: 72              
+message-id: <200311300030.hAU0Umf27052@mail.rightcore.com>
+From: dam
+To: dam
+Date: Sat, 29 Nov 2003 19:30:48 -0500 (EST)
+Subject: sim-test
+
+exiting right after 1st clock through SSIW_comb() f.exit flag
+being set

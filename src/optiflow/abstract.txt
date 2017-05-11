@@ -1,0 +1,44 @@
+Exploring Instruction Level Parallelism Using Resource Flow Execution
+by David Morano
+
+
+Due to clock frequency limitations, performing more computer operations in
+parallel is now being more widely explored for increasing total execution
+performance.  Several varieties of parallelism are available, with the
+easiest and most attractive being thread-level parallelism.  Recently
+introduced microprocessors have provided capabilities such as: multiple
+threads multiplexed onto a single CPU (simultaneous multithreading or
+hyperthreading), multiple CPU cores on a single integrated circuit,
+multiple microprocessor integrated circuits placed on the same logic
+module or logic printed circuit board, or sometimes various combinations
+of all of these.  Although these approaches increase the total computing
+throughput available, they do nothing for more serially dependent program
+workloads.  Rather these approaches require workloads that can be highly
+or totally parallelizable.
+
+There are machine design approaches that attempt to address serial
+workloads through the extraction of instruction level parallelism.
+One such approach is that of Explicit Parallel Instruction Computing (or
+EPIC for short).  This approach attempts to execute several instructions
+in parallel through the use of clever scheduling by its compiler.
+However, substantial performance increases using this architectural
+technique have not been achieved to date.  Further, these approaches
+require entirely new machine architectures and are therefore not
+appropriate for legacy programs and architectures.
+
+In the present work, we present a way to both speed up those programs that
+are highly serial in nature (not generally parallelizable) and to be able
+to execute these programs on legacy machine architectures (not requiring
+a new architecture).  We introduce a new machine microarchitectural
+framework that performs dynamic instruction scheduling in a new and
+more flexible way as compared with past superscalar machines.  We term
+our new machine execution philosophy Resource Flow Execution.  In this
+philosophy, instruction execution is performed in a very relaxed way and
+is not initially constrained by either control or data flow dependencies.
+Rather, we introduce novel machine microarchitectural components that
+allow for the dynamic determination of program dependencies during
+or after instruction execution.  As dependencies are discovered,
+instructions get re-executed as necessary (and entirely in parallel
+with other instructions) so as to eventually converge on the expected
+committed architectural state of the program.
+

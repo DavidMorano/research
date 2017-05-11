@@ -1,0 +1,163 @@
+OBJECT:
+
+lfgf
+Levo FlowGroup FIFO
+
+
+CURRENT OWNER:
+
+Dave Morano
+
+
+SOURCE FILES:
+
+lfgf.c
+lfgf.h
+
+
+INCLUDE FILES AND DEPENDENCIES:
+
+misc.h
+config.h
+defs.h
+mintinfo.h
+levoinfo.h
+lflowgroup.h
+
+This code is dependent on the : 'frame', and 'mint' subsystems of the
+simulator program as well as the 'bus', lflowgroup', and 'levo' objects
+of the Levo machine components.
+
+
+OVERVIEW DESCRIPTION:
+
+This component is a synchronous FIFO that is also aware of the Levo
+machine time-tags.  On a machine shift, all of the time-tags in the
+FIFO will be shifted by the machine column height.  This component
+is meant to be used as a basic FIFO building block for more complex
+machine components.
+
+This component suports the writing (shifting in) of one LFLOWGROUP
+type data unit per clock.  The method to call to write something
+into the FIFO (shift in) is 'lfgf_write()'.
+
+To read the current output of the FIFO, call 'lfgf_read()'.
+
+To read and shift out the current output of the FIFO, call
+'lfgf_readout()'.
+
+
+To use this object :
+
++ instantiate the object
+
++ initialize this object with the :
+	- pointer to its object data
+	- pointers to the 'proginfo' and 'levoinfo' structures
+	- the number of entries you want to the FIFO configured for
+
++ free this object up along with your other stuff that you free up when
+  being destroyed
+
++ call :
+
+	lfgf_clock(...)
+
+	from you own 'clock' method.
+
++ call :
+
+	lfgf_comb(...)
+
+	from your own 'comb' method.
+
++ call :
+
+	lfgf_write(...)
+
+	to shift a LFLOWGROUP into the FIFO.  The data will be
+	shifted into the FIFO on the next clock edge.  A machine
+	shift WILL affect all data that is shifted in.  If the
+	FIFO is already full 'SR_OBERFLOW' will be returned, else
+	something >= 0.  This can be called in any phase but
+	good practice is to call it in phase 1 or later.
+
++ call :
+
+	lfgf_read(...)
+
+	to read the current data item that is sitting on the output
+	of the FIFO, if any.  If no data is in the FIFO, 'SR_OVERFLOW'
+	is returned, else something >= 0.  This can be called in any
+	phase but good practice is to call it in or after phase 1.
+
++ call :
+
+	lfgf_readout(...)
+
+	to read the current value of the output of the FIFO and to also
+	shift that value out of the FIFO.  This will return 'SR_OVERFLOW'
+	if the FIFO was already empty.
+
++ pray that is works !
+
+
+INPUTS:
+
++ object data
++ proginfo structre pointer
++ levoinfo structure pointer
++ data to be shifted in
++ pointer to hold a shifted-out or read-out data value
+
+
+OUTPUTS:
+
++ data that is read out
++ return code indicating succes of failure
+
+
+IDENTIFY UNDER WHICH COMPONENT THIS CODE FALLS:
+
++ subsystem 'machine'
+
+
+PUBLIC SUBROUTINES :
+
+int lfgf_init(op)
+LFGF	*op ;
+
+
+int lfgf_free(op)
+LFGF	*op ;
+
+
+int lfgf_comb(op,phase)
+LFGF	*op ;
+int	phase ;
+
+
+int lfgf_clock(op)
+LFGF	*op ;
+
+
+int lfgf_shift(op)
+LFGF	*op ;
+
+
+int lfgf_read(op,fgp)
+LFGF		*op ;
+LFLOWGROUP	*fgp ;
+
+
+int lfgf_readout(op,fgp)
+LFGF		*op ;
+LFLOWGROUP	*fgp ;
+
+
+int lfgf_write(op,fgp)
+LFGF		*op ;
+LFLOWGROUP	*fgp ;
+
+
+
