@@ -1,0 +1,145 @@
+OBJECT:
+
+lbusint
+
+
+CURRENT OWNER:
+
+Dave Morano
+
+
+SOURCE FILES:
+
+lbusint.c
+lbusint.h
+
+
+INCLUDE FILES AND DEPENDENCIES:
+
+misc.h
+config.h
+defs.h
+mintinfo.h
+levoinfo.h
+bus.h
+lflowgroup.h
+bus.h
+
+This code is dependent on the : 'frame', subsystem of the simulator
+program as well as the 'bus', lflowgroup', and 'levo' objects of the
+Levo machine components.
+
+
+OVERVIEW DESCRIPTION:
+
+This object module provides an interface to a Levo bus ('bus' object)
+that is easier to use than the underlying bus interface that is more
+asynchronous this the interface presented by this object.  This
+interface is more synchronous with respect to the Levo machine clock.
+This object is currently used heavily by the Levo AS ('las') object bus
+can be used by any object to take some bus manipulation drudgery out of
+the coding.
+
+This object is used as a helper interface to the 'bus' object.  The
+'bus' object is used as the underlying bus for most all Levo i-window
+connectivity.  That object is written tightly in time (using phase tics
+of the clock) so that it can quickly allocate the bus among
+multiple master.  This also makes that object hard to use by callers.
+
+To use this object :
+
++ instantiate one of these for each 'bus' that you want to "interface"
+  to
+
++ initialize this object with the :
+	- pointer to its data of course
+	- pointers to the 'proginfo' and 'levoinfo' structures
+	- pointer to bus object being interfaced to
+	- the bus ID that you have for that bus
+
++ free this object up along with your other stuff that you free up when
+  being destroyed
+
++ call :
+
+	lbusint_write(...)
+
+	when you want to write something on the bus.  All requesting
+	of the underlying bus is handled within.  This can be
+	called in most any phase that you want.  If you want to
+	call it in phase 3, let me know and I will make a little
+	optional adjustment for that also.
+
++ call :
+
+	lbusint_ready(...)
+
+	to see if the interface is ready to write another item.
+	You can also call the 'lbusint_write' function again and
+	it will just fail if the interface is currently busy.
+	This can be called in any phase that 'lbusint_write' can
+	be called.
+
++ call :
+
+	lbusint_clock(...)
+
+	from you own 'clock' method.
+
++ call :
+
+	lbusint_comb(...)
+
+	from your own 'comb' method.
+
++ call :
+
+	lbusint_read(...)
+
+	at anytime to examine what the previous bus cycle held, if anything.
+	If nothing was on the bus, it returns '0'  if something was
+	on the bus, it returns '> 0'.
+	This can be called in any phase at all.
+
++ pray that is works !
+
+
+INPUTS:
+
+There are few needed inputs to this code.  The main inputs are :  a
+pointer to the program information ('proginfo' data structure -- mostly
+for debugging), a pointer to the Levo machine information as provided
+by the 'levoinfo' data structure, a pointer to the underlying bus
+that this object expects to control (it must be a 'bus' object'),
+and the bus master ID that should be used for mastership of the
+underlying bus.
+
+
+OUTPUTS:
+
+The primary code output is a possible failure of initialization
+either directly by this code or by any of the subobjects
+created.
+
+
+IDENTIFY UNDER WHICH COMPONENT THIS CODE FALLS:
+
+This code falls under the coding category of Levo machine
+buses.
+
+
+DETAILED INFORMATION:
+
+int lbusint_done(op)
+LBUSINT	*op ;
+
+Arguments :
+	op	object pointer
+
+Returns:
+	<0	error
+	==0	component is not "done"
+	>0	component is "done" ready for commitment
+
+
+

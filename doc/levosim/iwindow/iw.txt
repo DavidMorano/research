@@ -1,0 +1,125 @@
+OBJECT:
+
+iw
+
+
+CURRENT OWNER:
+
+Dave Morano
+
+
+SOURCE FILES:
+
+iw.c
+iw.h
+
+
+INCLUDE FILES AND DEPENDENCIES:
+
+<sys/types.h>
+<stdlib.h>
+<string.h>
+<vsystem.h>
+misc.h
+paramfile.h
+config.h
+defs.h
+mintinfo.h
+levoinfo.h
+bus.h
+levo.h
+iw.h
+
+This code is dependent on the 'frame' and 'mint' subsystems of
+the simulator program as well as the 'levo' object that instantiates
+us and provides the initial basis for the information contained in
+the 'levoinfo' data structure.
+
+
+OVERVIEW DESCRIPTION:
+
+This object forms the top of the Levo machine instruction window.
+Under this object all other Levo machine specific objects that are
+considered part of the I-window are eventually instantiated.  This
+currently includes most all code that forms the majority of the Levo
+machine.
+
+The major Levo subobjects of this object are the:
+
+some memory forwarding buses ('bus')
+some memory backwarding buses ('bus')
+the register forwarding buses ('bus')
+the register backwarding buses ('bus')
+Levo Active Stations ('las')
+Levo Processing Elements ('lpe')
+the Register Filter Units ('regfilter')
+the Memory Filter Units ('memfilter')
+the Memory Write Queues ('wqueues')
+the Levo Ifetch Unit ('lifetch')
+other components to be finalized
+
+This object takes an interconnections, the instruction and memory
+buses that go over and connect to the memory subsystem of the Levo
+machine.
+
+
+INPUTS:
+
+Primary inputs to this code are:
+
++ a pointer to program information ('proginfo' data structure)
++ a pointer to a parameter object ('PARAMFILE')
++ a pointer to the simulator information ('mintinfo')
++ a pointer to the Levo machine information ('levoinfo')
++ pointers to the various Levo buses that we connect to
+
+
+OUTPUTS:
+
+The primary code output is a possible failure of the machine
+instantiation either directly by this code or by any of the subobjects
+created.
+
+
+IDENTIFY UNDER WHICH COMPONENT THIS CODE FALLS:
+
+This code forms its own category ; namely, the top of the
+Levo machine instruction window hierarchy.
+
+
+UNDER SUBSYSTEM:
+
+iwindow
+
+
+PUBLIC SUBROUTINES:
+
+standard calls:
+
+iw_init()
+iw_free()
+iw_comb()
+iw_clock()
+
+special calls:
+
+* none so far *
+
+
+INTERACTIONS WITH OTHER CODE:
+
+levo:
+
+The LEVO code instantiates us and makes all of our standard
+method calls: las_init(), las_free(), las_comb(), las_clock() 
+
+llb:
+
+We call the LLB XXXX() calls when XXXX needs to be done.
+
+lpe:
+
+We instantiate all of the LPE objects and call their standard
+calls: lpe_init(), lpe_free(), lpe_comb(), lpe_clock() 
+
+

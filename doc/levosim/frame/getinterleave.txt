@@ -1,0 +1,30 @@
+GETINTERLEAVE
+
+
+	int getinterleave(interleave,addr)
+	uint	interleave, addr ;
+
+
+	Arguments :
+
+	+ interleave	the interleave schedule
+	+ address	the address that is in view
+
+	Returns :
+
+	+ index		the bus index of the interleaved buses
+
+
+	This subroutine takes an interleave schedule and an address and
+	calculates which interleaved bus (by bus index) should be used
+	for the associated operation given the address.
+
+	The interleave schedule value is usually passed into
+	the machine from the configuration information supplied
+	at startup initialization time.
+
+	The address value is usually a current address for which
+	a proper memory bus needs to be identified for use by
+	the transaction with that given address.
+
+

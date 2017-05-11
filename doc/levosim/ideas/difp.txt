@@ -1,0 +1,258 @@
+Dynamic Instruction Flow Predication
+Dave Morano
+December 1, 2000
+
+
+Professor Uht's Hidden Explicit Predication invention provides a
+mechanism for predicating all instructions in an execution window.
+This scheme allows for all instructions in the execution window to be
+predicated regardless of the number and variation of branches that may
+be in the window.  This is accomplished by calculating predicate and
+canceling predicate dependencies and their initial values at
+instruction load time (when a group of instructions are loaded into the
+Active Station (AS) execution array).  This scheme requires the
+presence of a Branch Tracking Buffer that is used to correlate branch
+target instructions with the original branch instructions that lead to
+them.  This hardware component has not been implemented in less than
+roughly O(n ^^ 2) time or space at the present due to the need to
+search the entire table simultaneously for all of the instructions to
+be loaded in any given clock period.  Further, there may be
+instructions loaded into the Active Station execution window that do
+not come from the i-load buffer(s) but rather are just copied from
+existing previously loaded Active Station columns.  In these latter
+cases, it is not always easy to create the correct predicate dependency
+relationships between the new instructions in the new AS column and
+other instructions within the new column or in previously existing
+columns.  The region predicate flows naturally from the previous column
+but the canceling predicate addresses of the new column might have to
+point to entries in the newly loaded column as well as from one or more
+of the previously loaded columns depending on the exact nature of the
+control flow and instructions in the copied column.  This latter
+situation would appear to require the use of the Branch Tracking Buffer
+to handle all possible flexibility of creating new AS columns that are
+currently envisioned or may be investigated in the future.  Certainly
+some simpler predicate assignment mechanism may be possible with the
+loss of some flexibility also.  Both the issue of difficult
+manipulation of the Branch Tracking Buffer and additional flexibility
+for i-load of new AS columns may be achieved if some sort of dynamic
+flow predication scheme is used rather than the current relatively
+static scheme.
+
+The new scheme that I propose is (or would appear to be) a natural
+extension of Professor Uht's existing branch predication scheme.
+Rather than computing any predicate dependencies (predicate addresses)
+and their initial predicate values at instruction load time (the time
+that instructions are loaded into ASes), my proposed scheme would
+simply load the instructions into ASes without any predicate dependency
+addresses.  There is one natural input predicate that every instruction
+has and that is its input branch region predicate.  This predicate
+would be managed by each individual AS by maintaining state for the last
+time-tag (TT) value that it snarfed a region predicate from and the
+last region predicate value.  This is, of course, similar to the
+existing predication scheme.  Further, additional state would be
+maintained in each AS for branch target predicates.  These correspond
+quite exactly to the existing canceling predicate addresses of the
+current scheme.  The state maintained for these branch target
+predicates would consist of a fixed number of branch target predicate
+addresses.  In addition, there would be maintained an overflow bit (to
+be described later) for those cases when a given instruction is the
+target of more than the number of branch target predicate address and
+value state registers that are configured into the AS.  In this scheme,
+unlike in the existing one, no use of predicate-only ASes will be used
+for the storage of additional branch target predicate state registers
+since it is not known at either instruction load time or for possibly
+much of an instruction's execution time how many branches are targeting
+the current instruction.  Rather the overflow bit will come into play
+for those cases where additional branches have targeted the current
+instruction and no additional branch target predicate state registers
+are available.
+
+Operation
+
+As instructions execute they forward any significant changes in
+predicate information that future (time-tag valued) instructions will
+use to determine their branch domains and whether they are a target of
+one or more previous branches.  Two types of predicate forwards are
+identified.  One type is associated with non-branch instructions as the
+source of the forward.  The other type is associated with branch
+instructions as being the source of the forward operation.  When a
+non-branch instruction forwards predicate information it will forward
+only a region predicate.  The snooping ASes in the future will possibly
+snarf this predicate value according to normal snarfing rules for the
+comparison of time-tags that is already used for register snarfing.
+Snarfing ASes will update their regional predicate state to reflect the
+latest TT value and the new value for the region predicate.  Branch
+instructions forward more information that includes :
+
+	+ its source TT
+	+ its branch target address
+	+ its output region predicate value
+	+ its output branch target predicate value (same as a canceling
+	  predicate although it does not have to be)
+	+ its currently predicted branch condition
+
+Snooping ASes, upon seeing a branch forward operation, will snarf and
+update its region predicate the same as if a non-branch instruction
+performed a predicate forward operation.  However additional work is
+done also.  The snooping AS will compare its instruction address (which
+it received at instruction load time through one of at least two
+mechanisms) with the branch target address that is forwarded by the
+branch instruction.  If there is a match on the branch target address,
+the snooping AS will also look to see if the branch is predicated taken
+and that its branch target predicate value is true (indicating that
+instruction flow is currently predicted to come through the taken
+branch).  In this circumstance, the snooping AS will allocate
+a previously unused branch target predicate state register for holding
+the TT value of the originating branch AS.  The value of the predicate
+is TRUE since we would not have allocated a register slot if it were not.
+A new output region predicate is computed by the snarfing AS as
+follows :
+
+	Pr,output = Pr,input + (any active branch target predicates)
+
+If the output region predicate changes from its previous value, it is
+forwarded the same as in the existing scheme.  The above equation, of
+course, provides the mechanism to "cancel" a negative region predicate
+that may have been in effect.
+
+The use of forwarding branch target instruction addresses rather than
+target time-tag values (previously proposed some time ago) is to handle
+the situations where the target of a brach does not lie the same number
+of ASes forward in time as the branch target address might indicate.  A
+dynamic change in the instruction flow may have been loaded into the AS
+execution window and this can obviously cause target instructions of a
+conditional branch to lie any number of ASes into the future rendering
+the relative computation of a target TT value to be of no use.  Rather,
+by having branch instructions broadcast the absolute target instruction
+address, the possible target instruction can snarf on an instruction
+address match regardless of how many ASes into the future it may lie
+within the window.
+
+Now, when a branch instruction forwards a change in its output branch
+target predicate such that it becomes negative (the branch is no longer
+predicated to be taken or it is no longer predicted to execute itself),
+it will perform a predicate forward operation.  Snooping ASes will
+again match on target address but will also search to see if that
+branch target predicate from the originating branch instruction was
+previously recorded.  If it was previously recorded, the branch target
+predicate address state register slot that was occupied becomes
+unoccupied.  This amounts to the loss of a positive input to its
+execution predicate and its output region predicate value.  If the
+output predicate region value changes, this instruction will perform,
+in turn, its own predicate forward operation.
+
+Of course, the target of a branch instruction can itself be a branch
+instruction and this is handled in the expected straight forward manner
+(as in the current scheme also).  Further, no ordering of any kind is
+needed for the forwarding of predicate information, whether it be from
+a non-branch instruction or from a branch instruction.  This latter
+feature is a critically important one (in the strong opinion of this
+author) because current predicate forwarding bus mechanisms when
+combined with the existing grouping of ASes into Sharing Groups cannot
+necessarily guarantee the order of predicate forward operations.  The
+order of predicate forward operations may be mixed up due to additional
+structural hazards in the machine such as the priority and queue delate
+for the use of a Processing Element when one may be needed for the
+execution of a branch that may require some non-trivial computation.
+In any event, it is certainly advantageous to not require a strict
+ordering of predicate forward operations for other circumstances (if
+there were not enough already) being yet unforeseen.
+
+The difficulty with the proposed scheme occurs when the target of a
+branch already has all of its architected (machine configured) branch
+target predicate address state registers already used up and then a
+match occurs with a new originating branch instruction that was not
+previously recorded in the AS.  What we would like to do is to allocate
+an additional predicate address state register to hold the new
+predicate source TT value but this is not possible since all of the
+registers are used up.  Rather we can either ignore the new branch
+match condition or we can replace an existing branch predicate address
+with the new one.  In either case, the overflow bit is set in the AS
+state.  The replacement policy for handling overflow branch target
+matches is something that could be researched further for that policy
+that gives best execution performance.  We have to set the overflow bit
+because we needed to track that an overflow occurred.  This is
+necessary so that after all existing branch target matches go negative
+due to subsequent forward operations (and their associated addresses
+removed from the branch target predicate address state registers) and
+when the region predicate of the current AS also goes negative, we need
+to know that there is still an ambiguity about whether the current AS
+is predicated to execute or not.  The problem comes into play on how to
+resolve this ambiguity.  The most natural mechanism would require the
+addition of a predicate backwarding bus of some sort in order for
+ASes that have reached an ambiguous state to make a request backwards.
+This backwards request would essentially ask all branch instructions
+to resend a predicate forwarding operation so that any branch target
+matches for those branches that are predicated to execute and to
+execute taken can be be snarfed by the ambiguous AS.  At least
+once backwarding request would have to be made for any AS in an
+ambiguous state before the ambiguous AS could be allowed to commit.
+
+Branch Target Predicate Address Register Replacement Policy
+
+Some thought can now be given to the replacement policy for storing
+matching branch target predicate addresses.  We obviously would want to
+minimize the likelihood of having as AS ever reaching an ambiguous
+state.  The likelihood of an AS reaching an ambiguous state is already
+probably quite low but will always remain non-zero if the number of
+configured branch target predicate address storage registers in an AS
+is less than the AS window size (same as the current scheme).  The
+probability of an AS reaching an ambiguous state will only occur after
+both overflow occurs and when its region predicate goes negative.  This
+is somewhat less than the probability of some number of preceding
+branches all predicting that they are both being executing and are
+being taken and when all of those branches target a single AS.  So we
+are probably talking a some low probability for ASes to ever reach an
+ambiguous state as it is.  Simulations can show the exact likelihoods
+involved with real code.  Replacement policies that have been thought
+of include :
+
+	+ ignore the latest match and keep existing entries
+	+ replace a branch target predicate address such that
+	  the latest time-tag values are retained
+	+ replace a branch target predicate address such that
+	  the earliest time-tag values are retained
+	+ maintain an age associated with a branch target predicate address
+	  (updated each clock for example) and only replace the oldest aged
+	  entry
+	+ maintain an age and replace the youngest aged entry
+	+ some combination of the above
+
+As already stated, simulations could explore what replacement policy
+might perform best.
+
+Other Possibilities
+
+Some other manipulations of these dynamic predicates maintained by an
+AS may be possible and may or may not provide some performance
+advantages.  Currently, region predicates are maintained dynamically by
+a chain of regional predicate dependencies.  State associated in an
+AS to maintain this chaining is a region predicate address and a region
+predicate value.  If a target of a branch is serving as the previous
+link in a region predicate chain for a future instruction and that
+branch target AS snarfs a branch predicate forward operation such that
+its execution predicate now only depends on its own region predicate,
+that branch target AS can forward information to succeeding ASes so
+that they unlink the branch target address and revert back to the
+region predicate address that was the original region predicate of the
+branch target AS.  This unlinking operation would be possible by the
+branch target AS forwarding its own region predicate address along with
+its own predicate forward operation.  This would be a GOTO predicate
+address for future ASes that could be used to essentially unlink the
+intermediate branch target AS.  The snarfing of a predicate forward
+operation with a possible GOTO predicate address could then update its
+own predicate address to that of the GOTO value rather than the
+existing value (that of the AS that was the target itself of a
+branch).  Of course, a good picture would help but I do not have one
+made up as yet.
+
+What would a region predicate unlink operation do to help overall
+operation ?  It will eliminate one indirection for those ASes that were
+dependent on an AS that was itself target of a branch when that ASes
+execution predication no longer is valid through the taking of any
+branches.  Of course, this unlinked operation can continue backwards
+through many combinations of ASes that are the target of a branch.
+Other unlinking operations are also possible but do not appear do be as
+useful as the one described so far since they would quickly degenerate
+into additional chaining links (often the same as before) as the
+intermediate instructions send their own predicate updates forward.

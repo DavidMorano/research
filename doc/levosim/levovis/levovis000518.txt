@@ -1,0 +1,82 @@
+Sean,
+
+The geometry of the machine in terms of its organization has been
+pretty constant now for a while so I wanted to let you know what the
+major components are that will contain state that we will probably want
+to look at using the future LevoVis program.
+
+There will be rows and columns in the instruction window as before
+except that now there is a new distinction.  There are rows and columns
+of sharing groups in addition to rows and columns of just active
+stations.  The primary purpose of a sharing group so far is to share
+the execution resource represented as a PE.
+
+I think that the major state of the machine (as far as the instruction
+window is concerned) is similar to the existing Levo machine except
+that I think that it may be important to also show the state on some of
+the buses.  The state of an Active Station is similar as before
+and you may want to reference the current source code tree for
+a description of it.
+
+The, roughly, up-to-date version of the source code tree is located
+at URI in the directory :
+
+	/marlin/morano/levosim/src/
+
+Under this directory are header include files that show the state
+contained in code modules.  The active station code state is shown in
+the file 'iwin/las.h' under the path above.  Most of the state that I
+think that we want to show is inside these ASes.
+
+Note that there are some dimensions of the machine that are configurable.
+The primary configurable parameters are the number of sharing groups
+per row (number of sharing group columns) and the number of sharing
+groups per column (SG rows).  The current set of configurable parameters
+is located in the file :
+
+	/marlin/morano/levosim/doc/levovis/report000518.txt
+
+This is an overview of some aspects of the code so far.
+
+I think that we also want to show the state inside of the register
+forwarding buses.  This state is contained in the file 'iwin/busfr.h'
+under the main source directory above.  Each sharing group originates
+one register forwarding bus and that may be where in the over-all
+visual presented by LevoVis you may want to display its state.
+Check out the header file to get a feel for the state in this object.
+All objects generally have a "current" state and a "next" state
+bus I think that we should probably focus on at least presenting
+the "current" state for now.  Note that the span (or number of sharing
+groups served by each register forwarding bus) is a configurable
+parameter (named: nfspan) so it is a variable.
+
+I think that we will also want to show the state of the memory buses
+that connect the instruction window to the memory subsystem.  There are
+two memory related buses so far (replicated per AS row).  There is a
+memory data bus and a memory instruction read bus.  The state for
+memory data bus (as far as is determined or coded to date) is located
+in files 'machine/busmemdata.h'.  The exact state of the memory
+instruction bus is not determined but it will, of course, be
+essentially instructions being read.
+
+The main state for the buses is the data on them but there are also
+some miscellaneous bits associated with some of these bus objects
+that may also be useful to show.  Some examples of these other things
+are :
+	the busy status of the bus
+	the data present status of the bus
+
+Don't be too concerned with exact types of state for the time being but
+there will be, in general, data-like state and status-like state.  The
+data-like state include things like: time-tag, general-content-data,
+path-ID.  Try to prepare a visual presentation that can show both
+multi-bit data-like state along with single bit status-like state.
+
+I think that I have probably given you enough to look at for now but do
+not hesitate to ask me any questions by email.  Note that there is much
+left to be determined let alone coded so there will be new things
+coming and some existing things will undoubtedly be changed.
+
+Dave Morano
+morano@ele.uri.edu
+

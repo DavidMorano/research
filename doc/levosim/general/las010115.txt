@@ -1,0 +1,28 @@
+*******************************************************************************
+
+= subroutine to get the instruction addresses out of an AS
+
+This subroutine is used to read out the instruction address (if an
+instruction is loaded) from a Levo Action Station (LAS object).
+This subroutine should query the CURRENT state of the LAS, not its
+possible NEXT state.
+
+	int las_getia(llbp,iap)
+	LLB	*llbp ;
+	uint	*iap ;
+
+
+Arguments:
+
+lasp		pointer to the LAS object
+iap		pointer to the caller's unsigned integer to receive the 
+		instruction address
+
+Returns:
+
+>=0		an instruction was present and its address was returned
+SR_EMPTY	no instruction is currently loaded
+<0		some other bad error
+
+
+

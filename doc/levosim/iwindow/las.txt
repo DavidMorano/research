@@ -1,0 +1,218 @@
+CODE:
+
+Levo Active Station (LAS)
+
+
+CURRENT OWNER:
+
+Alireza
+
+
+SOURCE FILES:
+
+las.c
+las.h
+
+
+PRIMARY INCLUDE FILES and DEPENDECIES:
+
+lpe.h		(Processing elements)
+lbusint.h	(Interface to Buses)
+bus.h		(Bus Object)
+
+
+OVERVIEW DESCRIPTION:
+
+An active station is responsible for issuing an instruction to the
+processing elements for execution and forwarding the result to the
+following instructions.  Because of the speculative nature of the levo
+machine there is a chance that the instuctions need to be reexecuted.
+The active station is responsible to make sure that each instruction
+gets the final value of its operands.
+
+Three kinds of dependencies are checked during execution of an
+instruction.  Register data value, Memory data value and control
+dependencies.  A set of forwarding and backwarding buses are used to
+deliver the updated values to the other active stations.
+
+
+INPUTS: 
+
+Instruction load buffer; register, memory and predicate buses; 
+output queue of the processing element.
+
+OUTPUTS:
+
+Write queue; register, memory and predicate buses;  Input queue
+of the processing element.
+
+
+UNDER COMPONENT:
+
+Active Station
+
+
+UNDER SUBSYSTEM:
+
+iwindow
+
+
+PUBLIC SUBROUTINES:
+
+standard calls:
+
+las_init()
+las_free()
+las_comb()
+las_clock()
+las_shift()
+	This is called by IW when a machine shift will occur on the
+	next clock edge.
+
+special calls:
+
+----------------------------------------
+int las_load()
+
+This is called by the IW to tell the LAS that it should load itself
+The loading will take place upon return from subroutine.  All ASes in 
+a column are preferred to be loaded in the same clock cycle.
+
+Returns:
+
+<0      error
+>=0     OK
+
+
+----------------------------------------------------------------------------
+int las_loadcomplete()
+
+	This is called by the IW code when all loading of an AS is
+	complete ???
+
+
+----------------------------------------------------------------------------
+= subroutine to get the instruction addresses out of an AS
+
+This subroutine is used to read out the instruction address (if an
+instruction is loaded) from a Levo Action Station (LAS object).
+This subroutine should query the CURRENT state of the LAS, not its
+possible NEXT state.
+
+int las_getia(op,iap)
+LLB	*op ;
+uint	*iap ;
+
+
+Arguments:
+
+lasp		pointer to the LAS object
+iap		pointer to the caller's unsigned integer to receive the 
+		instruction address
+
+Returns:
+
+>=0		an instruction was present and its address was returned
+SR_EMPTY	no instruction is currently loaded
+<0		some other bad error
+
+
+----------------------------------------------------------------------------
+= subroutine to get possible commitment related information from as AS
+
+This is called by the IW code to determine commitment related
+information about an AS.  Alternatively, the subroutine
+'las_readycommit()' should be called to determine if the AS is ready to
+commit or not.  This subroutine returns information related to the AS
+that is needed at or around commitment time.
+
+
+int las_commitinfo(op,ip)
+LAS		*op ;
+LAS_COMMITINFO	*ip ;
+
+
+Arguments :
+
+LAS	*op ;
+	this is the object pointer for this AS
+
+LAS_COMMITINFO	*ip ;
+	this is a pointer to a 'LAS_COMMITINFO' structure that will
+	hold the results of the subroutine call ; individual fields
+	will be populated depending on the type of instruction that
+	as in this AS
+
+Returns :
+
+SR_EMPTY	this AS did not have anything in it
+<0		some other error (usually a programming error)
+==0		the call was succesful and this AS was not holding
+		a control-flow-change type of instruction
+==1		the call was successful and this AS was holding a
+		control-flow-change type of instruction
+
+
+----------------------------------------------------------------------------
+= subroutine to commit as AS
+
+This is called by IW when the AS is ready to commit and does the actual
+commitment.  This subroutine will be called by the IW code to tell an
+AS that it should commit it's 'write' memory values to the write store
+queue.  It would write the commited memory values into the Write
+Queue.
+
+
+int las_commit(op,ipval,bdir,btarget,faddr)
+int	*ipval ;
+int	*bdir ;
+uint	*btarget ;
+uint	*faddr ;
+
+
+
+Arguments :
+
+int * ipval 
+	input predicate value for the instruction in the AS.  This is 
+	the final commited value for the predicate input of the
+	instruction.  If this is 0, then the instruction is void because
+	it is on the non-executed path.  if this is 1 then the
+	instruction has been on the executed path.
+
+int * bdir
+	for a branch or jump instruction, it shows whether the branch is
+	taken or not.  a value of 1 means that it is taken, while 0 means
+	not-taken. 
+
+uint * btarget
+	the target address of the branch.  
+
+uint * faddr:
+	instruction address in the actual code.
+
+
+Retutns :
+
+SR_EMPTY	no instruction is currently loaded
+<0		bad error (usually a programming bug !)
+==0		instruction was not a control flow change
+==1		instruction was a control flow change
+
+
+
+INTERACTIONS WITH OTHER CODE:
+
+iw:
+
+The IW code instantiates us and makes all of our standard
+calls : las_init(), las_free(), las_comb(), las_clock(), 
+and also las_shift()
+
+The IW code also calls us when XXXXX needs to be done.
+
+llb:
+
+lpe:
+
+

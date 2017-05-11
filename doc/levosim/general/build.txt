@@ -1,0 +1,80 @@
+BUILDING LEVOSIM
+
+
+Choose any of the alternatives : EASY, MORE_DIFFICULT, OTHER.
+
+
+
+== EASY
+
+$ makeit
+
+
+
+== MORE DIFFICULT
+
+Due to the slight increased complexity of our build environment (mostly
+for portability and other reasons) the detailed build instructions
+presented here are NOT complete and will NOT work as they are.  You
+should reference the file 'makeit' about to see what is necessary for a
+successful build.
+
+Warning: THIS IS NOT COMPLETE !
+
+Set an environment variable named 'LEVO' to the top of the LevoSim
+package directory.  For example :
+
+$ export LEVO=${HOME}/levosim
+
+You should also have the environment variable 'LOCAL' set to a LOCAL
+code distribution directory tree.  This is needed to pick up a copy of
+Dave's favorite libraries.  For example :
+
+$ export LOCAL=/marlin/morano/add-on/local
+
+Set the following :
+
+$ export OFD=S5
+$ export OFF=s5
+$ export OSTYPE=SYSV
+
+Finally, you should set an environment variable 'LDCRTDIR' to be
+where the standard common runtime object files are located.
+For example :
+
+$ export LDCRTDIR=/opt/SUNWspro/SC5.0/lib
+
+Now go to the top of the source tree :
+
+$ cd ${LEVO}/src/
+$ make
+
+
+
+== OTHER
+
+For incremental piece code compilations you can do the following :
+
++ change to the subdirectory containing the stuff that you want to
+  build
+
++ execute 'make upincs clean'
+
++ change to the top of the source tree again
+
++ execute something like : 'makeit <subdirectory_name>.o
+
+
+An example would be something like :
+
+$
+$ cd ~/levosim
+$ cd memory
+$ make upincs clean
+$ make lmem.o
+$ cd ..
+$ makeit memory.o
+$
+
+
+

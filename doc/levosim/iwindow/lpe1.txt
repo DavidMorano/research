@@ -1,0 +1,26 @@
+Processing Element
+
+
+Name: lpe.c lpe.h
+
+Include files and dependencies:
+lexec.h  instruction execution routines
+
+Overview description:
+This uint is responsible for taking an instruction from Active
+stations and executing it.  The execution delay is taken into
+account.  I have tried to approximate a pipelined execution unit
+where a new instruction could be issued in each cycle and they can
+be completed out of order.
+
+Inputs: an instuction pack.  the "req2exec" method is called to 
+put the instruciton in the exection queue.
+
+Outputs:
+an instuction pack with the result entry filled with the 
+outcome of the instruction execution.
+
+
+Also identify under which component your code falls under:
+
+PE - Ali

@@ -1,0 +1,16 @@
+LMEM
+
+
+This code object forms the top of the memory subsystem for Levo.
+
+Currently this object just instantiates the i-cache and d-cache
+subobjects and manages them.
+
+The i-cache subobject is 'licache' and the d-cache subobject is
+'ldcache'.
+
+This present object gets references to the various buses
+that come over to memory from the Levo i-window.  These buses
+are pretty much just passed down to our subobjects as appropriate
+for the read work to occur in them.
+

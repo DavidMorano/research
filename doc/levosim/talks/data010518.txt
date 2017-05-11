@@ -1,0 +1,46 @@
+We ran 3000 clocks of the Dhrystone program running on the Levo machine
+configuration of 4-1-8-2-2 w/ 4-way memory interleave.
+
+This machine is organized as :
+
+        + single column
+        + 4 Sharing Groups
+        + 8 ASes high per each Sharing Group
+        + a register forwarding bus span of 2
+        + a register backwarding bus span of 2
+        + a predicate forwarding bus span of 3
+        + 4-way interleaved memory forwarding and backwarding buses
+
+ 
+5054    register forwarding transactions (data & NULLIFYs)
+        total STORE transactions                4395
+                STORE transactions (data)       4395
+                STORE transactions (no data)    0
+        total NULLIFY transactions              659
+ 
+3069    register backwarding transactions 
+        total STORE transactions                3069
+                STORE transactions (data)       1528
+                STORE transactions (no data)    1541
+ 
+657     predicate forwarding transactions
+ 
+1177    memory forwarding transactions
+        total STORE transactions                861
+                STORE transactions (data)       861
+                STORE transactions (no data)    0
+        total NULLIFY transactions              316
+ 
+466     memory backwarding transactions
+        total STORE transactions                466
+                STORE transactions (data)       466
+                STORE transactions (no data)    0
+ 
+ 
+I do not know how many instructions were committed in 3000 clocks but
+2720 were fetched and loaded into the Levo Load Buffer.  I do not know
+how many were able to ever get into the execution window.  
+ 
+Note: having data or not doesn't really matter right now (or maybe
+ever) for any backwarding transaction.
+

@@ -1,0 +1,21 @@
+Levo Meeting Monday 00/06/26
+
+
++ machine shift and programming convention
+
+All object should not request actions of other objects near
+the end of a clock cycle, like in phase 3.
+
+Why ?  Because, there has to be time enough for each object to
+possibly perform a machine shift operation !  Objects
+should only make requests of other objects in (primarily)
+phases 1 through 2.
+
+
++ stale data on the buses !
+
+Note that currently a machine shift will not affect any TT-data
+that is in transit on a bus !  How do we want to handle this ?
+
+
+

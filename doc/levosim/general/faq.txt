@@ -1,0 +1,60 @@
+LEVO FAQ 00/09/14
+
+
+1) Where is the source code for me to look at ?
+
+The source code of inspection purposes is located down at URI at :
+
+	~morano/levosim/src/
+
+
+2) What is the directory path to the whole package distribution ?
+
+The entire package is located down at URI at :
+
+	~morano/levosim/
+
+
+3) What machine does LEVOSIM emulate ?
+
+The LEVOSIM simulator program executes instructions for a MIPS R3000
+machine.
+
+
+4) What machine platforms can the LEVOSIM program execute on ?
+
+The LEVOSIM program has only been tested to execute a SPARC Solaris
+platform.  It is known to run on Solaris 6, Solaris 7, and Solaris 8.
+
+
+5) Is there a restriction on the OS needed to run LEVOSIM ?
+
+Yes, possibly.  The LEVOSIM program should run on a machine
+that has at least POSIX 1003.1 compatibility and dated at or
+later than June of 1995.
+
+
+6) What endian-ness does the LEVOSIM program emulate ?
+
+Big-endian ONLY ?  (so far)
+
+
+7) Can the LEVOSIM program run on a little-endian platform, even
+   theoretically ?
+
+The LEVOSIM program CANNOT yet run on a little-endian platform at
+all at this time.  Maybe this restriction can be removed later.
+
+
+8) How can I get a login account down at URI ?
+
+Talk to Professor Uht ('uht@ele.uri.edu') at URI for all login accounts.
+
+
+9) Where can I find further on-line documentation specific to LEVOSIM ?
+
+Further on-line documentation about LEVOSIM can be found at URI at :
+
+	~morano/levosim/doc/
+
+

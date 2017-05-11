@@ -1,0 +1,22 @@
+LDCACHE
+
+
+This is the D-cache object for the Levo machine.
+
+We have to poll in each clock the buses that we can get both load
+requests on some set of interleaved buses (these are the
+backwarding-oriented buses from the Levo i-window) and memory write
+(store) requests on another set of interleaved memory buses.
+
+Store requests are processed and there is no response (currently)
+to the i-window about their final disposition.
+
+Load requests must be processed and then we have to respond by placing
+results on the a set of interleaved buses for that purpose.  These
+latter buses are the forwarding-oriented buses from the Levo i-window.
+If we have to interact with a main memory store or if there are
+multiple levels of caches, all of those details and interactions have
+to be managed as well.
+
+
+

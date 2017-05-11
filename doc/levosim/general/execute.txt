@@ -1,0 +1,92 @@
+Date: Sat, 17 Jun 2000 20:42:09 -0400 (EDT)
+From: Efe Yardimci <eyardimc@ECE.NEU.EDU>
+To: David Morano <morano@computer.org>
+Subject: Re: more feedback on code
+In-Reply-To: <rca228259612680311849@rightcore.com>
+Message-ID: <Pine.GSO.3.96.1000617201553.8541E-200000@lespaul>
+
+ Hi, I am almost done except for a few issues:
+
+re >With regard to jump instructions or any branch instructions that have
+re >the taget of the branch in a register (I do not know if there are
+re >branch instructions that do this), we need the effective address of the
+re >target jump to be evaluated and put into the output operand.  
+
+ No problem, that is the way I did..
+
+re >In the case of branches that may evaluate the target address from a
+re >register, if there are any like this, there would actually be two
+re >possible output operands ; namely, one being the calculated effective
+re >address of the branch and the other being the direction of the branch.
+re >See if you can find out if there are any branches that calculate the
+re >target address from a register at all.  If all branches only calculate
+re >the target address from an immediate field in the instrucion, then no
+re >action with that would have to be done in the 'execute' subroutine.
+
+ Exactly. I haven't seen such a branch but the JR does exactly that:
+jumps to procedure whose address is stored at a register. How can I learn
+the effective address stored in that register inside the execute function? 
+ Also, JAL (jump and link) poses another problem: It jumps to an imm
+address but also sets a register ($31 is specifically used for this, I
+believe) to PC + 4. So there are two actions. I think that there should be
+two possible output operands: dst1 and dst2. Now I can handle this any
+number of ways, such as passing a pointer to pointers to a union,
+effectively an array of two unions or actually passing two dst pointers,
+one a NULL pointer when not needed. Any preferences?
+ Which brings me to my main problem: In a lot places I might need the PC
+for various calculations, such as the branches, whose result addresses
+may be PC + 4 + offset. In the current case my output simply gives the
+number to be added to PC (4 + offset). Is this OK?    
+ 
+re >With regard to load and store instructions, no actual memory reads or
+re >writes are done by your subroutine.  Just the effective addresses for
+re >the memory read or write needs to be calculated.
+ 
+ That is the way things are.
+
+re >The actual memory reads and writes of load/store instructions and any
+re >actual branching of the program execution are done in other parts of
+re >the Levo machine.  I briefly mentioned this on Friday but I was
+re >probably not clear on that point as I should have been.
+
+ No, I understood that, I was just trying to make sure. Now other than the
+things I wrote above, the only problem that remains is what to do with the
+various flags that I might need? (overflow, underflow, etc.. )Right now
+nothing is defined, nothing is urgent except for one thing: There is a
+"cond" flag checked or set in many FP instructions. Is this a global
+variable (local to the active station)? Or should it be an input parameter?
+ Other than that, I guess I am mostly done. I am also attaching the
+current state of the unfinished source (a few more instructions and 
+comments than in the previous case.)..
+
+re >Efe, after seeing what you have done I now realize that we also need
+re >another subroutine that can decode MIPS instruction words and extract
+re >the register names (that is 'r0' would yield a value of '0', 'r1' would
+re >yield a value of '1', et cetera) of source and destination registers
+re >and any immediate fields.  This is needed by Marcos's code in the
+re >I-fetch unit so that he can properly put the decoded parts of
+re >the instructions into fields inside of the Active Station state.  
+re >If you can finish the 'execute' subroutine, can you work
+re >on a subroutine that takes a MIPS instruction word as an operand
+re >and decodes it ?  I will check with Marcos about how he is
+re >handling the decoding of MIPS instructions so far.  If you cannot
+re >get to this today, then I would say not to sweat it and we will
+re >work it out later.  You care certainly going all out in helping
+re >us even though your full-time work starts on Monday morning.
+re >Thanks very much for what you have done already !
+re >Myself or Marcos will get back to you about what we want to do
+re >with decoding of MIPS instructions.
+
+I'll be waiting, then. As all arguments are values not references, if I
+can get the list of actual opcodes from you or Marcos, I can point the
+immediate (ADDI) and (ADD) instructions doing the same thing (i.e. adding)
+to the same place. I will be needing the opcodes in any case to set my
+opcode macros.
+
+re >Thanks again,
+re >Dave M.
+re >morano@computer.org
+
+Thank you,
+Efe
+

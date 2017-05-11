@@ -1,0 +1,9 @@
+COMPILING
+
+
+To compile programs to run with LevoSim :
+
+$ cc -o hello -mips1 -o32 -non_shared main.c
+
+
+

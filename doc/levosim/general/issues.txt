@@ -1,0 +1,100 @@
+Open things to do :
+
+
+= LWQ
+
++ 
+Dave or Ali needs to update this object with code that
+will "shift" the TT values that are stored there.
+The signal will arrive in phase 2 or earlier.  The decrementing should
+be the last thing done on the next state of the object.
+
+
+= LAS
+
++
+Dave needs to update the LAS code with a new way of snooping the
+backwarding register buses.  The arrangement of the backwarding
+register buses changed from the way it was guessed to be to the way
+that it needs to be to work with register filters !
+
++
+Ali needs to implement the 'las_loadfromlb()' subroutine
+and needs to set the TT values for ASes loaded to the values :
+
+	hightt = lip->nsg * lip->nasrpsg ;
+	for (i = 0 ; i < lip->totalrows ; i += 1) {
+
+		tt =  hightt + i ;
+
+	}
+
+
++
+Dave or Ali need to code up the "shift" (TT decrementing) code in
+the LAS object.  
+The signal will arrive in phase 2 or earlier.  The decrementing should
+be the last thing done on the next state of the object.
+
+
++
+Dave and Ali need to discuss how the 'las_commit()' subroutine works in
+detail.  Dave needs to know this so that he can finish the code that
+calls it in the IW object.
+
+
+= LLB
+
++ 
+Ali needs to implement a new subroutine for the LLB that returns the
+instruction addresses of instructions loaded (if any).  This
+information will be used by the execution window logic to possiblly
+determine if it is OK to load ASes from it.
+
++
+We may need a way to tell the LLB to mark as empty its current set of
+loaded instructions.  This maybe needed in those cases when the LLB is
+already loaded from the i-fetch unit but a change in control flow just
+becomes committed in the execution window.  The execution window can
+"flush" (mark as unused) all of the ASes corresponding later in time
+than the control flow jump but it also needs a way to "flush" (squash
+-- whatever) the instructions in the LLB.
+
+The execution window will (shortly) be able to tell if instructions
+in the LLB are at the right instruction address or not (through a
+new subroutine method of the LLB) so we may be able to use this
+knowledge to simply ignore the LLB until subsequent polls of it
+show that it has the correct instructions loaded for the new
+control flow.
+
+
+= IW
+
++ 
+Dave needs to finish coding the control logic for controlling
+the register filters as the machine loads, shifts, and commits.
+
++
+Dave needs to squash the execution window (yes, I think all of it
+right now) when a control flow change occurs that becomes committed.
+Other squashes are already coded for some DEE path handling stuff.
+
+
+= LIFETCH
+
+
++
+The LIFETCH unit will be having its 'lifetch_loadstatus()' subroutine
+called in phase 1 or 2.  This should affect, if at all possible, the
+next state to the load inputs of the LLB object for the same clock that
+the subroutine was called in.  That means the LIFETCH unit should
+create the next state for the LLB in phase 3.  I think, at this time,
+it is not a good idea to actually load the LLB as a result of the this
+subroutine.  There "may" be reasons why the subroutine "might" be
+called more than once in a single clock.  Now loading the LLB inside of
+that subroutine would mean that the LIFETCH unit should record the LLB
+load status in some temporary object state (not necessarily machine
+state) and should act on that information (by maybe loading the LLB) in
+phase 3 or later.  Let's try this out and see how it works.  I can
+certainly help out with this if it seems to complicated right now.
+Please give me feedback.

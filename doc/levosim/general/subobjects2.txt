@@ -1,0 +1,28 @@
+Questions :
+
+> 1. who calls the comb function and when?
+> 2. who calls the constructor of an object when it is instantiated?  
+
+The 'clock' and 'comb' subroutines of each object are typically
+called by the object that instantiates them in the first place.
+This proceeds backward up the object instantiation hierarchy until
+the top of the machine.
+
+The constructor of an object should usually be called by the same
+object that instantiates the object.  There may be some cases where
+this may not be so but I cannot think of any.  In most languages with
+OO support, an object is often instantiated and finally constructed at
+the same time.  Of course, in C these two things occur at different
+times (I do not want to mention how they may possibly occur at
+essentially the same time).
+
+The effect for your own programming is that if you create subobjects
+that have 'clock' and 'comb' subroutines, you are responsible for
+calling those subroutines from your object that instantiates the
+subobjects.  Check out the little blurb in the code base area
+at :
+
+	~/levosim/doc/general/subobjects.txt
+
+for a simular discussion to what I have just mentioned.
+

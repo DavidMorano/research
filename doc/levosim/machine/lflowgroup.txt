@@ -1,0 +1,52 @@
+OBJECT:
+
+lflowgroup
+
+
+CURRENT OWNER:
+
+Dave Morano
+
+
+SOURCE FILES:
+
+lflowgroup.c
+lflowgroup.h
+
+
+INCLUDE FILES AND DEPENDENCIES:
+
+misc.h
+config.h
+defs.h
+lflowgroup.h
+
+This code is dependent on the : 'frame', and 'mint' subsystems of the
+simulator program primary onloy for possible debugging.
+
+
+OVERVIEW DESCRIPTION:
+
+This is mostly just a data structure that forms a common code data
+path for most all buses in the machine and primarily for the main
+modeled buses in the Levo Instruction Window.
+
+This data structure is primarily public but this code also has
+some subroutines for some common manipulations of the data structure.
+
+
+INPUTS:
+
+Not applicable.
+
+
+OUTPUTS:
+
+Not applicable.
+
+
+IDENTIFY UNDER WHICH COMPONENT THIS CODE FALLS:
+
+This code falls under the coding category of Levo machine
+buses.
+

@@ -1,0 +1,156 @@
+New component subroutines to facilitate machine control of Levo
+00/12/06
+
+
+
+= LIFETCH subroutine additions
+
+
+- subroutine to indicate control flow out of the execution window
+
+int lifetch_goto(op,ta)
+LIFETCH	*op ;
+int	ta ;
+
+
+Arguments :
+
+op	pointer to LIFETCH object
+ta	new absolute address to start fetching from
+
+Returns :
+>=0	no program errors encounters
+<0	some program error (indicated by the return code) was encountered ;
+	no current program errors are anticipated in correctly working
+	code but some debug possibilities are :
+	SR_FAULT	NULL object pointer
+	SR_FORMAT	format error discovered in object data
+	SR_NOTOPEN	object was not initialized
+
+
+This subroutine will be called by the IW component to signal to the
+i-fetch unit (LIFETCH) that a new target instruction trace needs to be
+fetched to satisfy a mispredicted branch that did not already have
+instructions in the execution window that were available for issue to
+ASes.
+
+This subroutine may be called as frequently as every clock of the
+machine or may not be called for a period of many clocks (where no
+out-of-window branch misprediction occurs).  The subroutine will always
+be called in phase 1 (as per emerging conventions for methods that
+request target object updates of some sort).  If the fetch unit is
+already prepared to load instructions starting at the given target
+address, it may ignore the present call.
+
+
+- subroutine to update the branch predictor(s) used by i-fetch
+
+int lifetch_bu(op,ba,type,bc)
+LIFETCH	*op ;
+int	ba ;
+int	type ;
+int	bc ;
+
+
+Arguments :
+
+op	pointer to LIFETCH object
+ba	address of branch instruction
+type	type of branch (needed to perform the correct type of update)
+bc	resolved branch condition (0= not_taken, 1= taken)
+
+Returns :
+	** save as for 'lifetch_got()' above **
+
+
+This subroutine will be called by the IW component to notify
+the i-fetch unit of resolved branch outcomes.
+
+This subroutine will be called in phase 1 for any clock period where a
+committed branch is resolved to jump to instructions that are not
+already availble for issue from within the AS array execution window.
+
+
+- subroutine to indicate Levo i-load buffer status
+
+int lifetch_loadstatus(op,sw)
+LIFETCH	*op ;
+int	sw ;
+
+
+Arguments :
+
+op	pointer to LIFETCH object
+sw	status word containing bit vector of i-load buffer load status
+	bit==0		do not load i-load buffer identified by bit number
+	bit=1		optionally load i-load buffer identified by
+			bit number
+
+Returns :
+	** save as for 'lifetch_got()' above **
+
+
+This subroutine will be called by the IW component to indicate to the
+Levo i-fetch unit which Levo i-load buffers are available to load in
+the current clock period to take effect after the next clock
+transition.  Since any given i-load buffer may be full during the
+current clock period, the i-fetch unit does not know if it should
+replace the i-load buffer with new data effective after the next clock
+transition or not.  This subroutine will provide the necessary
+information to the i-fetch unit about those i-load buffers
+are available to be loaded in the present clock and completed after
+the next clock transition.
+
+Several i-load buffers are potentially supported, up to a maximum of 32
+with this API (an integer may have as few as 32 bits in the current
+programming model).  The argument 'sw' (status word) is a bit vector
+that contains a one bit indication of the load status for each of the
+possibly i-load buffers coinfigured into the current LevoSim simulated
+machine.  Levo i-load buffers are logically number 0 through some
+uppper limit (currently 31) and each bit in the bit vector provides the
+load indication for its corresponding i-load buffer unit.  Bits are
+numbered 0 for the least significant bit (LSB) in the status word and
+proceed up to at least 31 for the more significant bits.  
+
+This subroutine may be called in every clock or may not be called for a
+period of many clocks depending on the need by the execution window
+control logic to request Levo i-load buffer loads from the i-fetch
+unit.  Since commitments are targets (by design goal) to occur no less
+frequent than every two clock period, this subroutine will probably be
+called with a frquency of at least every two clock periods.
+
+
+
+= new or changed Active Station (LAS) component subroutines
+
+** this is an API modification of a previously described subroutine **
+
+int las_readycommit(op,iap,tap,bcp)
+LAS	*op ;
+int	*iap, *tap ;
+int	*bcp ;
+
+Arguments:
+
+op	LAS object pointer
+iap	pointer to integer to hold the address of the instruction in the AS
+tap	pointer to integer to hold a returned branch target address
+bcp	pointer to integer to hold the resulting branches branch condition
+	0=not_taken, 1=taken
+
+Returns:
+
+In addition to the existing return codes, the follow is added or changed :
+
+1		ready to cmmmit and this is not a conditional branch
+2		ready to commit and the resolved branch information is
+		returned int the appropriate arguments
+
+
+This subroutine is used by the IW component to query as AS about
+whether it is ready to commit its instruction or not.  If the AS is not
+ready to commit anything, it would return a '0' (barring other error
+conditions -- usually program errors).  If it is ready to commit a
+non-conditional-branch instruction, it should return a '1', otherwise
+it is ready to commit a conditional-branch and it should return a '2'.
+

@@ -1,0 +1,137 @@
+OBJECT:
+
+libus
+
+
+REVISION:
+
+= 01/05/11, Dave morano
+I changed the bus so that a single register delay is incurred between
+the writing of some data and the reading of the same data.
+
+
+CURRENT OWNER:
+
+Dave Morano
+
+
+SOURCE FILES:
+
+libus.c
+libus.h
+
+
+INCLUDE FILES AND DEPENDENCIES:
+
+misc.h
+config.h
+defs.h
+lflowgroup.h
+
+This code is dependent on the 'frame' and 'mint' subsystems of
+the simulator program.
+
+
+OVERVIEW DESCRIPTION:
+
+This object is a bus component object.   This is a special bus
+used for implementing the Levo Instruction Response Bus.
+This is a simple bus but it can be of a configurable width.
+
+This bus is rather easy to use because there are no multiple masters
+for it.  When data is written in a clock (recommended in phases 1 or 2),
+it will be available in the next clock for reading.  Data can be
+written and read in any clock.  Only one write per clock is allowed.
+More than one read is allowed in any clock.
+
+
+INPUTS:
+
+There are few needed inputs to this code.  The main inputs are :  a
+pointer to the program information ('proginfo' data structure -- mostly
+for debugging), and the width of the bus in DATAVAL (data structure
+'DATAVAL') units.
+
+
+OUTPUTS:
+
+The primary code output is a possible failure of initialization
+either directly by this code or by any of the subobjects
+created.
+
+
+IDENTIFY UNDER WHICH COMPONENT THIS CODE FALLS:
+
+This code falls under the coding category of Levo machine
+buses.
+
+
+PUBLIC SUBROUTINES:
+
+standard calls:
+
+libus_init()
+libus_free()
+libus_comb()
+libus_clock()
+libus_shift()
+
+special calls:
+
+libus_read()
+libus_write()
+
+
+PUBLIC SUBROUTINE DESCRIPTIONS :
+
+The most useful subroutines are described here.
+
+-------------------------------------------------------------------------------
+int libus_read(op,lfgp,n)
+LIBUS		*op ;
+LFLOWGROUP	*lfgp ;
+int		n ;
+
+This subroutine is used to read something off of the bus.
+
+Arguments :
+
+op	pointer to the RFBUS object
+lfgp	pointer to a LFLOWGROUP object to receive the data from the bus
+n	size of user's buffer to receive data in units of LFLOWGROUPS
+
+
+Returns :
+
+0	nothing was on the bus in this current clock period
+<0	some sort of error, usually a coding problem
+1	something was read off of the bus and it is in the suppled
+	LFLOWGROUP object whose reference was passed
+
+
+-------------------------------------------------------------------------------
+int libus_write(op,lfgp,n)
+LIBUS		*op ;
+LFLOWGROUP	*lfgp ;
+int		n ;
+
+This subroutine is used to write something to the bus.
+
+Arguments :
+
+op		pointer to the RFBUS object
+lfgp		pointer to a LFLOWGROUP object to write to the bus
+n		number of LFLOWGROUPS to write
+
+
+Returns :
+
+SR_BUSY		bus was busy ; try again the next clock
+<0		some sort of error, usually a coding problem
+>=1		the data was successfully written to the bus
+
+
+
+INTERACTIONS WITH OTHER CODE:
+
+

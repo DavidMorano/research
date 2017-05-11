@@ -1,0 +1,19 @@
+Levo Team members,
+
+Here is just an update on the Levo Team and their email addresses.
+
+
+name		email			area
+
+Maryam Ashouei	mashouei@ece.neu.edu	Levo memory subsystem
+Sean Langford	langfors@ele.uri.edu	LevoVis
+Marcos de Alba	mdealba@ECE.NEU.EDU	Levo I-fetch, branch prediction, and
+					branch predicate tracking
+Alireza Khalafi	akhalafi@ece.neu.edu	Levo memory subsystem
+Dave Morano	morano@computer.org	Levo I-Window and other misc. code
+Thomas Wenisch	iota@ele.uri.edu	LevoSynth, VHDL coding
+
+
+Dave M.
+morano@computer.org
+

@@ -1,0 +1,63 @@
+
+Please send me by Monday the following information for each
+people of code that you are developing within the Levo simulator
+
+For each C source file:
+
+Name: 
+
+Include files and dependencies:
+
+Overview description:
+
+Inputs:
+
+Outputs:
+
+
+Also identify under which component your code falls under:
+
+Instruction decode - Marcos
+Instruction load preparation - Marcos
+Instruction loading - Marcos
+Register file reading - Ali
+Instruction execution - Marcos
+System calls - Sean
+DEE path create - Marcos
+DEE path to ML switch - Marcos
+Instruction fetch - Marcos
+Branch Predict - Marcos
+Branch Tracking - Marcos
+Active Stations - Ali
+Instruction load buffers - Ali
+Memory Write Queue - Ali
+Levo bus interface - David
+Levo instruction bus - David
+Bus - David
+PE - Ali
+Memfilter - David
+Regfilter - David
+Predicate forwarding Unit - David
+Backwarding bus - David
+I cache - Maryam
+D cache - Maryam
+Memory - Maryam
+WQ snoop - Alireza
+
+
+Dr. K.
+
+***********************************************************
+***********************************************************
+**      Professor David R. Kaeli                         **
+**      Dept. of Electrical and Computer Engineering     **
+**      Northeastern University                          **
+**      318 Dana Research Center                         **
+**      Boston, MA  02115                                **
+**      email: kaeli@ece.neu.edu                         **
+**      Phone: (617)-373-5413                            **
+**      Fax: (617)-373-8970                              **
+***********************************************************
+***********************************************************
+
+

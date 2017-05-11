@@ -1,0 +1,132 @@
+OBJECT:
+
+bus
+
+
+CURRENT OWNER:
+
+Dave Morano
+
+
+SOURCE FILES:
+
+bus.c
+bus.h
+
+
+INCLUDE FILES AND DEPENDENCIES:
+
+misc.h
+config.h
+defs.h
+lflowgroup.h
+bus.h
+
+This code is dependent on the 'frame' and 'mint' subsystems of
+the simulator program.
+
+
+OVERVIEW DESCRIPTION:
+
+This object is a bus component object.   This bus is used (or will try
+to be used) by many components in the Levo machine to implement most of
+the buses in the Levo instruction window.  This code implements a very
+low-level bus that is not always easy to use.  This object does,
+however, allow for a good amount of flexibility in how a bus may be
+used further.  The basic data portion of this bus is currently made up
+of a Levo Flow Group data structure ('lflowgroup' -- credit to Jennifer
+Black for the name).  The use of this Levo Flow Group data structure
+allows the bus to be fairly generic rather than being concerned with
+many details of the data passing on it.
+
+
+INPUTS:
+
+There are few needed inputs to this code.  The main inputs are :  a
+pointer to the program information ('proginfo' data structure -- mostly
+for debugging), the number of requests that this bus may handle when
+used in a multi-master configuration, and the width of the bus in
+DATAVAL (data structure 'DATAVAL') units.
+
+
+OUTPUTS:
+
+The primary code output is a possible failure of initialization
+either directly by this code or by any of the subobjects
+created.
+
+
+IDENTIFY UNDER WHICH COMPONENT THIS CODE FALLS:
+
+This code falls under the coding category of Levo machine
+buses.
+
+
+PUBLIC SUBROUTINES:
+
+standard calls:
+
+bus_init()
+bus_free()
+bus_comb()
+bus_clock()
+
+special object call:
+
+bus_read()
+bus_write()
+
+
+
+PUBLIC SUBROUTINE DESCRIPTIONS :
+
+The most useful (and most public) subroutines are described here.
+
+-------------------------------------------------------------------------------
+int bus_read(op,lfgp)
+BUS		*op ;
+LFLOWGROUP	*lfgp ;
+
+This subroutine is used to read something off of the bus.
+
+Arguments :
+
+op	pointer to the RFBUS object
+lfgp	pointer to a LFLOWGROUP object to receive the data from the bus
+
+Returns :
+
+0	nothing was on the bus in this current clock period
+<0	some sort of error, usually a coding problem
+1	something was read off of the bus and it is in the suppled
+	LFLOWGROUP object whose reference was passed
+
+
+-------------------------------------------------------------------------------
+int bus_write(op,lfgp,n)
+BUS		*op ;
+LFLOWGROUP	*lfgp ;
+
+This subroutine is used to write something to the bus.
+
+Arguments :
+
+op		pointer to the RFBUS object
+lfgp		pointer to a LFLOWGROUP object to write to the bus
+
+Returns :
+
+SR_BUSY		bus was busy ; try again the next clock
+<0		some sort of error, usually a coding problem
+>=1		the data was successfully written to the bus
+
+
+
+INTERACTIONS WITH OTHER CODE:
+
+lbusint:
+
+This code is mostly called by the LBUSINT object.
+
+
+

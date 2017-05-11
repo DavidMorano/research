@@ -1,0 +1,24 @@
+Write Queue 
+
+Name: lwq.c lwq.h
+
+Include files and dependencies:
+?
+
+Overview description:
+Writes to the memory from commited active stations are first 
+written into these buffers.  They need to be snooped during
+memory accesses.
+
+
+Inputs: from Active stations throgh a write bus
+
+Outputs: to the first level cache
+
+Status:
+I haven't started writing this piece yet.
+
+Also identify under which component your code falls under:
+
+Owner:
+Alireza

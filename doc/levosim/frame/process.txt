@@ -1,0 +1,94 @@
+OBJECT:
+
+process
+
+
+CURRENT OWNER:
+
+Dave Morano
+
+
+SOURCE FILES:
+
+process.c
+
+
+INCLUDE FILES AND DEPENDENCIES:
+
+"paramfile.h"
+"misc.h"
+"config.h"
+"defs.h"
+"configfile.h"
+"lsim.h"
+<MINT header files>
+
+
+This code depends on several other libraries that are not
+specific to the Levo machine simulator project or its code.
+
+
+OVERVIEW DESCRIPTION:
+
+This code is called by the 'main()' subroutine and serves to
+setup (and tear down afterwards) the simulation environment.
+There are three main interactions with sub-objects made by this
+code.  
+
+The first is with the subobject 'LSIM'.  This code instantiates an LSIM
+object and initializes it.
+
+The major interaction is with the MINT subsystem stuff.  This code
+initializes MINT.
+
+The third major interaction of this code is with the top of the
+Levo machine, which is embodied in the LEVO object.
+
+The code then calls the LSIM subroutine that performs the
+simulator looping-type function.  That subroutine will exit
+when the program under simulation exits.
+
+All objects are destructed (freed up) after a simulation has completed
+and then this subroutine exits.
+
+
+INPUTS:
+
+The primary inputs to this subroutine are :
+
++ pointer to program information (created by 'main()')
++ the simulator program starting environment
++ a pointer to the simulator parameter file(s) object (a PARAMFILE)
+
+
+OUTPUTS:
+
+We return the exit status from the simulation.
+
+
+UNDER COMPONENT:
+
+frame
+
+
+UNDER SUBSYSTEM:
+
+framework
+
+
+PUBLIC SUBROUTINES:
+
+process()
+
+
+INTERACTION WITH OTHER CODE :
+
+
+This code interacts with :
+
+LSIM
+MINT (not an object)
+LEVO
+
+
+

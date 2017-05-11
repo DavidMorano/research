@@ -1,0 +1,114 @@
+OBJECT:
+
+memfilter (Memory Filter Unit)
+
+
+CURRENT OWNER:
+
+Dave Morano
+
+
+SOURCE FILES:
+
+memfilter.c
+memfilter.h
+
+
+INCLUDE FILES AND DEPENDENCIES:
+
+<sys/types.h>
+<stdlib.h>
+<string.h>
+<vsystem.h>
+misc.h
+config.h
+defs.h
+mintinfo.h
+levoinfo.h
+bus.h
+
+This code is dependent on the 'frame' and 'mint' subsystems of
+the simulator program as well as the 'iw' object that instantiates
+it and provides the initial basis for the information contained in
+the 'levoinfo' data structure.
+
+
+OVERVIEW DESCRIPTION:
+
+This object forms a Levo component that is used for two main purposes :
+1) separating long memory forwarding and memory backwarding buses
+   into smaller pieces (of programmable length)
+2) providing a filter for possible memory values whose load is
+   being requested
+3) filtering of unnecessary memory forward operations to preserve bandwidth
+   of later time tag values memory forwarding buses
+
+The Levo inputs to this object are two sets of Memory Forwarding Buses
+(as a 'bus' object) and two sets of Memory Backwarding Buses.  The
+number of buses in each set is a machine configuration parameters (but
+right initially all sets will be of the same size).  We read one set of
+the Memory Forwarding Buses that comes to us from lower valued time
+tags in the machine.  The other set of Memory Forwarding Buses is
+written by us and proceeds on to higher valued time tags with in the
+i-window.  We also read one set of the Memory Backwarding Buses (the
+from higher valued time tags) and write the other set (that proceeds
+backwards to lower valued time tags).
+
+We implement FIFO queues on each outgoing bus that is written by us.
+We also implement a cache of recent memory transactions for all paths
+that may be configured into the machine.  We have to stall all incoming
+buses if our FIFO gets nearly full.  All output buses must be contended
+for so this necessitates the FIFO queues for performance reasons.
+
+Our basic operation is to snoop the incoming Memory Forwarding Buses
+for forwards and to only forward those forwarding transactions that
+contain a later valued time tag than the current one stored in our
+cache (on that execution path) that we may have previously had stored.
+We forward the memory value by placing it in the output FIFO going to
+the proper output Memory Forwarding Bus.  Eventually all output FIFO
+contents are all dumped to their proper output buses as bandwidth
+permits.
+
+We also snoop the incoming Memory Backwarding buses for requests for
+memory values.  When we get a request, we see if we have a memory value
+for that memory location and if we do we forward it on the proper
+outgoing Memory Forwarding Bus.  If we do not have a value for the
+memory location in our cache, then we "backward" the request on the
+proper Memory Backwarding Bus to propagate the request backwards.  This
+backwarding request gets queued up in one of several FIFOs (one per
+output backwarding bus) that is serviced by available bandwidth on our
+out-going Memory Backwarding Buses (the ones proceeding towards earlier
+time tag values than ourselves).
+
+We obviously have to be aware of our current column time tag value.  We
+get renamed as our current column time tag value can change at any
+clock.  We also participate in all machine shift operations by
+decrementing our column time tag values.
+
+An important note is that this object may be enhanced to also
+serve in the capacity to perform the memory commutation function
+for the Memory Backwarding and Memory Forwarding buses that are
+directly attached to the Memory Data Cache component.
+
+
+INPUTS:
+
+Primary inputs to this code are :
+a pointer to program information ('proginfo' data structure)
+a pointer to the simulator information ('mintinfo')
+a pointer to the Levo machine information ('levoinfo')
+pointers to the various Levo buses that we connect to
+
+
+OUTPUTS:
+
+The primary code output is a possible failure of the machine
+instantiation either directly by this code or by any of the subobjects
+created.
+
+
+IDENTIFY UNDER WHICH COMPONENT THIS CODE FALLS:
+
+This code forms its own category ; namely, the MEMFILTER category.
+
+

@@ -1,0 +1,106 @@
+OBJECT:
+
+lmapprog
+
+
+CURRENT OWNER:
+
+Dave Morano
+
+
+SOURCE FILES:
+
+lmapprog.c
+lmapprog.h
+
+
+INCLUDE FILES AND DEPENDENCIES:
+
+config.h
+misc.h
+config.h
+defs.h
+
+
+OVERVIEW DESCRIPTION:
+
+This code forms an object that will map a single program (under
+simulation) into the memory address space of the simulator program
+itself.  Many such objects are possible in a single simulation run.  It
+will also be able to provide support for handling all simulated program
+related memory system call functions.  Most notable of these are :
+'brk(2)', 'sbrk(2)', 'mmap(2)', and 'munmap(2)'.  Further, it will be
+able to provide support for Levo machine initiated dynamic stack
+segment growth.
+
+Since this simulated program memory facility is provided in an object,
+we will be able to actually load any number of different programs into
+Levo simulated memory (if we ever wanted to).  This comes as a free-bee
+due to this facility being in an object (just instantiate more of them !).
+This new object will also map the simulated program in a way that the
+OS would have done using paging back to the ELF file store, copy-on-write
+pages for the writable data sections of the program, and demand-zero
+pages for the stack and heap growth operations.
+
+
+INPUTS:
+
+The major inputs to this object are the name of the simulated program
+ELF object file and the arguments that should be used with that
+program.
+
+
+OUTPUTS:
+
+This code provides outputs for callers of its subroutine that is
+primarily related to the simulated program memory map.  This is
+usually simulated program memory (reads) or the modification of
+simulated program memory from write-type calls.
+
+
+UNDER COMPONENT:
+
+lsim
+
+
+UNDER SUBSYSTEM:
+
+framework
+
+
+PUBLIC SUBROUTINES:
+
+(generic prototypes)
+
+int lmapprog_init(LMAPPROG *,struct proginfo *,char *,char **,char **) ;
+int lmapprog_free(LMAPPROG *) ;
+int lmapprog_getentry(LMAPPROG *,uint *) ;
+int lmapprog_getstack(LMAPPROG *,uint *) ;
+int lmapprog_getbreak(LMAPPROG *,uint *) ;
+int lmapprog_getphysical(LMAPPROG *,uint,uint *) ;
+int lmapprog_readinstr(LMAPPROG *,uint,uint *) ;
+int lmapprog_readint(LMAPPROG *,uint,uint *) ;
+int lmapprog_writeint(LMAPPROG *,uint,uint,uint) ;
+int lmapprog_sncursorinit(LMAPPROG *,LMAPPROG_SNCURSOR *) ;
+int lmapprog_sncursorfree(LMAPPROG *,LMAPPROG_SNCURSOR *) ;
+int lmapprog_fetchsym(LMAPPROG *,char *,
+		LMAPPROG_SNCURSOR *,Elf32_Sym **) ;
+
+(examples)
+
+int lmapprog_init(mpp,pip,filename,argv,envv)
+int lmapprog_free(mpp)
+int lmapprog_getentry(mpp,ap)
+int lmapprog_getstack(mpp,ap)
+int lmapprog_getbreak(mpp,ap)
+int lmapprog_getphysical(mpp,vaddr,vp)
+int lmapprog_readinstr(mpp,vaddr,vp)
+int lmapprog_readint(mpp,vaddr,vp)
+int lmapprog_writeint(mpp,vaddr,data,dp)
+
+
+INTERACTION WITH OTHER CODE :
+
+
+
+

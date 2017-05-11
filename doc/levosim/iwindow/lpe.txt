@@ -1,0 +1,107 @@
+CODE:
+
+Levo Processing Element (LPE)
+
+
+CURRENT OWNER:
+
+Alireza
+
+
+SOURCE FILES:
+
+lpe.c
+lpe.h
+
+
+PRIMARY INCLUDE FILES and DEPENDECIES:
+
+lexec.h		(the instruction execution routines)
+
+
+OVERVIEW DESCRIPTION:
+
+general:
+
+This unit is responsible for taking an instruction from Active Stations
+and executing it.  The execution delay is taken into account.  I have
+tried to approximate a pipelined execution unit where a new instruction
+could be issued in each cycle and they can be completed out of order.
+
+more detailed:
+
+This object implements the Processing Element component in the Levo
+machine.  Its services are requested by Levo Active Stations (ASes) and
+it has to send its responses back to the active station that requested
+its services in the first place.  Actually, the AS should poll the LPE
+for a response.  
+
+LPEes are instantiated and initialized by the IW object.  The 'init',
+'free', 'clock' and 'comb' methods of LPEs are therefor all called by
+the IW object.
+
+The services of an LPE object may be requested by several ASes at the
+same time and only one AS can "win" for any given clock period.  Also,
+to the extent possible, all operation of a PE should be pipelined,
+clock for clock, so that many ASes can get a request in over successive
+clocks even though any single instruction may take more than one or
+several clocks to execute !
+
+Actual execution of a MIPS instruction occurs by the LPE object
+setting up operands and calling the 'lexec' subroutine.
+
+INPUTS:
+
+The main input to a LPE is the instuction pack.  The "req2exec" method
+is called to put the instruciton in the exection queue.
+
+OUTPUT:
+
+The main output is an instuction pack with the result entry filled with
+the outcome of the instruction execution.
+
+
+UNDER COMPONENT:
+
+Levo Processing Element
+
+
+UNDER SUBSYSTEM:
+
+iwindow
+
+
+PUBLIC SUBROUTINES:
+
+standard calls:
+
+lpe_init()
+lpe_free()
+lpe_comb()
+lpe_clock()
+
+special calls:
+
+lpe_shift()
+
+	This is called by IW when a machine shift will occur on the
+	next clock edge.
+
+XXXXX() ???
+
+
+
+INTERACTIONS WITH OTHER CODE:
+
+iw:
+
+The IW code instantiates us and makes all of our standard calls :
+las_init(), las_free(), las_comb(), las_clock(), and also las_shift()
+
+The IW code also calls us when XXXXX needs to be done.
+
+llb:
+
+lpe:
+
+

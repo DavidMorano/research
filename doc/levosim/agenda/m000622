@@ -1,0 +1,27 @@
+Levo Meeting Thursday 00/06/22
+
+
++ fully clock synchronous buses
+
+  There are tradeoffs with the choice.  With a fully synchronous
+  bus the coding should be easier and less error prone.  Without
+  one, it is sometimes possible to gain one fewer clock delays
+  to writing a bus.
+
++ column renaming
+
+  We HAVE to rename columns because a bus request in progress for a
+  forwarding bus (which is physical) will be lost if we actually
+  performed a copy shift !
+
++ memory committed store bus 
+
+  We need this because we have to be able to shift out of the IW on
+  essentially every clock as we cannot do that if we have to serialize
+  store requests for that bus !
+
+  An approach to this is to put committed write-store FIFOs on
+  the output of the rows so that committed writes have some place
+  to go in a single clock.
+
+

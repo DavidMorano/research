@@ -1,0 +1,30 @@
+
+date:		Thursday 01/02/22
+time:		11:45 AM
+duration:	activity period
+place:		206 Egan
+topic:		The Levo Instruction Level Parallelism (ILP) Machine
+
+
+		Abstract
+
+This talk will give an overview of research that is being conducted
+jointly between Professor Uht of the University of Rhode Island and
+Professor Kaeli of Northeastern University.  This research (named Levo)
+focuses on a novel way of extracting instruction level parallelism
+(ILP) out of traditionally serial-intensive program codes.  The goal of
+the research is to explore ways of extracting ILP using a novel machine
+micro-architecture.  This talk will discuss the general problem of
+speeding up programs, will give some brief background material on how
+some of the ideas in Levo were developed, and will also give some brief
+history of the Levo development over approximately the last two years.
+
+Most of the rest of the talk will focus on the current version of the
+Levo machine that is being explored and how it has the potential to
+dramatically increase execution speed-ups of traditional (and even
+legacy) programs codes through micro-architectural features.  The
+program codes especially targeted for speedup are the familiar and
+abundant single threaded integer oriented programs.  These have
+traditionally been the hardest type of programs to speed up using
+instruction level parallelism and I will try to show how Levo addresses
+this most difficult challenge.

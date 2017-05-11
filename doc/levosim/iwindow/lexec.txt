@@ -1,0 +1,36 @@
+File:         lexec.c
+
+Owner:	Marcos R. de Alba			July 7,2000
+
+Description:	Implements MIPS instructions. 
+
+Inputs:		Source, offset and immediate values. 
+		Adresses for indirect jumps and branches (to be determined)
+		or values to compute target addresses.
+
+Outputs:	Results of operations, computed target addresses for
+		jumps and branches (if given values as inputs).
+		Number of clock cycles each instruction takes.
+
+Subsystem core:  Classifies each instruction according to pseudo opcode
+		 implements the corresponding MIPS-like operation.
+		 Instructions are split in different groups to make an easier
+		 interpretation in integer alu, floating point alu 
+		(single or double precision), branches and compare.
+		 
+		
+
+Testing strategy: Once decode is ready, it can be generated a list of
+		  pseudo opcodes with source values to test that the
+		  right operations are being implemented.
+
+Status of subsystem:  
+		Design 80-85%  depends on review by others.
+		Code   70-75%  to add clock cycles for each instruction	
+			       to check no erros on implementations,
+				to add five instructions that were not
+				implemented before
+			      to check all sources and destinations are correct
+				
+Estimate date of completion:
+

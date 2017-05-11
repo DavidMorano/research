@@ -1,0 +1,74 @@
+Simulator Ultility Functions
+
+
+
+============================================================================
+Call-back requests
+
+
+Make requests for call-backs in the future by calling :
+
+	int lsim_callout(mip,func,objp,argp,nclocks,phase)
+	struct mintinfo	*mip ;
+	int	(*func)() ;
+	void	*objp, *argp ;
+	int	nclocks ;
+	int	phase ;
+
+where :
+
+	mip	pointer to 'struct mintinfo' that you should have
+		stored in your object data
+
+	func	the address of the function that you want called
+		when the time comes
+
+	objp	a pointer to your object data
+
+	argp	any random argument, use 'NULL' if you do not
+		need it
+
+	nclocks	the number of clocks in the future that you
+		want to be called in
+
+	phase	the phase that you want to be called back in
+		(specify something like 2 if you do not care)
+
+When you expiration time arrives, your function will be called as :
+
+	            int (*func)(objp,argp,phase) ;
+
+Your call-back subroutine should look something like :
+
+	int name_callback(objp,argp,phase)
+	name	*objp ;
+	void	*argp ;
+	int	phase ;
+
+Currently the returned value is ignored but maybe in the future
+we can thing of something to do with it.  Of course, change the
+names to reflect whatever you want.
+
+The current clock can be read by calling :
+
+
+	{
+		ULONG	clocks ;
+
+
+		lsim_getclock(mip,&clocks) ;
+
+	}
+
+where :
+
+	mip	is a pointer to the 'struct mintinfo' of the
+		simulator
+
+	clocks	is your 64-bit unsigned integer to hold the result
+
+
+============================================================================
+
+
+

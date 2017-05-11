@@ -1,0 +1,26 @@
+File: lpb.c
+
+Owner:	Marcos R. de Alba			July 7,2000
+
+Description:   Levo branch predictor
+
+Inputs:		Addresses of branches. Outcome of branches.
+
+Outputs:	Predicted branch target addresses.
+
+Subsystem core:  A two level branch predictor. It reads the address of a
+		branch, computes the branch history register and an index
+		to access the pattern history register. The pattern history
+		entries contain 2-bit saturating counters used in joint with
+		branch history taken/not taken frequency to determine how
+		a given branch must be predicted. 
+
+Testing strategy: To be discussed. 
+
+Status of subsystem:  
+		Design: 50%
+		Code:	10-15% to be adapted to Levo code style.
+
+Estimate date of completion:
+
+

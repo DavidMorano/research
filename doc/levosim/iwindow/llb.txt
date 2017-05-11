@@ -1,0 +1,214 @@
+CODE:
+
+Instruction Load Buffer (LLB)
+
+
+OWNER:
+
+Alireza
+
+
+FILES:
+
+llb.c
+llb.h
+
+
+INCLUDE FILES and DEPENDECIES:
+
+ldecode.h	(output of the decoder)
+ldecodeinstrclass.h
+lexec.h
+
+
+OVERVIEW DESCRIPTION:
+
+This is a simple buffer that holds the decoded instructions before 
+they are issued to the Active sations.  
+
+To use this object :
+
+In each clock, the fetch unit should call :
+
+	llb_inready(...)
+
+in order to see if the LB is available to be loaded in this clock or
+not.  If the return value is greater than zero, then the LB is ready to
+accept a new load.  If the return value is equal to zero then the LB
+is *NOT* ready to accept a new load and the fetch unit should wait
+until the next clock and try again.
+
+Once the LB is ready to be loaded and afther decoding the instructions,
+the fetch unit has to make a series of calls to the :
+
+	llb_load(...) 
+
+method.  Each call will load the decoded instruction into the buffer.
+Note that the order of calls is important.  The first call fills the
+first entry in the load buffer (corresponding to the first row).  The
+second call fills the second entry and so on.  After all decoded
+instruction are loaded a call to :
+
+	llb_load_complete(...)
+
+will indicate that the loading phase has been completed and the buffer
+is ready to be read by active stations.  Note that the
+llb_loas_complete(...) also resets the buffer in such a way that the next
+call to llb_load(...) would write to the first entry in the buffer.
+
+Each Active Stations has to call the :
+	
+	llb_read(...,index)
+
+method, using its row address as an index to the load buffer, to read
+the decoded instruction and save it in its private variables.  There is
+actually a las_load() method in the AS that can be used for this
+purpose.  This method would call the llb_read(...) automatically and
+save the results in the AS.  This is actually the only right way to
+load an AS.
+
+After all active stations are loaded by the decoded instructions, the 
+
+	llb_read_complete(...)
+
+method has to be called to indicate that the buffer could be used to load
+a new set of instructions.
+
+the IW has to call the "llb_read_complete(..)".  The IW has to call
+las_load for each and every AS and then would call the above function 
+to notify the llb that the reading phase is over.  All the readings have
+to be done in one cycle!
+
+
+INPUTS:
+
+The inputs to this code piece are newly decoded instructions that
+come from the i-fetch unit.
+
+
+OUTPUTS:
+
+Active stations.
+	They need to read from load buffer.
+Decode or Fetch stage.
+	They would write into the load buffer using a pointer to the load buffer.
+
+UNDER COMPONENT:
+
+Instruction load buffers - Ali ??
+
+
+UNDER SUBSYSTEM:
+
+iwindow
+
+
+PUBLIC SUBROUTINES:
+
+standard calls:
+
+llb_init()
+llb_free()
+llb_comb()
+llb_clock()
+
+special calls:
+
+llb_shift()
+
+	This is called when a machine shift is going to occur
+	on the next clock edge.
+
+llb_read()
+llb_read_complete()
+llb_load()
+llb_load_complete()
+
+
+Detailed calling interfaces :
+
+===============================================================================
+
+	int llb_load(llbp, index, faddr, instr,oopexec,oopclass,
+		opexec, opclass, 
+		btype,
+		src1, src2, src3, src4, dst1, dst2, 
+		const1, const1_valid, 
+		pina, cpina, ncpin,pouta,cpouta,pinv,cpinv)
+
+	LLB	*llbp;
+	int	index;	/* index of the entry in the load buffer */
+	uint	faddr;
+	uint	instr ;
+	int	oopexec, oopclass ;	/* originals */
+	int	opexec, opclass;
+	uint	btype ;
+	int src1, src2, src3, src4; /* address of the source registers */
+	int dst1, dst2;		    /* address of the destination register */
+	int const1, const1_valid;
+	int pina;	/* address of pin regirster */
+	int *cpina;	/* addresses of cpin registers , NULL if none */
+	int ncpin;	/* number of cpin registers */
+	int pouta;	/* address of pout reg */
+	int cpouta;	/* address of cpout reg */
+	int pinv;	/* initial predicate value for input */
+	int *cpinv;	/* initial cancelling predicate values */
+
+
+	Arguments :
+
+	llbp		pointer to the Levo Load Buffer object
+	index		index of row LLB to load
+	faddr		the fetch instruction address of the instruction
+	instr		the original instruction word that was fetched
+	oopexec		original OpExec value of original instruction
+	oopclass	original OpClass value of original instruction
+	opexec		a modified OpExec value if different from the original
+	opclass 	a modified OpClass value if different from original
+	btype		branch-type value for control-flow-change instructions
+	src1		1st source register operand if any
+	src2		2nd source register operand if any
+	src3		3rd srouce register operand if any
+	src4		4th source register operand if any
+	dst1		1st destination register operand if any
+	dst2 		2nd destination register operand if any
+	...		other operands 
+
+
+===============================================================================
+
+
+INTERACTION WITH OTHER CODE :
+
+las:
+
+
+iw:
+
+The IE code instantiates us and calls all of our standard calls:
+llb_init(), llb_free(), llb_comb(), llb_clock()
+
+The IW code also calls 'las_load()' to do something ????
+
+The IW code calls 'las_load_complete()' after all ASes have their
+values loaded from the Levo I-Load Buffer.
+
+Referece
+I haven't finished writing the whole body for llb_insert() as I
+need Marcos to come up with a final definition for LDECODE data
+structure.  David, you need to pass a pointer to llb structure to the
+decode module.  ASs will use las_load(LLB *, ..., index) to copy the
+instructions from load buffer into thier internal data structures.  You
+need to call las_load_completed() after all ASs have thier values
+loaded.
+
+I will have a las_load(LLB *llbp) method that accesses the 
+load buffer.
+
+
+lifetch:
+
+The LIFETCH code should call 'llb_load()' when loading needs to be done.
+
+
+

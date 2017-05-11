@@ -1,0 +1,24 @@
+File:		lifetch.c
+
+Owner:	Marcos R. de Alba			July 7,2000
+
+Description:	Fetches instructions from memory, resets load buffer
+		and calls decode stage.
+
+Inputs:		Set of instructions from memory.
+	
+Outputs:	Success or failure.
+			
+Subsystem core: Loop that fetches instructions from memory and uses decode 
+		stage to fill load buffer from first to last program address.
+
+Testing strategy: Not yet defined, but expecting to separately test each
+		  of the subsystems it uses and then to integrate them.
+
+Status of subsystem:
+	Design	to be reviewed by others
+	Coding  depends on observations from others.
+
+Estimate date of completion: 
+	
+

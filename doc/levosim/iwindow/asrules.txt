@@ -1,0 +1,72 @@
+A value recieved on any Forwarding bus is only snarfed if it has the
+same path id as the AS.
+
+Snarfing rules:
+
+RFWB: 
++ tt of the snooped value should be less than tt of the AS. 
++ tt of the snooped value should be greater than or equal to the tt of
+the last snarfed value.
++ The register address of the snooped value should
+be the same as one of the source registers.
+
++ if a nullify is received on the RFWB and the above conditions are
+true, then the value of the corresponding source register will be
+invalidated.
+
+MFWB: 
++ tt of the snooped value should be less than tt of the AS. 
++ tt of the snooped value should be greater than or equal to the tt of
+the last snarfed memory value.
++ The Memory address of the snooped value should be the same as the
+(memory address of stored value in AS) & 0xfffffffc.
+
++ if a nullify is received on the MFWB, and in addition to the above
+conditions, the instruciton in the AS is a load, then the value in the
+AS in invalidated.
+
+RBWB: 
++ tt of the snooped value should be greater than tt of the AS. 
++ the register address of the snooped data should be the same as
+address of either of destination registers.
+
+MBWB: 
++ AS should have been loaded with a Store instruction. 
++ tt of the snooped value should be greater than tt of the AS.
++ the memory address of the snooped data should be the same as ( memory
+address of the stored data in the AS) & 0xfffffffc.
+
+Forwarding Rules:
+
++ the tt of the forwarded value is always the same as tt the  of the AS.
+path id of the forwarded value is always the same as path id  of the AS.
+
++ whenever a new register or memory value is generated for a destination
+operand, forward the value on the RFWB or MFWB, based on the type of
+instruction.
+
++ if memory address has changed and AS is loaded with an store
+instruction, send nullify on the MFWB.
+
++ if AS has a load instruction, send a request on the MBWB.
+
++ If a Nullify is snarfed on the RFWB for any of the source registers,
+invalidate the data and send a request on the RBWB.
+
++ If a Nullify is snarfed on the MFWB, invalidate the memory value and
+send a request on the MBWB.
+
++ If a value is snarfed on the RFWB as the value for any one of the
+source registers, the AS will re-execute the instuction.
+
++ If a request for a value is snarfed from the RBWB, the corresponding
+destination register value will be forwarded on the RFWB.
+
++ If a request for a value is snarfed from the MBWB, the memory value   
+will be forwarded on the MFWB.                                          
+
++ if a value for the memory is snarfed from MFWB and the instruction in
+the AS is a Store, the value will be forwarded on the RFWB as the value
+for destination register.
+
+

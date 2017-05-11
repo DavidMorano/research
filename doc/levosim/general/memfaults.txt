@@ -1,0 +1,20 @@
+Dave Morano, 00/09/01
+
+
+I created a new subroutine (as requested) to test for a memory fault at
+Levo i-fetch time.  After discussing the issue of not having a MMU
+modeled in the Levo machine with Marcos and Maryam, we came to the
+conclusion to not allow memory references that would have faulted if a
+modeled MMU were present to go on to Maryam and her memory subsystem
+where she would eventually get the fault and have to pass it back up to
+Marcos in i-fetch.  Now Marcos will check for a possible memory fault
+before he passes any instruction requests off to Maryam.  This pretty
+much mimics what a modeled MMU would have done (in terms of memory
+faults) if we had one.  Alireza should check for possible data memory
+reference faults also before passing requests out to the memory system
+proper.  Data read requests should probably be checked in the ASes
+which write requests could be checked in the output stage of the Levo
+Write Queues.  There may be some need for finer tuning with where
+memory faults are first checked but in general we would prefer that
+Maryam not have to deal with them because she would not be in a real
+machine with a real MMU.

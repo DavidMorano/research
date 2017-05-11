@@ -1,0 +1,10 @@
+
+The code for load buffer is at llb.[ch].  The interface is final. (so
+far!).  I haven't finished writing the whole body for llb_insert() as I 
+need Marcos to come up with a final definition for LDECODE data structure.
+David, you need to pass a pointer to llb structure to the decode module.
+ASs will use las_load(LLB *, index) to copy the instructions from load
+buffer into thier internal data structures.  You need to call
+las_load_completed() after all ASs have thier values loaded.
+
+Alireza

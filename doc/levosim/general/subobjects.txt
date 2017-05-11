@@ -1,0 +1,63 @@
+message-id: <rca113959621274912028@rightcore.com>
+x-mailer: PCS mkmsg
+Date: 27 Jun 2000 13:38:11 EDT
+From: (David Morano) morano@ele.uri.edu
+Subject: handling subobjects within Levo objects
+reply-to: morano@ele.uri.edu
+content-lines: 55
+
+Levo team,
+
+I just want to clarify how subobjects must be handled if instantiated
+within some existing Levo object.  Subobjects that must execute their
+operations out over Levo time (combinatorial using phases or over one
+or more Levo machine clocks) must have their 'clock' and 'comb' methods
+called from your own (the calling object) 'clock' and 'comb' methods.
+This really holds throughout the whole of the Levo machine if you
+didn't already know (or hadn't looked through the existing code).
+
+For example :
+
+outer (calling) object 'obja' consists of (stylized for brevity) :
+
+int obja_init(...)
+...
+{
+	objb	hello ;
+
+
+	objb_init(&hello) ;
+
+}
+
+int obja_clock(...)
+...
+{
+
+	...
+
+	objb_clock(...) ;
+
+	...
+}
+
+
+Likewise with the 'comb' methods.
+
+So as a more concrete example : In Alireza's AS code where he used an
+'lbusint' object that he instantiates as a helper object, he must call
+its 'clock' method inside of this LAS 'clock' method and also call its
+'comb' method from inside of the LAS 'comb' method.
+
+Forgive me if this might have been obvious but I didn't want any
+confusion to remain if it was not obvious already.  In general, of
+course, any object that you create in any code is the responsibility
+of that code to properly manage.  This is pretty much true of any code
+anywhere (Levo simulator related or not).
+
+Of course, if a subobject does not need to execute anything over
+simulated Levo time, then it will not have 'clock' and 'comb'
+methods in the first place !
+
+Dave Morano
+

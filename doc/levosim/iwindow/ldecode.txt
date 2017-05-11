@@ -1,0 +1,40 @@
+File: 	ldecode.c 
+
+Owner:	Marcos R. de Alba			July 7,2000
+ 
+Description:
+        Program that reads instructions from the fetch buffer, decodes them
+        and stores decoded instructions in the load buffer.
+	
+Inputs:		A set of undecoded instructions read from fetch buffer.
+	
+Outputs 	A set of decoded instructions stored in the load buffer, 
+		a structure with information for each instruction:
+		- execution pseudo_opcode, 
+		- class, 
+		- instruction pointer (ilptr)
+		- addresses of source registers,
+		- addresses of destination registers,
+		- immediate values,	
+		- jump and branch offsets, or
+		- addresses of registers for indirect jumps and branches
+			
+Subsystem core: Loop that reads instructions from fetch buffer. It decodes
+		the instructions, identifies branch instructions, stores
+		them in branch tracking buffer and sets predicates for 
+		instructions within branch domains. It also sets fields
+		of a structure to keep instructions information, like
+		pseudo opcode, levo class, sources and destination addresses,
+		offset and immediate values and original instruction.
+	
+Testing strategy:  Read instructions in binary format (32-bit width)
+		   and generate printed output just to check instructions
+		   are correctly decoded.
+
+Status of subsystem:
+	Design	85%, only to cover details related with branch tracking buffer
+		and branch prediction.
+	Coding  same.
+
+Estimate date of completion: 
+

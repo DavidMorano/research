@@ -1,0 +1,123 @@
+OBJECT:
+
+frame
+
+
+CURRENT OWNER:
+
+Dave Morano
+
+
+SOURCE FILES:
+
+bopenroot.c
+config.h
+configfile.c
+configfile.h
+debug.c
+defs.h
+expander.c
+getfname.c
+getfname.h
+main.c
+mint_init.c
+minter.c
+misc.h
+paramfile.c
+paramfile.h
+procfileenv.c
+procfilepaths.c
+strfieldcmp.c
+strkeycmp.c
+util.c
+varsub_dumpfd.c
+varsub_extras.c
+whatinfo.c
+
+
+INCLUDE FILES AND DEPENDENCIES:
+
+<sys/types.h>
+<sys/param.h>
+<sys/stat.h>
+<limits.h>
+<netdb.h>
+<unistd.h>
+<fcntl.h>
+<time.h>
+<stdlib.h>
+<string.h>
+<bio.h>
+<field.h>
+<logfile.h>
+<vecelem.h>
+<vecstr.h>
+<userinfo.h>
+<bitops.h>
+<char.h>
+<varsub.h>
+<storebuf.h>
+"schedvar.h"
+"paramfile.h"
+"misc.h"
+"config.h"
+"defs.h"
+"configfile.h"
+
+This code depends on several other libraries that are not
+specific to the Levo machine simulator project or its code.
+
+
+OVERVIEW DESCRIPTION:
+
+The code is the start of the LevoSim simulator program.
+It reads program arguments and processes them.
+It finds and reads a simulator configuration file (through something of
+an object for this purpose).
+It finds and and processes a parameter file for Levo machine parameters
+(through an object for this purpose).
+
+This code then prepares some data for further processing by
+some MINT start-up initialization code.  MINT eventually
+gets initialized and program control is eventually passed to the
+'simlevo' code.
+
+
+INPUTS:
+
++ program arguments
++ simulator configuration file
++ simulator parameter file(s)
+
+
+OUTPUTS:
+
+We return numberous (and otherwise rather unimportant failures)
+for problems that occur mostly due to various initialization
+throughout the rest of the program.
+
+
+UNDER COMPONENT:
+
+frame
+
+
+UNDER SUBSYSTEM:
+
+framework
+
+
+PUBLIC SUBROUTINES:
+
+main()
+
+
+INTERACTION WITH OTHER CODE :
+
+This code piece calls all of the subroutines or objects
+listed in the dependency section above.
+
+The primary subroutine called by this code that sets up
+the simulation environment is a subroutine named 'process()'.
+
+

@@ -1,0 +1,192 @@
+Levo Development Status 00/05/18
+
+
+This note will document the geometry and major state of the
+Levo machine to date.
+
+
+= Development Machine and Filesystem
+
+All code integration will be done on the 'leviathan' machine
+down at URI.  The simulator package distrubution tree (described
+later) is located at :
+
+	/marlin/morano/levosim/
+
+The source code is located under the above directory at :
+
+	/marlin/morano/levosim/src/
+
+Include files that need to be public across major subsystems of the
+simulator program (currently this looks like most of the include files)
+are located in :
+
+	/marlin/morano/levosim/src/
+
+
+
+= Levo Development Tree
+
+The Levo machine simulator development is mostly contained under one
+directory tree.  This development tree resembles a general package
+distribution tree that is often used for UNIX related packages.  All
+Levo simulator specific code is under this tree.
+
+The distribution tree has the following general structure :
+
+directory			description
+------------------------------------------------------------------------
+
+levosim/			top of distribution
+	doc/			simulator documentation
+		levovis/	documentation relating to LevoVis
+	include/		most all include files for simulator
+	lib/			generic libraries for simulator
+		S5/		SunOS 5 specific libraries
+	src/			simulator source code (top)
+		frame/		simulator startup initialization code
+		memory/		simulator memory code
+		machine/	simulator top machine level code
+		iwindow/	Levo instruction window code
+		mint/		MINT and other Levo simulation utilities
+	etc/			simulator configuration files
+
+
+An environment variable named 'LEVOSIM_PROGRAMROOT' can be used to
+specify a default top-level directory for the distribution directory
+tree.  This is a run-time variable allowing for the simulator directory
+tree to be located differently for different installations or
+invocations.  The top of the distribution tree can also be supplied as
+an invocation argument to the simulator (described elsewhere for the
+moment).
+
+For development purposes, an environment variable named 'LEVO' should
+be set to the top of the distribution directory tree also.  This latter
+environment variable is used in the Makefiles for the code.  This
+allows for the development of the code to occur using pieces from both
+an established Levo distribution directory tree and the development
+version of a directory tree.
+
+
+= General Configurability
+
+There will be two major mechanisms for configuring the Levo machine
+simulator.  These are provided through the use of two files.  The first
+file can be provided with the simulator invocation arguments (specified
+elsewhere for the moment).  The default name for this file if otherwise
+unspecified is 'levosim.conf' and will be searched for in the 'etc'
+directory of the current distribution directory tree.  This file is
+referred to as the General Configuration file.  The second major
+configuration file is named through a parameter in the first file.  The
+first file is a general configuration file and is currently planned to
+contain the following configurable parameters :
+
+	parameter	description
+	-----------------------------------------------------------
+
+	mintexec	name of simulator executable file
+	paramtab	name of second major configuration file
+
+The parameter 'mintexec' is needed to tell the simulator where its own
+executable file is located.  This is currently used by the MINT code.
+A default name can be given to point to the file within the
+distribution directory tree but I think that a default will also be
+calculated within the code if nothing is specified.
+
+The parameter 'paramtab' can be used to name the second major
+configuration file and can contain parameters about the geometry of
+the simulator.  These parameters are discussed in the next section on
+simulator machine geometry.  The name of this second major
+configuration file is the Parameter file.
+
+
+= Major Machine Components
+
+
+The machine consists of various buses and non-bus components.
+The major components of the Levo machine are currently :
+
+component		description
+-------------------------------------------------------------------------------
+
+las			active station
+lsg			sharing group
+lpe			processing element (PE)
+bus			a generic bus
+mem			memory subsystem
+
+
+
+= Machine Geometry
+
+The geometry of the Levo machine is configurable to some extent.
+Parameters for establishing a specific Levo machine geometry will be
+prepared and passed to the Levo simulator in the Parameter file.  The
+name of this file is given in the General Configuration file for now
+but may possibly be given as an invocation argument to the simulator
+(to be coded).  The machine parameters that are configurable at
+this time include :
+
+
+parameter	default	description
+------------------------------------------------------------------------
+
+program		-	file specifying the program to execute
+args		-	argument to the program to execute
+stdin		TBD	file used for standard input to the simulated program
+stdout		TBD	file used for standard output for the simulated program
+stderr		TBD	file used for standard error for the simulated program
+
+mintopts	-	options to the MINT code
+
+ngrows		32	sharing groups per column
+ngcols		8	sharing groups per instruction window row
+nfspan		8	the span for the SG register forward buses
+nshpsg		2	active station height per sharing group
+
+
+The current non-configurable parameters of the machine are :
+
+parameter	default	description
+------------------------------------------------------------------------
+
+npepsg		1	number of PEs per sharing group
+nswpsg		2	number of ASs in a row within a sharing group
+
+
+Parameters that are yet to be coded (and subject to change) are :
+
+ndeepaths	4	number of DEE paths
+
+
+NOTES:
+	TBD	to be determined
+	-	no default or taken as none
+
+
+
+= Miscellaneous Code Descriptions
+
+Here are brief description of the code modules so far.
+The indentation of a code module name shows its position
+in an object hierarchy if any.
+
+code module		description
+-------------------------------------------------------------------------------
+
+frame			simulator startup
+mint			MINT code
+machine			top of Levo machine
+  levo			top Levo machine object
+  bus			generic bus
+iwindow			instruction window
+  iw			instruction window object
+    las			Levo active station object
+    lpe			Levo processing element (PE)
+    lsg			Levo sharing group object
+memory			memory code
+  mem			top level memory subsystem object
+
+
+
+

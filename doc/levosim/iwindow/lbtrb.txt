@@ -1,0 +1,23 @@
+File:  lbtrb.c
+
+Owner:	Marcos R. de Alba			July 7,2000
+	
+Description:	Branch Tracking Buffer
+
+Inputs:	 Branch address, predicate address, valid bit, branch target address.
+	
+Outputs:  Predicate values of instructions.
+
+Subsystem core: As explained in disclosure.
+
+Testing strategy:  Using the decode stage it will generate requests to the
+		   branch tracking buffer.
+		  
+
+Status of subsystem:
+		Design:	still needs analysis.
+		Coding: 50% needs some review and adaptation to levo 
+		        code style.
+
+Estimate date of completion:
+

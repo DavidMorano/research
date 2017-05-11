@@ -1,0 +1,135 @@
+OBJECT:
+
+rfbus
+
+
+CURRENT OWNER:
+
+Dave Morano
+
+
+SOURCE FILES:
+
+rfbus.c
+rfbus.h
+
+
+INCLUDE FILES AND DEPENDENCIES:
+
+misc.h
+config.h
+defs.h
+lflowgroup.h
+bus.h
+
+This code is dependent on the 'frame' subsystems of
+the simulator program.
+
+
+OVERVIEW DESCRIPTION:
+
+This object is a bus component object.   This bus is used (or will try
+to be used) by many components in the Levo machine to implement some
+simple busing that is needed mostly between memory components and the
+rest of the Levo instruction window.  This code implements a very
+simple low-level bus.  This object should be rather easy to use
+directly (unlike the BUS object).
+
+This bus only implements buses that have at most only one bus master.
+There are no provisions for having multiple masters.  The bus is also
+configurable with respect to the number of register delays incurred in
+using the bus.  Any register delay from 0 on upwards is possible but a
+register delay of at least 1 is probably best to avoid those
+hard-to-find errors in the overall code.  A delay of 1 means that
+data written to the bus in the current clock period is available
+for reading by recipients in the next clock period.  This is the
+usual desired case.
+
+This bus (like the BUS and LBUSINT components) works on LFLOWGROUPS as
+the basic data transfer unit.  This is most appropriate for
+communication of information that impinges at all on the Levo
+i-window.
+
+Provision for holding the bus will be added later.
+
+Currently, this bus will always perform machine shift operations
+on the time-tag field of the LFLOWGROUP data.  Let me know
+if this is a problem and I can make this an optional feature.
+
+
+INPUTS:
+
+There are few needed inputs to this code.  The main inputs are :  
++ a pointer to the program information ('proginfo' data structure --
+mostly for debugging),
++ the number of register delays desired (should be at least '1')
++ the width of the bus in DATAVAL (data structure 'DATAVAL') units
+  (should be '1' for now, other than '1' is not completed)
+
+
+OUTPUTS:
+
+The primary code output is a possible failure of initialization
+either directly by this code or by any of the subobjects
+created.
+
+
+IDENTIFY UNDER WHICH COMPONENT THIS CODE FALLS:
+
+This code falls under the coding category of Levo machine
+buses.
+
+
+UNDER SUBSYSTEM:
+
+machine
+
+
+PUBLIC SUBROUTINES:
+
+standard calls:
+
+rfbus_init()
+rfbus_free()
+rfbus_comb()
+rfbus_clock()
+rfbus_shift()
+
+special calls:
+
+rfbus_read()
+rfbus_write()
+
+
+INTERACTIONS WITH OTHER CODE:
+
+levo:
+
+The LEVO code instantiates several of these objects for use as the
+primary connectivity between the memory subsystem and the Levo
+i-window.  The LEVO code object makes all of our standard method calls : 
+rfbus_init(), rfbus_free(), rfbus_comb(), rfbus_clock(), and
+rfbus_shift()
+
+iw:
+
+Currently, there is NO involvement between the IW code and this
+object.
+
+lmem:
+
+This object forms (in several groups of buses) the primary interface
+to the LMEM (Levo Memory) top-level object.
+
+lmq:
+
+The Levo Memory Queue (LMQ) (located in the i-window) interfaces
+to the LMEM object using these RFBUS objects.
+
+lifetch:
+
+The LIFETCH code object interfaces to the Levo Memory (LMEM) object
+using this object for instruction fetch requests.  Instruction
+fetch responses will probably come back from the LMEM object
+using the LIBUS object.
+
