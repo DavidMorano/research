@@ -1,0 +1,101 @@
+
+I spent some time reading the text you already produced.  Overall,
+the intro is well written and presents the machine without sounding
+like you are crazy (a real bonus over some of the Levo papers).  But
+I do have some suggestions for improving on this text:
+
+1. Somewhere in the intro you need to through some details in about
+this machine.  1 or 2 sentences only.  And you need to include a
+quantitative sentence about how much benefit we can expect from this
+microarchitectural approach.
+
+2. Make sure to include a number or two in the abstract. We want the
+reader to want to read on.
+
+3. All of your diagrams are too big.  Reduce their size.
+
+4. In Figure 1, I find the fact that the register file and the LSQ
+share a single read and write bus to be a real issue.  I you were
+only trying to show a logical connection.
+
+I just worry that the casual reader will look at Figure 1 and say "Why
+would I ever design a datapath that is so bus constrained???"  If you
+have 128 IS's sharing a single read and a single write bus, the really
+worry about this design.  I doubt that is the case.
+
+5. On page 5, you cite "prior work."  I would suggest call it "our
+prior work" and then comment out the citation in the reference list.
+Also, there are probably too many citations to Levo.  You should probably
+comment out 1 or 2 more, though you should also leave 1 or 2 in (though
+don't refer to it as "our prior work" in these instances.
+
+I reread where you compare the present work with Levo.  Since you already
+draw a connection to another project, you really don't need to say too
+much about being different from Levo.....
+
+6. Since ICS this year is being run by MIT folks, I think you need to
+cite an MIT project in the related work.  I would suggest the RAW project.
+
+Overall, try to make your figures less vague and more meanful.
+
+Dave
+--------------------------------
+
+Date: Fri, 18 Feb 2005 16:53:52 -0500 (EST)
+From: "Prof. David Kaeli" <kaeli@ECE.NEU.EDU>
+X-X-Sender: kaeli@gold
+To: David Morano <dmorano@ECE.NEU.EDU>
+Subject: Figure 2
+Message-ID: <Pine.GSO.4.58.0502181649240.6078@gold>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+
+Dave,
+
+Figure 2 also leaves my uninspired.  While it has boxes with names
+on them, I really don't get any insight into the function of any of
+these boxes.
+
+I don't see where these boxes are loaded.  I don't see where they
+are used (most feed into Figure 4).  By the way, can you redo Figure
+4 so that everyone doesn't think this is just another Levo?  This is
+pretty much the exact figure (maybe change the orientation of the
+bus to match the rest of your datapath in Figure 2?)
+
+Sorry, I don't mean to be so critical, but a picture is worth a
+thousand words.
+
+Dave
+
+
+
+=====================================================================
+= Prof. David Kaeli   email: kaeli@ece.neu.edu phone: 617-373-5413  =
+=    ECE Dept.   318 Dana Research Center, NEU, Boston, MA 02115    =
+=               URL:  www.ece.neu.edu/faculty/kaeli.html            =
+=                                                                   =
+=       "I think there is a world market for maybe 5 computers."    =
+=                       Thomas Watson, 1943                         =
+=====================================================================
+
+On Mon, 21 Feb 2005, David Morano wrote:
+
+> Dave,
+>
+> > Did you receive my last email?  I informed you about the deadline and
+> > gave you quite a bit of feedback on the earlier draft.
+>
+> No, I didn't receive that email message (but I obviously received this
+> last one above).  (This is a little disturbing when these mail
+> snaffoos occur !)
+>
+> Can you please send that message again ?  (hoping you have that in
+> a copy/sent-type mailbox)
+>
+> Thanks for the paper feedback (and this second email message also).
+>
+> Dave
+>
+>
+

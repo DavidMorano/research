@@ -1,0 +1,136 @@
+This is TeX, Version 3.14159 (Web2C 7.3.1) (format=latex 2002.1.17)  14 MAR 2003 20:54
+**pdpta
+(pdpta.tex
+LaTeX2e <1999/12/01> patch level 1
+Babel <v3.6Z> and hyphenation patterns for american, french, german, ngerman, n
+ohyphenation, loaded.
+(/usr/local/tetex/share/texmf/tex/latex/base/article.cls
+Document Class: article 1999/09/10 v1.4a Standard LaTeX document class
+(/usr/local/tetex/share/texmf/tex/latex/base/size10.clo
+File: size10.clo 1999/09/10 v1.4a Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@section=\count80
+\c@subsection=\count81
+\c@subsubsection=\count82
+\c@paragraph=\count83
+\c@subparagraph=\count84
+\c@figure=\count85
+\c@table=\count86
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+)
+(/usr/local/tetex/share/texmf/tex/generic/babel/babel.sty
+Package: babel 1999/09/09 v3.6Z The Babel package
+
+(/usr/local/tetex/share/texmf/tex/generic/babel/english.ldf
+Language: english 1999/04/11 v3.3i English support from the babel system
+
+(/usr/local/tetex/share/texmf/tex/generic/babel/babel.def
+File: babel.def 1999/09/09 v3.6Z Babel common definitions
+\babel@savecnt=\count87
+\U@D=\dimen103
+)))
+(/usr/local/tetex/share/texmf/tex/latex/graphics/epsfig.sty
+Package: epsfig 1999/02/16 v1.7a (e)psfig emulation (SPQR)
+
+(/usr/local/tetex/share/texmf/tex/latex/graphics/graphicx.sty
+Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/tetex/share/texmf/tex/latex/graphics/keyval.sty
+Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
+\KV@toks@=\toks14
+)
+(/usr/local/tetex/share/texmf/tex/latex/graphics/graphics.sty
+Package: graphics 1999/02/16 v1.0l Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/tetex/share/texmf/tex/latex/graphics/trig.sty
+Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+)
+(/usr/local/tetex/share/texmf/tex/latex/config/graphics.cfg)
+Package graphics Info: Driver file: dvips.def on input line 80.
+
+(/usr/local/tetex/share/texmf/tex/latex/graphics/dvips.def
+File: dvips.def 1999/02/16 v3.0i Driver-dependant file (DPC,SPQR)
+))
+\Gin@req@height=\dimen104
+\Gin@req@width=\dimen105
+)
+\epsfxsize=\dimen106
+\epsfysize=\dimen107
+)
+(/usr/local/tetex/share/texmf/tex/latex/misc/rotating.sty
+Package: rotating 1997/09/26, v2.13 Rotation package
+
+(/usr/local/tetex/share/texmf/tex/latex/base/ifthen.sty
+Package: ifthen 1999/09/10 v1.1b Standard LaTeX ifthen package (DPC)
+)
+\c@r@tfl@t=\count88
+\rot@float@box=\box26
+) (pdpta.aux)
+\openout1 = `pdpta.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 28.
+LaTeX Font Info:    ... okay on input line 28.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 28.
+LaTeX Font Info:    ... okay on input line 28.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 28.
+LaTeX Font Info:    ... okay on input line 28.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 28.
+LaTeX Font Info:    ... okay on input line 28.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 28.
+LaTeX Font Info:    ... okay on input line 28.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 28.
+LaTeX Font Info:    ... okay on input line 28.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <12> on input line 58.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 58.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 58.
+
+Underfull \hbox (badness 1057) in paragraph at lines 146--155
+[]\OT1/cmr/m/n/10 We are propos-ing a new dy-namic pred-i-ca-tion
+ []
+
+[1
+
+
+]
+File: brdomain.eps Graphic file (type eps)
+ <brdomain.eps>
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 239.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 239.
+ [2]
+File: dynpred.eps Graphic file (type eps)
+ <dynpred.eps>
+Missing character: There is no ^^92 in font cmr10!
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [3]
+(pdpta.bbl
+Underfull \hbox (badness 1112) in paragraph at lines 478--1
+\OT1/cmr/m/n/10 We have in-tro-duced a new scheme for the full
+ []
+
+
+Underfull \vbox (badness 3657) has occurred while \output is active []
+
+ [4])
+[5
+
+] (pdpta.aux) ) 
+Here is how much of TeX's memory you used:
+ 920 strings out of 10901
+ 10251 string characters out of 72188
+ 66560 words of memory out of 263001
+ 3878 multiletter control sequences out of 10000+0
+ 8578 words of font info for 30 fonts, out of 400000 for 1000
+ 14 hyphenation exceptions out of 1000
+ 32i,8n,23p,238b,319s stack positions out of 300i,100n,500p,50000b,4000s
+
+Output written on pdpta.dvi (5 pages, 29140 bytes).

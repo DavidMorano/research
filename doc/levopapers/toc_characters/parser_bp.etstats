@@ -1,0 +1,89 @@
+SimpleSim statistics 020826_1319:32
+statistics for job=parser_bp logid=frodo20332
+started 020826_1020:53 (elapsed time   0-02:58:39)
+
+total instructions       600000000
+included instructions    500000000 (100000000:500000000)
+CF instructions           69699900 ( 11.617%)
+CF-IND instructions        7631823 (  1.272%)
+relative branches         54452078 (  9.075%)
+CF-UNC                    24075987 (  4.013%)
+conditional branches      45623913 (  7.604%)
+forward c-branches        31845456 (  5.308%)
+backward c-branches       31845456 (  2.296%)
+branch SS-hammocks         3289231 (  0.548%)
+instructions per BP           10.9592
+= branch path statistics
+instructions per branch path
+IPBP mean                     10.9542
+IPBP variance                 98.7413
+IPBP stddev                    9.9369
+= branch target-distance statistics
+instructions per forward branch target
+IPFBT mean                    32.6807
+IPFBT variance             10878.5332
+IPFBT stddev                 104.3002
+instructions per backward branch target
+IPBBT mean                    53.9983
+IPBBT variance             41344.5431
+IPBBT stddev                 203.3336
+= hammock branch target-distance statistics
+IPHT mean                      3.8378
+IPHT variance                  2.7915
+IPHT stddev                    1.6708
+forward c-branches        31845456 ( 69.80 % of conditional)
+backward c-branches       31845456 ( 30.20 % of conditional)
+SS hammocks                3289231 (  7.21 % of conditional)
+bad IAs                    8746138 (  1.458%)
+GSPAG rows                       1
+GSPAG delay                    512
+GSPAG LBHT                    2048
+GSPAG GPHT                    4096
+GSPAG bits                   32780
+GSPAG accuracy            39457999 ( 86.485%)
+TOURNA rows                      1
+TOURNA delay                   512
+TOURNA LBHT                   1024
+TOURNA LPHT                   2048
+TOURNA GPHT                   4096
+TOURNA bits                  32790
+TOURNA accuracy           36473616 ( 79.944%)
+GSKEW rows                       1
+GSKEW delay                    512
+GSKEW tlen                      -1
+GSKEW bits                  524303
+GSKEW accuracy            40691747 ( 89.190%)
+= dynamically loaded branch predictors :
+rows                             1
+delay                          512
+gspag    params               2048     4096       -1       -1
+gspag    bits                32780
+gspag    lookups          45623913
+gspag    accuracy         39457999 ( 86.485%)
+gspag    confidences 0-3   31.136%  0.000%  5.899%  0.000%
+gspag    confidences 4-7    6.606%  0.000% 82.016%  0.000%
+gspag    correct-conf 0-3  21.407%  0.000%  2.514%  0.000%
+gspag    correct-conf 4-7   3.163%  0.000% 59.401%  0.000%
+tourna   params               1024     2048     4096       -1
+tourna   bits                32790
+tourna   lookups          45623913
+tourna   accuracy         36473616 ( 79.944%)
+tourna   confidences 0-3   30.761%  2.142%  2.066%  0.848%
+tourna   confidences 4-7    2.012%  1.196% 35.409% 51.223%
+tourna   correct-conf 0-3  17.739%  1.085%  0.813%  0.331%
+tourna   correct-conf 4-7   0.964%  0.581% 20.079% 38.352%
+gskew    params                 -1       -1       -1       15
+gskew    bits               524303
+gskew    lookups          45623913
+gskew    accuracy         40691747 ( 89.190%)
+gskew    confidences 0-3   35.830%  0.000%  1.649%  0.000%
+gskew    confidences 4-7   16.743%  0.000% 71.434%  0.000%
+gskew    correct-conf 0-3  24.641%  0.000%  0.753%  0.000%
+gskew    correct-conf 4-7   8.865%  0.000% 54.930%  0.000%
+register statistics
+def-use mean          222.8469
+def-use variance   368849.2018
+def-use stddev        607.3296
+lifetime mean          31.0259
+lifetime variance    4267.8735
+lifetime stddev        65.3290

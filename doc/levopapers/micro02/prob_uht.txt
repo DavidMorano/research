@@ -1,0 +1,108 @@
+Date: Sun, 09 Jun 2002 19:25:49 -0400
+From: "Augustus (Gus) K. Uht" <uht@ele.uri.edu>
+Subject: DEE and Levo, with current floorplan
+
+Hi Ali and Dave,
+	First, please don't respond to this email with "I think...", I need
+"I know..."'s. And if you don't know, please find out. Time is short, as
+you know.
+
+	I have been thinking about DEE operation and Levo, particularly
+in view of the current floorplan, which does not have "long line" 
+broadcast buses. I know we discussed some of this at an in-person meeting
+a while ago, but I do not feel satisfied issues have been adequately
+addressed.
+	In the following, unless stated otherwise, all columns are logical,
+it is assumed that column
+m-1 wraps around to 0 with one cycle delay. D-paths
+are 1-column long.
+
+	First, you've been telling us that the M-path state 
+logically after a D-path is retained upon the D-path being taken, with the
+D-path results being re-broadcast from its forwarding units. That sounds
+fine, performance-wise, but I have no idea how to realize it, given the
+current floorplan, without a penalty > 1 cycle. Specifically:
+
+1. If M-path column 2 has a spawned D-path in column 5, does it take
+5-1 = 4 cycles (one cycle per column) for results from M-path 1 to get to
+the D-path? Is this modeled in FastLevo? Is it an issue?
+
+2. With the same assumptions as in 1., say the D-path branch is
+mispredicted, so the D-path is used. Then the D-path in column 5 becomes
+M-path 2; how do results get from the new M-path column 2 to M-path columns
+3 and 4? 
+
+3. What about the converse? M-path in column 5, D-path in column 2,
+misprediction, M-path column 5 is now in column 2, with M-paths 3 and 4 
+after it; M-path column 6 is 3 columns from column 5; does this imply
+a 3-cycle delay? Is this modelled in FastLevo? Is it an issue?
+
+4. In the current version of FastLevo, what is the M-path to D-path
+switch penalty? Is this overlapped with execution, or does the whole
+E-window stall? Is it overlapped with the re-broadcast of D-path results?
+
+5. Not to mention commit issues....
+
+
+With the above, I can see how the time tags can keep everything functionally
+correct, but the performance effects of switching from one path to another
+appear messy, at best.
+
+Have we ever run experiments assuming the much simpler model of throwing
+all M-path state logically after the D-path state out? But even this seems
+problematic, given case 3. above.
+
+It seems to me we still have to move the D-path contents to the 
+mispredicting branch's M-path, in order for everything to work out and be
+clean. Now, we don't have to move the instructions, they're the same.
+We don't really need to move the source operands. We do need to move the
+actual predicate state and instruction operation results, if any exist.
+We need to move the state (executed or not, etc.) of the instructions.
+We can add logic so that if the result is recomputed, but doesn't change,
+nothing is broadcast.
+
+So the questions are, how best to do this in a real Levo with the 
+current floorplan, first, and second, can this be simply modelled in
+FastLevo (maybe with just a conservative DEE penalty) in time for 
+MICRO?
+
+I would suggest that (part of) a solution may be to use the re-broadcast
+of the D-path results to get these results over to their new locations,
+as well as causing subsequent M-path instructions to snarf, appropriately.
+One way of cutting down the overall delay for this is to use both
+forwarding AND backwarding buses from the D-path Forwarding Units. If the
+D-path is relabelled as the corresponding M-path before the broadcast,
+the time tags should make everything come out right. Paths would also have
+to be able to snoop and snarf from backwarding buses.
+
+If the bus traffic can be modeled, then we're OK. The DEE penalty could 
+actually be negative, since results could arrive earlier than before.
+
+We may have to have a conference call on this tomorrow sometime.
+
+Note that what we need at a minimum here is a) to have an actual Levo
+solution for the problem, but b) to contain it, conservatively, 
+(but at least close to the real value so we don't penalize ourselves 
+too much) from
+a performance modelling point of view in FastLevo, at least for the
+purposes of the MICRO paper.
+
+----Gus
+
+-- 
+______________________________________________________________
+
+  Augustus (Gus) K. Uht, Ph.D., P.E.
+  Research Professor of Electrical and Computer Engineering
+  University of Rhode Island
+  A-219 Kelley Hall
+  4 East Alumni Ave.
+  Kingston, RI 02881-0805
+  Email: mailto:uht@ele.uri.edu
+  Phone: 401-874-5431
+  Fax: 401-782-6422
+  Web: http://www.ele.uri.edu/~uht
+______________________________________________________________
+
+
+

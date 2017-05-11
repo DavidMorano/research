@@ -1,0 +1,9 @@
+.G1
+frame ht 2.0 wid 3.0
+label left "relative" "IPC" left .1
+label bot "L1-D Cache Hit Latency (clocks)"
+coord x 0.5,16 y 0.5,1.0 log x
+ticks bot out at 1, 2, 4, 8
+draw solid times
+copy "l1dcache_latency.txt"
+.G2

@@ -1,0 +1,136 @@
+From dam Fri Mar 08 17:27:44 EST 2002
+received:
+	by rca.rightcore.com
+	;  8 Mar 2002 17:27:48 EST
+message-id: <rca2063710156264641071@rightcore.com>
+x-mailer: PCS mkmsg
+Date:  8 Mar 2002 17:27:44 EST
+From: (David Morano) dmorano@ece.neu.edu
+Subject: feedback on simulation plan
+To: (Alireza Khalafi) akhalafi@ece.neu.edu
+reply-to: dmorano@ece.neu.edu
+content-lines: 121
+content-length: 2883
+
+Ali,
+
+Here are two possible hypothesis for the paper :
+
+1) multipath execution hides misprediction penalties for
+   hard-to-predicate condition branches (same as was used in ICS paper)
+
+2) larger sized machines produce higher IPC numbers (?)
+
+Do you have any others ?
+
+
+Here is a first draft at a simulation plan :
+
+Background info.
+Memory configurations :
+
+	config (similar to Skipper paper) #1
+
+	- 64KB L1 I, 2-wat set associative, 2 clock hit delay
+	- 64KB L1 D, 2-wat set associative, 2 clock hit delay
+	- unified I&D L2, 2MB direct mapped, 12 clock hit delay
+	- main memory, 100 access delay
+	- all memory 4-way interleaved
+
+	config (worse) #2
+
+	- 64KB L1 I, 2-wat set associative, 4 clock hit delay
+	- 64KB L1 D, 2-wat set associative, 4 clock hit delay
+	- unified I&D L2, 2MB direct mapped, 20 clock hit delay
+	- main memory, 800 access delay
+	- all memory 4-way interleaved
+
+	config (more like real life) #3
+
+	- 64KB L1 I, 2-wat set associative, 2 clock hit delay
+	- 64KB L1 D, 2-wat set associative, 2 clock hit delay
+	- unified I&D L2, 4MB direct mapped, 16 clock hit delay
+	- main memory, 1000 access delay
+	- all memory 16-way interleaved
+
+
+Machine size numbers are in x-y-z where
+x	SG rows
+y	AS rows per SG
+z	SG columns
+
+
+
++ sim. set 1
+(general machine performance versus machine size)
+
+Do all machine configurations
+[4,8,16,32]-[2,4,8]-[8,16,32]
+
+with memory config # 1 above.  
+( 4 x 3 x 3 = 36 combinarions here)
+
+
++ sim. set 2
+(memory delay variation study)
+
+Do machine sizes [16,32]-[4,8]-[8] with all three memory configs above.
+
+(2 x 2 x 1 x 3 = 12 combinations)
+
+
++ sim set #3
+
+Do machine combination 8-8-8 with 
+
+	- number of DEE paths of 0,2,4,8
+	and
+	- starting DEE path spawned in columns 0,1,2
+
+(1 x 4 x 3 = 12 combinations here)
+
+
+Other notes :
+
++ DEE path size
+
+	we don't have it so we skip it !  (Is this correct ?)
+
+
++ DEE path "release"
+
+	we don't have it yet so we skip it !  (Is this correct ?)
+
+
+
+Total simulations for starters so far :
+	set #1		36 combinations
+	set #2		12 combinations
+	set #3		12 combinations
+	---------------------------------
+	total		60 combinations
+
+	x 5 benchmarks	300
+
+
+At 7 hours per run, and assumming we can start these like Saturday
+night some time, we should have about 80 hours of run-time.
+We have 28 CPUs at URI and about 8 (equivalent) at NU for
+a total of about 36 CPUs or  36 x 72 = 2592 equivalent CPU-hours.
+
+2592 / 7 hours per run = 370 total runs available before Wednesday
+morning (deadline was assumed to be mid-night Tuesday night).
+
+With 300 sims and 370 runs available, we should have almost
+everything in by Tuesday night.
+
+Comments ?
+Please provide suggestions on either sims that you think
+we need or on ones listed above that you do not think we need.
+This is just a rough guess at this point as should be fairly obvious ! :-)
+
+Will we have that "DEE release" feature at some point ?
+
+Thanks,
+Dave M.
+

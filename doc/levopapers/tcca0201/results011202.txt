@@ -1,0 +1,53 @@
+From akhalafi@gateway.ece.neu.edu Sun Dec 02 16:46:27 EST 2001 
+Return-Path: <akhalafi@gateway.ece.neu.edu>
+Received: from sendmail2.computer.org (sendmail2.computer.org [206.99.235.25])
+	by leviathan.ele.uri.edu (8.11.2/8.11.2) with ESMTP id fB2LkP218018
+	for <morano@ele.uri.edu>; Sun, 2 Dec 2001 16:46:25 -0500 (EST)
+Received: from mail2.ECE.NEU.EDU (markov.ece.neu.edu [129.10.60.83])
+	by sendmail2.computer.org (Build 101 8.9.3/NT-8.9.3) with ESMTP id QAA28175
+	for <morano@computer.org>; Sun, 02 Dec 2001 16:48:48 -0500
+Received: from lespaul.ece.neu.edu (lespaul.ece.neu.edu [129.10.60.240])
+	by mail2.ECE.NEU.EDU (8.11.3/8.11.3) with ESMTP id fB2LkDU08124
+	for <morano@computer.org>; Sun, 2 Dec 2001 16:46:13 -0500 (EST)
+Received: from localhost by lespaul.ece.neu.edu (8.9.3/8.9.3) with ESMTP id QAA14230
+	for <morano@computer.org>; Sun, 2 Dec 2001 16:46:13 -0500 (EST)
+X-Authentication-Warning: lespaul.ece.neu.edu: akhalafi owned process doing -bs
+Date: Sun, 2 Dec 2001 16:46:13 -0500 (EST)
+From: Alireza Khalafi <akhalafi@ECE.NEU.EDU>
+X-Sender: akhalafi@lespaul
+To: David Morano <morano@computer.org>
+Subject: simulation data for simple speculation and no subroutine cache (fwd)
+Message-ID: <Pine.GSO.4.21.0112021645360.14206-100000@lespaul>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Length: 588
+
+
+
+	Real Cache Memory												
+		Bzip2	Go	Gap	Gzip	Parser								
+"4,4,4"		2.7	2.9	3.3	2.8	2.6								
+"8,4,4"		3.9	4.2	4.9	4	3.9								
+"8,4,8"		4.3	5.4	5.9	4.6	4.8								
+"8,8,8"		5.1	6.3	6.5	5.8	5.7								
+"16,8,4"	4.5	4.8	5.8	5.2	4.4								
+"8,4,16"	4.9	5.6	6	5.6	5.3								
+
+
+
+	No Cache Memory												
+		Bzip2	Go	Gap	Gzip	Parser								
+"4,4,4"		3.5	3.7	3.7	3.4	3.2								
+"8,4,4"		5.4	5.8	5.4	5.1	5.1								
+"8,4,8"		6.1	7.5	6.7	6	6.5								
+"8,8,8"		7	9	6.8	7.4	7.7								
+"16,8,4"	5.9	6.3	7.1	6.5	5.5								
+"8,4,16"	5.9	7.6	7.7	5.8	6.7								
+
+
+
+													
+
+
+
+

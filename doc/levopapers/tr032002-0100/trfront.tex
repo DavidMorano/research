@@ -1,0 +1,142 @@
+% template for URI TRs
+%
+%\documentclass[10pt,twocolumn,dvips]{article}
+\documentclass[10pt,dvips]{article}
+\usepackage[english]{babel}
+\usepackage{epsfig}
+\usepackage{fancyheadings}
+%\usepackage[T1]{fontenc}
+%\usepackage[latin1]{inputenc}
+%\usepackage{twocolumn}
+\usepackage{verbatim,moreverb,doublespace}
+\usepackage{rotate,lscape,dcolumn,array,rotating,latexsym}
+%\usepackage{overcite}
+\usepackage{afterpage,float}
+%\usepackage{chbibcor}
+%\usepackage{multicol}
+%
+%
+%\renewcommand{\baselinestretch}{1.67}
+%\renewcommand{\baselinestretch}{1.55}
+\renewcommand{\baselinestretch}{1.00}
+%
+%
+%\input{epsf}
+%
+%\textwidth 175mm
+\textwidth 6.6in 
+%\textheight 239mm
+\textheight 9.0in
+%\leftmargin -2.0in
+%\textheight 225mm
+%\topmargin -15mm
+%\topmargin -4.5mm
+\topmargin -0.6in
+%\oddsidemargin 0mm
+\oddsidemargin 0.0in
+%\evensidemargin 0mm
+%
+%\pagestyle{empty}
+%
+% 
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcounter{corollary}
+\newtheorem{corollary}{Corollary}
+
+\newenvironment{proof}{
+\begin{list}{}{
+\setlength{\parsep}{0in}
+\setlength{\rightmargin}{0.0in}
+\setlength{\leftmargin}{0.3 in} 
+\setlength{\labelwidth}{0.2 in}
+\setlength{\labelsep}{0.1 in} 
+\setlength{\listparindent}{1pc}
+} 
+
+\item [{\bf Proof}]
+}
+
+
+%\renewcommand{\thefootnote}{\Alph{footnote}}
+\renewcommand{\arraystretch}{1.05}
+
+\setlength{\extrarowheight}{1pt}
+
+
+\newcommand{\helcaption}[1]{\caption{#1}}
+%\newcommand{\helcaption}[1]{\caption{\textsf{#1}}}
+%\renewcommand{\thefigure}{\textsf{Figure \arabic{figure}: }}
+%\renewcommand\figurename{\textsf{Figure}}
+%\renewcommand{\thefigure}{\textsf{\arabic{figure}}}
+\renewcommand{\thefootnote}{}
+
+
+\begin{document}
+\begin{spacing}{1}
+
+\noindent
+{\large University of Rhode Island\\
+Dept.\ of Electrical and Computer Engineering\\
+Kelley Hall\\
+4 East Alumni Ave.\\
+Kingston, RI 02881-0805, USA\\}
+\vspace{0.15in}
+
+\noindent
+{\Large Technical Report No.\ 022002-001}
+\vspace{0.30in}
+
+
+\begin{center}
+{\LARGE \bf 
+Preserving Dependencies in a \\
+Large-Scale Distributed Microarchitecture\\
+\vspace{0.15in}
+}
+%
+D. Morano,  D.R. Kaeli\\
+dmorano, kaeli@ece.neu.edu\\
+Department of Electrical and Computer Engineering\\
+Northeastern University\\
+and \\
+A.K. Uht \\
+uht@ele.uri.edu \\
+Department of Electrical and Computer Engineering\\
+University of Rhode Island\\ 
+%
+\vspace{0.10in}
+%
+December 21, 2001 \\
+%
+\vspace{0.11in}
+%
+{\it This work has been submitted for publication.}\\
+%
+\vspace{0.30in}
+%
+\end{center}
+\end{spacing}
+
+
+
+%\begin{comment}
+
+\footnotetext{This work was partially 
+supported by the National Science Foundation through
+grants MIP-9708183 and EIA-9729839; by the URI Office of the Provost; 
+and by the Spanish Ministry of Education.
+Patents applied for. A version of this work has been submitted for
+publication. Copyright фи 2001, the 
+authors.}
+
+%\end{comment}
+
+\vspace{-0.35in}
+
+%
+%
+%
+%
+%\thispagestyle{empty}
+%

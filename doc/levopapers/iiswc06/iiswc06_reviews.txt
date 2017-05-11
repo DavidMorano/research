@@ -1,0 +1,170 @@
+
+
+review #65
+
+This paper presents a study on access intervals of registers and memory in
+a distributed microarchitecture. They define and study the characteristics
+of three access types and propose to use a decentralized buffering scheme
+of register and memory data to reduce contention for centralized resource
+like register file, memory etc.
+
+I have several questions on the concept.
+
+1. Where is the data regarding most recent version of the variable is
+stored? That becomes a centralized resource. If you take care of it by
+renaming, even then you need to access the rename table which becomes
+the bottleneck.
+
+2. You provide a profile of the register access and propose a scheme,
+but you do not evaluate it.
+
+
+review #117
+
+This paper presents a method of workload characterization that will
+potentially help investigate the possibility of entirely bypassing the
+centralized resource in a distributed microarchitecture. The workload
+characterization method presented is no different than those previously
+presented by Franklin and Sohi, Eeckhout and DeBosschere, and Kim
+and Smith.  Further, the observations and conclusions presented by the
+authors are no different than those of previously published works.
+
+* page 3, first paragraph: citation not resolved
+
+* Although your work adds to Franklin and Sohi and Eeckhout and
+DeBosschere works, it does not have sufficient novelty to justify
+publication.
+
+* page 5, second last paragraph: citation not resolved. It looks like
+this paper was hurried, without attention to details.
+
+* Regarding the benchmarks selected: Why only specific benchmarks are
+selected from the INT suites of Spec? What do the results look like for
+FP programs?
+
+* Your observation/conclusion that "This indicates that for large
+instruction window sizes (where 25 is a small fraction of the size)
+that there is a good chance that the associated register operand can
+come directly from the defining instruction without having to be first
+stored in either the architected register file or some other centralized
+resource (such as a future file)." has been observed by Kim and Smith.
+
+* The analysis like the one you present here has been performed by Kim and
+Smith, and presented in ISCA 2002 paper. How does your analysis differ
+from theirs? What advantages do your program statistics have over Kim
+and Smith statistics? Do the statistics you provide different insights
+than those provided by earlier methods of characterizing workloads?
+
+* The bservation/conclusion that 'This represents more repeated reading
+of constant memory variables rather than the more varied read-write
+memory behavior of most of the other programs. Also, it is interesting
+to note that most programs exhibit a large number useful-lifetimes of
+0. A zero-length useful lifetime represents a memory location that is
+later overwritten without an intervening read (an abandoned write)." has
+been observed by Lepak and Lipasti. They call it silent stores.
+
+
+review #134
+
+This paper characterizes register and memory usage intervals (access-use,
+def-use, and useful lifetime) with the goal of providing characterization
+data to help drive future distributed microarchitecture development.
+
+Overall, I thought the goal of the paper was interesting, as it is obvious
+the distributed microarchitectures are already upon us (if the industry
+continues to pursue ILP in future microarchitecture designs). Of cource,
+before undertaking such developments, solid characterization data can
+help architects pursue designs with a higher chance of success.
+
+However, I can help feeling the paper falls a little short of its goal.
+Since it is a characterization paper, no synthesis is "expected", but the
+lack of it still makes it difficult to make use of the measurements. For
+example, in the discussion of register access patterns in Section 5
+(Summary):
+
+"as many as 82% of the register reads . . . will have had their instances
+defined within the preceeding 25 dyanmic instructions (this is drawn
+from the def-use results). This indicates that for large instruction
+window sizes . . . that there is a good chance that the associated
+register operand can come directly from the defining instruction
+. . .". I think the authors are implying that this bodes well for a
+distributed architecture. And on the surface, I would agree with this
+conclusion. However, it also indicates a potential snafu further down
+the road of all of the definers and users wanting to be in the _same_
+window. Thus, the goal of achieving a distributed microarchitecture
+still seems elusive, even in spite of this work. (Indeed, there has
+been much research in this area discussing cluster steering heuristics
+and many other approaches.) So, at some level, the characterization
+leaves an important question (namely, how to do the distributed/cluster
+assignment) unanswered.
+
+Notwithstanding comments like the previous, the paper has some
+merit on its own, in just characterizing register and memory re-use
+patterns. However, it uses older ISAs (MIPS) and presumably older
+compilers, and dated applications. This detracts from the value of
+the work as a pure characterization. Also, if the paper were a pure
+characterization, it could be improved by examining the interaction with
+the compiler (especially for register lifetimes) as far as optimizations
+performed, etc.
+
+On balance, due to neglecting some important aspects for applying the
+characterization to distributed microarchitectures, and the dated-ness
+of the pure characterization, I gave the paper a middling score even
+though characterizations are definitely of interest to IISWC.
+
+Specific Comments:
+
+There are a few typos and places where the /cite notation is still in
+the paper. Please clean up for future versions.
+
+I don't recall the paper ever discussing variables with useful-lifetime =
+0 being "dead" or "killed" variables. It might help readers fit the work
+into their own contexts if you mentioned this. Also, it seems surprising
+to me that in Figure 1, there are few registers with "0" useful lifetime
+(dead register writes). Does this imply that the compiler is not doing
+much variable hoisting? Is this expected?
+
+Section 4.2: substitute word "memory" for "register"
+
+Section 4.2: Discussion of abandoned writes: Is this a limitation of
+your simulation methodology (that you cannot see writes that go out to
+I/O -- such writes are not truly "abandoned") or can your infrastructure
+indicate that the writes are truly abandoned? More discussion/data in
+this regard might help the reader understand the quality of the results.
+
+
+review #159
+
+This paper defines three access interval measures and then characterizes
+10 Spec benchmarks with respect to these access intervals for both
+register accesses and memory accesses.
+
+Provide a short summary of the paper	This paper defines three access
+interval measures and then characterizes 10 Spec benchmarks with respect
+to these access intervals for both register accesses and memory accesses.
+Provide detailed comments to the author This paper is very well written
+and clear. It does an excellent job of describing the metrics used,
+why they are important, and how they could be applied. This is also
+clearly a workload characterization paper. The paper is also addressing
+an area I think will be of critical importance - memory systems in
+future processors.
+
+This paper could have been better by incorporating more and varied
+benchmarks (such as some group outside the Spec benchmarks) to see if
+there is significant variance in different kinds of programs. The paper
+is specialized enough in the metrics that it collects that this wider
+set of benchmarks would improve its appeal to a greater audience.
+
+I am also disappointed that more recent benchmark sampling methods are
+not used, or the benchmarks run to completion. In particular, using just
+the beginning of the program, rather than the most-important Simpoint
+could signficantly affect the results. I understand this methodology may
+be tricky in a run-time environment, yet not using these more accurate
+methods should at least be explicitly addressed in the paper.
+
+The paper explicitly references Eekhout et all and their access interval
+investigation, but does not say how the actual characterization results
+compare for the same benchmarks. This would be an interesting addition
+- understanding that this paper goes further in gathering data on memory
+access intervals.
+

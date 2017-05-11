@@ -1,0 +1,43 @@
+Date: 15 Jun 2002 01:26:35 -0400 (EDT)
+From: (David Morano) morano@ele.uri.edu
+Subject: Tournament update
+To: (Alireza Khalafi) akhalafi@ece.neu.edu
+
+Ali,
+
+Here are updated results far using the Tournament (Alpha) predictor.
+This only has a few new numbers added since the last update.  I should
+have a set sets of other BP configs by morning (they are at ECE).
+
+Dave M.
+
+===============================================================
+
+The machine size simmed is 8-8-8
+
+
+		  ours
+		--------
+
+		LBHT=512	LBHT=512	LBHT=1024
+		LPHT=1024	LPHT=16384	LPHT=16384
+		GPHT=4096	GPHT=16384	GPHT=16384
+
+program		accuracy	accuracy	accuracy
+
+bzip2
+compress	88.74		82.03		82.03
+crafty		79.88		75.53		77.95
+gcc		83.45		80.73		83.61
+go
+gzip		81.35		79.82		80.14
+ijpeg		86.89		81.95		81.98
+mcf		94.08		93.53		94.75
+parser		87.33
+vortex		91.91				93.21
+
+
+
+
+
+

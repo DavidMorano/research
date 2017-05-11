@@ -1,0 +1,57 @@
+SimpleSim statistics 020905_1118:29
+statistics for job=bzip2_ms logid=frodo26369
+started 020905_0850:23 (elapsed time   0-02:28:06)
+real   time=  0-02:28:06.830000
+user   time=  0-00:39:55.830000
+system time=  0-00:00:37.910000
+
+total instructions       600000000
+included instructions    500000000 (100000000:500000000)
+CF instructions           70301584 ( 11.717%)
+CF-IND instructions        5483237 (  0.914%)
+relative branches         59335110 (  9.889%)
+CF-UNC                    15838559 (  2.640%)
+conditional branches      54463025 (  9.077%)
+forward c-branches        30664222 (  5.111%)
+backward c-branches       23798803 (  3.966%)
+branch SS-hammocks         1464158 (  0.244%)
+instructions per BP            9.1805
+= branch path statistics
+instructions per branch path
+IPBP mean                      9.1805
+IPBP stddev                    8.9270
+= branch target-distance statistics
+instructions per forward branch target
+IPFBT mean                    16.4596
+IPFBT stddev                  25.0195
+instructions per backward branch target
+IPBBT mean                    19.0150
+IPBBT stddev                  29.7286
+= hammock branch target-distance statistics
+IPHT mean                      5.3401
+IPHT stddev                    1.6087
+forward c-branches        30664222 ( 56.30 % of conditional)
+backward c-branches       23798803 ( 43.70 % of conditional)
+SS hammocks                1464158 (  2.69% of conditional)
+= dynamically loaded branch predictors :
+rows                             0
+delay                            0
+= register statistics
+read-interval mean                9.3138
+read-interval stddev             68.4729
+lifetime mean                    11.4947
+lifetime stddev                  93.9448
+def-use mean                    384.8575
+def-use stddev                 1620.9700
+= memory statistics
+memory reads              130262272
+memory writes              63618434
+memory variables            2097865
+tracking pages                 2064 (in 65 groups)
+storage allocated                16 MiBytes
+read-interval mean             7709.9058
+read-interval stddev          19804.8361
+lifetime mean                  4360.5373
+lifetime stddev               14892.4373
+def-use mean                  37359.1665
+def-use stddev                31977.4765

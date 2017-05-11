@@ -1,0 +1,103 @@
+Kaeli
+
+I made a fairly long list of notes on corrections.  I suspect
+you are working on these as we speak.  I am not sure what else
+I can do.  I am going to take a break for an hour and log back
+in around midnight my time.
+
+Dave  
+
+Comments:
+
+1. Run spell on the file.  Spelling error in title.
+2. My last name is lowercase.  reorder email addresses.
+3. You are fairly stingy with your use of commas.  The
+first sentence needs a comma.
+4. Your style is very wordy.  Your second setence is a mouthful.
+Could you make a pass through the paper and look for needlessly
+long sentences?
+5. Spend time on the abstract.  There is nothing worse than starting
+off on the wrong foot with a reviewer.
+6. Section 1, 2nd sentence, we can not mitigate penalties, can we?
+7. Another good example of being too wordy Section 1, 3rd paragraph,
+delete "as yet..."
+8. Page 2, first paragraph, "aggressive large-scale" (you minimally need
+a common, though I might suggest some simpler language).
+9. Page 2, 2nd paragraph, what is the most predicted path??
+10.Page 2, 2nd paragraph, most speculatively executed?? What does this
+mean?
+11. Page 2, 3rd paragraph, drop all initials (non-standard).
+12. Page 2, 4th paragraph, user numbers for sections (e.g., section 2, etc.)
+13. Section 2, first sentence, why are attempts old??
+14.  Page 3, first paragraph, you need a citation for the Sun Ultra 4 
+comment.
+15. Section 3, first sentence "the good handling" the proper handling??
+16. 2nd paragraph Table Table.
+17. 3rd paragraph (too short).
+18. 4th paragraph.  I would hold off talking about hammocks until
+after you show the branch domains.  Don't let the cat out of the
+bag until you are ready.  Otherwise this will be a boring paper.
+It is like knowing the murder on page 1 of a murder mystery.
+19. 5th paragraph, "the distribution of the percentage of the number"
+which one is it??
+20. 6th paragraph, difernt is mispelled.
+21.Figure 1, ouch.  Needs to total to 100.  Need a label of
+the units on the y axis.  Need to use different style lines and
+a legend for the 5 programs (so much for my idea of 5 graphs).
+22. Below Figure 1, "We classify each....  being either a high dynamic
+frequency (how about frequently executed)....
+23. Fix Figure 2.  No labels, too much white space,
+we need to fix this.
+24. My figure uses the terms mainline and disjoint.  Does this
+fit your terminology?
+25. In 4.1, don't say abbreviated (just put the abbreviation
+in parens right after the words).  It can also help to capitalize
+the abbreviated word.
+26. I am going to overlook all spelling errors.  I am finding
+a lot.  Please run spell many times on the tex.
+27. Section 4.  It would be great if you could show some simple
+figure of how static fetch catches the hammock shown in the 
+previous figure (the one I sent you).
+28. Good to see Static fetch defined.  This formatting needs
+some cleaning up.
+29. I notice you are avoiding all mention of Levo.  Is this on
+purpose?  I don't really care, it is up to you.
+30. Explanation of Figure 5 in text. I think it is obvious just
+from the figure what the order of bars is all about.  I labeled
+the bars with the benchmark names in larger fonts.
+31. You should present the machine configurations before showing 
+Figure 5.  You should explain your reasons for selecting this
+range.
+32.  8-8-8 does not give the best IPC.  Am I going crazy??  
+33. You don't simulate 16-8-4.  Are you going crazy?
+34. Figure 6, you need to explain bzip and then the funny
+sweet spot in gap 8,8,16.
+35. There is presently no discussion of the data.  Please don't say
+as we increase x, y increases too.  You need to say why.  You need
+to indicate if it is interesting.  You need to say a lot.  Right
+now there isn't any discussion.
+
+Okay, you have a ton to do.  Good luck.  This is hard stuff, but at least
+you can appreciate the shit that I go through each time :-)
+
+Cheers,
+
+Dave
+
+ 
+-- 
+***********************************************************
+***********************************************************
+**      Professor David R. Kaeli                         **
+**      Dept. of Electrical and Computer Engineering     **
+**      Northeastern University                          **
+**      318 Dana Research Center                         **
+**      Boston, MA  02115                                **
+**      email: kaeli@ece.neu.edu                         **
+**      Prof. Kaeli is presently on sabbatical leave     **
+**      in Barcelona, Spain.  His phone number           **
+**      there is: +34 93 401 74 09                       **
+**      fax is: +34 93 401 70 55                         **
+***********************************************************
+***********************************************************
+

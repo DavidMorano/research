@@ -1,0 +1,62 @@
+
+paragraph{Sharing Groups and Result Forwarding: }
+Active stations within the instruction window are grouped together in
+order to allow for sharing of expensive execution resources.  Expensive
+execution resources can range from an entire processing element that
+can execute any instruction to specialized functional units.
+Implementations can also include the situation of having just one
+active station in a sharing group.  Figure ?? above contained four
+sharing groups within the instruction window shown there.
+
+Execution output results (intended to be located in the ISA architected
+registers) from sharing groups must be forwarded to those active
+stations located forward in program execution order (having later
+valued time tags).  This is accomplished with result forwarding
+busses.  These forwarding buses are shown in Figure ??.  Results are
+not necessarily immediately forwarded to all later active stations.
+Because instruction output results in the architected registers only
+need to be forwarded for the lifespan of the ISA register in the
+program, results are only first forwarded a number of active stations
+that roughly matches a typical register lifetime.  This forwarding
+distance is termed the {\it forwarding span}.  Each active station
+snoops all forwarding buses to get inputs needed for its execution.
+Each sharing group originates a forwarding bus that covers the
+implementation's designated forwarding span.  For example, if an
+instruction window consists of 256 active stations and these are
+further divided into sharing groups containing eight active stations
+from the ML column (and eight from a DEE column) then there would be 32
+sharing groups each originating a forwarding bus.  This means that at
+any active station there would be 32 forwarding buses that would need
+to be snooped for source inputs.
+
+In those situations where an output result from an instruction is
+needed in instructions located beyond the forwarding span of its
+forwarding bus, there exists a register at the end of the bus (located
+in the last sharing group that is snooping that bus).  This register is
+termed the {\it forwarding register}.  This register then contends
+with the forwarding requests originating in its sharing group to
+forward its result on that sharing group's forwarding bus.  The process
+will result in output values being forwarded for the next forwarding
+span number of active stations.  This process can be repeated as needed
+to continue forwarding results until another instruction has that ISA
+register designated as its output.  This forwarding process is stopped
+when any active stations within the forwarding span of a result has the
+same ISA register as an output.  The later instruction originating a
+new value for that ISA register is now responsible for forwarding its
+output value in the same manner.
+
+Note that when instruction output results need to be forwarded to
+stations beyond the implementation forwarding span there is at least
+one clock cycle delay in the forwarding process due to the presence of
+the forwarding register.  This register minimally needed because of
+possible contention for the forwarding bus of the sharing group the
+forwarding register is located in.  Note that more than one clock may
+be incurred if the sharing group that is performing the forward also
+needs to forward one of its results in the same clock cycle.  Delaying
+a forward from a previous sharing group will not typically be a
+performance problem since the need for a result created a long time in
+the past is not as urgent as needing a result that was generated in the
+more recent past of the program instruction stream.
+
+
+

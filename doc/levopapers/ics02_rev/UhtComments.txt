@@ -1,0 +1,75 @@
+1. Typos. Proofread extremely carefully before sending this in. E.g., there's
+a typo in the first word of the paper's title.
+
+2. In General: data is sparse and uncorrelated. Need discussion, as Dave K.
+will presumably do. As I have noted before, the branch characteristics
+support the use of DEE, but do not explain it. Except for one benchmark,
+the results do not appear that impressive. Suggest you at least mention the
+overall final IPC with D-paths to show that the 10-20% improvement leads to
+big(ger) IPC (performance).
+
+3. The benchmark names are presented in different orders throughout the
+paper. Pick one order, I suggest alphabetical, and stick with it, 
+otherwise you're going to drive the reader nuts.
+
+4. Section 1, par. 2, last sentence: this is out of place.
+
+5. ", par. 4, last sentence: awkward; delete?
+
+6. Section 2, background: don't forget the first ones: IBM 360/91,
+and Riseman and Foster (1972).
+
+7. Section 2, par. 2, second sentence from end: awkward.
+
+8. next sentence: need reference for this.
+
+9. Section 3.1, par. 2, sent. 3, middle: Tomasulo did this too.
+
+10. Figure 1: basically good. Loop around of forwarding path is never
+explained. Need to show RFU's, otherwise no scalability. 
+Somewhere else in the paper, you refer to the relay delay as one cycle,
+but it should be one cycle per column.
+You might want
+to use a version of the machine figure I used in the SSGRR paper.
+
+11. Section 3. In general: concise view of relevant factors of Levo to
+the paper.
+
+12. " 3.1, par. 6, last 2 sentences. Huh? As is, will just confuse the reader.
+Suggest you mention RFU's explicitly, or equivalent structure.
+
+13. sec. 3.1, last par: huh? Delete.
+
+14. Section 3.2, par. 1: why is confidence being mentioned? we don't use it,
+at least not yet. Suggest you leave out all references to confidence.
+
+15. ", par. 2, sent. 2 & 3: why put in? delete.
+
+16. ", par. 3, sent. 4: "certain" to "most"
+
+17. ", last par.: correct citation to tech report, add reference.
+
+18. Section 4.1: what branch predictor was used? What size L1 cache?
+
+19. Section 4.1: good characteristics. Can these be correclated with
+later data?
+
+20. Fig. 2 and 3: fine, but clean up labeling, as mentioned before.
+
+21. All graphs: see my previous emails for comments, doesn't look like
+they've been addressed.
+
+22. Sec. 4.2: define static fetch.
+
+23. Sec. 5.2: see previous comments on RFU's.
+
+24. Sec. 5.2, par. 4: no such 16-8-4 configuration.
+
+25. Sec. 5.2: other configs. better than 8-8-8.
+
+26. Figure 6 and on: many have wrong benchmark in caption.
+
+27. Figure 5 and on: again, make Y-origin 1, remove data for 0-paths
+(is always 1)
+
+28. 

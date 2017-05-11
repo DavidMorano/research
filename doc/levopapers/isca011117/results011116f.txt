@@ -1,0 +1,99 @@
+From akhalafi@gateway.ece.neu.edu Fri Nov 16 19:00:11 EST 2001 
+Return-Path: <akhalafi@gateway.ece.neu.edu>
+Received: from sendmail1.computer.org (sendmail1.computer.org [206.99.235.24])
+	by leviathan.ele.uri.edu (8.11.2/8.11.2) with ESMTP id fAH009205868
+	for <morano@ele.uri.edu>; Fri, 16 Nov 2001 19:00:10 -0500 (EST)
+Received: from mail2.ECE.NEU.EDU (markov.ece.neu.edu [129.10.60.83])
+	by sendmail1.computer.org (Build 101 8.9.3/NT-8.9.3) with ESMTP id TAA05605
+	for <morano@computer.org>; Fri, 16 Nov 2001 19:02:36 -0500
+Received: from lespaul.ece.neu.edu (lespaul.ece.neu.edu [129.10.60.240])
+	by mail2.ECE.NEU.EDU (8.11.3/8.11.3) with ESMTP id fAH001U19939;
+	Fri, 16 Nov 2001 19:00:01 -0500 (EST)
+Received: from localhost by lespaul.ece.neu.edu (8.9.3/8.9.3) with ESMTP id TAA04961;
+	Fri, 16 Nov 2001 19:00:01 -0500 (EST)
+X-Authentication-Warning: lespaul.ece.neu.edu: akhalafi owned process doing -bs
+Date: Fri, 16 Nov 2001 19:00:01 -0500 (EST)
+From: Alireza Khalafi <akhalafi@ECE.NEU.EDU>
+X-Sender: akhalafi@lespaul
+To: "Kaeli, Prof. David -- David Kaeli" <dkaeli@ac.upc.es>
+cc: "Augustus (Gus) K. Uht" <uht@ele.uri.edu>,
+   David Morano <morano@computer.org>
+Subject: Oracle results
+Message-ID: <Pine.GSO.4.21.0111161848220.4653-100000@lespaul>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Length: 1346
+
+Prof. kaeli,
+
+Here are the data for oracle simulations.  I have done two sets of
+simulations, one with cache and one without it.  There is NO VALUE
+PREDICTION.  As you can see, for small machines, our D+VP out-performace
+this result.  
+
+I have include the (8,8,16) config but you might want to skip that because
+we don't have any data for it.  But as you see, it outperforms the rest.
+
+Also note that 3 entries are still missing and I am waiting for them.
+
+If we are lucky, we might get the other D-path simulations before
+deadline.  although so far, for (8,4,8) and go I didn't see an improvement 
+
+I'll keep you posted
+Ali
+
+
+		Oracle,PM,noVP	Oracle,RM,noVP	
+
+Go benchmark,
+
+(4,4,4)		4.5		3.5
+(8,4,4)		8.4		6.0
+(8,4,8)		11.8		8.6
+(8,8,8)		19.0		13.2
+(16,8,4)	17.3		12.6
+(8,4,16)	13.3		10.8
+(8,8,16)	23.6
+
+Bzip2 benchmark
+
+(4,4,4)		4.8		3.6
+(8,4,4)		9.0		6.4
+(8,4,8)		13.6		8.9
+(8,8,8)		0		12.4
+(16,8,4)	0		12.1
+(8,4,16)	14.0		9.5
+
+Gzip benchmark
+
+(4,4,4)		4.5		3.7
+(8,4,4)		7.5		5.7
+(8,4,8)		9.6		7.4
+(8,8,8)		13.0		9.9
+(16,8,4)	12.2		9.8
+(8,4,16)	10.1		8.1
+(8,8,16)	14.6
+
+Parser Benchmark
+
+(4,4,4)		4.3		3.5
+(8,4,4)		7.6		5.8
+(8,4,8)		10.5		7.6
+(8,8,8)		14.9		11.3
+(16,8,4)	13.9		11.0
+(8,4,16)	12.2		9.4
+(8,8,16)	17.7
+
+Gap benchmark
+
+(4,4,4)		4.1		3.7
+(8,4,4)		6.2		5.6
+(8,4,8)		8.2		7.1
+(8,8,8)		0		9.3
+(16,8,4)	9.3		7.8
+(8,4,16)	10.5		8.8
+
+
+
+
+

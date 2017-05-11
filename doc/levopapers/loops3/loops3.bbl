@@ -1,0 +1,117 @@
+\begin{thebibliography}{10}\setlength{\itemsep}{-1ex}\small
+
+\bibitem{Dav95}
+J.~Davidson and S.~Jinturkar.
+\newblock Improving instruction-level parallelism by loop unrolling and dynamic
+  memory disambiguation.
+\newblock In {\em Proceedings of the 28th annual international symposium on
+  Microarchitecture}, pages 125--132, New York, NY, 1995. ACM Press.
+
+\bibitem{glo96}
+N.~Gloy, C.~Young, J.~B. Chen, and M.~D. Smith.
+\newblock An analysis of dynamic branch prediction schemes on system workloads.
+\newblock In {\em Proc. 23rd Annual Intl. Symp. on Computer Architecture},
+  pages 12--21, 1996.
+
+\bibitem{gonz-dependence}
+A.~Gonzalez and P.~Marcuello.
+\newblock Dependence speculative multithreaded architecture.
+\newblock Technical report, Universitat Polytecnica de Catalunya, 1998.
+
+\bibitem{kae97}
+D.~Kaeli and P.~Emma.
+\newblock Improving the accuracy of history-based branch prediction.
+\newblock IEEE Transactions on Computers, 46(4):469--472, April 1997.
+
+\bibitem{kaeli91}
+D.~R. Kaeli and P.~G. Emma.
+\newblock Branch history table prediction of moving target branches due to
+  subroutine returns.
+\newblock In {\em Proceedings of the 18th International Symposium on Computer
+  Architecture ({ISCA})}, volume 19-3, pages 34--42, New York, NY, 1991. ACM
+  Press.
+
+\bibitem{Kob84}
+M.~Kobayashi.
+\newblock Dynamic characteristics of loops.
+\newblock {\em IEEE Transactions on Computers}, 33(2):125--132, 1984.
+
+\bibitem{Lam88}
+M.~Lam.
+\newblock Software pipelining: An effective scheduling technique for {VLIW}
+  machines.
+\newblock In {\em Proceedings of the {ACM} {SIGPLAN} '88 Conference on
+  Programming Language Design and Implementation ({PLDI})}, volume~23, pages
+  318--328, 1988.
+
+\bibitem{lee84}
+J.~Lee and A.~Smith.
+\newblock Branch prediction strategies and branch target buffer design.
+\newblock IEEE Computer 17(1), January 1984.
+
+\bibitem{Mah92}
+S.~A. Mahlke, W.~Y. Chen, J.~C. Gyllenhaal, W.~Hwu, P.~Chang, and T.~Kiyohara.
+\newblock Compiler code transformations for superscalar-based high-performance
+  systems.
+\newblock In {\em Proceedings Supercomputing '92}, pages 808--817, Minn., MN,
+  1992. IEEE.
+
+\bibitem{Mck96}
+K.~McKinley, S.~Carr, and C.-W. Tseng.
+\newblock Improving data locality with loop transformations.
+\newblock {\em ACM Transactions in Programming Languages and Systems},
+  18(4):424--453, 1996.
+
+\bibitem{pan92}
+S.-T. Pan, K.~So, and J.~T. Rahmeh.
+\newblock Improving the accuracy of dynamic branch prediction using branch
+  correlation.
+\newblock In {\em Proceedings of the 5th International Conference on
+  Architectural Support for Programming Languages and Operating System
+  ({ASPLOS})}, volume~27, pages 76--84, New York, NY, 1992. ACM Press.
+
+\bibitem{Sai98}
+S.~Sair and D.~Kaeli.
+\newblock A study of loop unrolling for vliw-based dsp processor.
+\newblock Proceedings of the Workshop on Signal Processing Systems, October
+  1998.
+
+\bibitem{She00}
+T.~Sherwood and B.~Calder.
+\newblock Loop termination prediction.
+\newblock In {\em Proceedings of the 3rd International Symposim on High
+  Performance Computing}. Springer-Verlag, October 2000.
+
+\bibitem{Smi81}
+J.~E. Smith.
+\newblock A study of branch prediction strategies.
+\newblock In {\em Proceedings of 8th Symposium in Computer Architecture}, pages
+  135--148, Minneapolis, MN, 1981.
+
+\bibitem{Sri94}
+A.~Srivastava and A.~Eustace.
+\newblock Atom: a system for building customized program analysis tools.
+\newblock DEC Western Research Laboratory Technical Report, 1994.
+\newblock Technical report.
+
+\bibitem{Tub98}
+J.~Tubella and A.~Gonzalez.
+\newblock Control speculation in multithreaded processors through dynamic loop
+  detection.
+\newblock In {\em Proceedings of the 4th International Symposium on
+  High-Performance Computer Architecture}, Las Vegas, NV, January 1998.
+
+\bibitem{LevoTech01}
+A.~Uht, D.~Morano, A.~Khalafi, M.~de~Alba, T.~Wenisch, M.~Ashouei, and
+  D.~Kaeli.
+\newblock Ipc in the 10's via resource flow computing with levo.
+\newblock Technical Report TR No. 092001-001, University of Rhode Island, 2001.
+
+\bibitem{Yeh93}
+T.~Y. Yeh and Y.~N. Patt.
+\newblock A comparison of dynamic branch predictors that use two levels of
+  branch history.
+\newblock In {\em The 20th Annual International Symposium on Computer
+  Architecture}, pages 257--266, Goteborg, Sweden, 1993.
+
+\end{thebibliography}

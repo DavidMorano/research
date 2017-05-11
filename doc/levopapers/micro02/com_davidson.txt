@@ -1,0 +1,212 @@
+
+First let me ask, do you mind if I share this manuscript with my student
+Mikhail Smelyanskiy. I know he would enjoy reading it as I did. But if
+you would rather have him wait to see it, I understand. I can guarantee
+that he would of course not use anything without attribution. And I
+presume that much of the content is already in your URI reports anyway,
+isn't it? Are they on line?
+
+I spent several hours reading the Levo manuscript you sent me. I put
+almost all of my time on the first half because I enjoy the concept
+parts more than the performance evaluation bar charts. I rarely have
+much to say about the latter unless I spend a tremendous amount of time
+on them.
+
+Also, let me caution you that I have  NOT kept up on the high ILP
+architecture literature for quite some time, so I am not at all sure
+where you competition is now. An excellent person to use for
+constructive criticism (sometime when you can give him a reasonable time
+to read and comment on this work) would be Joel Emer
+(joel.emer@intel.com). I think he would enjoy reading it and would find
+it interesting (as I did). 
+
+You have attempted to cram a LOT of material into 18 pages. I do believe
+this is the prevailing style today, and may well please the reviewers,
+but I for one do not believe that there is any way, for example, to make
+a convincing case in 1 page that the memory is coherent. Also the
+machine organization and operation discussions are really just a sketch,
+with the reader required to make a lot of guesses to fill in the pieces.
+Again, there is not room to do much better given the scope of this paper
+and its length limit. Nevertheless, if you reduce the scope of the
+paper, I believe you will greatly reduce the chance of its being
+accepted – so there is little choice but to do it this way. Even if you
+later go for a journal paper, there is not much more length to play with
+when you  go to 12 point, double spaced format and then stay within 40
+pages. I am sympathetic with this problem – it’s been the story of my
+life lately. 
+
+Given that prelude, my detail comments (ordered by when they came up,
+not by importance) are:
+
+Does Levo stand for anything? You never say.
+
+Intro, paragraph 3, “e.g.” is the wrong word here. How about, “the
+trend,  as evidenced in all common… , has always been…
+
+Par. 4, change “as well as” to “and” 
+Also, “demonstrating … 10’s” is not accurate. This is under idealized
+circumstances – needs to be said somehow.
+Also, “…Section 7 presents and discusses …results.” is better wording.
+
+Section 2, Par 1, at reference 9, you could cite the Tyson/Mudge paper
+that was published in Computer Architecture News  which is REALLY about
+the true (i.e. optimistic) potential in ILP.
+Also, end of Par 1, def’n of scalable is a good one, really the RIGHT
+one. However, with that definition, I do NOT believe that any actual
+system is scalable! No system I have seen is better than n * logn. And I
+believe this includes Levo (as argued in a couple of places below).
+
+Section 2.2, add comma after “shrink”
+
+Section 3, Par 1, not clear what “row-adjacent” means until much later.
+In fact, as drawn in Figs 4 and 6, for example, the “column” isn’t
+really a column anymore, it’s drawn as 2 columns, and the sharing group
+is not obviously “row-adjacent” whatever that means. This finally ends
+up not being confusing, but the wording/terminology could be better.
+
+Par 2, if “any instruction set” can be used, how about trying one like
+the VAX? Surely you don’t mean to make such a broad claim, do you?
+
+Section 3.1 Par. 2, the work that Gary Tyson, Mikhail Smelyanskiy, and I
+did on “Register Queues” can be used with what you call “classic
+renaming” here, and might be a useful way to contrast this aspect of
+Levo with the best that can be done today with classic renaming. This is
+NOT necessary for this paper, but you might consider it at some point.
+
+Par 4 (just above Fig 2), O(k) vs. O(k^2) is NOT really shown here. And
+I am somewhat skeptical that Levo can actually be O(k) after ALL is
+accounted for. For example, I admit that the cost of an AS does look
+constant as k grows, but ONLY if the data widths stay constant. AND I
+believe that at least some of the data field widths must be log k in
+size, which would make the cost complexity of k AS groups be k * log k, no?
+
+Last Par of Section 3.1, if instructions in the E-window have unique
+time tags, then tt must grow as log of E-window size. This is one
+example of my argument in the paragraph above, no?
+
+Section 3.2, I like the idea of the segmented buses as used in Levo.
+Looks like a real good idea. Your argument as to why the segmentation
+does not add many cycles in practice, also sounds convincing to me.
+
+End of Par 4, You say that mem values do have to be written to D-cache.
+But consider the analogue of an register that is architected (in the
+ISA) and read LONG after it is written, i.e. long after the writing
+instruction has been retired. In this case, doesn’t that value have to
+be written into an architected register, i.e. don’t you need an
+architected register file somewhere in Levo? You seem to imply that all
+register operands are acquired by forwarding (or backwarding), no? You
+never show the architected register file in your block diagrams, nor
+discuss accessing it anywhere (unless it escaped my attention somehow).
+
+Section 3.3.1, Par 1. Again, I don’t believe that the O(k) and O(k^2)
+claims are substantiated. Can you give at least a sentence (or half
+sentence) of why you believe this?
+
+Par. 3, line 3 at “separate”, separate from what? E.g. a “separate
+spanning bus dedicated to …”
+
+Also line 5, insert “falsely predicted” between “initially” and “not”,
+right? (i.e. you mean as in Fig 5?)
+
+Also shouldn’t the size of the taken branch table of an AS grow somewhat
+with k? 
+
+Par 5, aha! You finally gave me an example of when a backwarding request
+is made. The hint that these “sometimes” happen was quite far back.
+What if that instruction is already retired? Then don’t you have to
+satisfy the backward request from the architected register file? But
+where is this file in Levo?
+
+Par 6, claimed, but not shown, not argued, not even hinted why “hardware
+predication is scalable”.
+
+Also should I assume that from reference [11] and the author
+affiliations under the title, that Morano moved from Rhode Island to
+Northeastern? Or is there a type somewhere.
+
+Section 3.3.2 Par 1, line 1: what does “optimal” refer to? I.e. what is
+maximized (or minimized)? Furthermore, do you really mean “optimal” or
+do you mean “good”? Note that optimal and optimum are really synonyms
+(look it up), although “optimal” is often used incorrectly to mean
+“optimum-ish”. Be careful what you claim – an exaggerated claim often
+causes a paper to be rejected. 
+
+Par 3 (last Par on page 8), This paragraph is not clear to me (at least
+after as much time as I was able to give it). Needs a simple example.
+The following paragraph (the last in section 3.3.2) doesn’t help me much
+either – at least not without spending A LOT more time on it. 
+
+One minor point, I would change “resolves” to “is resolved,”.
+
+Figure 6 helps a little, but doesn’t do it for me either. I cannot
+really make sense of it. For example, what instructions are in D path 3?
+Which in M path of column 0. How are these paths related to paths in
+Column 1, etc.? 
+
+Maybe it would be best to get Figure 6 nailed down FIRST. Then fix the
+two problematic paragraphs and move them below Fig 6. This might help.
+
+In any case, DEE is an awful lot to try to cover in one page. I do get
+the rough idea, but nowhere near at the level of detail that you are
+trying to convey here.
+
+Section 4.1 last Par. I like this unrolling idea, and how you discuss it
+and implement it.
+
+Section 4.2 Par 1, line 1, what assumptions are you making to get this
+“large tolerance”, e.g. system parameters of Fig x / Table x?? What are
+you assuming, for example, about miss rates, cache sizes, application
+properties, …? Or is this claim universally true? Is it a theorem? Can
+you prove it?
+
+Is this tolerance due more to early loads (way out of order), or to the
+ability to find OOO instructions to execute while an in-order
+instruction waits for a load to arrive? Or what mixture of the above?
+Basically, it’s the former if the load is ready to retire as soon as it
+reaches column 0; it’s the latter if although the load still waits in
+column 0 for the load data to arrive, little performance is actually
+lost due to this wait. Which is it? Can you say?
+
+Last 2 Paragraphs of Section 4.2: Too few words to be really convincing
+here. BUT I don’t suppose enough space in this paper can be devoted to
+these issues to do them justice. I don’t know what to suggest about this.
+
+Table 1: L1-I,D hit latency of “1 cycle”: how is this measured? I
+presume it does NOT include all the travel time from the FPU that
+generates the request, through segmented buses, priority selection
+logic, other multiplexing, etc., so where DO you begin counting this 1
+cycle? And where do you quit? E.g. is this strictly the time WITHIN the
+L1 itself? BUT if so, then is it fair to compare this time with other,
+simpler architectures that have a 1 cycle cache where the cycle is from
+the issuing FPU until the named register is loaded?
+
+Section 7.1, Par 2, say something about headroom here – e.g. what is the
+original config’s PE utilization? 
+Also try to motivate other results by indicating headroom, and/or what
+causes the improvement to stop where it does. 
+
+I cannot read Figs 8 and 9 without a magnifying glass. Thus I do not
+have comments on this data and what it shows. 
+
+However, the title of Figure 9 implies that Levo “tolerates” large
+memory latencies (i.e. maintains reasonable IPC despite memory latencies
+of hundreds of cycles), ONLY if with Ideal Fetch and Memory, Ideal
+Fetch, etc. I.e. it does not really tolerate the memory latency in a
+practical implementable machine. If I am wrong here, then you need to
+fix something in the text to make sure the reader understands the point
+you ARE making. If I am right, then you need to fix the earlier text to
+make the RIGHT claim.
+
+Final comment: Once again, it seems that branch prediction and load
+latency are THE most critical issues in a processor that aims at high
+IPC. As far as I know, it always ends up like this, for all these
+architectures. Doesn’t it?
+
+I did enjoy reading the paper and learning about this architecture. It
+is at least intriguing, and I do believe it has potential. I hope it is
+accepted for publication and I believe that it should be – but I have
+not been too good a guesser in recent years. Good luck. Nice work.
+
+Ed
+
+

@@ -1,0 +1,167 @@
+
+paragraph{Operation: }
+
+The operation of this machine shares many similarities with exiting
+machines but also has some key differences.  This section will provide
+a more detailed discussion of the dynamic operation of the machine as
+it executes a program.  For the purposes of this discussion the initial
+boot-up of the machine will be the starting point.  In other words, the
+machine is currently empty of any loaded or executing instructions.
+First an overview of the machine execution is given followed by a more
+detailed description of what occurs within an active station.
+
+In general, operation of the machine will proceed from
+instruction-fetch, to branch target tracking, to instruction staging in
+the station load buffer.  Next, the entire column of instructions in
+the station load buffer will be left shifted into the right-most column
+of the active stations in the instruction window (reference Figure 1).
+This is termed the {\it load} operation.  The reader may note that the
+station load buffer is always the same length as a column in the
+instruction window in order for this instruction load operation to
+occur as a broadside left shift operation.  These above operations
+repeat until the entire instruction window is nominally loaded with
+instructions through the left shift-like load operations.  Note that
+the authors usually use the term {\it left-shift} for describing the
+broadside instruction load operation but this operation can be
+accomplished using a renaming scheme on the active station column
+addresses in the instruction window.  When the instructions in the
+left-most column of the instruction window, those with the smallest
+time tags, have all completed executing, they are ready for
+retirement.  Retirement may not occur immediately but occurs when the
+station load buffer is fully loaded with new instructions ready to be
+loaded.  The retirement operation is coincident with a left-shift
+operation of all columns in the instruction window along with the
+station load buffer column.  This shift removes the retired
+instructions from the window and loads the new instructions from the
+load buffer into the window, leaving the load buffer empty.
+
+Fetched instructions will also nominally be allocated cache lines in
+the I-cache (if the corresponding memory page and physical hardware is
+set to allow that).  As instructions are fetched they are then
+decoded.  This is, so far, similar to most all current machines.
+
+Once the instructions are decoded, branch type instructions are
+identified.  The target addresses of branch instructions are computed,
+where possible, and an entry is made in the branch tracking buffer that
+includes the time tag of where that branch instruction will be placed
+in the instruction window, when the load of it occurs.  The target of
+the branch is also placed into the tracking buffer entry.  This
+tracking buffer information is used to dynamically track the
+instruction domains of instructions within the instruction window.
+Instructions are then staged into the active station load buffer.
+
+The station load buffer serves as a staging area to accumulate
+instructions until they can enter the instruction window.  When the
+instruction load buffer is full and the left-most column of the active
+stations in the instruction window are ready to retire, an operation
+analogous to a left shift occurs amongst all of the active station
+columns and those instructions currently staged in the station load
+buffer.  Source registers for loading instructions are taken from the
+architected register files (one per instruction window row) at the time
+the load occurs.
+
+While instructions are loaded into an active station, they are allowed
+to compete for execution, main memory, and the architected register
+file resources.  The reader can reference Figure~\ref{shareforward}.
+to see the connectivity available to a single sharing group within the
+instruction window.  Instructions compete for execution resources
+within their sharing groups.  When an instruction sends information to
+an execution unit for processing, this is termed {\it instruction
+issue}.  Unlike conventional machines, instructions can be issued to
+execution or function units many times during the time that it is in
+the instruction window.  This will be discussed in more detail later.
+Instructions compete for memory bandwidth with all of the other active
+stations in the other instruction window columns located in the same
+row.  This is illustrated with the contention for the horizontal row
+buses to the memory interface buffers shown in Figure ??.  Active
+stations also compete to store their output register results into the
+architected registers files with all other active stations on the same
+instruction window row.  This is illustrated with the contention for
+the horizontal row buses to the ISA register files shown in Figure ??.
+Speculative reads to main memory are allowed at any time during an
+instruction's execution but memory writes are only allowed, in the
+current implementation, at instruction retirement time.  Therefor, in
+general, instructions can be thought of proceeding through fetch,
+decode, branch tracking, staging, load, issue, and
+retirement/write-back stages.
+
+As noted already, instructions in an active stations can be issued to
+an execution unit more than once.  Instructions are issued to execution
+units when one of their inputs is changed but which has a time tag
+later than or equal to that of the last source that acquired.  An
+active station snoops all forwarding buses originating from earlier
+sharing groups for changed input values.  Values are forwarded on these
+buses with the address of the architected register that is being
+changed along with its value, and along with information indicating its
+time tag (time order) within the instruction window.  All forwarding
+buses are snooped for updates corresponding to those registers that are
+inputs to a current active station.  The register address comparisons
+are done using the RI_ADDR register and comparators associated with the
+two sources and destination of the active station.
+
+Forwarded branch predicates (representing control flow dependencies)
+and forwarded output data values are snooped and processed somewhat
+differently.  Due to the physical arrangement of the data forwarding
+buses originating from the sharing groups, only values originating from
+previous instructions are considered as possible inputs.  However, a
+means must used to ignore values coming from previous instructions that
+are earlier in time than a previously snarfed data value.  This is
+accomplished by using the time tag mask registers (TTMASK) in the
+active stations.  Again, there is a time tag mask associated with all
+data oriented sources in the active station (including the relay source
+value for the instruction's output if there is one).
+
+The time tag mask is actually physically two masks, one representing
+that last forwarding span (32 assumed for this discussion) of active
+stations and is termed the {\it forwarding bus time tag mask}.  The
+other mask represents each of the previous forwarding spans (normally a
+column's worth of active stations) and is termed the {\it forwarding
+column time tag mask}.  The forwarding bus time tag mask in this
+example is 32 bit wide, one bit for each of the 32 forwarding buses
+being snooped by the active station.  The column mask in this
+implementation example is eight seven wide, one each representing each
+of the previous seven forwarding spans (there are eight forwarding
+spans in the implementation being described).  Both the forwarding bus
+time tag mask and the column time tag mask are ordered corresponding to
+the time order of the forwarding buses and previous columns
+respectively.  As a convention, we assume that both masks are ordered
+such that the right-most bits correspond to active stations (in the
+case of the forwarding bus time tag mask) and forwarding span columns
+(in the case of the column time tag mask) that are from active stations
+earlier in time.  Bits which are set in the masks represent forwarding
+buses or forwarding spans that are allowed to be snarfed by this active
+station.  Bits which are cleared serve to prevent the snarfing of
+data.
+
+If a source input is snarfed from the last forwarding span number of
+active stations (within the last 32 active stations in this
+implementation), then the position of the bus, as ordered corresponding
+to the time of the active station that is originating data on it, is
+compared with the forwarding bus time time mask.  If the corresponding
+bit in the time tag mask is clear, then no snarfing is performed.  If
+the bit in the time tag mask is set, then the data value is snarfed and
+all bits to the right of the bit just examined (earlier in time) are
+cleared.  The same sort of operation is done analogously with the
+column time tag mask when a forwarded value originated from an active
+station prior to the preceding forwarding span number of active
+stations.  Within each forwarding span of active stations, a generated
+output value will never be forwarded beyond a forwarding span (32) if
+some instruction within the next 32 active stations also outputs a
+value to the same ISA register address.  Since only one output data
+value will ever be forwarded beyond a forwarding span of active
+stations, this scheme of using a column mask and a forwarding bus mask
+ensures that only a value equal to or later in time (but earlier than
+the time tag of the snarfing active station) will ever be snarfed.
+Additionally, data output are only snarfed if the actual value of the
+data has changed from the previously snarfed or held value.  This
+latter comparison is done with the equivalence comparators shown in
+Figure~\ref{activestation} located along with the RIDAT and ROIDAT
+registers.
+
+Predicates are snooped and snarfed in a similar manner as data values
+but since predicates are chained with a hardware oriented linked-list
+scheme, there is no need for the time restriction scheme associated
+with snarfing of data values.  Only the predicate addresses being
+snooped need be compared as register addresses were compared with the
+forwarded output data snooping.
+

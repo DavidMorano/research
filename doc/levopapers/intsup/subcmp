@@ -1,0 +1,16 @@
+#!/usr/bin/ksh
+# SUBCMP
+
+
+OD=${HOME}/iiswc
+
+
+for F in *.eps ; do
+  if [[ -r ${OD}/${F} ]] ; then
+    print $F ${OD}/${F}
+    cmp $F ${OD}/${F}
+  fi
+done
+
+
+

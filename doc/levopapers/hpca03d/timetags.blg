@@ -1,0 +1,45 @@
+This is BibTeX, Version 0.99c (Web2C 7.3.1)
+The top-level auxiliary file: timetags.aux
+The style file: latex8.bst
+Database file #1: timetags.bib
+You've used 31 entries,
+            2118 wiz_defined-function locations,
+            709 strings with 8276 characters,
+and the built_in function-call counts, 9451 in all, are:
+= -- 997
+> -- 211
+< -- 17
++ -- 92
+- -- 60
+* -- 516
+:= -- 1462
+add.period$ -- 100
+call.type$ -- 31
+change.case$ -- 124
+chr.to.int$ -- 0
+cite$ -- 31
+duplicate$ -- 479
+empty$ -- 894
+format.name$ -- 60
+if$ -- 2120
+int.to.chr$ -- 0
+int.to.str$ -- 31
+missing$ -- 24
+newline$ -- 157
+num.names$ -- 60
+pop$ -- 163
+preamble$ -- 1
+purify$ -- 93
+quote$ -- 0
+skip$ -- 338
+stack$ -- 0
+substring$ -- 616
+swap$ -- 146
+text.length$ -- 17
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 124
+warning$ -- 0
+while$ -- 104
+width$ -- 33
+write$ -- 350

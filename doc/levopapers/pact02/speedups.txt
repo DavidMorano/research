@@ -1,0 +1,16 @@
+Hi Dave,
+Here are the DEE with release speedup over No_DEE configurations.
+I have caculated the average over all configs. The harmic mean of the
+averages is 36.6.  Note that these data are in Percent Speedup.
+Let me know if you need any other info.
+Ali
+
+					Bzip2	Parser	Go	Gzip	Gap
+8	4	8	8		24	52	95	47	35
+8	8	8	8		20	40	87	44	34
+16	8	8	8		20	38	84	36	22
+32	2	16	16		26	44	93	40	38
+32	4	16	16		21	40	88	36	25
+---------------------------------------------------------------------------
+Average					22	43	89	40	31
+

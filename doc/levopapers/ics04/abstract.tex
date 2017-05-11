@@ -1,0 +1,350 @@
+% executions (for ICS'04)
+%
+\documentclass[10pt,dvips]{article}
+%\documentclass[10pt,twocolumn,dvips]{article}
+\usepackage[english]{babel}
+\usepackage{epsfig}
+%\usepackage{fancyheadings}
+%\usepackage[T1]{fontenc}
+%\usepackage[latin1]{inputenc}
+%\usepackage{twocolumn}
+%\usepackage{verbatim,moreverb,doublespace}
+%\usepackage{rotate,lscape,dcolumn,array,rotating,latexsym}
+%
+%\input{epsf}
+%
+% for somebody (I forget now !)
+%\textwidth 175mm
+%\textheight 225mm
+%\topmargin -4.5mm
+%
+% for somebody else (I also forget now !)
+%\textwidth 6.6in 
+%\textheight 239mm
+%\topmargin -15mm
+%\leftmargin -2.0in
+%
+% for (IEEE single-column format)
+%\textwidth 6.875in
+%\textheight 8.875in
+%\topmargin -0.6in
+%\oddsidemargin 0mm
+%\evensidemargin 0mm
+%
+% for HPCA (IEEE two-column format)
+%\textwidth 6.5in
+%\textheight 8.875in
+%\topmargin -0.4in
+%\oddsidemargin 0mm
+%\evensidemargin 0mm
+%
+% for ISPASS and ICS
+\textwidth 6.5in
+\textheight 8.875in
+\topmargin -0.4in
+\oddsidemargin 0mm
+\evensidemargin 0mm
+%
+%
+% turn the following (linespread) on to 1.6 for "double space"
+% \linespread{1.6}
+%
+%
+% some publishers want no page numbers for final print
+%\pagestyle{empty}
+%
+\begin{document}
+%
+%
+%
+\title{A Microarchitecture for Parallel Instruction Re-executions}
+%
+%
+\author{
+D. Morano, D.R. Kaeli\\
+Northeastern University\\
+{dmorano, kaeli}@ece.neu.edu
+}
+%
+%
+% some publishers do not want a data in the final print
+\date{1st March 2004}
+%
+\maketitle
+%
+% uncomment the following for first page with no page number (for IEEE)
+%\thispagestyle{empty}
+%
+%
+\begin{abstract}
+%
+We describe a microarchitecture oriented towards
+the parallel execution and re-execution of many instructions
+simultaneously.
+In addition to breaking control dependencies, we also allow
+for data dependencies to be broken through the speculative
+execution of instructions with predicted source operands.
+We have extended the idea of the reservation station, or an
+issue window instruction slot, with additional state and logic that
+allows for an instruction dispatched to the station to both
+issue for execution when suitable source operands are available
+but also to re-issue subsequently when further or later source
+operands become available.  We call our adaptation of
+this enhanced reservation station an \textit{Issue Station}.
+Instructions dispatched to these stations remain associated
+with the station for the duration of the instruction's lifetime
+within the execution window of the machine (until the instruction
+is retired being either committed or abandoned).
+New instructions are only dispatched to an Issue Station when the
+previously dispatched instruction to it is retired.
+
+Rather than determine instruction dependencies at 
+instruction issue, we dynamically determine instruction data
+dependencies as the instructions are executing (or re-executing).
+We employ time ordering tags with both Issue Stations and
+all operands for data dependency management within the machine.
+By using these time ordering tags, dispatched instructions
+are ordered with respect to each other and all active operands
+being transferred among machine components.  All operands
+are also tagged as they are transferred among the various machine 
+components.  All instructions are dispatched in-order but are
+allowed to repeatedly issue out-of-order as conditions that
+might signal the need for an execution or re-execution occur.
+All instructions are retired in-order.
+
+We present preliminary data for the microarchitecture that
+focuses on exploring the dynamics of the machine
+operation associated with instruction execution, re-execution,
+and operand forwarding and acquisition.
+The data presented serves to characterize the machine
+with varying numbers of different machine components configured.
+As expected, the performance of the machine, as measured with
+Instructions Per Cycle (IPC), generally increases with increasing
+machine resources but also shows where incremental numbers of
+components do not appreciably improve performance for given 
+configurations.
+%
+\end{abstract}
+%
+%
+%\vspace{-0.25in}
+\section{Preliminary Experimental Results}
+%\vspace{-0.15in}
+%
+Here we present data to characterize the effect of the
+number of integer functions units available.
+(Other characteristics of the machine configuration
+are explored subsequently.)
+Memory is idealized in that all memory instructions perform
+their operand load or store
+function in one clock and with a 100% hit rate on L1 data
+cache.  Instruction fetch is also idealized with 100% hit rate on
+the L1 instructions cache.  Further, in order to focus more
+directly on the dynamics of the instruction execution and re-executions,
+we have employed 100% correct branch predictions.
+These conditions allow us to focus more intensely on the
+machine operations associated with instruction execution and
+operand forwarding and acquisition.
+
+Tables \ref{tab:iwsize16a} 
+and \ref{tab:iwsize16b} 
+shows experimental results
+for a machine with a window size of 16 (16 Issue Stations) and various
+numbers of integer ALU function units.  
+Besides the integer function unit, the only other function units
+that are used to any significant extent are the floating add
+and floating multiply units, and these are only used significantly 
+with the EON benchmark.
+Execution is not constrained
+by floating point function units
+for the benchmarks simulated with the possible exception of EON,
+which has a non-trivial amount of floating point instructions
+but which is still very small compared with integer instructions.
+Dispatch width is set to 256 instructions and thus doesn't 
+represent a constraint since we only have 15 Issues Stations configured.
+
+All benchmarks were simulated by first fast-executing the
+first 300 million instructions of the program.  This was
+followed by a detailed functional simulation of the program
+for the next 400 million instructions.
+Each of the tables shows the IPC obtained for the benchmark
+along with the percentage of all instructions executed that
+were re-executions.  
+Also given is the percentage of execution
+requests that resulted in a stall within a particular Issue Station
+when an integer ALU function unit was needed and requested.
+These stalls are due to the unavailability of the integer ALU function unit
+for a cycle in which an Issue Slot requested one for either an
+execution (an initial execution) or a re-execution.
+The number of floating point functions units were set high enough
+that no significant stalls were ever due to them not being available.
+
+Also note that a stall that may occur by one particular Issue Slot
+does not affect other Issue Slots.  All Issue Slots operate
+independently from each other and a stall in one does not
+directly or necessarily cause a stall in another.
+However, if an Issue Slot holds a data dependent instruction
+and the anti-dependent instructions gets stalled, and if
+a re-execution of the dependent instruction is eventually
+needed for proper commitment (because a new and different 
+result operand
+will be forwarded from the anti-dependent instruction), 
+then in effect one Issue Slot
+is indirectly causing another to not make progress towards commitment.
+
+Note that for the case where there are 16 integer ALU functions
+units configured, there is never a stall due to its unavailability.
+This is not unexpected as the total number of instructions executing
+simultaneously never exceeds 16 (for this set of results) since
+the number of Issue Slots configured were 16 in this experimental set.
+
+As expected, IPC increases for increasing numbers of integer
+ALU function units but levels off substantially at eight FUs.
+The percentage of executions that are actually re-executions
+also increases with increasing integer ALUs but instead appears
+to level off close to four FUs configured.
+
+
+%
+\begin{table}[p]
+\begin{center}
+\caption{{\em Simulation results showing IPC, re-execution percentage,
+and percent of stalls due to function unit unavailability.}
+These results are for 2 and 4 integer ALU function units.}
+\label{tab:iwsize16a}
+\vspace{+0.1in}
+\begin{tabular}{|l||r|r|r||r|r|r|}
+\hline 
+{IALU-FUs}& 
+\multicolumn{3}{c||}{2} &
+\multicolumn{3}{c|}{4} \\
+\hline
+name &
+IPC & \%REXEC & \%WAIT &
+IPC & \%REXEC & \%WAIT \\
+
+\hline
+bzip2&
+2.1&6.3&67.5&	3.5 & 10.0 & 40.0 \\
+
+\hline
+crafty&
+2.3&6.6&67.3&	3.6 & 10.3 & 40.0 \\
+
+\hline
+eon&
+3.1&6.8&49.4&	4.2 & 7.9 & 30.0 \\
+
+\hline
+gcc&
+2.5&5.7&66.7&	4.0 & 8.4 & 40.0 \\
+
+\hline
+gzip&
+2.1&7.3&69.0&	3.4 & 11.4 & 40.0 \\
+
+\hline
+parser&
+2.2&6.5&69.2&	3.5 & 9.8 & 40.0 \\
+
+\hline
+perlbmk&
+2.2&7.3&66.4&	3.7 & 10.4 & 38.4 \\
+
+\hline
+twolf&
+2.1&9.2&68.2&	3.4 & 12.2 & 40.0 \\
+
+\hline
+vortex&
+2.4&5.4&65.3&	4.1 & 6.6 & 34.3 \\
+
+\hline
+vpr&
+2.4&7.7&63.5&	3.7 & 10.9 & 38.3 \\
+
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+%
+
+
+%
+\begin{table}[p]
+\begin{center}
+\caption{{\em Simulation results showing IPC, re-execution percentage,
+and percent of stalls due to function unit unavailability.}
+These results are for 8 and 16 integer ALU function units.}
+\label{tab:iwsize16b}
+\vspace{+0.1in}
+\begin{tabular}{|l||r|r|r||r|r|r|}
+\hline 
+{IALU-FUs}& 
+\multicolumn{3}{c||}{8} &
+\multicolumn{3}{c|}{16} \\
+\hline
+name &
+IPC & \%REXEC & \%WAIT &
+IPC & \%REXEC & \%WAIT \\
+
+
+\hline
+bzip2&
+5.1 & 12.5 &6.9 & 5.5 & 16.2 & 0.0 \\
+
+\hline
+crafty&
+5.0 & 14.3 & 7.6 & 5.3 & 17.5 & 0.0 \\
+
+\hline
+eon&
+4.7 & 9.7 & 2.4 & 4.8 & 10.4 & 0.0 \\
+
+\hline
+gcc&
+5.3 & 11.1 & 8.5 & 5.7 & 13.4 & 0.0 \\
+
+\hline
+gzip&
+5.0 & 16.4 & 9.3 & 5.5 & 20.4 & 0.0 \\
+
+\hline
+parser&
+4.9 & 14.0 & 11.5 & 5.4 & 18.9 & 0.0 \\
+
+\hline
+perlbmk&
+5.3 & 13.6 & 6.5 & 5.6 & 15.1 & 0.0 \\
+
+\hline
+twolf&
+4.9 & 15.5 & 8.1 & 5.2 & 18.5 & 0.0 \\
+
+\hline
+vortex&
+5.5 & 8.5 & 4.4 & 5.6 & 9.6 & 0.0 \\
+
+\hline
+vpr&
+4.8 & 15.1 & 7.2 & 5.1 & 17.7 & 0.0 \\
+
+
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+%
+
+
+
+
+
+%
+\bibliographystyle{latex8}
+\bibliography{executions}
+%
+\end{document}
+%
+%
+

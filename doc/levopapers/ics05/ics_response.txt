@@ -1,0 +1,81 @@
+Some of the reviewer's objections are valid as our work is somewhat
+preliminary for such a different proposed microarchitecture as compared
+with most superscalars.  However, our intention was to introduce a
+more parallel executing processor design, with very relaxed dependency
+handling, so as to stimulate more research thinking in this area.
+
+Much of the performance benefit is due to both the rampart parallelism
+allowed in much of the execution window of the machine and the fact
+that several instruction types are executed (and/or re-executed) within
+the issue stations themselves, therefor not needing to contend for
+function-unit availability.  Memory load-stores as well as all control
+flow instructions are among those executed within the issue stations.
+This arrangement (some instructions executing in place and the remainder
+in shared FU pipelines) is made possible by the fact that all instructions
+remain in the issue stations that they were dispatched to until they
+retire.  This was discussed in the paper but can be clarified more in
+the final paper.  The novelty of the proposed machine organization and
+its very dynamic execution environment only allowed for a preliminary
+analysis so far (future work will try to better characterize the machine).
+
+No speculative memory-stores are are written back to the L1 cache or
+higher in the memory hierarchy.  Memory store values are only committed
+to the memory hierarchy on a commitment of the store instruction.
+This can be clarified in the final paper.  But speculative memory-store
+values are forwarded to younger instructions so that they may be snooped
+as speculative values for following memory load instructions, if there
+are any in the execution window.
+
+The concern about the width of the operand-block data that is forwarded
+is a partially valid one.  Once operands leave an issue station and are
+forwarded, they carry sufficient information (enumerated in the paper) so
+that they are essentially independent of their origin.  This means that
+both addresses and the associated values of an operand (along with some
+other smaller sized information) is forwarded and needs to be snooped
+(a comparison -- also mentioned in the paper) by subsequently snooping
+issue stations.  Further, each issue station needs to snoop a forwarded
+operand for all of its current operand blocks (which can be more than
+one, often several, the number of which is dependent on the nature
+of the ISA being implemented).  This was also mentioned in the paper.
+This strategy does represent a more operand-centric machine than existing
+machines, with more operand information being continuously passed
+between issue stations, but this is an expected result of first enabling
+such substantially relaxed operand dependency tracking as we have in
+the proposal.  As such, operand information is snooped in parallel by
+possibly many issue stations (the operand blocks within issue stations)
+and this could be construed to be a sort of associative search, but
+it is more closely identified with traditional distributed snooping as
+compared with a CAM lookup (if that is what the reviewer had in mind).
+
+We agree that a detailed study of silicon-unit block layout is warranted
+and this is something that will be explored in the future if the
+general microarchitectural approach shows merit.  Also, our proposed
+design addresses the goal of trying to achieve increased single-threaded
+performance at the expense of following the design path of more elaborate
+hardware (substantial parallel snooping and matching logic), and it is
+fully recognized that this may not represent the best use of hardware
+for most future processor needs.  We note though that the distributed
+snooping of operands may allow for silicon layout concerns to be possibly
+more localized than in some large superscalar designs.
+
+The final version of the paper will use a different font for figure
+captions.
+
+The present work is very preliminary and we are planning studies to better
+understand what features of the proposed microarchitecture contribute
+most to the machine's performance.  Due to the substantial difference of
+the machine operation and component interactions as compared with those
+of more conventional superscalars, the task of exploring its many design
+dimensions is large.  But this is something that we hope to start to
+address as the next phrase of this work.
+
+Concerns about power usage (that it may roughly track the total number of
+executions whether they be speculative or not), are likely valid ones.
+However, our primary concern was to explore execution parallelism
+first before exploring tradeoffs between execution performance and
+power usage.  But power-performance tradeoffs had already occurred to
+us and we are aware of the desire to minimize power usage for a given
+machine performance today.  Studying power tradeoffs in the context of
+our proposed machine may therefor be something that we might explore in
+the future.
+

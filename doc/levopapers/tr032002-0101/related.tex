@@ -1,0 +1,25 @@
+%
+\section{Related Work}
+%
+Probably the most successful high-IPC machine to date is
+Lipasti and Shen's Superspeculative
+architecture~\cite{Lip97}, achieving an IPC of
+about 7 with realistic hardware assumptions.
+The Ultrascalar machine~\cite{Hen00}
+achieves {\em asymptotic} scalability,
+but only realizes a small amount of IPC,
+due to its conservative execution model.
+The Warp Engine~\cite{Cle95}
+uses time tags, like Levo, for a large amount of speculation;
+however their realization of time
+tags is cumbersome, utilizing floating point
+numbers and machine wide parameter updating.
+
+Nagarajan et al. have proposed a {\em Grid Architecture} that
+builds an array of ALUs, each with limited control, connected
+by a operand network~\cite{Nag01}.  Their system achieves an IPC of 11 on
+SPEC2000 and Mediabench benchmarks.  While this architecture
+presents many novel ideas in attempt to reap high IPC, it
+differs greatly in its interconnect strategy and register design.
+They also rely on a compiler to obtain this level of IPC, whereas
+the microarchitecture that we have presented does not.

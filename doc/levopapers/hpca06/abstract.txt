@@ -1,0 +1,21 @@
+We present a new processor microarchitecture for managing aggressive
+parallel and speculative instruction execution.  The goal is to explore
+ways to maximize processor performance for otherwise general purpose
+serial sequential program codes which do not lend themselves to explicit
+parallelization efforts.  Instructions are fetched and dispatched for
+speculative execution as machine resources are available without first
+determining control or data dependencies.  Rather, input dependencies
+are determined dynamically at execution time.  Instructions remain
+in the processor (without being re-fetched or re-dispatched) and in a
+state of readiness for re-execution as correct input dependencies are
+determined.  Committed instructions provide outputs to speculative
+instructions, which in turn re-execute as necessary in order to
+eventually converge on the correct committed program state.  We present
+results showing some performance gains over more conventional processor
+microarchitectures with approximately equivalent hardware resources when
+executing integer sequential codes.  Our proposed microarchitecture
+also features interconnection requirements that can be more naturally
+spatially separated than those of conventional superscalars.  
+This lends the
+microarchitecture to a more distributed physical implementation, possibly
+allowing for larger physically scaled processors in the future.

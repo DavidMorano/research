@@ -1,0 +1,28 @@
+Things that still need a little fixing.
+
+
++ figure 3 need its columned labeld 'CEP' to be changed to be
+  'CEPB'.
+
++ maybe a figure for III-D showing the horizontal L1-D cache
+  accesses buses
+
++ "flushing" of MFU's ?  What is this about ?
+
++ do we retire an AS column with a DEE path still in the other
+  half of the ASes within the same SG column ?  if so, how are
+  the registers in the RFU's of that column handled ?
+
++ one or more of the figures have the following fonts that 
+  NEED TO BE CHANGED TO either 'Helvetica' or 'Times' or one
+  of the other 35 standard publishing fonts :
+
+	TTE2Do00 used in file brdomain.eps
+	ArialMT used in file toc_geom.eps
+	Arial-BoldMT used in file toc_geom.eps
+
+  these fonts are not standard publishing fonts and should not be
+  used ; 'Ariel' is just Mickey$ofts proprietary version of 'Helvetica' ->
+  use 'Helvetica' instead !
+
+

@@ -1,0 +1,4 @@
+
+scp -qp piranha:pact/high.ps . 
+scp -qp piranha:pact/high.pdf . &
+

@@ -1,0 +1,182 @@
+From akhalafi@gateway.ece.neu.edu Wed Jul 10 06:15:26 2002
+Return-Path: <akhalafi@gateway.ece.neu.edu>
+Received: from sert.ac.upc.es (sert.ac.upc.es [147.83.30.70])
+	by roura.ac.upc.es (8.11.6/8.11.0) with ESMTP id g6A4FQe05594
+	for <dkaeli@ac.upc.es>; Wed, 10 Jul 2002 06:15:26 +0200 (MET DST)
+Received: from SMTP1.ECE.NEU.EDU (markov.ece.neu.edu [129.10.60.83])
+	by sert.ac.upc.es (Postfix) with ESMTP id B4B424500
+	for <dkaeli@ac.upc.es>; Wed, 10 Jul 2002 06:15:25 +0200 (MET DST)
+Received: from dharma.ece.neu.edu (dharma.ece.neu.edu [129.10.60.101])
+	by SMTP1.ECE.NEU.EDU (8.11.3/8.11.3) with SMTP id g6A4FOC27367
+	for <dkaeli@ac.upc.es>; Wed, 10 Jul 2002 00:15:24 -0400 (EDT)
+Received: from lespaul.ece.neu.edu ([129.10.60.240])
+ by dharma.ece.neu.edu (NAVGW 2.5.2.9) with SMTP id M2002071000152307101
+ ; Wed, 10 Jul 2002 00:15:23 -0400
+Received: from localhost by lespaul.ece.neu.edu (8.9.3/8.9.3) with ESMTP id AAA21708;
+	Wed, 10 Jul 2002 00:15:23 -0400 (EDT)
+X-Authentication-Warning: lespaul.ece.neu.edu: akhalafi owned process doing -bs
+Date: Wed, 10 Jul 2002 00:15:23 -0400 (EDT)
+From: Alireza Khalafi <akhalafi@ECE.NEU.EDU>
+X-Sender: akhalafi@lespaul
+To: "Prof. David Kaeli" <dkaeli@ac.upc.es>,
+   "Augustus (Gus) K. Uht" <uht@ele.uri.edu>
+Cc: David Morano <dmorano@ECE.NEU.EDU>
+Subject: Statistics on Memory accesses
+Message-ID: <Pine.GSO.4.21.0207091644330.21596-100000@lespaul>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Status: RO
+X-Status: A
+Content-Length: 1560
+Lines: 59
+
+Hi
+
+I tought you might be interested in the following statistics.  The
+data shows the percentage of all executed loads that are satisfied in L0,
+L1, L2 or Main Memory.  The percentage of loads that go to the
+memory are very low (less than 0.1%).  L0 satisfies around %25 - %35 of
+the loads which I think is very good.  The "L0 bwreq" are the percentage 
+of loads satisfied by sending a backwarding request and "L0 snoop" are the
+percentage that are satisfied by snooping the forwarded values without
+sending a backwarding request.
+
+As you see the L0 cache in 16-8-8 doesn't satisfy as many loads as 8-4-8.
+I think this is because there are more speculative loads in 16-8-8 that
+do not hit at L0.  One problem with large configurations is that the
+distance between recenly issued instruction and committed ones is too far
+that the issued instructions do not have a correct initial value to start
+with.  Although this is just a guess. 
+
+Ali
+
+
+The following stats are normalized wrt total executed loads.
+
+4-4-4		bzip2	parser
+L0 Hit rate	25.7%	30.3%
+L1D Hit rate	98.71%	99.39%
+L2 Hit rate	79.8%	80.05%
+L0 bwreq	6.7%	6.2%
+L0 snoop	19.0%	24.2%
+L1		73.5%	69.1%
+L2		0.8%	0.6%
+Mem		0.0%	0.0%
+
+
+8-4-8
+
+Loads		bzip2	parser
+L0 Hit rate	28.3%	33.7%
+L1 Hit rate	98.94	99.35
+L2 Hit Delay	79.66	81.59
+L0 bwreq	4.1%	4.5%
+L0 snoop	24.2%	29.2%
+L1		71.1%	65.7%
+L2		0.6%	0.6%
+Mem		0.0%	0.0%
+
+16-8-8
+
+Loads		bzip2	parser
+L0 Hit rate	21.8%	34.0%
+L1D Hit rate	98.85	99.28
+L2 Hit rate	89.38	86.74
+L0 bwreq	3.6%	5.2%
+L0 snoop	18.2%	28.8%
+L1		77.3%	65.4%
+L2		0.9%	1.1%
+Mem		0.0%	0.0%
+
+
+
+From akhalafi@gateway.ece.neu.edu Tue Jul  9 21:34:41 2002
+Return-Path: <akhalafi@gateway.ece.neu.edu>
+Received: from sert.ac.upc.es (sert.ac.upc.es [147.83.30.70])
+	by roura.ac.upc.es (8.11.6/8.11.0) with ESMTP id g69JYfe13138
+	for <dkaeli@ac.upc.es>; Tue, 9 Jul 2002 21:34:41 +0200 (MET DST)
+Received: from SMTP1.ECE.NEU.EDU (markov.ece.neu.edu [129.10.60.83])
+	by sert.ac.upc.es (Postfix) with ESMTP id 789CB4500
+	for <dkaeli@ac.upc.es>; Tue,  9 Jul 2002 21:34:40 +0200 (MET DST)
+Received: from dharma.ece.neu.edu (dharma.ece.neu.edu [129.10.60.101])
+	by SMTP1.ECE.NEU.EDU (8.11.3/8.11.3) with SMTP id g69JYdC20598
+	for <dkaeli@ac.upc.es>; Tue, 9 Jul 2002 15:34:39 -0400 (EDT)
+Received: from lespaul.ece.neu.edu ([129.10.60.240])
+ by dharma.ece.neu.edu (NAVGW 2.5.2.9) with SMTP id M2002070915343922360
+ ; Tue, 09 Jul 2002 15:34:39 -0400
+Received: from localhost by lespaul.ece.neu.edu (8.9.3/8.9.3) with ESMTP id PAA21557;
+	Tue, 9 Jul 2002 15:34:39 -0400 (EDT)
+X-Authentication-Warning: lespaul.ece.neu.edu: akhalafi owned process doing -bs
+Date: Tue, 9 Jul 2002 15:34:39 -0400 (EDT)
+From: Alireza Khalafi <akhalafi@ECE.NEU.EDU>
+X-Sender: akhalafi@lespaul
+To: David Kaeli <dkaeli@ac.upc.es>
+Cc: dmorano@ECE.NEU.EDU
+Subject: Re: more re: L0 sizes
+In-Reply-To: <20020709192303.GA14803@ac.upc.es>
+Message-ID: <Pine.GSO.4.21.0207091523490.21553-100000@lespaul>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Status: RO
+X-Status: A
+Content-Length: 2170
+Lines: 57
+
+Dave
+
+No.  It is a constant for each configuration.
+
+For 4-4-4 it is 4 (total of 4 MFUs in the machine)
+For 8-4-8 it is 8 (total of 8 MFUs in the machine)
+For 16-8-8 it is 8 (total of 16 MFUs in the machine)
+
+I also like to mention a couple things.  The data shows that we are
+very sensitive to L1 delay but not very sensitive to DRAM delay.  This
+shows that maybe we are not capturing much of the memory accesses
+in the execution window.  The reason that we are not very sensitive to
+DRAM dealy might be that most of the memory requests are satisfied by L1
+cache.  Also note that for the larger machines there is more speculative
+memory accesses which means more traffic on the buses.  
+
+I am running simulations with 1 cycle dealy for L1 I-cache dealy and also
+using a Perfect Fetch that might give us a better insight into what is
+happening.  I should have the data in a couple hours.
+
+Ali
+
+> 
+> Then the next question is the spanning bus length.
+> 
+> Is this constant?
+> 
+> Dave
+> 
+> 
+> On Tue, Jul 09, 2002 at 03:02:15PM -0400, David Morano wrote:
+> > Dave K.,
+> > 
+> > > Please chime in....
+> > 
+> > I just spoke to Ali and he said yes, as I previously described.
+> > (at least 1 MFU per column and more than 1 if the bus span is
+> > less then column height in SGs).
+> > 
+> > Dave M.
+> 
+> -- 
+> ***********************************************************
+> ***********************************************************
+> **      Professor David R. Kaeli                         **
+> **      Dept. of Electrical and Computer Engineering     **
+> **      Northeastern University                          **
+> **      318 Dana Research Center                         **
+> **      Boston, MA  02115                                **
+> **      email: kaeli@ece.neu.edu                         **
+> **      Prof. Kaeli is presently on sabbatical leave     **
+> **      in Barcelona, Spain.  His phone number           **
+> **      there is: +34 93 401 74 09                       **
+> **      fax is: +34 93 401 70 55                         **
+> ***********************************************************
+> ***********************************************************
+> 
+

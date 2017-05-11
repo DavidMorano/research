@@ -1,0 +1,22 @@
+#!/bin/ksh
+# getstats
+
+
+B=$1
+if [ -z "${B}" ] ; then
+  B=mean_rs
+fi
+
+
+SUF=" etbbtlen etbftlen etbplen ethtlen rlife rread rrint ruse rwrite"
+
+
+for S in $SUF ; do
+
+  echo ${B}.${S} >&2
+  sumcol -D ${B}.${S} > /dev/null
+
+done
+
+
+

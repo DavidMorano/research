@@ -1,0 +1,8 @@
+#!/usr/bin/ksh
+
+D=intsup
+T=intsup
+
+scp -qp uri:doc/${D}/${T}.pdf . &
+
+

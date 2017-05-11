@@ -1,0 +1,10 @@
+bzip2	2.5422
+compress	1.9547
+gcc	1.5316
+go	1.4659
+ijpeg	3.9524
+parser	2.2376
+crafty	3.0897
+vortex	2.0230
+gzip	2.7491
+mcf	1.6471

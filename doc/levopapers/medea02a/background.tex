@@ -1,0 +1,62 @@
+%
+\section{Background on Multipath Execution}
+%
+There have been several attempts at substantially increasing
+program IPC through the exploitation of ILP.
+The Warp Engine~\cite{Cle95}
+used time-tags in order to manage large amounts of speculative execution,
+but their management of them is different than ours.
+The Multiscalar processor architecture \cite{Soh95}
+is another attempt at
+realizing substantial IPC seedups over convention superscalar
+processors.  However, our approach is quite different than theirs
+and their approach relies on compiler participation where we do not.
+A notable attempt at realizing high IPC was done by
+Lipasti and Shen on their Superspeculative
+architecture~\cite{Lip97}.  They achieved an IPC of
+about 7 with realistic hardware assumptions.
+The Ultrascalar machine~\cite{Hen00}
+achieves {\em asymptotic} scalability,
+but only realizes a small amount of IPC due to its 
+conservative execution model.
+Nagarajan et al proposed a {\em Grid Architecture} of ALUs
+connected by a operand network~\cite{Nag01}.  
+This has some similarities to our work.
+They have shown a rather impressive IPC of 11 on integer benchmarks.
+However, unlike our work, their microarchitecture
+relies on the coordinated use of their compiler to obtain the high IPCs.
+
+Early work on multipath execution was
+dominated by IBM in the
+late 1970s and 1980s \cite{Conners79}.
+The earliest attempts at multipath
+execution started with the ability to prefetch down both
+outcomes of a conditional branch.  This became more aggressive
+to the point of actually executing down both outcomes of
+a conditional branch.  This has
+been explored in work such as that by
+Wang \cite{Wang90}.  
+More aggressive research by Uht and
+Sindagi \cite{Uht95} explored the intersection of both
+multipath execution and future large-scale microarchitectures
+capable of possibly hundreds of instructions being executed simultaneously.
+They also addressed the general question of speculatively executing
+more than two paths simultaneously.
+Work on dual path execution (only two speculative paths) has
+been done by Heil and Smith~\cite{Heil96}.
+Klauser et al explored multiplath execution (including more than two
+speculative paths)
+on the PolyPath microarchitecture.
+
+Exploring multipath execution starting from a simultaneous multithreading (SMT)
+microarchitecture has been done by
+Wallace et al \cite{Wallace98}.  
+Ahuja et al \cite{Ahuja98} explore some limits for speedups from
+multipath execution but their work is still largely restricted to more
+conventional (modest sized) microarchitectures with less than approximately
+128
+speculative instructions in flight.  Our present work explores the use
+of multipath execution on a significantly larger microarchitecture than
+that of Ahuja or the other past work with the exception of that by
+Uht and 
+Sindagi \cite{Uht95}.

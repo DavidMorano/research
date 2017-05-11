@@ -1,0 +1,27 @@
+
+Simple-Scalar run on PISA ISA, using an issue width of 32.
+Everything else is as close as possible to our default parameters
+for the 8-4-8 geometry.
+
+
+program		IPC
+----------------------
+
+bzip2		2.28
+compress	1.88
+crafty		2.58
+gcc		1.49
+go		1.44
+gzip		2.51
+ijpeg		2.99
+mcf		1.46
+parser		2.13
+vortex		1.98
+
+
+H-MEAN		1.96
+
+MEAN		2.07
+
+
+

@@ -1,0 +1,19 @@
+#!/bin/ksh
+# BUNDLE
+
+
+T=timetags
+
+
+FILES=
+FILES="${FILES} ${T}.tex ${T}.bib latex8.bst "
+FILES="${FILES} window.eps source.eps "
+FILES="${FILES} figures.ppt"
+
+
+tar -cf ${T}.tar $FILES
+rm -f ${T}.tar.gz
+gzip ${T}.tar
+
+
+

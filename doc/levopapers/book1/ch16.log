@@ -1,0 +1,808 @@
+This is TeX, Version 3.14159 (Web2C 7.4.5) (format=latex 2004.5.15)  15 FEB 2006 14:03
+**ch16
+(./ch16.tex
+LaTeX2e <2001/06/01>
+Babel <v3.7h> and hyphenation patterns for american, french, german, ngerman, n
+ohyphenation, loaded.
+(/usr/add-on/tetex/share/texmf/tex/latex/base/book.cls
+Document Class: book 2001/04/21 v1.4e Standard LaTeX document class
+(/usr/add-on/tetex/share/texmf/tex/latex/base/bk10.clo
+File: bk10.clo 2001/04/21 v1.4e Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@chapter=\count80
+\c@section=\count81
+\c@subsection=\count82
+\c@subsubsection=\count83
+\c@paragraph=\count84
+\c@subparagraph=\count85
+\c@figure=\count86
+\c@table=\count87
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+) (./kaeliyew.sty
+Package: kaeliyew 2002/03/08 3.0 CRC Dictionary Document Style
+\c@shared=\count88
+\htrim=\dimen103
+\vtrimtop=\dimen104
+\vtrimbot=\dimen105
+\ul@box=\box26
+\ur@box=\box27
+\ll@box=\box28
+\lr@box=\box29
+\@cipboxa=\box30
+\@cipboxb=\box31
+\@ciprulewidth=\dimen106
+\c@numauthors=\count89
+\section@toc@skip=\skip43
+\SectionTOCWidth=\skip44
+\subsection@toc@skip=\skip45
+\SubSectionTOCWidth=\skip46
+\subsubsection@toc@skip=\skip47
+\SubSubSectionTOCWidth=\skip48
+\paragraph@toc@skip=\skip49
+\ParagraphTOCWidth=\skip50
+\subparagraph@toc@skip=\skip51
+\@chaptoc=\write3
+\c@chaptocdepth=\count90
+\c@Example=\count91
+\c@subequation=\count92
+
+(/usr/add-on/tetex/share/texmf/tex/latex/misc/floatflt.sty
+Package: floatflt 1997/07/16 v. 1.31
+\c@OptionTest=\count93
+\figbox=\box32
+\tabbox=\box33
+\pagebox=\box34
+\ffigcount=\count94
+\ftabcount=\count95
+\fftest=\count96
+\hangcount=\count97
+\nosuccesstryfig=\count98
+\nosuccesstrytab=\count99
+\figgutter=\dimen107
+\tabgutter=\dimen108
+\htdone=\dimen109
+\pageht=\dimen110
+\startpageht=\dimen111
+\tabbredd=\dimen112
+\floatfltwidth=\dimen113
+\fltitemwidth=\dimen114
+\outputpretest=\toks14
+)
+\@captionwidth=\dimen115
+\@tablebox=\box35
+\@tabletitlebox=\box36
+\@tablewidth=\dimen116
+\@tabletitlewidth=\dimen117
+\max@tablewidth=\dimen118
+\copyrightbox=\box37
+\c@numlist=\count100
+\dwidth=\dimen119
+\dheight=\dimen120
+\c@ALGORITHM=\count101
+\c@APPLICATION=\count102
+\c@CASE=\count103
+\c@CLAIM=\count104
+\c@COROLLARY=\count105
+\c@DEFINITION=\count106
+\c@FORMULA=\count107
+\c@LEMMA=\count108
+\c@PROPOSITION=\count109
+\c@QUESTION=\count110
+\c@REMARK=\count111
+\c@TEST=\count112
+\c@THEOREM=\count113
+)
+(/usr/add-on/tetex/share/texmf/tex/latex/amsfonts/amssymb.sty
+Package: amssymb 2002/01/22 v2.2d
+
+(/usr/add-on/tetex/share/texmf/tex/latex/amsfonts/amsfonts.sty
+Package: amsfonts 2001/10/25 v2.2f
+\@emptytoks=\toks15
+\symAMSa=\mathgroup4
+\symAMSb=\mathgroup5
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 132.
+))
+(/usr/add-on/tetex/share/texmf/tex/latex/amsmath/amsmath.sty
+Package: amsmath 2000/07/18 v2.13 AMS math features
+\@mathmargin=\skip52
+
+For additional information on amsmath, use the `?' option.
+(/usr/add-on/tetex/share/texmf/tex/latex/amsmath/amstext.sty
+Package: amstext 2000/06/29 v2.01
+
+(/usr/add-on/tetex/share/texmf/tex/latex/amsmath/amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0
+\@emptytoks=\toks16
+\ex@=\dimen121
+))
+(/usr/add-on/tetex/share/texmf/tex/latex/amsmath/amsbsy.sty
+Package: amsbsy 1999/11/29 v1.2d
+\pmbraise@=\dimen122
+)
+(/usr/add-on/tetex/share/texmf/tex/latex/amsmath/amsopn.sty
+Package: amsopn 1999/12/14 v2.01 operator names
+)
+\inf@bad=\count114
+LaTeX Info: Redefining \frac on input line 211.
+\uproot@=\count115
+\leftroot@=\count116
+LaTeX Info: Redefining \overline on input line 307.
+\classnum@=\count117
+\DOTSCASE@=\count118
+LaTeX Info: Redefining \ldots on input line 379.
+LaTeX Info: Redefining \dots on input line 382.
+LaTeX Info: Redefining \cdots on input line 467.
+\Mathstrutbox@=\box38
+\strutbox@=\box39
+\big@size=\dimen123
+LaTeX Font Info:    Redeclaring font encoding OML on input line 567.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 568.
+\macc@depth=\count119
+\c@MaxMatrixCols=\count120
+\dotsspace@=\muskip10
+\c@parentequation=\count121
+\dspbrk@lvl=\count122
+\tag@help=\toks17
+\row@=\count123
+\column@=\count124
+\maxfields@=\count125
+\andhelp@=\toks18
+\eqnshift@=\dimen124
+\alignsep@=\dimen125
+\tagshift@=\dimen126
+\tagwidth@=\dimen127
+\totwidth@=\dimen128
+\lineht@=\dimen129
+\@envbody=\toks19
+\multlinegap=\skip53
+\multlinetaggap=\skip54
+\mathdisplay@stack=\toks20
+LaTeX Info: Redefining \[ on input line 2666.
+LaTeX Info: Redefining \] on input line 2667.
+)
+(/usr/add-on/tetex/share/texmf/tex/latex/base/latexsym.sty
+Package: latexsym 1998/08/17 v2.2e Standard LaTeX package (lasy symbols)
+\symlasy=\mathgroup6
+LaTeX Font Info:    Overwriting symbol font `lasy' in version `bold'
+(Font)                  U/lasy/m/n --> U/lasy/b/n on input line 42.
+)
+(/usr/add-on/tetex/share/texmf/tex/latex/tools/theorem.sty
+Package: theorem 1995/11/23 v2.2c Theorem extension package (FMi)
+\theorem@style=\toks21
+\theorem@bodyfont=\toks22
+\theorempreskipamount=\skip55
+\theorempostskipamount=\skip56
+
+(/usr/add-on/tetex/share/texmf/tex/latex/tools/thp.sty
+File: thp.sty 1995/11/23 v2.2c Theorem extension package (FMi)
+))
+(/usr/add-on/tetex/share/texmf/tex/latex/graphics/graphicx.sty
+Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/add-on/tetex/share/texmf/tex/latex/graphics/keyval.sty
+Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
+\KV@toks@=\toks23
+)
+(/usr/add-on/tetex/share/texmf/tex/latex/graphics/graphics.sty
+Package: graphics 2001/07/07 v1.0n Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/add-on/tetex/share/texmf/tex/latex/graphics/trig.sty
+Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+)
+(/usr/add-on/tetex/share/texmf/tex/latex/config/graphics.cfg
+File: graphics.cfg 2001/08/31 v1.1 graphics configuration of teTeX/TeXLive
+)
+Package graphics Info: Driver file: dvips.def on input line 80.
+
+(/usr/add-on/tetex/share/texmf/tex/latex/graphics/dvips.def
+File: dvips.def 1999/02/16 v3.0i Driver-dependant file (DPC,SPQR)
+))
+\Gin@req@height=\dimen130
+\Gin@req@width=\dimen131
+) (./subfigure.sty
+Package: subfigure 1995/03/06 v2.0 subfigure package
+Package: subfigure 1995/03/06 v2.0
+\c@subfigure=\count126
+\c@lofdepth=\count127
+\c@subtable=\count128
+\c@lotdepth=\count129
+) (/usr/add-on/tetex/share/texmf/tex/latex/graphics/epsfig.sty
+Package: epsfig 1999/02/16 v1.7a (e)psfig emulation (SPQR)
+\epsfxsize=\dimen132
+\epsfysize=\dimen133
+)
+(/usr/add-on/tetex/share/texmf/tex/latex/base/makeidx.sty
+Package: makeidx 2000/03/29 v1.0m Standard LaTeX package
+)
+(/usr/add-on/tetex/share/texmf/tex/latex/base/showidx.sty
+Package: showidx 2000/03/29 v1.0m Standard LaTeX package
+\indexbox=\insert233
+)
+(/usr/add-on/tetex/share/texmf/tex/latex/tools/multicol.sty
+Package: multicol 2000/07/10 v1.5z multicolumn formatting (FMi)
+\c@tracingmulticols=\count130
+\mult@box=\box40
+\multicol@leftmargin=\dimen134
+\c@unbalance=\count131
+\c@collectmore=\count132
+\doublecol@number=\count133
+\multicoltolerance=\count134
+\multicolpretolerance=\count135
+\full@width=\dimen135
+\page@free=\dimen136
+\premulticols=\dimen137
+\postmulticols=\dimen138
+\multicolsep=\skip57
+\multicolbaselineskip=\skip58
+\partial@page=\box41
+\last@line=\box42
+\mult@rightbox=\box43
+\mult@grightbox=\box44
+\mult@gfirstbox=\box45
+\mult@firstbox=\box46
+\@tempa=\box47
+\@tempa=\box48
+\@tempa=\box49
+\@tempa=\box50
+\@tempa=\box51
+\@tempa=\box52
+\@tempa=\box53
+\@tempa=\box54
+\@tempa=\box55
+\@tempa=\box56
+\@tempa=\box57
+\@tempa=\box58
+\@tempa=\box59
+\@tempa=\box60
+\@tempa=\box61
+\@tempa=\box62
+\@tempa=\box63
+\c@columnbadness=\count136
+\c@finalcolumnbadness=\count137
+\last@try=\dimen139
+\multicolovershoot=\dimen140
+\multicolundershoot=\dimen141
+\mult@nat@firstbox=\box64
+\colbreak@box=\box65
+)
+\tempbox=\box66
+\nomenwidth=\dimen142
+ (./ch16.aux)
+\openout1 = `ch16.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 43.
+
+(/usr/add-on/tetex/share/texmf/tex/latex/base/omscmr.fd
+File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <6> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 43.
+
+Underfull \vbox (badness 10000) detected at line 44
+ []
+
+
+Overfull \hbox (335.75pt too wide) detected at line 44
+[]
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 44
+ []
+
+
+Overfull \hbox (335.75pt too wide) detected at line 44
+[]
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 44
+ []
+
+
+Overfull \hbox (335.75pt too wide) detected at line 44
+[]
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 44
+ []
+
+
+Overfull \hbox (335.75pt too wide) detected at line 44
+[]
+ []
+
+(./ch16.toc
+LaTeX Font Info:    Try loading font information for U+msa on input line 5.
+ (/usr/add-on/tetex/share/texmf/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2002/01/19 v2.2g AMS font definitions
+)
+LaTeX Font Info:    Try loading font information for U+msb on input line 5.
+
+(/usr/add-on/tetex/share/texmf/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2002/01/19 v2.2g AMS font definitions
+)
+LaTeX Font Info:    Try loading font information for U+lasy on input line 5.
+
+(/usr/add-on/tetex/share/texmf/tex/latex/base/ulasy.fd
+File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
+))
+\tf@toc=\write4
+\openout4 = `ch16.toc'.
+
+
+Overfull \hbox (38.99417pt too wide) detected at line 44
+\OT1/cmr/bx/n/10 References 
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 45
+ []
+
+
+Overfull \hbox (335.75pt too wide) detected at line 45
+[]
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 45
+ []
+
+
+Overfull \hbox (335.75pt too wide) detected at line 45
+[]
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 45
+ []
+
+
+Overfull \hbox (335.75pt too wide) detected at line 45
+[]
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 45
+ []
+
+
+Overfull \hbox (335.75pt too wide) detected at line 45
+[]
+ []
+
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+ [][][][] 
+ []
+
+
+Overfull \hbox (7.22223pt too wide) has occurred while \output is active
+[]  \EqNumFont 1
+ []
+
+[1
+
+
+]
+Underfull \vbox (badness 10000) detected at line 45
+ []
+
+
+Overfull \hbox (335.75pt too wide) detected at line 45
+[]
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 45
+ []
+
+
+Overfull \hbox (335.75pt too wide) detected at line 45
+[]
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 45
+ []
+
+
+Overfull \hbox (335.75pt too wide) detected at line 45
+[]
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 45
+ []
+
+
+Overfull \hbox (335.75pt too wide) detected at line 45
+[]
+ []
+
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+ [][][][] 
+ []
+
+[2
+
+] (./ch16.lot)
+\tf@lot=\write5
+\openout5 = `ch16.lot'.
+
+
+Underfull \vbox (badness 10000) detected at line 46
+ []
+
+
+Overfull \hbox (335.75pt too wide) detected at line 46
+[]
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 46
+ []
+
+
+Overfull \hbox (335.75pt too wide) detected at line 46
+[]
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 46
+ []
+
+
+Overfull \hbox (335.75pt too wide) detected at line 46
+[]
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 46
+ []
+
+
+Overfull \hbox (335.75pt too wide) detected at line 46
+[]
+ []
+
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+ [][][][] 
+ []
+
+
+Overfull \hbox (7.22223pt too wide) has occurred while \output is active
+[]  \EqNumFont 3
+ []
+
+[3]
+Underfull \vbox (badness 10000) detected at line 46
+ []
+
+
+Overfull \hbox (335.75pt too wide) detected at line 46
+[]
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 46
+ []
+
+
+Overfull \hbox (335.75pt too wide) detected at line 46
+[]
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 46
+ []
+
+
+Overfull \hbox (335.75pt too wide) detected at line 46
+[]
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 46
+ []
+
+
+Overfull \hbox (335.75pt too wide) detected at line 46
+[]
+ []
+
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+ [][][][] 
+ []
+
+[4
+
+] (./ch16.lof)
+\tf@lof=\write6
+\openout6 = `ch16.lof'.
+
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+ [][][][] 
+ []
+
+
+Overfull \hbox (7.22223pt too wide) has occurred while \output is active
+[]  \EqNumFont 5
+ []
+
+[5]
+Underfull \vbox (badness 10000) detected at line 47
+ []
+
+
+Overfull \hbox (335.75pt too wide) detected at line 47
+[]
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 47
+ []
+
+
+Overfull \hbox (335.75pt too wide) detected at line 47
+[]
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 47
+ []
+
+
+Overfull \hbox (335.75pt too wide) detected at line 47
+[]
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 47
+ []
+
+
+Overfull \hbox (335.75pt too wide) detected at line 47
+[]
+ []
+
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+ [][][][] 
+ []
+
+[6
+
+] [7]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+Overfull \hbox (335.75pt too wide) has occurred while \output is active
+[]
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+Overfull \hbox (335.75pt too wide) has occurred while \output is active
+[]
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+Overfull \hbox (335.75pt too wide) has occurred while \output is active
+[]
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+Overfull \hbox (335.75pt too wide) has occurred while \output is active
+[]
+ []
+
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+ [][][][] 
+ []
+
+[8]
+Underfull \vbox (badness 10000) detected at line 56
+ []
+
+
+Overfull \hbox (335.75pt too wide) detected at line 56
+[]
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 56
+ []
+
+
+Overfull \hbox (335.75pt too wide) detected at line 56
+[]
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 56
+ []
+
+
+Overfull \hbox (335.75pt too wide) detected at line 56
+[]
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 56
+ []
+
+
+Overfull \hbox (335.75pt too wide) detected at line 56
+[]
+ []
+
+Chapter 1.
+(./1.toc
+
+LaTeX Font Warning: Font shape `OT1/cmr/m/n' in size <9.5> not available
+(Font)              size <9> substituted on input line 2.
+
+LaTeX Font Info:    Calculating math sizes for size <9.5> on input line 2.
+
+LaTeX Font Warning: Font shape `OML/cmm/m/it' in size <9.5> not available
+(Font)              size <9> substituted on input line 2.
+
+
+LaTeX Font Warning: Font shape `OMS/cmsy/m/n' in size <9.5> not available
+(Font)              size <9> substituted on input line 2.
+
+
+LaTeX Font Warning: Font shape `OMX/cmex/m/n' in size <9.5> not available
+(Font)              size <9> substituted on input line 2.
+
+
+LaTeX Font Warning: Font shape `U/msa/m/n' in size <9.5> not available
+(Font)              size <9> substituted on input line 2.
+
+
+LaTeX Font Warning: Font shape `U/msb/m/n' in size <9.5> not available
+(Font)              size <9> substituted on input line 2.
+
+
+LaTeX Font Warning: Font shape `U/lasy/m/n' in size <9.5> not available
+(Font)              size <9> substituted on input line 2.
+
+
+Overfull \hbox (21.0pt too wide) in paragraph at lines 2--2
+ [][] 
+ []
+
+
+Overfull \hbox (21.0pt too wide) in paragraph at lines 3--3
+ [][] 
+ []
+
+
+Overfull \hbox (21.0pt too wide) in paragraph at lines 4--4
+ [][] 
+ []
+
+
+Overfull \hbox (21.0pt too wide) in paragraph at lines 13--13
+ [][] 
+ []
+
+
+Overfull \hbox (21.0pt too wide) in paragraph at lines 16--16
+ [][] 
+ []
+
+)
+\openout3 = `1.toc'.
+
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+ [][][][] 
+ []
+
+
+Overfull \hbox (7.22223pt too wide) has occurred while \output is active
+[]  \EqNumFont 9
+ []
+
+[9
+
+] [10]
+Overfull \hbox (2.27834pt too wide) in paragraph at lines 208--221
+\EqNumFont are the Multiscalar-like pro-ces-sors [[], []], the Su-perThreaded p
+ro-ces-sor model
+ []
+
+[11] [12] [13] [14]
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 437.
+ [15] [16]
+File: ch16fig1.eps Graphic file (type eps)
+ <ch16fig1.eps> [17]
+File: ch16fig2.eps Graphic file (type eps)
+ <ch16fig2.eps> [18]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [19]
+File: ch16fig3.eps Graphic file (type eps)
+
+<ch16fig3.eps> [20] [21]
+Underfull \vbox (badness 1783) has occurred while \output is active []
+
+ [22]
+File: ch16fig4.eps Graphic file (type eps)
+
+<ch16fig4.eps>
+Underfull \vbox (badness 3009) has occurred while \output is active []
+
+ [23]
+File: ch16fig5.eps Graphic file (type eps)
+
+<ch16fig5.eps> [24] [25]
+File: ch16fig6.eps Graphic file (type eps)
+ <ch16fig6.eps> [26] [27] [28] [29] [30]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [31]
+(./ch16.bbl [32]
+Underfull \vbox (badness 3635) has occurred while \output is active []
+
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+ [][][][] 
+ []
+
+
+Overfull \hbox (12.22224pt too wide) has occurred while \output is active
+[]  \EqNumFont 33
+ []
+
+[33
+
+]) [34] (./ch16.aux)
+
+LaTeX Font Warning: Size substitutions with differences
+(Font)              up to 0.5pt have occurred.
+
+ ) 
+Here is how much of TeX's memory you used:
+ 2337 strings out of 95847
+ 28060 string characters out of 1195216
+ 81505 words of memory out of 1000001
+ 5205 multiletter control sequences out of 10000+50000
+ 17320 words of font info for 67 fonts, out of 500000 for 1000
+ 14 hyphenation exceptions out of 1000
+ 27i,8n,24p,239b,374s stack positions out of 1500i,500n,5000p,200000b,5000s
+
+Output written on ch16.dvi (34 pages, 110212 bytes).

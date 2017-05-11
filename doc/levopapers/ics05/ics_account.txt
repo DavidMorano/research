@@ -1,0 +1,19 @@
+web site:
+
+http://tempura.csail.mit.edu/ics05crp
+
+
+Your registration indicates your email address is 
+
+mail address:
+dmorano@ece.neu.edu
+
+password:
+godrocawec
+
+login-click-URL :
+
+http://tempura.csail.mit.edu/ics05crp/All/authAccount.php?loginEmail=dmorano@ece.neu.edu&password=godrocawec
+
+
+

@@ -1,0 +1,130 @@
+Here it comes!  I spent some time trying to find the best
+way to present the data and although I have two graphs, only one of them
+is nice(!) enough to put in the paper, but I don't even know if it is
+appropriate.  I am going to send it out later but basically it just shows
+the branch domain size versue percentage of branches.  
+
+What I have here, is a table with the branch statistics which I think is
+very close to what we want.  I didn't get a chance to put it in a table,
+but it is easy to read.
+
+Here is what I did.  I divided the branches into 8 groups.  There is, in
+fact three dimentions that the branches are categorized over.  
+
+	I) Execution frequency: Number of times a branch is executed.
+		H: High  L:Low
+
+	II) Branch Predictability:
+		P: Predictable	U: unpredictable (or at least hard to
+predict)
+
+	III) Distance to target:
+		N: near  F: far
+
+Before going any furthur, I am open to any suggestion regarding the naming
+convention.  I don't like the above naming much but couldn't think of
+anything good.  Suggestions are welcomed!!
+
+Every one of the above catergories is quantified using a threshold value.  
+For case I, I assumed the H branches are those than belong to the top %90
+of executed branches.  In other words, if we sort the branches according
+to their execution frequency in an increasing order and find the
+cumulative sum, the branches that fall between 0 and %10 are L and the
+rest are H.  I am sure there is a better way to describe this.
+
+for case II, branches that their prediction rate is higher than a
+threshold are P and the rest are U.
+
+Case III is easy.  If a branch target is furthur than a specified
+threshold, it is F. Otherwise it is N.
+
+For the following data the threshold values are:
+	case I:  %90
+	case II: %95
+	case III: 0.66 * 256  (two third of the window, but it could be
+configuration dependent)
+
+I don't know how good the above values are.  A couple experiments need to
+be done.  Maybe a sensitivity test to see how sensitive the data are w.r.t
+the above parameters.  (Best way to put that in paper?!!).  comments?
+
+And here are the actuall data.  A couple commnets:
+-Both percentages and number of branches are important.
+-Theoretically we don't really need to be worried about L** cases.  They
+are supposed to be the branches with less executon frequency. 
+-for the benchamrks with high HPN, we might be wasting a portion of our
+D-path resources because even without D-pahts they would still be executed
+with no branch penalty!
+-HUN is where we are apparently geting our speedup. (I assume so)
+-the ratio of H*N to H*F is high. We like this :)
+
+It is still hard to make a direct connection between this data and our
+results for D-paths.  One problem is that it doesn't seem to be a simple
+way of estimating the branch penalties.
+
+Ok. It is 5 in the morning and I am going to get some sleep!
+ 
+Looking forward for your comments.
+Thanks
+Alireza
+ 
+» gap
+Number of branches = 1875
+HPN = % 7.95
+HUN = % 4.48
+HPF = % 0.43
+HUF = % 0.21
+LPN = %28.85
+LUN = %54.19
+LPF = % 1.39
+LUF = % 2.51
+ 
+» gzip
+Number of branches = 216
+HPN = % 9.26
+HUN = %10.19
+HPF = % 0.46
+HUF = % 0.00
+LPN = %18.52
+LUN = %61.57
+LPF = % 0.00
+LUF = % 0.00
+ 
+» bzip
+Number of branches = 177
+HPN = %18.64
+HUN = %16.95
+HPF = % 2.26
+HUF = % 0.00
+LPN = %29.94
+LUN = %23.73
+LPF = % 5.08
+LUF = % 3.39
+ 
+» parser
+Number of branches = 1986
+HPN = % 5.39
+HUN = % 4.63
+HPF = % 0.20
+HUF = % 0.15
+LPN = %31.82
+LUN = %55.44
+LPF = % 0.91
+LUF = % 1.46
+ 
+» go
+Number of branches = 5242
+HPN = % 0.92
+HUN = %14.17
+HPF = % 0.08
+HUF = % 1.01
+LPN = % 4.33
+LUN = %75.30
+LPF = % 0.25
+LUF = % 3.95
+ 
+  
+
+
+
+

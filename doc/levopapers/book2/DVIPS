@@ -1,0 +1,19 @@
+# DVIPS
+
+#
+# build instructions
+#
+# $
+# $ DVIPS
+# $
+#
+
+D=morano
+
+
+# Synopsis:
+
+dvips -P pdf -G0 -t letter $D
+
+
+

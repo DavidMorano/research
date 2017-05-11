@@ -1,0 +1,130 @@
+
+review 37
+
+The paper proposes an architecture that can improve microporcessor
+performance by 70%: it supports a wider execution window by
+allowing instructions to enter execution without determining
+dependencies. Instructions are executed speculatively and an instruction
+is not necessariy retired when it has executed; a newly computed value
+of a register is broadcast to all younger instructions that use this
+register, triggering a recomputation if the value has changed. An
+instruction can be retired if it has computed and there no older
+unfinished instructions.
+
+detail
+
+The paper proposes an architecture that can improve microporcessor
+performance by 70%: it supports a wider execution window by allowing
+instructions to enter execution without determining dependencies.
+Instructions are executed speculatively and an instruction is not
+necessariy retired when it has executed; a newly computed value of a
+register is broadcast to all younger instructions that use this register,
+triggering a recomputation if the value has changed. An instruction can
+be retired if it has computed and there no older unfinished instructions.
+
+If the authors have a design that can improve microprocessor performance
+by 70% then they have achieved fame and wealth for the remainder of
+their life; their invention is worth billions of dollars; such an earth
+shattering result should be published in the most prestigious computer
+architecture conference (ISCA): it would be a pitty to have such a
+fundemental breakthrough exposed in a conference that is not attended
+by the best in computer architecture. Thus, I suggest that the paper be
+rejected by ICS.
+
+The proposed design might have a few flaws. It is not clear how are
+stores handled, as these cannot be executed speculatively; some loads
+also should not execute speculatively.
+
+More importantly, it is not clear that the proposed logic can be run at
+the same clock cycle as a more conventional microprocessor. Each of 256
+(or more)operand blocks associated with with the 128 issue stations have
+to perform at each cycle a nontrivial snoop operations (figure 4) against
+up to four outputs produced at each cycle. Then, if there is more than one
+match, the match with the highest time tag has to be selected. The outputs
+have > 8 bytes (> 16 bytes, if one interprets the paper literally). Any
+number of the 128 issue stations can be enabled for execution, and one
+needs to arbitrate the allocation of ALU resources to them. The use
+of dynamic dependency tracking, rather than more conventional register
+renaming implies that accesses by address are replaced by associative
+searches -- this is likely to slow down the clock.
+
+The basic design in this paper may not be totally new: it is quite similar
+to the ultrascalar processor design of Bradley Kuszmaul and co. The main
+difference is that Kuszmaul maintains the issue stations in a dynamic
+structure (e.g., a ring), where values move at each cycle. The current
+paper uses static issue stations, but keep updating the time tags of
+the stations at each cycle. Kuszmaul and co. have done detailed layout
+studies for their design. Their conclusion was in 1998: "The absolute area
+and critical path wire delays for a moderate size Ultrascalar datapath
+are infeasible even in today?s best technology." While technology has
+progressed in the last six years, a detailed layout study is needed
+to verify that the design is feasible. On the other hand, it is not
+that important to describe in detail the various fields and formats of
+information packets, as the details are failry obvious.
+
+
+review 151
+
+
+
+The paper presents a novel microarchitecture way to exploiting ILP. In
+short, the technique mixes a high degree of speculative and parallel
+execution, with modifications in the reservation stations or issue window
+of a conventional superscalar processor
+
+detail
+
+I do not have major complaints about the paper, I found it very well
+written and with clear explanation all along.
+
+I think the technique is a great idea and if results can be proved through
+an actual implementation (VHDL or Verilog), it could be important as a
+way of increasing the parallelism.
+
+Some comments: at first, I was confused by the way figures are explained,
+mostly because the font of the text is the same to the main body of
+the paper, so I was always trying to continue after the figure's title
+after flipping a page. I suggest using a different font and indenting
+the explanation of the figure to make it different from the following
+paragraph of text.
+
+Another thing I would have liked in the paper: since power consumption is
+such an important issue these days, is seems that the changes you made in
+the architecture make it run almost twice the number of instructions in
+the same amount of time. Arguably there is a lot of localization, as some
+reads and writes are from and to the issue stations (with forwarding), so
+there may be no increase in the register file and cache power. But there
+will be an increase in the power consumed by the functional units, which
+may be significant. In fact, it should be relatively easy to estimate
+this, for example using an approach similar to Wattch.
+
+And one last thing: did you try to explain (or find) where all the
+improvement in IPC comes from? Is it mainly due to the forwarding, or the
+local execution of branches and load/stores in the issue units, or good
+value prediction? Or maybe all have similar contribution? It seems to me
+that the original IPC values are a little too small, is that due to the
+number of registers selected (I believe 32 int + 32 FP for Alpha)? Did
+you try to see if incresing the register file size changes anything in
+your performance results (better or worse)?
+
+
+review 361
+
+This paper details a new superscalar micro-architecture allowing both
+control and data speculation. The idea is the issue instructions as
+resources allow, execute speculatively and resolve dependences dynamically
+and quickly by re-execution. Using standard simulation techniques the
+authors demonstrate a 70% improvement over a baseline superscalar.
+
+It's a clever idea that seems to me to have a certain "simplicity", if
+that term can be applied to superscalar design. It is interesting that
+most instructions were executed about twice, with GCC being the highest.
+
+detail
+
+This micro-architecture paper was quite interesting. Its relevance to
+the topic of the conference is distant, however. Further, the work seems
+to me to demand study of its sensitivity to alternate architectural
+configurations, though the paper is already long.
+
+

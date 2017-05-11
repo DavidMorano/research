@@ -1,0 +1,116 @@
+From hpca9@CS.Arizona.EDU Fri Jul 19 20:21:36 2002
+Return-Path: <hpca9@CS.Arizona.EDU>
+Received: from berry.computer.org (berry.computer.org [63.84.220.201])
+	by leviathan.ele.uri.edu (8.12.2/8.12.2) with ESMTP id g6K0LYvi007780
+	for <morano@ele.uri.edu>; Fri, 19 Jul 2002 20:21:34 -0400 (EDT)
+Received: from cheltenham.cs.arizona.edu (cheltenham.cs.arizona.edu [192.12.69.60])
+	by berry.computer.org (Switch-2.1.1/Switch-2.1.1) with ESMTP id U6K00M8M29355
+	for <morano@computer.org>; Fri, 19 Jul 2002 17:22:08 -0700
+Received: from lectura.CS.Arizona.EDU (lectura.CS.Arizona.EDU [192.12.69.186])
+	by cheltenham.cs.arizona.edu (8.11.1/8.11.1) with ESMTP id g6K0O4U27868;
+	Fri, 19 Jul 2002 17:24:06 -0700 (MST)
+Received: from mogollon.CS.Arizona.EDU (mogollon.CS.Arizona.EDU [192.12.69.126])
+	by lectura.CS.Arizona.EDU (8.11.6+Sun/8.11.6) with SMTP id g6K0Iip27255;
+	Fri, 19 Jul 2002 17:18:44 -0700 (MST)
+Message-Id: <200207200018.g6K0Iip27255@lectura.CS.Arizona.EDU>
+From: HPCA 9 - CyberChair <hpca9@CS.Arizona.EDU>
+To: morano@computer.org
+Cc: hpca9@CS.Arizona.EDU, hpca9@CS.Arizona.EDU
+Subject: HPCA 9 Abstract Submission Form Feedback
+Date: Fri Jul 19 17:17:46 2002 MDT
+Reply-To: hpca9@CS.Arizona.EDU
+X-Mailer: Python smtplib
+Content-Length: 2245
+
+Dear David, 
+
+You have submitted the following data for the HPCA 9 Conference:
+
+-=-=-=-=-= Beginning of submission data (step 1)=-=-=-=-=-
+
+
+Contact Person: 
+	Name: David Morano
+	Address:
+		200 Mountain Ave. , # 30
+		Malden, MA  02148-2752
+	Phone: 1 (781) 388-1799
+	Fax: [None Given]
+	Email: morano@computer.org
+
+Title: Using Timetags for Program Dependency Enforcement
+
+Author 1:
+	Name: Alireza Khalafi
+	Affiliation: Northeastern University
+
+Author2:
+	Name: David Morano
+	Affiliation: Northeastern University
+
+Author3:
+	Name: David Kaeli
+	Affiliation: Northeastern University
+
+Author4:
+	Name: Augustus Uht
+	Affiliation: University of Rhode Island
+
+Author is PC Member: No
+
+Main Fields:
+	1. Processor architectures
+	3. Parallel computer architectures
+
+
+Abstract:
+We discuss how time tags can be used for the enforcement of
+program dependencies.  Time tags can serve as the basic ordering
+enforcement mechanism when a large number of instructions are executing
+concurrently.  Proposed and future microarchitectures can have hundreds
+or several hundreds of instructions in flight simultaneously. Using
+standard reservation tags, physical register addresses, and reorder
+buffers, performance does not scale well even for moderate-sized
+instruction windows.  Time tags address much of the complication of
+these units.
+
+In this paper we discuss the design, use and management of time tags.
+We also provide simulation data for an example microarchitecture that
+illustrates the advantages of using time tags for dependency
+enforcement.  IPCs in the range of 3.8-5.1 are obtained for the range
+of machine configurations studied running SpecInt-2000 and SpecInt-95
+programs.
+
++
+
+instruction level parallelism
+time tags
+ordering
+dependencies
+predicates
+microarchitecture
+
+
+Remarks:
+[None Given]
+
+-=-=-=-=-=-= End of abstract submission data =-=-=-=-=-=-
+
+
+IMPORTANT: To submit your paper you should revisit the
+submission site at http://cgi.cs.arizona.edu/~xyzhang/html/, go to
+step 2 and at the appropriate places fill in the following:
+
+Login: morano@computer.org
+Password: E00-431324252
+
+You will then be able to upload your paper.
+
+
+If you have questions about this message, please contact hpca9
+(hpca9@cs.arizona.edu).
+
+--- End of this message ---
+
+
+

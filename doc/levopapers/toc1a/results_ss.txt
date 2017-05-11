@@ -1,0 +1,16 @@
+decode, issue, commit width 64
+RUU	512
+PEs	64
+
+
+
+bzip2		2.5822
+compress	2.0094
+crafty		3.4380
+gcc		1.6070
+go		1.4993
+gzip		2.8516
+ijpeg		4.6088
+mcf		1.7225
+parser		2.3041
+vortex		2.3143

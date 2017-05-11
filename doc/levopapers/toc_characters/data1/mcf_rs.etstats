@@ -1,0 +1,76 @@
+SimpleSim statistics 020902_1628:56
+statistics for job=mcf_rs logid=piranha5516
+started 020902_1311:55 (elapsed time   0-03:17:01)
+real   time=  0-03:17:01.240000
+user   time=  0-01:48:26.240000
+system time=  0-00:00:23.610000
+
+total instructions       600000000
+included instructions    500000000 (100000000:500000000)
+CF instructions          110671918 ( 18.445%)
+CF-IND instructions        4020212 (  0.670%)
+relative branches        103662265 ( 17.277%)
+CF-UNC                    24079659 (  4.013%)
+conditional branches      86592259 ( 14.432%)
+forward c-branches        68839991 ( 11.473%)
+backward c-branches       17752268 (  2.959%)
+branch SS-hammocks         3921216 (  0.654%)
+instructions per BP            5.7742
+= branch path statistics
+instructions per branch path
+IPBP mean                      5.7742
+IPBP variance                 28.0452
+IPBP stddev                    5.2958
+= branch target-distance statistics
+instructions per forward branch target
+IPFBT mean                    32.1375
+IPFBT variance              3081.8214
+IPFBT stddev                  55.5142
+instructions per backward branch target
+IPBBT mean                    47.5175
+IPBBT variance              6561.3965
+IPBBT stddev                  81.0024
+= hammock branch target-distance statistics
+IPHT mean                      4.9656
+IPHT variance                  2.0534
+IPHT stddev                    1.4330
+forward c-branches        68839991 ( 79.50 % of conditional)
+backward c-branches       17752268 ( 20.50 % of conditional)
+SS hammocks                3921216 (  4.53 % of conditional)
+= dynamically loaded branch predictors :
+rows                             1
+delay                          512
+gspag    params               2048     4096       -1       -1
+gspag    bits                32780
+gspag    lookups          86592259
+gspag    accuracy         83330755 ( 96.233%)
+gspag    confidences 0-3   58.123%  0.000%  0.647%  0.000%
+gspag    confidences 4-7    0.286%  0.000% 57.182%  0.000%
+gspag    correct-conf 0-3  50.854%  0.000%  0.070%  0.000%
+gspag    correct-conf 4-7   0.221%  0.000% 45.088%  0.000%
+tourna   params               1024     2048     4096       -1
+tourna   bits                32790
+tourna   lookups          86592259
+tourna   accuracy         77404703 ( 89.390%)
+tourna   confidences 0-3   56.159%  0.155%  0.086%  0.037%
+tourna   confidences 4-7    0.137%  0.054% 15.549% 44.060%
+tourna   correct-conf 0-3  46.536%  0.077%  0.030%  0.006%
+tourna   correct-conf 4-7   0.091%  0.041%  6.587% 36.022%
+gskew    params                 -1       -1       -1       15
+gskew    bits               524303
+gskew    lookups          86592259
+gskew    accuracy         84284580 ( 97.335%)
+gskew    confidences 0-3   56.769%  0.000%  0.023%  0.000%
+gskew    confidences 4-7    7.691%  0.000% 51.755%  0.000%
+gskew    correct-conf 0-3  50.657%  0.000%  0.017%  0.000%
+gskew    correct-conf 4-7   5.450%  0.000% 41.211%  0.000%
+= register statistics
+read-interval mean           6.7058
+read-interval variance    1899.7691
+read-interval stddev        43.5863
+lifetime mean               14.1685
+lifetime variance         8347.2767
+lifetime stddev             91.3634
+def-use mean               245.4819
+def-use variance       1519450.3974
+def-use stddev            1232.6599

@@ -1,0 +1,4 @@
+
+scp -qp high.tex piranha:pact/
+
+

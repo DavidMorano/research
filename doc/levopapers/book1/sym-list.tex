@@ -1,0 +1,40 @@
+\documentclass{book}
+\usepackage{kaeliyew}
+
+% please use this package for this macro
+\usepackage{multicol}
+
+%please insert this macro for symbol list in your tex file preamble area
+
+\makeatletter
+\newbox\tempbox
+\newdimen\nomenwidth
+\newenvironment{symbollist}[1]{%
+\addvspace{12pt}
+			\setbox\tempbox\hbox{#1\hskip1em}%
+   \global\nomenwidth\wd\tempbox
+   %\section*{Sumbol Description}
+\noindent{\SectionHeadFont Symbol Description}\vskip6pt
+\begin{multicols}{2}}{%
+		\end{multicols}\par\addvspace{12pt}}
+\def\symbolentry#1#2{\par\noindent\@hangfrom{\hbox to \nomenwidth{#1\hss}}#2\par}
+\makeatother
+
+%%%% please see below coding for symbol list
+
+\begin{document}
+
+\begin{symbollist}{000000}
+\symbolentry{$\alpha$}{To solve the generator maintenance scheduling, in the  past, several mathematical techniques have  been applied.}
+\symbolentry{$\sigma^2$}{These include integer programming, integer linear programming, dynamic programming, branch and bound etc.}
+\symbolentry{$\sum$}{Several heuristic search algorithms have also been developed. In recent years expert systems,}
+\symbolentry{$abc$}{fuzzy approaches, simulated annealing and genetic algorithms have also been tested.}
+\symbolentry{$\theta\sqrt{abc}$}{This paper presents a survey of the literature}
+\symbolentry{$\zeta$}{ over the past fifteen years in the generator}
+\symbolentry{$\partial$}{maintenance scheduling. The objective is to}
+\symbolentry{sdf}{present a clear picture of the available recent literature}
+\symbolentry{ewq}{of the problem, the constraints and the other aspects of}
+\symbolentry{bvcn}{the generator maintenance schedule.}
+\end{symbollist}
+
+\end{document}

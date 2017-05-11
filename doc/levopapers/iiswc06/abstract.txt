@@ -1,0 +1,12 @@
+We explore several access intervals (measured in instructions) between
+register assignments and the subsequent uses of the same registers.
+Likewise, we also explore memory stores and the subsequent loads from
+the same memory addresses.  Three different types of access intervals
+are defined and data are gathered on them through the simulated execution
+of benchmark programs.  These data serve to provide insight about how a
+future distributed microarchitecture might take advantage of the register
+or memory access behavior in order to reduce the overhead of accessing
+centralized machine resources like a register file or the L1 memory cache.
+
+
+

@@ -1,0 +1,8 @@
+@article{uht03levo,
+  author=       "{Uht A.K., Morano D., Khalafi A., Alba M. and Kaeli D.}",
+    title = "{Levo -- A Scalable Processor With High IPC}",
+    journal = "Journal of Instruction Level Parallelism",
+    year = "2003",
+  volume= 5,
+	month= "Aug"
+

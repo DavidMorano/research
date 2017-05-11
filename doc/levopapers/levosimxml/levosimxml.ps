@@ -1,0 +1,955 @@
+%!PS-Adobe-2.0
+%%Copyright: Copyright (c) 1993 AT&T, All Rights Reserved
+%%Version: 3.4.1
+%%DocumentFonts: (atend)
+%%Pages: (atend)
+%%EndComments
+/DpostDict 200 dict def
+DpostDict begin
+%
+% Copyright (c) 1993 AT&T, All Rights Reserved
+%
+% Version 3.4 prologue for troff files.
+%
+
+/#copies 1 store
+/Prologue (dpost.ps) def
+/aspectratio 1 def
+/formsperpage 1 def
+/landscape false def
+/linewidth .3 def
+/magnification 1 def
+/margin 0 def
+/orientation 0 def
+/resolution 720 def
+/rotation 1 def
+/xoffset 0 def
+/yoffset 0 def
+
+/roundpage true def
+/useclippath true def
+/pagebbox [0 0 612 792] def
+
+/R  /Times-Roman def
+/I  /Times-Italic def
+/B  /Times-Bold def
+/BI /Times-BoldItalic def
+/H  /Helvetica def
+/HI /Helvetica-Oblique def
+/HB /Helvetica-Bold def
+/HX /Helvetica-BoldOblique def
+/CW /Courier def
+/CO /Courier def
+/CI /Courier-Oblique def
+/CB /Courier-Bold def
+/CX /Courier-BoldOblique def
+/PA /Palatino-Roman def
+/PI /Palatino-Italic def
+/PB /Palatino-Bold def
+/PX /Palatino-BoldItalic def
+/Hr /Helvetica-Narrow def
+/Hi /Helvetica-Narrow-Oblique def
+/Hb /Helvetica-Narrow-Bold def
+/Hx /Helvetica-Narrow-BoldOblique def
+/KR /Bookman-Light def
+/KI /Bookman-LightItalic def
+/KB /Bookman-Demi def
+/KX /Bookman-DemiItalic def
+/AR /AvantGarde-Book def
+/AI /AvantGarde-BookOblique def
+/AB /AvantGarde-Demi def
+/AX /AvantGarde-DemiOblique def
+/NR /NewCenturySchlbk-Roman def
+/NI /NewCenturySchlbk-Italic def
+/NB /NewCenturySchlbk-Bold def
+/NX /NewCenturySchlbk-BoldItalic def
+/ZD /ZapfDingbats def
+/ZI /ZapfChancery-MediumItalic def
+/S  /S def
+/S1 /S1 def
+/GR /Symbol def
+
+/inch {72 mul} bind def
+/min {2 copy gt {exch} if pop} bind def
+
+/setup {
+	counttomark 2 idiv {def} repeat pop
+
+	landscape {/orientation 90 orientation add def} if
+	/scaling 72 resolution div def
+	linewidth setlinewidth
+	1 setlinecap
+
+	pagedimensions
+	xcenter ycenter translate
+	orientation rotation mul rotate
+	width 2 div neg height 2 div translate
+	xoffset inch yoffset inch neg translate
+	margin 2 div dup neg translate
+	magnification dup aspectratio mul scale
+	scaling scaling scale
+
+	addmetrics
+	0 0 moveto
+} def
+
+/pagedimensions {
+	useclippath userdict /gotpagebbox known not and {
+		/pagebbox [clippath pathbbox newpath] def
+		roundpage currentdict /roundpagebbox known and {roundpagebbox} if
+	} if
+	pagebbox aload pop
+	4 -1 roll exch 4 1 roll 4 copy
+	landscape {4 2 roll} if
+	sub /width exch def
+	sub /height exch def
+	add 2 div /xcenter exch def
+	add 2 div /ycenter exch def
+	userdict /gotpagebbox true put
+} def
+
+/landscapepage {
+	landscape not {
+		0 height scaling div neg translate	% not quite
+		90 rotate
+	} if
+} bind def
+
+/portraitpage {
+	landscape {
+		width scaling div 0 translate	% not quite
+		-90 rotate
+	} if
+} bind def
+
+/addmetrics {
+	/Symbol /S null Sdefs cf
+	/Times-Roman /S1 StandardEncoding dup length array copy S1defs cf
+} def
+
+/pagesetup {
+	/page exch def
+	currentdict /pagedict known currentdict page known and {
+		page load pagedict exch get cvx exec
+	} if
+} def
+
+/decodingdefs [
+	{counttomark 2 idiv {y moveto show} repeat}
+	{neg /y exch def counttomark 2 idiv {y moveto show} repeat}
+	{neg moveto {2 index stringwidth pop sub exch div 0 32 4 -1 roll widthshow} repeat}
+	{neg moveto {spacewidth sub 0.0 32 4 -1 roll widthshow} repeat}
+	{counttomark 2 idiv {y moveto show} repeat}
+	{neg setfunnytext}
+] def
+
+/setdecoding {/t decodingdefs 3 -1 roll get bind def} bind def
+
+/w {neg moveto show} bind def
+/m {neg dup /y exch def moveto} bind def
+/done {/lastpage where {pop lastpage} if} def
+
+/f {
+	dup /font exch def findfont exch
+	dup /ptsize exch def scaling div dup /size exch def scalefont setfont
+	linewidth ptsize mul scaling 10 mul div setlinewidth
+	/spacewidth ( ) stringwidth pop def
+} bind def
+
+/changefont {
+	/fontheight exch def
+	/fontslant exch def
+	currentfont [
+		1 0
+		fontheight ptsize div fontslant sin mul fontslant cos div
+		fontheight ptsize div
+		0 0
+	] makefont setfont
+} bind def
+
+/sf {f} bind def
+
+/cf {
+	dup length 2 idiv
+	/entries exch def
+	/chtab exch def
+	/newencoding exch def
+	/newfont exch def
+
+	findfont dup length 1 add dict
+	/newdict exch def
+	{1 index /FID ne {newdict 3 1 roll put}{pop pop} ifelse} forall
+
+	newencoding type /arraytype eq {newdict /Encoding newencoding put} if
+
+	newdict /Metrics entries dict put
+	newdict /Metrics get
+	begin
+		chtab aload pop
+		1 1 entries {pop def} for
+		newfont newdict definefont pop
+	end
+} bind def
+
+%
+% A few arrays used to adjust reference points and character widths in some
+% of the printer resident fonts. If square roots are too high try changing
+% the lines describing /radical and /radicalex to,
+%
+%	/radical	[0 -75 550 0]
+%	/radicalex	[-50 -75 500 0]
+%
+% Move braceleftbt a bit - default PostScript character is off a bit.
+%
+
+/Sdefs [
+	/bracketlefttp		[201 500]
+	/bracketleftbt		[201 500]
+	/bracketrighttp		[-81 380]
+	/bracketrightbt		[-83 380]
+	/braceleftbt		[203 490]
+	/bracketrightex		[220 -125 500 0]
+	/radical		[0 0 550 0]
+	/radicalex		[-50 0 500 0]
+	/parenleftex		[-20 -170 0 0]
+	/integral		[100 -50 500 0]
+	/infinity		[10 -75 730 0]
+] def
+
+/S1defs [
+	/underscore		[0 80 500 0]
+	/endash			[7 90 650 0]
+] def
+%
+% Copyright (c) 1993 AT&T, All Rights Reserved
+%
+% A first cut at a company wide version of postcommon.ps.
+% Includes Matthijs Melchior's version of roundpagebbox,
+% but disables adjustments for postprint. This is just an
+% example - it should not be considered final or official.
+%
+
+/roundpagebbox {
+	Prologue (postprint.ps) ne {
+		pagebbox dup 0 get pagebbox 2 get add 2 exch put
+		pagebbox dup 1 get pagebbox 3 get add 3 exch put
+		pagebbox 0 0 put
+		pagebbox 1 0 put
+		userdict /origin-at-paper-edge true put
+	} if
+} bind def
+
+end
+%%EndProlog
+%%BeginSetup
+DpostDict begin
+mark
+/xoffset 0.25 def
+/resolution 720 def
+setup
+2 setdecoding
+end
+%%EndSetup
+%%Page: 1 1
+DpostDict begin
+/saveobj save def
+mark
+1 pagesetup
+%INFO[COMPANY:  Lucent Technologies Inc.]
+%INFO[DATE: January 19, 2002]
+%INFO[AUTHOR: NAME = David Morano, AFFILIATION = Northeastern University]
+%INFO[DOCUMENT STYLE: CODE = RP, TYPE = Released Paper]
+%INFO[TITLE: <START>]
+12 B f
+(Levo state trace output)3 1183 1 2273 960 t
+%INFO[TITLE: <END>]
+11 I f
+(David Morano)1 650 1 2555 1140 t
+10 R f
+(Northeastern University)1 962 1 2399 1320 t
+cleartomark
+saveobj restore
+end
+%%BeginDocument: levo2.eps
+%ps_include: begin
+save
+/ed {exch def} def
+{} /showpage ed
+{} /copypage ed
+{} /erasepage ed
+{} /letter ed
+currentdict /findfont known systemdict /findfont known and {
+	/findfont systemdict /findfont get def
+} if
+36 dict dup /PS-include-dict-dw ed begin
+/context ed
+count array astore /o-stack ed
+%ps_include: variables begin
+/llx 0 def
+/lly 0 def
+/urx 612 def
+/ury 792 def
+/w 0 def
+/o 0 def
+/s 0 def
+/cx 2880 def
+/cy -4560 def
+/sx 4320 def
+/sy 5760 def
+/ax 0.5 def
+/ay 0.5 def
+/rot -270 def
+%ps_include: variables end
+{llx lly urx ury} /bbox ed
+{newpath 2 index exch 2 index exch dup 6 index exch
+ moveto 3 {lineto} repeat closepath} /boxpath ed
+{dup mul exch dup mul add sqrt} /len ed
+{2 copy gt {exch} if pop} /min ed
+{2 copy lt {exch} if pop} /max ed
+{transform round exch round exch A itransform} /nice ed
+{6 array} /n ed
+n defaultmatrix n currentmatrix n invertmatrix n concatmatrix /A ed
+urx llx sub 0 A dtransform len /Sx ed
+0 ury lly sub A dtransform len /Sy ed
+llx urx add 2 div lly ury add 2 div A transform /Cy ed /Cx ed
+rot dup sin abs /S ed cos abs /C ed
+Sx S mul Sy C mul add /H ed
+Sx C mul Sy S mul add /W ed
+sy H div /Scaley ed
+sx W div /Scalex ed
+s 0 eq {Scalex Scaley min dup /Scalex ed /Scaley ed} if
+sx Scalex W mul sub 0 max ax 0.5 sub mul cx add /cx ed
+sy Scaley H mul sub 0 max ay 0.5 sub mul cy add /cy ed
+urx llx sub 0 A dtransform exch atan rot exch sub /rot ed
+n currentmatrix initgraphics setmatrix
+cx cy translate
+Scalex Scaley scale
+rot rotate
+Cx neg Cy neg translate
+A concat
+bbox boxpath clip newpath
+w 0 ne {gsave bbox boxpath 1 setgray fill grestore} if
+end
+gsave
+%ps_include: inclusion begin
+%!PS-Adobe-3.0 EPSF-3.0%%Creator: GraphicConverter V4.0.9%%Title: levo2.eps%%CreationDate: 2002-02-08%%Pages: 1%%BoundingBox: 0 0 358 126%%EndComments%%BeginPreview: 100 35 8 35%01010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101%01010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101%01010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101%01010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101%01010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101%01010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101%01010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101%010101010101010B313535352B0501010101010101010101010101010213273335353534353434343434342120353535351D0101010101010101010101011D34343434343312010102162A3334343434343535353534342C170201010101010101010101%01010101010101302C2A2A2A2E2F04020101010101010101010101021F332E2A2A292829282A28282A2A293033292B29293314030101010101010101021831282B28282A2D31080528342C2B2A2A272829292B28282A2B2C332805020101010101010101%01010101010101332B2525242C3407050201010101010101010102202F2724252524212524232526242523303125232523321A0604010101010101011731272523252427311607242F252525242325242624242524242623252F25050301010101010101%0101010101010133282424242C330E09050101010101010101022230252424242624262825262526232724303124242523311E0B070301010101021D30252325242527331E112B2E2425252524252523222524252424262326272D2A0A04020101010101%01010101010101332C2425242D32140B0602010101010101010E32272524272324272625242124232420262E32252625273023100904010101011D3027242724262732241B22332723222424222324252624252525232527252524321B07040201010101%0101010101010133292424232B33180D060201010101010101232F24242424272B2B2B2B2D2B2A2A2B2A2B32322424252430251309050101021D312624232424293228211B2C2D26262423282B2A2B2A2A2B2B2B2A2A28242526252D2A0B060301010101%01010101010101332A2525242C331A0F0703010101010101012E2B272424263233333333333434333433323131262524273026150A0603011630252426272429322A241E16302B26242329343434333332333334343433292426242B300F080401010101%0101010101010132282524252D331A0E0703010101010101012E2D252424283231323232333231323131302C30252425253227140A0602162F272723232428332A241E160E2F2B2424232B332723201E1D1D1D1D1D1F332B2623242A31140A0502010101%01010101010101322A2625252C34190E0603010101010101012F2E2725262528292929292A29292928292B3231252525263127140A041D302525242523273329231D150D082E2B2524252A34221A14100E0E0E0E0E11332B2625252C31170C0602010101%0101010101010132292427262D341A0E0603010101010101012F2E24262524232424262525252424252527333125272525312715091E302524242524273329241D150D07052F2A2625242A341F150C0807070707070A332A2626242D33190D0604010101%01010101010101332B2424242C34190E0703010101010101012E2E242325242424242525242425252523293432242324233127152231262426252527322B231D150D0705032F2B2525242B341E110905040302020307332B2525252B32190D0604010101%0101010101010134272625252C341A0F0703010101010101012F2C2725252525242424252626242625242734332625242631262730272626252526322A241D150D07040302302C2526262B331D100805020101010105332A25
+grestore
+PS-include-dict-dw begin
+o 0 ne {gsave A defaultmatrix /A ed llx lly nice urx ury nice
+	initgraphics 0.1 setlinewidth boxpath stroke grestore} if
+clear o-stack aload pop
+context end restore
+%ps_include: end
+%%EndDocument
+DpostDict begin
+/saveobj save def
+mark
+%INFO[SECTION: LEVEL = 1, NUMBER = 1.  , HEADING = introduction]
+9 B f
+(1. introduction)1 594 1 720 1920 t
+10 R f
+( the Levo machine)3 743( Although)1 429( describe the Levo machine clock state output trace format.)9 2370(This document will)2 778 4 720 2100 t
+( LevoSim simulator, this is not strictly necessary and)8 2175(being sequenced is done so at the moment using the)9 2145 2 720 2220 t
+( any event, the output state of the Levo machine may)10 2296( In)1 151( may be used instead.)4 929(future Levo simulators)2 944 4 720 2340 t
+(contain similar elements across more than one simulator.)7 2275 1 720 2460 t
+%INFO[SECTION: LEVEL = 2, NUMBER = 1.1  , HEADING = Levo machine]
+9 B f
+( machine)1 348(1.1 Levo)1 349 2 720 2640 t
+10 R f
+( this document is the registered state information from a Levo machine.)11 2923(The output state trace described in)5 1397 2 720 2820 t
+( by)1 128(More information on the Levo machine and its design philosophy can be found in the Technical Report)16 4192 2 720 2940 t
+(Uht.)720 3060 w
+%INFO[SECTION: LEVEL = 2, NUMBER = 1.2  , HEADING = LevoSim]
+9 B f
+(1.2 LevoSim)1 499 1 720 3240 t
+10 R f
+( simulator implements)2 895( This)1 228(The current vehicle used to sequence a Levo machine is the LevoSim simulator.)12 3197 3 720 3420 t
+( components are modeled)3 1059( Hardware)1 454( machine using software.)3 1034(the actual hardware components of a Levo)6 1773 4 720 3540 t
+( whole machine is somewhat)4 1286( The)1 238( the whole machine.)3 903(individually and are interconnected to form)5 1893 4 720 3660 t
+( the simulator also with its various software)7 1872(hierarchical and this hierarchy is usually expressed within)7 2448 2 720 3780 t
+( Levo machine, each hardware component is implemented with a)9 2933( most of the whole)4 888(pieces. For)1 499 3 720 3900 t
+(corresponding software component and possibly several subcomponents each of which can have their own)13 4320 1 720 4020 t
+(subcomponents.)720 4140 w
+( the outputs from hardware registers and)6 1619(The simulated hardware components process inputs that are usually)8 2701 2 720 4380 t
+( processing of combinatorial signals occurs over time through a mechanism in)11 3154( The)1 208(produce new next-state.)2 958 3 720 4500 t
+( phases of the hardware clock period)6 1474( both somewhat mimic the)4 1065( These)1 289(the simulator known as clock phases.)5 1492 4 720 4620 t
+( synchronization points in time for the communication of signal between)10 3043(as well as for the provision of)6 1277 2 720 4740 t
+( hardware components are also clocked. Typically, all clocked)8 2768( All)1 213(different hardware components.)2 1339 3 720 4860 t
+( previously computed next-state signals to be the current state of the)11 2853(hardware components transition the)3 1467 2 720 4980 t
+(new clock period.)2 712 1 720 5100 t
+( closely the hardware of an actual machine,)7 1917(In this way, the whole of the simulator resembles very)9 2403 2 720 5340 t
+( information on the LevoSim)4 1229( More)1 283(transitioning synchronously through states in many state machines.)7 2808 3 720 5460 t
+( oriented documentation that exists for most of the major)9 2327(simulator is currently only found in some outline)7 1993 2 720 5580 t
+( information for LevoSim \(documentation and source)6 2178( All)1 185( itself.)1 257(components as well as in the source code)7 1700 4 720 5700 t
+(code\) is currently at the University of Rhode Island in the normal Levo research \256le systems.)15 3716 1 720 5820 t
+%INFO[SECTION: LEVEL = 2, NUMBER = 1.3  , HEADING = XML]
+9 B f
+(1.3 XML)1 369 1 720 6000 t
+10 R f
+( will)1 187( There)1 288(The Levo output state trace will make use of XML as the structuring of all machine state data.)17 3845 3 720 6180 t
+( other)1 236( The)1 211( \256le will be the XML proper.)6 1193( One)1 222( LevoSim for the output state trace.)6 1448(be two \256les produced by)4 1010 6 720 6300 t
+( index \256le is an index of the start of clock blocks in the XML \256le.)15 2635( The)1 206( index of the XML \256le.)5 932(\256le will be an)3 547 4 720 6420 t
+( XML \256le as well as a means for)8 1415(The index \256le contains both the starting offset of clock blocks in the)12 2905 2 720 6540 t
+( block that contains a full dump of all machine registers \(that are being dumped at)15 3405(\256nding an XML clock)3 915 2 720 6660 t
+( of the rest of this document will describe the details of these two \256les.)14 2822(all\). Most)1 414 2 720 6780 t
+%INFO[SECTION: LEVEL = 1, NUMBER = 2.  , HEADING = XML usage]
+9 B f
+( usage)1 238(2. XML)1 324 2 720 7020 t
+10 R f
+( A)1 132( structure the output trace data was largely quite pragmatic.)9 2457(The decision to use XML as the means to)8 1731 3 720 7200 t
+( to both tag data with a name as well as a way to structure related data hierarchically)17 3554(means was needed)2 766 2 720 7320 t
+( conveniently provides both)3 1140( XML)1 281( of the hardware components themselves\).)5 1730(\(thus matching the hierarchy)3 1169 4 720 7440 t
+(January 19, 2002)2 685 1 4355 7608 t
+cleartomark
+showpage
+saveobj restore
+end
+%%EndPage: 1 1
+%%Page: 2 2
+DpostDict begin
+/saveobj save def
+mark
+2 pagesetup
+10 R f
+(- 2 -)2 166 1 2797 480 t
+( Levo)1 3408(Levo state trace output)3 912 2 720 600 t
+( is also rather simple to write and to understand giving it an advantage over)14 3189( XML)1 285(of these capabilities.)2 846 3 720 960 t
+( main disadvantage)2 777( The)1 208( a signi\256cant disadvantage than other approaches.)6 2000( also brings)2 465( XML)1 274(other methods.)1 596 6 720 1080 t
+( that since it is all ASCII, it tends to consume a large amount of space for)16 2959(of using XML for our purposes is)6 1361 2 720 1200 t
+( take up space none-)4 854( closing tags are really redundant but)6 1529( Further,)1 378(relatively modest information content.)3 1559 4 720 1320 t
+( that the advantages of XML outweigh the disadvantages for our immediate)11 3163( it is felt)3 373(the-less. However,)1 784 3 720 1440 t
+(goals.)720 1560 w
+( consists of tags)3 684( XML)1 288(A brief outline of how XML is used in the state output will now be presented.)15 3348 3 720 1800 t
+( may introduce blocks that contain more)6 1609( Tags)1 244( data associated with those tags.)5 1276(\(opening and closing\) and the)4 1191 4 720 1920 t
+( de\256nitions of some XML structures is given next.)8 2013( Some)1 278(tags, et cetera.)2 570 3 720 2040 t
+( are tags that include only data elements in them and no further tags)13 2704( these)1 870(leaf tags)1 335 3 720 2340 t
+( tags introduce a block that only has other tags in it)11 2040( these)1 797(block tags)1 408 3 720 2520 t
+( may appear in several other tag blocks and will have the)11 2347( are block tags but)4 756( these)1 479(generic block tags)2 738 4 720 2700 t
+(same meaning everywhere)2 1063 1 1720 2820 t
+( tags will)2 385( Leaf)1 241( described individually.)2 959(For purposes of this document, block tags and generic tags will be)11 2735 4 720 3120 t
+(always be described along with the block tags that enclose them.)10 2582 1 720 3240 t
+%INFO[SECTION: LEVEL = 2, NUMBER = 2.1  , HEADING = miscellaneous tags]
+9 B f
+( tags)1 178(2.1 miscellaneous)1 689 2 720 3420 t
+10 R f
+( Two)1 236( important information.)2 942(Some tags are not part of the Levo machine hardware but serve to frame other)14 3142 3 720 3600 t
+( are described below :)4 875( These)1 288(tags are in this category so far.)6 1222 3 720 3720 t
+%INFO[SECTION: LEVEL = 3, NUMBER = 2.1.1  , HEADING = the configuration tag]
+10 B f
+( con\256guration tag)2 756(2.1.1 the)1 383 2 720 3900 t
+10 R f
+( the)1 148( block tag given)3 641( This)1 228(This tag appears as the very \256rst tab in the XML \256le.)11 2114 4 1909 3900 t
+( contains several leaf tags that)5 1210( It)1 113( that was sequenced.)3 826(information on the con\256guration of the Levo machine)7 2171 4 720 4020 t
+( tags are :)3 385( These)1 288(give the parameters used to con\256gure the Levo machine.)8 2259 3 720 4140 t
+( decimal number that gives the number of Sharing Group rows in the machine)13 3115(nsgrows a)1 1044 2 720 4440 t
+( the)1 164( decimal number that this gives the number of Sharing Group columns in)12 3112(nsgcols a)1 1044 3 720 4620 t
+(machine)1720 4740 w
+( rows per each Sharing)4 946( decimal number that gives the number of Active Station)9 2330(nasrpsg a)1 1044 3 720 4920 t
+( the number of Active Station columns in each Sharing Group is)11 2622(Group ; note that)3 698 2 1720 5040 t
+(currently \256xed at two)3 857 1 1720 5160 t
+( decimal number that gives the span \(in SGs\) of the Register Forwarding buses)13 3149(nrfspan a)1 1044 2 720 5340 t
+( decimal number that gives the span \(in SGs\) of the Register Backwarding buses)13 3215(nrbspan a)1 1044 2 720 5520 t
+( decimal number that gives the span \(in SGs\) of the Predicate Forwarding buses)13 3187(npfspan a)1 1044 2 720 5700 t
+( decimal number that gives the span \(in SGs\) of the Memory Forwarding buses)13 3160(nmfspan a)1 1044 2 720 5880 t
+( decimal number that gives the span \(in SGs\) of the Memory Backwarding buses)13 3226(nmbspan a)1 1044 2 720 6060 t
+( decimal number that gives the number of possible DEE paths in the machine)13 3088(ndeepaths a)1 1044 2 720 6240 t
+( possible Predicate Registers that can be)6 1609( decimal number that gives the number of)7 1667(nprpas a)1 1044 3 720 6420 t
+(held in any single Active Station)5 1308 1 1720 6540 t
+( units\) of the Instruction Response)5 1404( decimal number that gives the with \(in 32-bit)8 1872(ifetchwidth a)1 1044 3 720 6720 t
+(bus)1720 6840 w
+( that form the bus interleave)5 1198( is a number in hexadecimal that gives the bits)9 1977(mfbinter this)1 1145 3 720 7020 t
+( window and the)3 717(index for the Memory Forwarding bus between the execution)8 2603 2 1720 7140 t
+(memory subsystem)1 775 1 1720 7260 t
+(January 19, 2002)2 685 1 720 7608 t
+cleartomark
+showpage
+saveobj restore
+end
+%%EndPage: 2 2
+%%Page: 3 3
+DpostDict begin
+/saveobj save def
+mark
+3 pagesetup
+10 R f
+(- 3 -)2 166 1 2797 480 t
+( state trace output)3 707(Levo Levo)1 3613 2 720 600 t
+( that form the bus interleave)5 1198( is a number in hexadecimal that gives the bits)9 1977(mbbinter this)1 1145 3 720 960 t
+( window and the)3 699(index for the Memory Backwarding bus between the execution)8 2621 2 1720 1080 t
+(memory subsystem)1 775 1 1720 1200 t
+( that form the bus interleave)5 1198( is a number in hexadecimal that gives the bits)9 1977(mwbinter this)1 1145 3 720 1380 t
+( Write bus between the execution window and the memory)9 2417(index for the Memory)3 903 2 1720 1500 t
+(subsystem)1720 1620 w
+( forwarding that is used in)5 1086( is a decimal number that gives the type of register)10 2089(iw:rftype this)1 1145 3 720 1800 t
+(the machine)1 485 1 1720 1920 t
+( is a decimal number that gives the size of the Branch Tracking Buffer)13 2808(iw:btrbsize this)1 1145 2 720 2100 t
+( is a decimal number that gives the Store Queue FIFO depth)11 2400(iw:sqsize this)1 1145 2 720 2280 t
+( hexadecimal that gives the bits that form the bus interleave)10 2530( is a number in)4 650(iw:wm\256nter this)1 1140 3 720 2460 t
+(index for the Memory Forwarding bus within the execution window)9 2722 1 1720 2580 t
+( that form the bus interleave)5 1198( is a number in hexadecimal that gives the bits)9 1977(iw:wmbinter this)1 1145 3 720 2760 t
+(index for the Memory Backwarding bus within the execution window)9 2788 1 1720 2880 t
+%INFO[SECTION: LEVEL = 3, NUMBER = 2.1.2  , HEADING = clock tag]
+10 B f
+( tag)1 168(2.1.2 clock)1 472 2 720 3060 t
+10 R f
+( currently only has two)4 965( It)1 122( trace output.)2 546(This tag is used for all other basic blocks in the)10 1987 4 1420 3060 t
+( that can appear in this tag block are :)9 1494(sub-tags. Tags)1 602 2 720 3180 t
+( is a leaf tag that gives the clock number of the current clock block)14 2661(value this)1 1145 2 720 3480 t
+( is a block tag that encloses all Levo machine hardware component tags)12 2861(levo this)1 1145 2 720 3660 t
+%INFO[SECTION: LEVEL = 2, NUMBER = 2.2  , HEADING = Levo machine component tags]
+9 B f
+( machine component tags)3 974(2.2 Levo)1 349 2 720 3840 t
+10 R f
+( divided into two major)4 959( tags are)2 340( These)1 292(This section describes the Levo machine hardware component tags.)8 2729 4 720 4020 t
+( are the generic)3 617( These)1 290( machine components fall into two types.)6 1658( block tags used within for Levo)6 1311(types. The)1 444 5 720 4140 t
+(block tags and the non-generic block tags.)6 1683 1 720 4260 t
+%INFO[SECTION: LEVEL = 3, NUMBER = 2.2.1  , HEADING = Non-generic tags]
+10 B f
+( tags)1 197(2.2.1 Non-generic)1 771 2 720 4440 t
+10 R f
+(This section describes most of the block tags used.)8 2023 1 1738 4440 t
+%INFO[SECTION: LEVEL = 4, NUMBER = 2.2.1.1  , HEADING = levo tag]
+10 I f
+( tag)1 153(2.2.1.1 levo)1 491 2 720 4620 t
+10 R f
+( sub-tags are :)3 557( It's)1 183(This tag encloses all other Levo machine component tags.)8 2316 3 1414 4620 t
+( tag encloses all memory subsystem block tags)7 1868(lmem this)1 1145 2 720 4920 t
+( tag encloses all execution window block tags)7 1828(iw this)1 1145 2 720 5100 t
+( is a generic block tag that describes a group of related buses)12 2422(busgroup this)1 1145 2 720 5280 t
+( is a generic block tag that describes a single bus)10 1941(busname this)1 1145 2 720 5460 t
+%INFO[SECTION: LEVEL = 4, NUMBER = 2.2.1.2  , HEADING = lmem tag]
+10 I f
+( tag)1 161(2.2.1.2 lmem)1 541 2 720 5640 t
+10 R f
+( The)1 214( the entire memory subsystem of the Levo machine.)8 2144(This tag represents the top of)5 1202 3 1480 5640 t
+(sub-tags for this tag de\256ned so far so far are :)10 1807 1 720 5760 t
+( hexadecimal number that gives the unique ID of this block)10 2369(uid a)1 1044 2 720 6060 t
+%INFO[SECTION: LEVEL = 4, NUMBER = 2.2.1.3  , HEADING = the iw tag]
+10 I f
+( iw tag)2 273(2.2.1.3 the)1 447 2 720 6240 t
+10 R f
+( This)1 229( is a big one !)5 546( This)1 229(This block tag introduces the Levo machine execution window.)8 2546 4 1490 6240 t
+( sub-tags of this block are :)6 1082( The)1 205(contains most of the machine components of the machine.)8 2322 3 720 6360 t
+( block tag introduces the LIFETCH hardware component)7 2282(lifetch this)1 1145 2 720 6660 t
+( block tag introduces the LLB \(load buffer\) hardware component)9 2591(llb this)1 1145 2 720 6840 t
+( Group logical arrangement of Levo)5 1503( is a block tag that introduces a Sharing)8 1672(sg this)1 1145 3 720 7020 t
+(hardware components)1 878 1 1720 7140 t
+( Levo Write Queue \(LWQ\) hardware)5 1640( is a block tag that introduces the)7 1535(lwq this)1 1145 3 720 7320 t
+(component)1720 7440 w
+(January 19, 2002)2 685 1 4355 7608 t
+cleartomark
+showpage
+saveobj restore
+end
+%%EndPage: 3 3
+%%Page: 4 4
+DpostDict begin
+/saveobj save def
+mark
+4 pagesetup
+10 R f
+(- 4 -)2 166 1 2797 480 t
+( Levo)1 3408(Levo state trace output)3 912 2 720 600 t
+%INFO[SECTION: LEVEL = 4, NUMBER = 2.2.1.4  , HEADING = the lifetch tag]
+10 I f
+( lifetch tag)2 428(2.2.1.4 the)1 447 2 720 960 t
+10 R f
+(Currently, there are no sub-tags in this block.)7 1806 1 1645 960 t
+%INFO[SECTION: LEVEL = 4, NUMBER = 2.2.1.5  , HEADING = the llb tag]
+10 I f
+( llb tag)2 344(2.2.1.5 the)1 447 2 720 1140 t
+10 R f
+(This block tag introduces the state for the Levo Load Buffer \(LLB\) hardware)12 3448 1 1592 1140 t
+( sub-tag for this block are :)6 1076( The)1 205( is basically just a register of decoded instructions.)8 2017(component. This)1 697 4 720 1260 t
+( a block tag that introduces one entry of many for the LLB component ; the)15 3079( is)1 96(entry this)1 1145 3 720 1560 t
+(number of entries is the height of an AS column)9 1923 1 1720 1680 t
+%INFO[SECTION: LEVEL = 4, NUMBER = 2.2.1.6  , HEADING = the entry tag]
+10 I f
+( entry tag)2 383(2.2.1.6 the)1 447 2 720 1860 t
+10 R f
+( sub-tags are :)3 557( Its)1 150(This tag introduces one entry \(row\) of the LLB.)8 1905 3 1600 1860 t
+( leaf tag containing a decimal number giving the row index of this entry)13 2871(row a)1 1044 2 720 2160 t
+( the)1 153( leaf tag containing a single binary digit indicating whether)9 2406(valid a)1 1044 3 720 2340 t
+10 I f
+(valid)4354 2340 w
+10 R f
+(bit is set in)3 455 1 4585 2340 t
+(this entry or not)3 636 1 1720 2460 t
+( single binary digit indicating whether the entry contains an)9 2423( leaf tag containing a)4 853(used a)1 1044 3 720 2640 t
+(instruction of some sort or otherwise unused)6 1776 1 1720 2760 t
+( above\), then this leaf tag will appear containing a)9 2257( the entry is used \(see)5 1002(ia if)1 1061 3 720 2940 t
+( this LLB)2 398(hexadecimal number giving the instruction address of the instruction in)9 2922 2 1720 3060 t
+(entry)1720 3180 w
+( above\), then this leaf tag will appear containing a)9 2257( the entry is used \(see)5 1002(instr if)1 1061 3 720 3360 t
+( in this)2 289(hexadecimal number giving the 32-bit instruction word for the instruction)9 3031 2 1720 3480 t
+(LLB entry)1 419 1 1720 3600 t
+( will appear containing an ASCII)5 1348( the entry is used \(see above\), then this leaf tag)10 1911(instrdis if)1 1061 3 720 3780 t
+(string of the disassembled instruction that is in this LLB entry)10 2478 1 1720 3900 t
+%INFO[SECTION: LEVEL = 4, NUMBER = 2.2.1.7  , HEADING = the sg tag]
+10 I f
+( sg tag)2 319(2.2.1.7 the)1 447 2 720 4080 t
+10 R f
+( a logical)2 420( Sharing Group is)3 786( A)1 148(This block tag introduces a Sharing Group \(SG\).)7 2124 4 1562 4080 t
+( can be many Sharing Groups in the Levo machine)9 2135( There)1 294( hardware components.)2 952(arrangement of several)2 939 4 720 4200 t
+( the components within a Sharing Group are currently programmed to output)11 3115( all of)2 239( Not)1 203(execution window.)1 763 4 720 4320 t
+( sub-tags within this block tag are :)7 1402( The)1 205(state but some are.)3 743 3 720 4440 t
+( Group \(IDs are small)4 886( leaf tag giving in decimal the identi\256cation of this Sharing)10 2390(sgid a)1 1044 3 720 4740 t
+( ; SGIDs are unique within the whole Levo machine execution)10 2616(positive integers\))1 704 2 1720 4860 t
+(window)1720 4980 w
+( Active Station element \(described)4 1421( is a block tag that introduces a column of)9 1754(ascol this)1 1145 3 720 5160 t
+(later\) component groups)2 976 1 1720 5280 t
+( tag that introduces a Levo Processing Element \(LPE\) hardware)9 2713( is a block)3 462(lpe this)1 1145 3 720 5460 t
+(component)1720 5580 w
+%INFO[SECTION: LEVEL = 4, NUMBER = 2.2.1.8  , HEADING = the ascol tag]
+10 I f
+( ascol tag)2 389(2.2.1.8 the)1 447 2 720 5760 t
+10 R f
+(The sub-tags in this block tag are :)7 1379 1 1606 5760 t
+( leaf tag gives in decimal the ID of this column within the Sharing Group)14 2925(id this)1 1145 2 720 6060 t
+( Sharing)1 349( is a block tag that introduces an Active Station element within this)12 2826(aselem this)1 1145 3 720 6240 t
+(Group)1720 6360 w
+%INFO[SECTION: LEVEL = 4, NUMBER = 2.2.1.9  , HEADING = the aselem tag]
+10 I f
+( aselem tag)2 481(2.2.1.9 the)1 447 2 720 6540 t
+10 R f
+( contains a single The)4 927( This)1 241(This is a block tag that exists with Sharing Groups.)9 2161 3 1711 6540 t
+(sub-tags of this block tag are :)6 1204 1 720 6660 t
+( the relative ID of this Active)6 1314( leaf tag contains a decimal number giving)7 1861(id this)1 1145 3 720 6960 t
+(Station element within the Active Station column grouping)7 2364 1 1720 7080 t
+( giving the execution window row index of)7 1744( leaf tag contains a decimal number)6 1431(asrow this)1 1145 3 720 7260 t
+(this Active Station element within the context of the entire execution window)11 3100 1 1720 7380 t
+(January 19, 2002)2 685 1 720 7608 t
+cleartomark
+showpage
+saveobj restore
+end
+%%EndPage: 4 4
+%%Page: 5 5
+DpostDict begin
+/saveobj save def
+mark
+5 pagesetup
+10 R f
+(- 5 -)2 166 1 2797 480 t
+( state trace output)3 707(Levo Levo)1 3613 2 720 600 t
+( contains a decimal number that is the ID of the enclosed Active)12 2814( leaf tag)2 361(asid this)1 1145 3 720 960 t
+( within the context of the entire Levo machine)8 2039(Station \(to be described later\))4 1281 2 1720 1080 t
+(execution window)1 735 1 1720 1200 t
+( block tag introduces the state within an Active Station hardware component)11 3054(as this)1 1145 2 720 1380 t
+%INFO[SECTION: LEVEL = 4, NUMBER = 2.2.1.10  , HEADING = the as tag]
+10 I f
+( as tag)2 267(2.2.1.10 the)1 497 2 720 1560 t
+10 R f
+( There)1 282(This tag introduces the state within a single Active Station hardware component.)11 3224 2 1534 1560 t
+( restrictions on the geometry of the Levo)7 1649( Current)1 358( machine.)1 391(are often many of these in any con\256gured Levo)8 1922 4 720 1680 t
+( in each column of)4 771(machine as implemented in LevoSim requires that there be at least two Active Stations)13 3549 2 720 1800 t
+( sub-tag are :)3 518( The)1 205(the execution window of the machine.)5 1525 3 720 1920 t
+( Active)1 303( leaf tag contains a hexadecimal number giving the unique ID of this)12 2872(uid this)1 1145 3 720 2220 t
+( are useful for tracking hardware components in the)8 2213(Station component ; UIDs)3 1107 2 1720 2340 t
+(software)1720 2460 w
+( a decimal number giving the ID of this Active Station within)11 2490( leaf tag contains)3 685(asid this)1 1145 3 720 2640 t
+(the execution window \(same as)4 1313 1 1720 2760 t
+10 I f
+(asid)3073 2760 w
+10 R f
+( ID is useful for)4 688(in other block tags\) ; this)5 1072 2 3280 2760 t
+(human tracking of ASes)3 968 1 1720 2880 t
+( this AS has an)4 696( leaf tag contains a single binary digit indicating whether)9 2479(used this)1 1145 3 720 3060 t
+(instruction in it or if it is otherwise unused)8 1700 1 1720 3180 t
+( AS is)2 259( leaf tag contains a decimal number that indicates what path the current)12 2916(path this)1 1145 3 720 3360 t
+( will not exceed in)4 754(associated with ; paths are small non-zero positive integers and)9 2566 2 1720 3480 t
+(value the number of DEE paths con\256gured for the current machine plus one)12 3027 1 1720 3600 t
+( the time-tag associated with the)5 1310( leaf tag contains a decimal number indicating)7 1865(tt this)1 1145 3 720 3780 t
+(current AS ; the number is a small positive integer)9 2012 1 1720 3900 t
+( above\), then this leaf tag will appear containing a)9 2257( the entry is used \(see)5 1002(ia if)1 1061 3 720 4080 t
+(hexadecimal number giving the instruction address of the instruction in this AS)11 3173 1 1720 4200 t
+( above\), then this leaf tag will appear containing a)9 2257( the entry is used \(see)5 1002(instr if)1 1061 3 720 4380 t
+( in this)2 289(hexadecimal number giving the 32-bit instruction word for the instruction)9 3031 2 1720 4500 t
+(AS)1720 4620 w
+( will appear containing an ASCII)5 1348( the entry is used \(see above\), then this leaf tag)10 1911(instrdis if)1 1061 3 720 4800 t
+(string of the disassembled instruction that is in this AS)9 2187 1 1720 4920 t
+( of the instruction that)4 911( leaf tag contains a decimal number indicating the class)9 2264(opclass this)1 1145 3 720 5100 t
+(has been issued to this AS ; the number is a small positive integer)13 2624 1 1720 5220 t
+( number indicating the decoded opcode of the)7 1981( leaf tag contains a decimal)5 1194(opexec this)1 1145 3 720 5400 t
+(instruction that has been issued to this AS ; the number is a small positive integer)15 3252 1 1720 5520 t
+( currently)1 386( is a block tag that contains a source register set for this AS ; there are)16 2789(srcreg this)1 1145 3 720 5700 t
+(up to four of these in any AS)7 1157 1 1720 5820 t
+( ; this)2 279( is a block tag that contains a destination register set for this AS)13 2896(dstreg this)1 1145 3 720 6000 t
+( output of the instruction execution in the current)8 1999(destination register set is not the)5 1321 2 1720 6120 t
+( there are)2 434(AS but rather the input snoop/snarf information on this register ;)10 2886 2 1720 6240 t
+(currently up to three of these in any AS)8 1575 1 1720 6360 t
+%INFO[SECTION: LEVEL = 4, NUMBER = 2.2.1.11  , HEADING = srcreg and dstreg tags]
+10 I f
+( and dstreg tags)3 669(2.2.1.11 srcreg)1 630 2 720 6540 t
+10 R f
+(These block tags appear in Active Station blocks and are currently very)11 2962 1 2078 6540 t
+( source register set contains the register information associated with one source operand to the)14 3885(similar. A)1 435 2 720 6660 t
+( contains the register information associated with one)7 2147( destination register set)3 927( A)1 123(instruction loaded in an AS.)4 1123 4 720 6780 t
+( 'destination' may be misleading as this)6 1612( term)1 213( The)1 210(destination operand for the instruction loaded in the AS.)8 2285 4 720 6900 t
+( values in a destination)4 932( The)1 208(block contains state information for the input of this register to the current AS.)13 3180 3 720 7020 t
+( both)1 214( Therefor)1 409( computation by the current AS.)5 1337(register set are those for the operand before any possible)9 2360 4 720 7140 t
+( inputs to as AS and are typically snooped and snarfed)10 2179(source and destination register sets described here are)7 2141 2 720 7260 t
+( of these block tags currently have the following sub-tags :)10 2341(identically. Both)1 692 2 720 7380 t
+(January 19, 2002)2 685 1 4355 7608 t
+cleartomark
+showpage
+saveobj restore
+end
+%%EndPage: 5 5
+%%Page: 6 6
+DpostDict begin
+/saveobj save def
+mark
+6 pagesetup
+10 R f
+(- 6 -)2 166 1 2797 480 t
+( Levo)1 3408(Levo state trace output)3 912 2 720 600 t
+( leaf tag containing an ASCII string taken to the name of the register set)14 2873(name a)1 1044 2 720 960 t
+( leaf tag containing a hexadecimal number of the address of the register operand)13 3200(addr a)1 1044 2 720 1140 t
+( data value of the)4 739( leaf tag containing a hexadecimal number that is the current)10 2537(dv a)1 1044 3 720 1320 t
+(register operand)1 645 1 1720 1440 t
+( containing a decimal number giving the path that this register operand)11 2937( leaf tag)2 339(path a)1 1044 3 720 1620 t
+(came from)1 429 1 1720 1740 t
+( number giving the time-tag value of the source of)9 2068( leaf tag containing a decimal)5 1208(tt a)1 1044 3 720 1920 t
+( the hardware component where the)5 1481(this register operand ; this is the time-tag of)8 1839 2 1720 2040 t
+(operand was generated from)3 1132 1 1720 2160 t
+%INFO[SECTION: LEVEL = 4, NUMBER = 2.2.1.12  , HEADING = the lpe tag]
+10 I f
+( lpe tag)2 304(2.2.1.12 the)1 497 2 720 2340 t
+10 R f
+( for the Levo Processing Element hardware)6 1747(This is a block tag that introduces the state)8 1720 2 1573 2340 t
+( there is no clearly de\256ned state for this component so there are not yet any sub-tags.)16 3380(component. Currently,)1 927 2 720 2460 t
+%INFO[SECTION: LEVEL = 4, NUMBER = 2.2.1.13  , HEADING = the lwq tag]
+10 I f
+( lwq tag)2 341(2.2.1.13 the)1 497 2 720 2640 t
+10 R f
+( are)1 156( There)1 292( the Levo Write Queue \(LWQ\) hardware component.)7 2191(This tag introduces)2 784 4 1617 2640 t
+(not yet any sub-tags for this component.)6 1607 1 720 2760 t
+%INFO[SECTION: LEVEL = 3, NUMBER = 2.2.2  , HEADING = Generic tags]
+10 B f
+( tags)1 201(2.2.2 Generic)1 588 2 720 2940 t
+10 R f
+( tags are used in more than one)7 1267( These)1 292(This section describes some generic block tags.)6 1918 3 1563 2940 t
+( is, they may be enclosed by more than one other block tag.)12 2374(place. That)1 468 2 720 3060 t
+%INFO[SECTION: LEVEL = 4, NUMBER = 2.2.2.1  , HEADING = the busgroup tag]
+10 I f
+( busgroup tag)2 564(2.2.2.1 the)1 447 2 720 3240 t
+10 R f
+( of the)2 265( Some)1 283( that describes a group of related buses.)7 1609(This tag introduces a block)4 1098 4 1785 3240 t
+( enclosed by a)3 568( only one other block tag will be)7 1303( Usually)1 362(sub-tags of this block tag are optional.)6 1535 4 720 3360 t
+10 I f
+(busname)4513 3360 w
+10 R f
+(tag.)4893 3360 w
+(The)720 3480 w
+10 I f
+(possible)900 3480 w
+10 R f
+(sub-tags are :)2 532 1 1253 3480 t
+( is a leaf tag whose value is a name assigned to the group of buses)15 2637(name this)1 1145 2 720 3780 t
+( is a generic block tag that introducing a RFBUS type hardware component)12 3007(rfbus this)1 1145 2 720 3960 t
+( is a generic block tag that introducing a LIBUS type hardware component)12 2978(libus this)1 1145 2 720 4140 t
+%INFO[SECTION: LEVEL = 4, NUMBER = 2.2.2.2  , HEADING = the busname tag]
+10 I f
+( busname tag)2 563(2.2.2.2 the)1 447 2 720 4320 t
+10 R f
+( enclosed bus is usually described by a)7 1657( The)1 221( introduces a single bus.)4 1027(This tag)1 340 4 1795 4320 t
+( only one other block)4 881( Usually)1 369( of the sub-tags of this block tag are optional.)9 1881( Some)1 287(generic block sub-tag.)2 902 5 720 4440 t
+(tag will be enclosed by a)5 990 1 720 4560 t
+10 I f
+(busname)1735 4560 w
+10 R f
+(tag. The)1 327 1 2115 4560 t
+10 I f
+(possible)2467 4560 w
+10 R f
+(sub-tags are :)2 532 1 2820 4560 t
+( is a leaf tag whose value is a name assigned to the group of buses)15 2637(name this)1 1145 2 720 4860 t
+( is a generic block tag that introducing a RFBUS type hardware component)12 3007(rfbus this)1 1145 2 720 5040 t
+( is a generic block tag that introducing a LIBUS type hardware component)12 2978(libus this)1 1145 2 720 5220 t
+%INFO[SECTION: LEVEL = 4, NUMBER = 2.2.2.3  , HEADING = the rfbus tag]
+10 I f
+( tag)1 163( rfbus)1 240(2.2.2.3 the)1 447 3 720 5400 t
+10 R f
+( sub-)1 207( The)1 215(This block tag introduces the state for the RFBUS hardware component.)10 2988 3 1630 5400 t
+(tags are :)2 360 1 720 5520 t
+( leaf tag containing a hexadecimal number giving the unique ID of the component)13 3275(uid a)1 1044 2 720 5820 t
+( digit specifying whether the bus is currently)7 1847( leaf tag containing a single binary)6 1429(busy a)1 1044 3 720 6000 t
+(busy or not)2 450 1 1720 6120 t
+( digit specifying whether the bus is currently)7 1847( leaf tag containing a single binary)6 1429(hold a)1 1044 3 720 6300 t
+(being held \(stalled\) or not)4 1032 1 1720 6420 t
+( leaf tag containing a single binary digit specifying whether the bus has any data)14 3276(dp a)1 1044 2 720 6600 t
+(present in the current clock)4 1086 1 1720 6720 t
+( object of related bus)4 889( is a generic block tag that contains a LFLOWGROUP)9 2291(l\257owgroup this)1 1140 3 720 6900 t
+(data)1720 7020 w
+%INFO[SECTION: LEVEL = 4, NUMBER = 2.2.2.4  , HEADING = the libus tag]
+10 I f
+( libus tag)2 393(2.2.2.4 the)1 447 2 720 7200 t
+10 R f
+( sub-)1 208( The)1 216( introduces the state for the RFBUS hardware component.)8 2404(This block tag)2 592 4 1620 7200 t
+(tags are :)2 360 1 720 7320 t
+(January 19, 2002)2 685 1 720 7608 t
+cleartomark
+showpage
+saveobj restore
+end
+%%EndPage: 6 6
+%%Page: 7 7
+DpostDict begin
+/saveobj save def
+mark
+7 pagesetup
+10 R f
+(- 7 -)2 166 1 2797 480 t
+( state trace output)3 707(Levo Levo)1 3613 2 720 600 t
+( leaf tag containing a hexadecimal number giving the unique ID of the component)13 3275(uid a)1 1044 2 720 960 t
+( digit specifying whether the bus is currently)7 1847( leaf tag containing a single binary)6 1429(busy a)1 1044 3 720 1140 t
+(busy or not)2 450 1 1720 1260 t
+( digit specifying whether the bus is currently)7 1847( leaf tag containing a single binary)6 1429(hold a)1 1044 3 720 1440 t
+(being held \(stalled\) or not)4 1032 1 1720 1560 t
+( leaf tag containing a single binary digit specifying whether the bus has any data)14 3276(dp a)1 1044 2 720 1740 t
+(present in the current clock)4 1086 1 1720 1860 t
+( multi-laned buses ;)3 792( is a generic block tag that contains a single lane of data for)13 2383(datalane this)1 1145 3 720 2040 t
+(there can be many of these tags in a single)9 1688 1 1720 2160 t
+10 I f
+(libus)3433 2160 w
+10 R f
+(tag)3653 2160 w
+%INFO[SECTION: LEVEL = 4, NUMBER = 2.2.2.5  , HEADING = the datalane tag]
+10 I f
+( tag)1 157( datalane)1 378(2.2.2.5 the)1 447 3 720 2340 t
+10 R f
+(This block tag introduces the information for a single lane of data for some outer)14 3284 1 1756 2340 t
+( sub-tags are :)3 557( The)1 205(block tag.)1 394 3 720 2460 t
+( leaf tag containing a decimal number giving the relative ID of the component)13 3114(id a)1 1044 2 720 2760 t
+( that contains the related data elements of an LFLOWGROUP hardware)10 2887( block tag)2 394(l\257owgroup a)1 1039 3 720 2940 t
+(object)1720 3060 w
+%INFO[SECTION: LEVEL = 4, NUMBER = 2.2.2.6  , HEADING = the lflowgroup tag]
+10 I f
+( l\257owgroup tag)2 642(2.2.2.6 the)1 447 2 720 3240 t
+10 R f
+(This is a block tag that introduces the information for the LFLOWGROUP)11 3165 1 1875 3240 t
+( Transactions)1 560( machine.)1 388( object generally corresponds with a "transaction" in the Levo)9 2478( This)1 229(hardware object.)1 665 5 720 3360 t
+( of the)2 307(contain both architectural data as well as micro-architectural meta-data describing the context)11 4013 2 720 3480 t
+( sub-tags are :)3 557( The)1 205(architectural data.)1 714 3 720 3600 t
+( containing a decimal number giving the forwarder's time tag value ; a)12 2937( leaf tag)2 339(ftt a)1 1044 3 720 3900 t
+(forwarder was a component that last forwarded this LFLOWGROUP if any)10 3016 1 1720 4020 t
+( ; an)2 186( leaf tag containing a decimal number giving the originator's time tag value)12 3090(ott a)1 1044 3 720 4200 t
+(originator was a component that \256rst originated this LFLOWGROUP)8 2776 1 1720 4320 t
+( value of this present)4 880( leaf tag containing a decimal number giving the time tag)10 2396(tt a)1 1044 3 720 4500 t
+(LFLOWGROUP ; this is the time tag used for snooping of this LFLOWGROUP)12 3222 1 1720 4620 t
+( a decimal number giving the sequence number value of this)10 2487( leaf tag containing)3 789(seq a)1 1044 3 720 4800 t
+(present LFLOWGROUP)1 996 1 1720 4920 t
+( for this present)3 756( leaf tag containing a decimal number giving the path)9 2520(path a)1 1044 3 720 5100 t
+(LFLOWGROUP)1720 5220 w
+( a hexadecimal number giving the address of this present)9 2451( leaf tag containing)3 825(addr a)1 1044 3 720 5400 t
+(LFLOWGROUP)1720 5520 w
+( tag containing a hexadecimal number giving the data value of this present)12 3093( leaf)1 183(dv a)1 1044 3 720 5700 t
+(LFLOWGROUP)1720 5820 w
+( number giving the data-present bits \(the low four)8 2058( leaf tag containing a decimal)5 1218(dp a)1 1044 3 720 6000 t
+(bits\) for the data in this present LFLOWGROUP)7 1951 1 1720 6120 t
+( present)1 317( leaf tag containing a decimal number giving the transaction code for this)12 2959(trans a)1 1044 3 720 6300 t
+(LFLOWGROUP)1720 6420 w
+%INFO[SECTION: LEVEL = 1, NUMBER = 3.  , HEADING = Acknowledgments]
+9 B f
+(3. Acknowledgments)1 819 1 720 6660 t
+10 R f
+( for the initial discussions I had with him about using XML for the output)14 2958(Many thanks go to Sean Langford)5 1362 2 720 6840 t
+(state dump and his enthusiasm for the idea.)7 1726 1 720 6960 t
+(January 19, 2002)2 685 1 4355 7608 t
+cleartomark
+showpage
+saveobj restore
+end
+%%EndPage: 7 7
+%%Page: 8 8
+DpostDict begin
+/saveobj save def
+mark
+8 pagesetup
+10 R f
+(- 8 -)2 166 1 2797 480 t
+( Levo)1 3408(Levo state trace output)3 912 2 720 600 t
+(January 19, 2002)2 685 1 720 7608 t
+cleartomark
+showpage
+saveobj restore
+end
+%%EndPage: 8 8
+%%Page: 9 9
+DpostDict begin
+/saveobj save def
+mark
+9 pagesetup
+10 R f
+(- 9 -)2 166 1 2797 480 t
+( state trace output)3 707(Levo Levo)1 3613 2 720 600 t
+(January 19, 2002)2 685 1 4355 7608 t
+cleartomark
+showpage
+saveobj restore
+end
+%%EndPage: 9 9
+%%Page: 10 10
+DpostDict begin
+/saveobj save def
+mark
+10 pagesetup
+10 R f
+(CONTENTS)2619 960 w
+(1. introduction)1 614 1 720 1260 t
+10 B f
+(. . . . . . . . . . . . . . . . . . . . . . . . . .)25 3350 1 1486 1260 t
+10 R f
+(1)4990 1260 w
+( machine)1 363(1.1 Levo)1 380 2 845 1380 t
+10 B f
+(. . . . . . . . . . . . . . . . . . . . . . . .)23 3084 1 1752 1380 t
+10 R f
+(1)4990 1380 w
+(1.2 LevoSim)1 542 1 845 1500 t
+10 B f
+(. . . . . . . . . . . . . . . . . . . . . . . . . .)25 3350 1 1486 1500 t
+10 R f
+(1)4990 1500 w
+(1.3 XML)1 397 1 845 1620 t
+10 B f
+(. . . . . . . . . . . . . . . . . . . . . . . . . . .)26 3483 1 1353 1620 t
+10 R f
+(1)4990 1620 w
+( usage)1 252(2. XML)1 347 2 720 1800 t
+10 B f
+(. . . . . . . . . . . . . . . . . . . . . . . . . .)25 3350 1 1486 1800 t
+10 R f
+(1)4990 1800 w
+( tags)1 186(2.1 miscellaneous)1 741 2 845 1920 t
+10 B f
+(. . . . . . . . . . . . . . . . . . . . . . .)22 2951 1 1885 1920 t
+10 R f
+(2)4990 1920 w
+( 2)1 150( con\256guration tag)2 705(2.1.1 the)1 372 3 1020 2040 t
+( 3)1 150( tag)1 147(2.1.2 clock)1 466 3 1020 2160 t
+( machine component tags)3 1018(2.2 Levo)1 380 2 845 2280 t
+10 B f
+(. . . . . . . . . . . . . . . . . . .)18 2419 1 2417 2280 t
+10 R f
+(3)4990 2280 w
+( 3)1 150( tags)1 186(2.2.1 Non-generic)1 748 3 1020 2400 t
+( 6)1 150( tags)1 186(2.2.2 Generic)1 565 3 1020 2520 t
+(3. Acknowledgments)1 874 1 720 2700 t
+10 B f
+(. . . . . . . . . . . . . . . . . . . . . . . .)23 3084 1 1752 2700 t
+10 R f
+(7)4990 2700 w
+(- i -)2 144 1 2808 7728 t
+cleartomark
+showpage
+saveobj restore
+end
+%%EndPage: 10 10
+%%Trailer
+DpostDict begin
+done
+end
+%%Pages: 10
+%%DocumentFonts: Times-Bold Times-Italic Times-Roman

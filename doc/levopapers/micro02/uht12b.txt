@@ -1,0 +1,10 @@
+Date: Wed, 12 Jun 2002 16:33:16 -0400
+From: "Augustus (Gus) K. Uht" <uht@ele.uri.edu>
+To: Alireza Khalafi <akhalafi@ece.neu.edu>, David Morano <morano@computer.org>
+Subject: ijpeg
+
+Hi. It still looks like ijpeg is ill (low IPCs), and I wouldn't expect to
+be. Can someone take a look at it again, after the grid is filled?
+
+----Gus
+

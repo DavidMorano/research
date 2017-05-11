@@ -1,0 +1,789 @@
+%!PS-Adobe-2.0
+%%Copyright: Copyright (c) 1993 AT&T, All Rights Reserved
+%%Version: 3.4.1
+%%DocumentFonts: (atend)
+%%Pages: (atend)
+%%BoundingBox: (atend)
+%%EndComments
+/DpostDict 200 dict def
+DpostDict begin
+%
+% Copyright (c) 1993 AT&T, All Rights Reserved
+%
+% Version 3.4 prologue for troff files.
+%
+
+/#copies 1 store
+/Prologue (dpost.ps) def
+/aspectratio 1 def
+/formsperpage 1 def
+/landscape false def
+/linewidth .3 def
+/magnification 1 def
+/margin 0 def
+/orientation 0 def
+/resolution 720 def
+/rotation 1 def
+/xoffset 0 def
+/yoffset 0 def
+
+/roundpage true def
+/useclippath true def
+/pagebbox [0 0 612 792] def
+
+/R  /Times-Roman def
+/I  /Times-Italic def
+/B  /Times-Bold def
+/BI /Times-BoldItalic def
+/H  /Helvetica def
+/HI /Helvetica-Oblique def
+/HB /Helvetica-Bold def
+/HX /Helvetica-BoldOblique def
+/CW /Courier def
+/CO /Courier def
+/CI /Courier-Oblique def
+/CB /Courier-Bold def
+/CX /Courier-BoldOblique def
+/PA /Palatino-Roman def
+/PI /Palatino-Italic def
+/PB /Palatino-Bold def
+/PX /Palatino-BoldItalic def
+/Hr /Helvetica-Narrow def
+/Hi /Helvetica-Narrow-Oblique def
+/Hb /Helvetica-Narrow-Bold def
+/Hx /Helvetica-Narrow-BoldOblique def
+/KR /Bookman-Light def
+/KI /Bookman-LightItalic def
+/KB /Bookman-Demi def
+/KX /Bookman-DemiItalic def
+/AR /AvantGarde-Book def
+/AI /AvantGarde-BookOblique def
+/AB /AvantGarde-Demi def
+/AX /AvantGarde-DemiOblique def
+/NR /NewCenturySchlbk-Roman def
+/NI /NewCenturySchlbk-Italic def
+/NB /NewCenturySchlbk-Bold def
+/NX /NewCenturySchlbk-BoldItalic def
+/ZD /ZapfDingbats def
+/ZI /ZapfChancery-MediumItalic def
+/S  /S def
+/S1 /S1 def
+/GR /Symbol def
+
+/inch {72 mul} bind def
+/min {2 copy gt {exch} if pop} bind def
+
+/setup {
+	counttomark 2 idiv {def} repeat pop
+
+	landscape {/orientation 90 orientation add def} if
+	/scaling 72 resolution div def
+	linewidth setlinewidth
+	1 setlinecap
+
+	pagedimensions
+	xcenter ycenter translate
+	orientation rotation mul rotate
+	width 2 div neg height 2 div translate
+	xoffset inch yoffset inch neg translate
+	margin 2 div dup neg translate
+	magnification dup aspectratio mul scale
+	scaling scaling scale
+
+	addmetrics
+	0 0 moveto
+} def
+
+/pagedimensions {
+	useclippath userdict /gotpagebbox known not and {
+		/pagebbox [clippath pathbbox newpath] def
+		roundpage currentdict /roundpagebbox known and {roundpagebbox} if
+	} if
+	pagebbox aload pop
+	4 -1 roll exch 4 1 roll 4 copy
+	landscape {4 2 roll} if
+	sub /width exch def
+	sub /height exch def
+	add 2 div /xcenter exch def
+	add 2 div /ycenter exch def
+	userdict /gotpagebbox true put
+} def
+
+/landscapepage {
+	landscape not {
+		0 height scaling div neg translate	% not quite
+		90 rotate
+	} if
+} bind def
+
+/portraitpage {
+	landscape {
+		width scaling div 0 translate	% not quite
+		-90 rotate
+	} if
+} bind def
+
+/addmetrics {
+	/Symbol /S null Sdefs cf
+	/Times-Roman /S1 StandardEncoding dup length array copy S1defs cf
+} def
+
+/pagesetup {
+	/page exch def
+	currentdict /pagedict known currentdict page known and {
+		page load pagedict exch get cvx exec
+	} if
+} def
+
+/decodingdefs [
+	{counttomark 2 idiv {y moveto show} repeat}
+	{neg /y exch def counttomark 2 idiv {y moveto show} repeat}
+	{neg moveto {2 index stringwidth pop sub exch div 0 32 4 -1 roll widthshow} repeat}
+	{neg moveto {spacewidth sub 0.0 32 4 -1 roll widthshow} repeat}
+	{counttomark 2 idiv {y moveto show} repeat}
+	{neg setfunnytext}
+] def
+
+/setdecoding {/t decodingdefs 3 -1 roll get bind def} bind def
+
+/w {neg moveto show} bind def
+/m {neg dup /y exch def moveto} bind def
+/done {/lastpage where {pop lastpage} if} def
+
+/f {
+	dup /font exch def findfont exch
+	dup /ptsize exch def scaling div dup /size exch def scalefont setfont
+	linewidth ptsize mul scaling 10 mul div setlinewidth
+	/spacewidth ( ) stringwidth pop def
+} bind def
+
+/changefont {
+	/fontheight exch def
+	/fontslant exch def
+	currentfont [
+		1 0
+		fontheight ptsize div fontslant sin mul fontslant cos div
+		fontheight ptsize div
+		0 0
+	] makefont setfont
+} bind def
+
+/sf {f} bind def
+
+/cf {
+	dup length 2 idiv
+	/entries exch def
+	/chtab exch def
+	/newencoding exch def
+	/newfont exch def
+
+	findfont dup length 1 add dict
+	/newdict exch def
+	{1 index /FID ne {newdict 3 1 roll put}{pop pop} ifelse} forall
+
+	newencoding type /arraytype eq {newdict /Encoding newencoding put} if
+
+	newdict /Metrics entries dict put
+	newdict /Metrics get
+	begin
+		chtab aload pop
+		1 1 entries {pop def} for
+		newfont newdict definefont pop
+	end
+} bind def
+
+%
+% A few arrays used to adjust reference points and character widths in some
+% of the printer resident fonts. If square roots are too high try changing
+% the lines describing /radical and /radicalex to,
+%
+%	/radical	[0 -75 550 0]
+%	/radicalex	[-50 -75 500 0]
+%
+% Move braceleftbt a bit - default PostScript character is off a bit.
+%
+
+/Sdefs [
+	/bracketlefttp		[201 500]
+	/bracketleftbt		[201 500]
+	/bracketrighttp		[-81 380]
+	/bracketrightbt		[-83 380]
+	/braceleftbt		[203 490]
+	/bracketrightex		[220 -125 500 0]
+	/radical		[0 0 550 0]
+	/radicalex		[-50 0 500 0]
+	/parenleftex		[-20 -170 0 0]
+	/integral		[100 -50 500 0]
+	/infinity		[10 -75 730 0]
+] def
+
+/S1defs [
+	/underscore		[0 80 500 0]
+	/endash			[7 90 650 0]
+] def
+%
+% Copyright (c) 1993 AT&T, All Rights Reserved
+%
+% A first cut at a company wide version of postcommon.ps.
+% Includes Matthijs Melchior's version of roundpagebbox,
+% but disables adjustments for postprint. This is just an
+% example - it should not be considered final or official.
+%
+
+/roundpagebbox {
+	Prologue (postprint.ps) ne {
+		pagebbox dup 0 get pagebbox 2 get add 2 exch put
+		pagebbox dup 1 get pagebbox 3 get add 3 exch put
+		pagebbox 0 0 put
+		pagebbox 1 0 put
+		userdict /origin-at-paper-edge true put
+	} if
+} bind def
+
+end
+%%EndProlog
+%%BeginSetup
+DpostDict begin
+mark
+/rotation 1 def
+userdict /gotpagebbox true put
+/resolution 720 def
+setup
+2 setdecoding
+%
+% Copyright (c) 1993 AT&T, All Rights Reserved
+%
+% Version 3.4 drawing procedures for dpost. Automatically pulled in when
+% needed.
+%
+
+/inpath false def
+/savematrix matrix def
+
+/Dl {
+	inpath
+		{pop pop neg lineto}
+		{newpath neg moveto neg lineto stroke}
+	ifelse
+} bind def
+
+/De {
+	/y1 exch 2 div def
+	/x1 exch 2 div def
+	/savematrix savematrix currentmatrix def
+	neg exch x1 add exch translate
+	x1 y1 scale
+	0 0 1 0 360
+	inpath
+		{1 0 moveto arc savematrix setmatrix}
+		{newpath arc savematrix setmatrix stroke}
+	ifelse
+} bind def
+
+/Da {
+	/dy2 exch def
+	/dx2 exch def
+	/dy1 exch def
+	/dx1 exch def
+	dy1 add neg exch dx1 add exch
+	dx1 dx1 mul dy1 dy1 mul add sqrt
+	dy1 dx1 neg atan
+	dy2 neg dx2 atan
+	inpath
+		{arc}
+		{newpath arc stroke}
+	ifelse
+} bind def
+
+/DA {
+	/dy2 exch def
+	/dx2 exch def
+	/dy1 exch def
+	/dx1 exch def
+	dy1 add neg exch dx1 add exch
+	dx1 dx1 mul dy1 dy1 mul add sqrt
+	dy1 dx1 neg atan
+	dy2 neg dx2 atan
+	inpath
+		{arcn}
+		{newpath arcn stroke}
+	ifelse
+} bind def
+
+/Ds {
+	/y2 exch def
+	/x2 exch def
+	/y1 exch def
+	/x1 exch def
+	/y0 exch def
+	/x0 exch def
+	x0 5 x1 mul add 6 div
+	y0 5 y1 mul add -6 div
+	x2 5 x1 mul add 6 div
+	y2 5 y1 mul add -6 div
+	x1 x2 add 2 div
+	y1 y2 add -2 div
+	inpath
+		{curveto}
+		{newpath x0 x1 add 2 div y0 y1 add -2 div moveto curveto stroke}
+	ifelse
+} bind def
+end
+%%EndSetup
+%%Page: 1 1
+%%PageBoundingBox: (atend)
+DpostDict begin
+/saveobj save def
+mark
+1 pagesetup
+10 R f
+1272 120 1272 1560 Dl
+4512 120 1272 120 Dl
+4512 1560 4512 120 Dl
+1272 1560 4512 1560 Dl
+1200 1560 1272 1560 Dl
+(-0)1092 1580 w
+1200 1079 1272 1079 Dl
+(10)1075 1099 w
+1200 600 1272 600 Dl
+(20)1075 620 w
+1200 120 1272 120 Dl
+(30)1075 140 w
+(percent)741 680 w
+(forward)730 800 w
+(branch)752 920 w
+(targets)754 1040 w
+(forward branch target distance)3 1215 1 2285 1880 t
+1272 1632 1272 1560 Dl
+(0)1247 1742 w
+1596 1632 1596 1560 Dl
+(10)1546 1742 w
+1920 1632 1920 1560 Dl
+(20)1870 1742 w
+2244 1632 2244 1560 Dl
+(30)2194 1742 w
+2568 1632 2568 1560 Dl
+(40)2518 1742 w
+2892 1632 2892 1560 Dl
+(50)2842 1742 w
+3216 1632 3216 1560 Dl
+(60)3166 1742 w
+3540 1632 3540 1560 Dl
+(70)3490 1742 w
+3864 1632 3864 1560 Dl
+(80)3814 1742 w
+4188 1632 4188 1560 Dl
+(90)4138 1742 w
+4512 1632 4512 1560 Dl
+(100)4437 1742 w
+14 R f
+(.)1255 1560 w
+10 R f
+1304 1560 1272 1560 Dl
+14 R f
+(.)1287 1560 w
+10 R f
+1336 1560 1304 1560 Dl
+14 R f
+(.)1320 1560 w
+10 R f
+1369 1409 1337 1560 Dl
+14 R f
+(.)1352 1408 w
+10 R f
+1401 738 1369 1408 Dl
+14 R f
+(.)1384 737 w
+10 R f
+1433 1264 1401 737 Dl
+14 R f
+(.)1417 1265 w
+10 R f
+1466 1223 1434 1265 Dl
+14 R f
+(.)1449 1223 w
+10 R f
+1498 1265 1466 1223 Dl
+14 R f
+(.)1482 1265 w
+10 R f
+1531 1347 1499 1265 Dl
+14 R f
+(.)1514 1347 w
+10 R f
+1563 1325 1531 1347 Dl
+14 R f
+(.)1546 1326 w
+10 R f
+1595 1462 1563 1326 Dl
+14 R f
+(.)1579 1462 w
+10 R f
+1628 1442 1596 1462 Dl
+14 R f
+(.)1611 1441 w
+10 R f
+1660 1453 1628 1441 Dl
+14 R f
+(.)1644 1454 w
+10 R f
+1693 1433 1661 1454 Dl
+14 R f
+(.)1676 1433 w
+10 R f
+1725 1417 1693 1433 Dl
+14 R f
+(.)1708 1416 w
+10 R f
+1757 1438 1725 1416 Dl
+14 R f
+(.)1741 1439 w
+10 R f
+1790 1477 1758 1439 Dl
+14 R f
+(.)1773 1477 w
+10 R f
+1822 1476 1790 1477 Dl
+14 R f
+(.)1806 1476 w
+10 R f
+1855 1504 1823 1476 Dl
+14 R f
+(.)1838 1505 w
+10 R f
+1887 1514 1855 1505 Dl
+14 R f
+(.)1870 1514 w
+10 R f
+1919 1486 1887 1514 Dl
+14 R f
+(.)1903 1485 w
+10 R f
+1952 1507 1920 1485 Dl
+14 R f
+(.)1935 1508 w
+10 R f
+1984 1465 1952 1508 Dl
+14 R f
+(.)1968 1464 w
+10 R f
+2017 1472 1985 1464 Dl
+14 R f
+(.)2000 1473 w
+10 R f
+2049 1519 2017 1473 Dl
+14 R f
+(.)2032 1519 w
+10 R f
+2081 1517 2049 1519 Dl
+14 R f
+(.)2065 1516 w
+10 R f
+2114 1516 2082 1516 Dl
+14 R f
+(.)2097 1517 w
+10 R f
+2146 1530 2114 1517 Dl
+14 R f
+(.)2130 1531 w
+10 R f
+2179 1541 2147 1531 Dl
+14 R f
+(.)2162 1542 w
+10 R f
+2211 1542 2179 1542 Dl
+14 R f
+(.)2194 1541 w
+10 R f
+2243 1544 2211 1541 Dl
+14 R f
+(.)2227 1544 w
+10 R f
+2276 1524 2244 1544 Dl
+14 R f
+(.)2259 1524 w
+10 R f
+2308 1542 2276 1524 Dl
+14 R f
+(.)2292 1542 w
+10 R f
+2341 1517 2309 1542 Dl
+14 R f
+(.)2324 1517 w
+10 R f
+2373 1536 2341 1517 Dl
+14 R f
+(.)2356 1537 w
+10 R f
+2405 1547 2373 1537 Dl
+14 R f
+(.)2389 1548 w
+10 R f
+2438 1548 2406 1548 Dl
+14 R f
+(.)2421 1549 w
+10 R f
+2470 1551 2438 1549 Dl
+14 R f
+(.)2454 1550 w
+10 R f
+2503 1543 2471 1550 Dl
+14 R f
+(.)2486 1543 w
+10 R f
+2535 1543 2503 1543 Dl
+14 R f
+(.)2518 1544 w
+10 R f
+2567 1542 2535 1544 Dl
+14 R f
+(.)2551 1542 w
+10 R f
+2600 1548 2568 1542 Dl
+14 R f
+(.)2583 1548 w
+10 R f
+2632 1527 2600 1548 Dl
+14 R f
+(.)2616 1526 w
+10 R f
+2665 1537 2633 1526 Dl
+14 R f
+(.)2648 1538 w
+10 R f
+2697 1550 2665 1538 Dl
+14 R f
+(.)2680 1551 w
+10 R f
+2729 1554 2697 1551 Dl
+14 R f
+(.)2713 1554 w
+10 R f
+2762 1529 2730 1554 Dl
+14 R f
+(.)2745 1530 w
+10 R f
+2794 1549 2762 1530 Dl
+14 R f
+(.)2778 1549 w
+10 R f
+2827 1542 2795 1549 Dl
+14 R f
+(.)2810 1542 w
+10 R f
+2859 1550 2827 1542 Dl
+14 R f
+(.)2842 1551 w
+10 R f
+2891 1551 2859 1551 Dl
+14 R f
+(.)2875 1552 w
+10 R f
+2924 1538 2892 1552 Dl
+14 R f
+(.)2907 1537 w
+10 R f
+2956 1553 2924 1537 Dl
+14 R f
+(.)2940 1554 w
+10 R f
+2989 1556 2957 1554 Dl
+14 R f
+(.)2972 1556 w
+10 R f
+3021 1548 2989 1556 Dl
+14 R f
+(.)3004 1547 w
+10 R f
+3053 1537 3021 1547 Dl
+14 R f
+(.)3037 1536 w
+10 R f
+3086 1556 3054 1536 Dl
+14 R f
+(.)3069 1556 w
+10 R f
+3118 1550 3086 1556 Dl
+14 R f
+(.)3102 1549 w
+10 R f
+3151 1549 3119 1549 Dl
+14 R f
+(.)3134 1549 w
+10 R f
+3183 1549 3151 1549 Dl
+14 R f
+(.)3166 1549 w
+10 R f
+3215 1554 3183 1549 Dl
+14 R f
+(.)3199 1554 w
+10 R f
+3248 1552 3216 1554 Dl
+14 R f
+(.)3231 1552 w
+10 R f
+3280 1554 3248 1552 Dl
+14 R f
+(.)3264 1554 w
+10 R f
+3313 1556 3281 1554 Dl
+14 R f
+(.)3296 1556 w
+10 R f
+3345 1553 3313 1556 Dl
+14 R f
+(.)3328 1553 w
+10 R f
+3377 1548 3345 1553 Dl
+14 R f
+(.)3361 1547 w
+10 R f
+3410 1552 3378 1547 Dl
+14 R f
+(.)3393 1553 w
+10 R f
+3442 1556 3410 1553 Dl
+14 R f
+(.)3426 1557 w
+10 R f
+3475 1557 3443 1557 Dl
+14 R f
+(.)3458 1557 w
+10 R f
+3507 1555 3475 1557 Dl
+14 R f
+(.)3490 1555 w
+10 R f
+3539 1556 3507 1555 Dl
+14 R f
+(.)3523 1557 w
+10 R f
+3572 1557 3540 1557 Dl
+14 R f
+(.)3555 1556 w
+10 R f
+3604 1556 3572 1556 Dl
+14 R f
+(.)3588 1556 w
+10 R f
+3637 1557 3605 1556 Dl
+14 R f
+(.)3620 1557 w
+10 R f
+3669 1557 3637 1557 Dl
+14 R f
+(.)3652 1558 w
+10 R f
+3701 1538 3669 1558 Dl
+14 R f
+(.)3685 1537 w
+10 R f
+3734 1551 3702 1537 Dl
+14 R f
+(.)3717 1552 w
+10 R f
+3766 1559 3734 1552 Dl
+14 R f
+(.)3750 1559 w
+10 R f
+3799 1559 3767 1559 Dl
+14 R f
+(.)3782 1557 w
+10 R f
+3831 1551 3799 1557 Dl
+14 R f
+(.)3814 1552 w
+10 R f
+3863 1547 3831 1552 Dl
+14 R f
+(.)3847 1546 w
+10 R f
+3896 1553 3864 1546 Dl
+14 R f
+(.)3879 1554 w
+10 R f
+3928 1555 3896 1554 Dl
+14 R f
+(.)3912 1555 w
+10 R f
+3961 1539 3929 1555 Dl
+14 R f
+(.)3944 1539 w
+10 R f
+3993 1558 3961 1539 Dl
+14 R f
+(.)3976 1558 w
+10 R f
+4025 1558 3993 1558 Dl
+14 R f
+(.)4009 1557 w
+10 R f
+4058 1550 4026 1557 Dl
+14 R f
+(.)4041 1549 w
+10 R f
+4090 1556 4058 1549 Dl
+14 R f
+(.)4074 1557 w
+10 R f
+4123 1547 4091 1557 Dl
+14 R f
+(.)4106 1547 w
+10 R f
+4155 1558 4123 1547 Dl
+14 R f
+(.)4138 1558 w
+10 R f
+4187 1552 4155 1558 Dl
+14 R f
+(.)4171 1552 w
+10 R f
+4220 1558 4188 1552 Dl
+14 R f
+(.)4203 1559 w
+10 R f
+4252 1554 4220 1559 Dl
+14 R f
+(.)4236 1554 w
+10 R f
+4285 1556 4253 1554 Dl
+14 R f
+(.)4268 1557 w
+10 R f
+4317 1547 4285 1557 Dl
+14 R f
+(.)4300 1547 w
+10 R f
+4349 1555 4317 1547 Dl
+14 R f
+(.)4333 1555 w
+10 R f
+4382 1555 4350 1555 Dl
+14 R f
+(.)4365 1556 w
+10 R f
+4414 1554 4382 1556 Dl
+14 R f
+(.)4398 1553 w
+10 R f
+4447 1557 4415 1553 Dl
+14 R f
+(.)4430 1557 w
+10 R f
+4479 1286 4447 1557 Dl
+14 R f
+(.)4462 1286 w
+cleartomark
+showpage
+saveobj restore
+end
+%%PageBoundingBox: 62 588 469 798
+%%EndPage: 1 1
+%%Trailer
+DpostDict begin
+done
+end
+%%Pages: 1
+%%DocumentFonts: Times-Roman
+%%BoundingBox: 62 588 469 798

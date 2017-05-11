@@ -1,0 +1,29 @@
+Here are some results for value prediction so far.
+
+delay=0
+rows=1
+stride=8
+ops=5
+
+This first set of data is somewhat unrealistic as it is for an
+immediate update of the predictor with the correct values and also this
+is for a machine with only one row.  This data was generated from a
+conventional-style machine using an update that occurs right after the
+instruction is executed (a single time).
+
+		predictor table entries
+program		512	1024	2048	4096	8192	16384	32768
+
+bzip2		73.4	77.5	79.9	89.8	98.8	100.0	100.0
+compress	30.4	46.3	46.3	46.3	46.3	46.3	46.3
+crafty		7.8	10.8	14.1	20.1	30.1	43.8	51.6
+gcc		40.4	42.3	44.7	47.6	50.9	53.5	55.7
+go		15.3	19.9	24.4	29.5	34.6	41.2	45.5
+gzip		30.6	35.1	45.7	49.4	49.9	50.1	50.7
+ijpeg		30.4	36.8	37.7	39.0	39.4	41.2	41.7
+mcf		40.1	46.8	54.9	67.7	73.8	76.2	76.7
+parser		43.7	50.8	56.6	63.4	66.0	67.6	70.1
+vortex		14.9	20.3	24.8	30.3	35.7	40.2	44.1
+
+
+

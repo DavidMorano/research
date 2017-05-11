@@ -1,0 +1,8 @@
+#!/bin/ksh
+
+D=hpca
+T=timetags
+
+scp -qp uri:doc/${D}/${T}.ps . 
+
+

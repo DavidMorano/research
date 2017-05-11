@@ -1,0 +1,80 @@
+Resource Flow Microarchitectures
+
+Speculative execution has proven to be enormously valuable for
+increasing execution-time performance in recent and current
+processors.  The use of speculative execution provides a powerful
+latency-hiding mechanism for those microarchitectural operations that
+would otherwise cause unacceptable stalls within the processor, such as
+waiting for conditional branches to resolve or for memory reads to be
+fulfilled from the memory hierarchy.  
+Further, in order to extract ever larger amounts of instruction
+level parallelism from existing programs (generally quite sequential
+in nature) over many basic blocks, much more speculative 
+execution is usually required.
+However, the complexity of
+implementing speculative execution is substantial and has been a
+limiting factor in its evolution to more aggressive forms beyond
+control-flow speculation.
+
+Most existing implementations of speculative execution focus on
+conditional branch prediction and the subsequent speculative execution
+of the instructions following those branches.  Generally, only one path
+following a branch is followed although multiple successive branches
+can be predicted.  Speculative instruction results are stored in
+microarchitectural structures that hold those results as being
+tentative until they can be determined to constitute the committed
+state of the program being executed.  If a predicted branch is
+determined (resolved) to have been mis-predicted, any speculatively
+executed instructions need to be squashed.  This generally entails the
+abandonment of any speculatively generated results as well as the
+purging of all currently executing speculative instructions from the
+machine.  The management and sequencing of existing speculative
+execution is already moderately complicated.  This complexity has
+limited or discouraged the use of more advanced speculation techniques
+such as value prediction, multipath execution, and the retention of
+speculative instructions that may still be correct after a
+misprediction.  Further, as clock speeds get higher and pipeline depths
+get larger the performance penalty of squashing speculative
+instructions and any associated correct results gets undesirably larger
+also.
+
+We present a new microarchitectural approach towards handling
+speculative execution in a more general and uniform way.  Our approach
+attempts to generalize the management and operational issues associated
+with control-flow prediction, value prediction, and the possible
+re-execution of those instructions that have already been fetched and
+dispatched.  Moreover, in order to accommodate the much larger number
+of speculatively executed instructions needed in order to extract more
+instruction level parallelism from the program, a strategy for scaling a
+microarchitecture in terms of its component resources needs to also be
+formulated.  Our microarchitectural approach also lends itself towards
+resource scalability through manageable spatial distribution of machine
+components.  This last goal is likewise realized through the rather
+general and uniform way in which instructions and operands are
+handled.
+
+Our microarchitectural approached is termed \textit{Resouce Flow
+Computing} and centralizes around the idea that speculative execution
+is not constrained by either the control flow graph or the data flow
+graph of the program, but rather by the available resources within a
+representative microarchitecture.  Further, we elevate the importance
+of instruction operands (whether they be control or data) to almost the
+level of an instruction itself.  Operands are enhanced with additional
+state that allows for a more unform management of their flow through
+the machine.  This philosophy of execution allows for a large number of
+simultaneous instruction executions and re-executions as can be
+sustained on the available machine resources since executions are
+allowed to proceed with any available feasible source operands whether
+predicted or not.  The idea is to first speculatively execute any
+pending instruction whenever any suitable machine resource is available
+and then to perform successive re-executions as needed as control and
+data dependency relationships are determined dynamically during
+execution.
+
+We present the various structures needed to manage this aggressive form
+of speculative execution in a generalized way.  We also describe how a
+variety of aggressive speculative schemes and ideas fit into this new
+microarchitectural approach more easily than if they were considered
+and implemented without our generalized instruction and operand
+management.
+

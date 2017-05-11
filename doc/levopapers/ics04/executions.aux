@@ -1,0 +1,91 @@
+\relax 
+\citation{Lam92}
+\citation{Uht95}
+\citation{Gon97}
+\select@language{english}
+\@writefile{toc}{\select@language{english}}
+\@writefile{lof}{\select@language{english}}
+\@writefile{lot}{\select@language{english}}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}}
+\citation{Sohi95}
+\citation{sundararaman97multiscalar}
+\citation{tsai96superthread}
+\citation{kemp96pew}
+\citation{farkas97multicluster}
+\citation{Lip97}
+\citation{Nag01}
+\citation{morano02high}
+\citation{uht02realizing}
+\citation{yeager96r10000}
+\citation{leibholz97alpha}
+\citation{Kessler98}
+\citation{hinton01pentium}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Description of Microarchitecture}{2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Microarchitecture Overview}{2}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces {\em  High-level block diagram of our microarchitecture.} Issues stations are shown on the left and various function units on the right. An architected register file and a load-store-queue is shown at the top. Bidirectional operand request and forwarding buses are shown vertically oriented (to the right of the issue stations). Buses to transport an instruction operation and its source operands to the function units are also shown. Likewise buses to return result operands are present.}}{3}}
+\newlabel{fig:overview}{{1}{3}}
+\citation{uht02realizing}
+\citation{uht03levo}
+\citation{uht02realizing}
+\citation{Tom67}
+\citation{morano02predication}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Issue Stations}{4}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces {\em  High-level block diagram of our Issue Station.} The major state associated with an Issue Station is shown: four operand blocks (two source and two destination) and its four bus interfaces, grouped according to bus function into two major logic blocks.}}{5}}
+\newlabel{fig:issuestation}{{2}{5}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Operands}{5}}
+\citation{schlansker00epic}
+\citation{intel99ia}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces {\em  Default execution function unit types and pipeline stages.} Both the number of function units of each type and the pipeline depths of each can be configured within our microarchitectural simulation framework. The far right column shows some numbers of function unit types that might be implemented in a typical machine.}}{7}}
+\newlabel{tab:futypes}{{1}{7}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces {\em  Block diagram of an Operand Block.} Each Operand Block holds an effectively renamed operand within the Issue Stations. Several operand blocks are employed within each Issue Station depending on the needs of the ISA being implemented. The state information maintained for each operand is shown.}}{7}}
+\newlabel{fig:operand}{{3}{7}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.4}Dependency Ordering}{8}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.5}Operand Forwarding and Snooping}{8}}
+\citation{Bannon95}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces {\em  Snooping for operand updates.} The registers and snooping operation of one of several possible source operands is shown. This logic would reside in an operand block within an issue slot. Just one operand forwarding bus is shown being snooped but typically several forwarding buses are snooped simultaneously.}}{9}}
+\newlabel{fig:source}{{4}{9}}
+\citation{jain01eveight}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Experimental Results}{10}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Varying the Number of Issue Stations}{10}}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces {\em  IPC performance for varying numbers of issue stations.} All machines had 8 integer ALU FUs with varying ISs from 16 to 256.}}{11}}
+\newlabel{tab:iwsize8ipc}{{2}{11}}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces {\em  Percentage FU request stalls with varying numbers of issue stations.} All machines had 8 integer ALU FUs with varying ISs from 16 to 256.}}{11}}
+\newlabel{tab:iwsize8waits}{{3}{11}}
+\bibstyle{latex8}
+\bibdata{executions}
+\bibcite{Bannon95}{1}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Varying the Number of Integer ALU Function Units}{12}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Varying the Number of Integer ALU Pipeline Stages}{12}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Summary}{12}}
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces {\em  IPC performance for varying numbers of issue stations.} All machines had 16 integer ALU FUs with varying ISs from 16 to 256.}}{13}}
+\newlabel{tab:iwsize16ipc}{{4}{13}}
+\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces {\em  Percentage FU request stalls with varying numbers of issue stations.} All machines had 16 integer ALU FUs with varying ISs from 16 to 256.}}{13}}
+\newlabel{tab:iwsize16waits}{{5}{13}}
+\@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces {\em  IPC performance for varying integer ALU FUs.} All machines had 16 ISs with varying integer ALU FUs from 2 to 16.}}{13}}
+\newlabel{tab:nialu16ipc}{{6}{13}}
+\@writefile{lot}{\contentsline {table}{\numberline {7}{\ignorespaces {\em  Percentage FU request stalls with varying numbers of integer ALU FUs.} All machines had 16 ISs with varying integer ALU FUs from 2 to 16.}}{14}}
+\newlabel{tab:nialu16waits}{{7}{14}}
+\@writefile{lot}{\contentsline {table}{\numberline {8}{\ignorespaces {\em  IPC performance for varying integer ALU FU pipeline stages.} All machines had 128 ISs and 16 integer ALU FUs but with varying integer ALU FU pipeline stages of from 1 to 4.}}{14}}
+\newlabel{tab:lialu16ipc}{{8}{14}}
+\bibcite{farkas97multicluster}{2}
+\bibcite{Gon97}{3}
+\bibcite{hinton01pentium}{4}
+\bibcite{intel99ia}{5}
+\bibcite{jain01eveight}{6}
+\bibcite{kemp96pew}{7}
+\bibcite{Kessler98}{8}
+\bibcite{Lam92}{9}
+\bibcite{leibholz97alpha}{10}
+\bibcite{Lip97}{11}
+\bibcite{morano02predication}{12}
+\bibcite{morano02high}{13}
+\bibcite{Nag01}{14}
+\bibcite{schlansker00epic}{15}
+\bibcite{Sohi95}{16}
+\bibcite{sundararaman97multiscalar}{17}
+\bibcite{Tom67}{18}
+\bibcite{tsai96superthread}{19}
+\bibcite{Uht95}{20}
+\bibcite{uht03levo}{21}
+\bibcite{uht02realizing}{22}
+\bibcite{yeager96r10000}{23}

@@ -1,0 +1,546 @@
+From s.bartolini@iet.unipi.it Thu Aug  1 18:14:33 2002
+Return-Path: <s.bartolini@iet.unipi.it>
+Received: from sert.ac.upc.es (sert.ac.upc.es [147.83.30.70])
+	by roura.ac.upc.es (8.12.5/8.12.5) with ESMTP id g71GEXoS014603
+	for <dkaeli@ac.upc.es>; Thu, 1 Aug 2002 18:14:33 +0200 (MET DST)
+Received: from pasteur.ing.unipi.it (pasteur.ing.unipi.it [131.114.28.23])
+	by sert.ac.upc.es (Postfix) with ESMTP id 293EC454E
+	for <dkaeli@ac.upc.es>; Thu,  1 Aug 2002 18:14:32 +0200 (MET DST)
+Received: from docenti.ing.unipi.it (docenti.ing.unipi.it [131.114.28.20])
+	by pasteur.ing.unipi.it (8.11.6/) with ESMTP id g71GDvD01970;
+	Thu, 1 Aug 2002 16:13:57 GMT
+Received: from iet.unipi.it (sandro-b.iet.unipi.it [131.114.9.202])
+	by docenti.ing.unipi.it (8.11.6/) with ESMTP id g71GAF211445;
+	Thu, 1 Aug 2002 18:10:15 +0200 (CEST)
+	(envelope-from s.bartolini@iet.unipi.it)
+Message-ID: <3D495E6B.3050803@iet.unipi.it>
+Date: Thu, 01 Aug 2002 18:14:35 +0200
+From: Sandro Bartolini <s.bartolini@iet.unipi.it>
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:0.9.4.1) Gecko/20020508 Netscape6/6.2.3
+X-Accept-Language: en-us
+MIME-Version: 1.0
+To: David Kaeli <dkaeli@ac.upc.es>
+Cc: foglia <foglia@iet.unipi.it>, Sandro Bartolini <s.bartolini@iet.unipi.it>
+Subject: MEDEA-2002 Paper Notification of Acceptance
+Content-Type: multipart/alternative;
+ boundary="------------030205020305070208030800"
+X-MailScanner: 3.20-5 Found to be clean
+Status: RO
+X-Status: A
+Content-Length: 17486
+Lines: 513
+
+
+--------------030205020305070208030800
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+
+Dear Author,
+
+Thank you for your submission to MEDEA 2002.  We are pleased to inform 
+you that your paper, titled
+
+"Realizing High IPC Through a Scalable Memory-Latency Tolerant Multipath 
+Microarchitecture"
+has been accepted for presentation in the MEDEA 2002 Workshop.
+Informal Proceedings will be distributed at the Workshop. They also will 
+appear in a special issue of ACM SigArch Computer Architecture NEWS (we 
+are now establishing the possible date of publication).
+
+Please carefully take into account the enclosed comments by the
+reviewers when preparing the camera-ready version.
+
+The paper length is limited to 10 pages and must be written in standard 
+IEEE format for conference Proceedings (see the link in the home page: 
+http://garga.iet.unipi.it/medea )
+
+Your camera-ready paper is due on September 1, 2002 (not the 7 of August). 
+You (or one of your co-authors, if any) are required to attend the 
+workshop as a condition of publication; if this is a
+problem, please notify us **immediately**.
+
+
+ 
+ 
+Congratulations on having your paper accepted. We look forward to see 
+you in Charlottesville.
+
+Sincerely,
+
+Sandro Bartolini, Pierfrancesco Foglia, Cosimo Antonio Prete
+Medea 2002 Workshop organizing Committee.
+
+
+------------------------------- REVIEW 1
+b): For the next six queries , please rate the paper on a scale of 1-4, 
+where the quality increases as the number increases.
+Originality             [4]
+Technical merit         [4]
+Readability             [2]
+Relevance             [4]
+Confidence in your review     [3]
+Overall rating             [4]
+
+c:) Recommended action
+REJECT         [ ]
+Weak REJECT     [ ]
+Weak ACCEPT     [ ]
+ACCEPT         [X]
+
+
+d:) Comments to authors.
+ >>This paper investigates the best utilization of a large mesh
+of PEs to execute a single-threaded program. The architecture
+can provide a 50% increase in the IPC for some SPEC benchmarks.
+This extra IPC could be exploited to realize a memory-latency
+tolerant multipath architecture.
+
+The paper provides an important contribution and it is well
+suited for the purpose of the MEDEA workshop.
+
+Nevertheless, I'd recommend the authors to address the following
+points.
+
+- Methodology:
+
+* It would be interesting to see what are the results
+for the all SPEC-2000 suite, in order to provide an important
+reference point for all the researchers willing to compare
+their solutions with the authors'.
+
+* The ISA used by the authors is not the same of the 'standard'
+used in the SimpleScalar: this again generates problems for
+comparing their results with others'. It would be nice to have,
+as baseline, the IPC reached with the same banchmarks (and SGI ISA)
+when the basic architecture is a superscalar with large
+Instruction Windows and comparable hardware resources, as provided
+by the SimpleScalar simulator.
+
+- Results:
+
+* The architecture you describe is quite complex: the L0,
+Forwarding Units (FUs), Disjoint Eager Execution (DEE),
+Value Speculation, and quite aggessive optimizations are applied.
+Since it is already known that many of this techniques provides
+an important speedup (e.g. Value Speculation alone could
+provide a 50% increase of IPC), it would be interesting to see
+a breakdown of the IPC showing how each component of the architecture
+improves the IPC.
+
+* A rough extimate of the cost of this implementation would be
+necessary in order to see if configurations like 32-4-16-16
+are actually feasable.
+
+* More important, since the goal of the paper is also to investigate
+the memory-latency tolerance, it would be interesting to see how
+a Superscalar architecture with large IW would tolerate an increase
+in L1-L2-MM latencies. Is this benefit all due to Value Speculation
+and/or L0 cache or not?
+
+- Other issues that need to be improved:
+
+* The presentation of the architecture is to wordy and difficult
+to read. I'd suggest to insert some more detailed figure.
+
+* Please introduce the concepts that you use immediately: some of them
+are only explained much more later in the Section.
+
+
+------------------------------------- REVIEW 2
+
+b): For the next six queries , please rate the paper on a scale of 1-4,
+where 
+
+the quality increases as the number increases. 
+Originality 			[ 4 ] 
+Technical merit 		[ 3 ]
+Readability 			[ 2 ]
+Relevance 			[ 4 ]
+Confidence in your review 	[ 3 ]
+Overall rating 			[ 3 ]
+
+c:) Recommended action
+REJECT 		[ ]
+Weak REJECT 	[ ]
+Weak ACCEPT 	[ ]
+ACCEPT 		[ x ]
+
+
+d:) Comments to authors. 
+
+>>>>The Comments to authors
+>>
+
+This paper introduces an interesting new microprocessor
+microarchitecture with 
+
+excellent simulation results. 
+
+However, the complex microarchitecture is hard to understand. 
+Operating principles and implementation details are mixed in a way which
+is 
+
+hard to digest. 
+
+I suggest to start with the principles, then decribe the
+microarchitecture top 
+
+down.
+Perhaps focus the paper on the decription of the new principles, and
+provide 
+
+less implementation details, e.g. the Operand snoop logic (Fig. 3).
+A block diagram of the overall machine structure might help, also a more 
+
+detailed description how the fetched code is distributed to the AS.
+
+
+---------------------------------- REVIEW 3
+
+
+b): For the next six queries , please rate the paper on a scale of 1-4, where the quality increases as the number increases. 
+Originality 			[3] 
+Technical merit 		[3]
+Readability 			[3]
+Relevance 			[4]
+Confidence in your review 	[4]
+Overall rating 			[3]
+
+c:) Recommended action
+REJECT 		[ ]
+Weak REJECT 	[ ]
+Weak ACCEPT 	[ ]
+ACCEPT 		[X]
+
+
+d:) Comments to authors. 
+
+>>>>The Comments to authors
+>>
+
+In this paper the authors further explore previosly 
+proposed multipath architecture
+based on a large mesh of processing elements.
+(reference [17], published by the same authors at Europar 2002).
+The simulation results presented in this paper show that
+the performance of the proposed architecture 
+does not significantly decrease with increased L1, L2, and memory latency.
+
+The authors should make a clear distinction between this paper
+and the Europar reference, and emphasize this paper's contribution -
+architecture's insensitivity to memory latency.
+The design space and simulator are also different.
+
+Paper should be carefully checked for consistency,
+for example, a term "D-path" is used just in tables 3 and 4,
+while a term "DEE path" is used throughout the rest of the paper.
+There is no explanation of release D-path strategy (Table 4),
+probably being DEE multipath execution.
+
+Some syntax/semantic remarks:
+Page 3, paragraph 1:
+.."but is simpler is some respects."
+Should be ..."but is simpler in some respects."
+
+Page 3, paragraph 2:
+"The multiple buses going from the i-fetch unit to the execution window
+in Figure 1 is meant"...
+Should be: 
+"The multiple buses going from the i-fetch unit to the execution window
+in Figure 1 are meant"...
+
+Page 7, paragraph 1:
+"Finally, results showing ... is presented."
+Should be: "Finally, results showing ... are presented."
+
+Page 9, paragraph 4:
+"Since our machine is still quite insensitive to main memory latency
+out to 800 clocks"...
+Should be: 
+"Since our machine is still quite insensitive to main memory latency
+up to 800 clocks"...
+
+Page 10, paragraph 1:
+"We have also run experiments modeling a perfect i-cache...
+and measure the effects of"...
+Should be:
+"We have also run experiments modeling a perfect i-cache...
+and measured the effects of"...
+
+
+
+-- 
+----------------------------------------------------------
+Ing. Sandro Bartolini
+CacheLAB - Dipartimento di Ingegneria dell'informazione - Universita' di Pisa
+Via Diotisalvi, 2, 56126 - Pisa, ITALY
+Tel: +39-050-568-530            Fax: +39-050-568-522
+s.bartolini@iet.unipi.it
+s.bartolini@computer.org
+sandro.bartolini@acm.org
+----------------------------------------------------------
+
+
+--------------030205020305070208030800
+Content-Type: text/html; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+<html>
+<head>
+</head>
+<body>
+Dear Author,<br>
+<br>
+Thank you for your submission to MEDEA 2002.&nbsp; We are pleased to inform you
+that your paper, titled<br>
+<br>
+"Realizing High IPC Through a Scalable Memory-Latency Tolerant Multipath
+Microarchitecture"<br>
+has been accepted for presentation in the MEDEA 2002 Workshop. <br>
+Informal Proceedings will be distributed at the Workshop. They also will
+appear in a special issue of ACM SigArch Computer Architecture NEWS (we are
+now establishing the possible date of publication).<br>
+<br>
+Please carefully take into account the enclosed comments by the<br>
+reviewers when preparing the camera-ready version. <br>
+<br>
+The paper length is limited to 10 pages and must be written in standard IEEE
+format for conference Proceedings (see the link in the home page: <a class="moz-txt-link-freetext" href="http://garga.iet.unipi.it/medea">http://garga.iet.unipi.it/medea</a>
+)<br>
+<br>
+Your camera-ready paper is due on September 1, 2002 (not the 7 of August).&nbsp;
+<br>
+You (or one of your co-authors, if any) are required to attend the workshop
+as a condition of publication; if this is a<br>
+problem, please notify us **immediately**.<br>
+<br>
+<br>
+&nbsp;<br>
+&nbsp;<br>
+Congratulations on having your paper accepted. We look forward to see you
+in Charlottesville.<br>
+<br>
+Sincerely,<br>
+<br>
+Sandro Bartolini, Pierfrancesco Foglia, Cosimo Antonio Prete<br>
+Medea 2002 Workshop organizing Committee.<br>
+<br>
+<br>
+------------------------------- REVIEW 1<br>
+b): For the next six queries , please rate the paper on a scale of 1-4, where
+the quality increases as the number increases. <br>
+Originality &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; [4] <br>
+Technical merit &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; [4]<br>
+Readability &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; [2]<br>
+Relevance &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; [4]<br>
+Confidence in your review &nbsp;&nbsp;&nbsp; [3]<br>
+Overall rating &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; [4]<br>
+<br>
+c:) Recommended action<br>
+REJECT &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; [ ]<br>
+Weak REJECT &nbsp;&nbsp;&nbsp; [ ]<br>
+Weak ACCEPT &nbsp;&nbsp;&nbsp; [ ]<br>
+ACCEPT &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; [X]<br>
+<br>
+<br>
+d:) Comments to authors. <br>
+&gt;&gt;This paper investigates the best utilization of a large mesh<br>
+of PEs to execute a single-threaded program. The architecture<br>
+can provide a 50% increase in the IPC for some SPEC benchmarks.<br>
+This extra IPC could be exploited to realize a memory-latency<br>
+tolerant multipath architecture.<br>
+<br>
+The paper provides an important contribution and it is well <br>
+suited for the purpose of the MEDEA workshop.<br>
+<br>
+Nevertheless, I'd recommend the authors to address the following<br>
+points.<br>
+<br>
+- Methodology:<br>
+<br>
+* It would be interesting to see what are the results<br>
+for the all SPEC-2000 suite, in order to provide an important <br>
+reference point for all the researchers willing to compare <br>
+their solutions with the authors'.<br>
+<br>
+* The ISA used by the authors is not the same of the 'standard'<br>
+used in the SimpleScalar: this again generates problems for<br>
+comparing their results with others'. It would be nice to have,<br>
+as baseline, the IPC reached with the same banchmarks (and SGI ISA)<br>
+when the basic architecture is a superscalar with large <br>
+Instruction Windows and comparable hardware resources, as provided<br>
+by the SimpleScalar simulator.<br>
+<br>
+- Results:<br>
+<br>
+* The architecture you describe is quite complex: the L0,<br>
+Forwarding Units (FUs), Disjoint Eager Execution (DEE),<br>
+Value Speculation, and quite aggessive optimizations are applied.<br>
+Since it is already known that many of this techniques provides<br>
+an important speedup (e.g. Value Speculation alone could <br>
+provide a 50% increase of IPC), it would be interesting to see<br>
+a breakdown of the IPC showing how each component of the architecture <br>
+improves the IPC.<br>
+<br>
+* A rough extimate of the cost of this implementation would be <br>
+necessary in order to see if configurations like 32-4-16-16<br>
+are actually feasable.<br>
+<br>
+* More important, since the goal of the paper is also to investigate<br>
+the memory-latency tolerance, it would be interesting to see how<br>
+a Superscalar architecture with large IW would tolerate an increase<br>
+in L1-L2-MM latencies. Is this benefit all due to Value Speculation<br>
+and/or L0 cache or not?<br>
+<br>
+- Other issues that need to be improved:<br>
+<br>
+* The presentation of the architecture is to wordy and difficult<br>
+to read. I'd suggest to insert some more detailed figure.<br>
+<br>
+* Please introduce the concepts that you use immediately: some of them<br>
+are only explained much more later in the Section.<br>
+<br>
+<br>
+------------------------------------- REVIEW 2<br>
+<pre wrap="">b): For the next six queries , please rate the paper on a scale of 1-4,
+where 
+
+the quality increases as the number increases. 
+Originality 			[ 4 ] 
+Technical merit 		[ 3 ]
+Readability 			[ 2 ]
+Relevance 			[ 4 ]
+Confidence in your review 	[ 3 ]
+Overall rating 			[ 3 ]
+
+c:) Recommended action
+REJECT 		[ ]
+Weak REJECT 	[ ]
+Weak ACCEPT 	[ ]
+ACCEPT 		[ x ]
+
+
+d:) Comments to authors. 
+</pre>
+<blockquote type="cite">
+  <blockquote type="cite">
+    <pre wrap=""><span class="moz-txt-citetags">&gt;&gt;</span>The Comments to authors
+</pre>
+    </blockquote>
+    </blockquote>
+    <pre wrap=""><!---->
+This paper introduces an interesting new microprocessor
+microarchitecture with 
+
+excellent simulation results. 
+
+However, the complex microarchitecture is hard to understand. 
+Operating principles and implementation details are mixed in a way which
+is 
+
+hard to digest. 
+
+I suggest to start with the principles, then decribe the
+microarchitecture top 
+
+down.
+Perhaps focus the paper on the decription of the new principles, and
+provide 
+
+less implementation details, e.g. the Operand snoop logic (Fig. 3).
+A block diagram of the overall machine structure might help, also a more 
+
+detailed description how the fetched code is distributed to the AS.</pre>
+    <br>
+---------------------------------- REVIEW 3<br>
+    <pre wrap=""><!---->
+b): For the next six queries , please rate the paper on a scale of 1-4, where the quality increases as the number increases. 
+Originality 			[3] 
+Technical merit 		[3]
+Readability 			[3]
+Relevance 			[4]
+Confidence in your review 	[4]
+Overall rating 			[3]
+
+c:) Recommended action
+REJECT 		[ ]
+Weak REJECT 	[ ]
+Weak ACCEPT 	[ ]
+ACCEPT 		[X]
+
+
+d:) Comments to authors. 
+</pre>
+    <blockquote type="cite">
+      <blockquote type="cite">
+        <pre wrap=""><span class="moz-txt-citetags">&gt;&gt;</span>The Comments to authors
+</pre>
+        </blockquote>
+        </blockquote>
+        <pre wrap=""><!---->
+In this paper the authors further explore previosly 
+proposed multipath architecture
+based on a large mesh of processing elements.
+(reference [17], published by the same authors at Europar 2002).
+The simulation results presented in this paper show that
+the performance of the proposed architecture 
+does not significantly decrease with increased L1, L2, and memory latency.
+
+The authors should make a clear distinction between this paper
+and the Europar reference, and emphasize this paper's contribution -
+architecture's insensitivity to memory latency.
+The design space and simulator are also different.
+
+Paper should be carefully checked for consistency,
+for example, a term "D-path" is used just in tables 3 and 4,
+while a term "DEE path" is used throughout the rest of the paper.
+There is no explanation of release D-path strategy (Table 4),
+probably being DEE multipath execution.
+
+Some syntax/semantic remarks:
+Page 3, paragraph 1:
+.."but is simpler is 
+some respects."
+Should be ..."but is simpler in some respects."
+
+Page 3, paragraph 2:
+"The multiple buses going from the i-fetch unit to the execution window
+in Figure 1 is meant"...
+Should be: 
+"The multiple buses going from the i-fetch unit to the execution window
+in Figure 1 are meant"...
+
+Page 7, paragraph 1:
+"Finally, results showing ... is presented."
+Should be: "Finally, results showing ... are presented."
+
+Page 9, paragraph 4:
+"Since our machine is still quite insensitive to main memory latency
+out to 800 clocks"...
+Should be: 
+"Since our machine is still quite insensitive to main memory latency
+up to 800 clocks"...
+
+Page 10, paragraph 1:
+"We have also run experiments modeling a perfect i-cache...
+and measure the effects of"...
+Should be:
+"We have also run experiments modeling a perfect i-cache...
+and measured the effects of"...</pre>
+        <br>
+        <br>
+        <pre class="moz-signature" cols="$mailwrapcol">-- 
+----------------------------------------------------------
+Ing. Sandro Bartolini
+CacheLAB - Dipartimento di Ingegneria dell'informazione - Universita' di Pisa
+Via Diotisalvi, 2, 56126 - Pisa, ITALY
+Tel: +39-050-568-530            Fax: +39-050-568-522
+<a class="moz-txt-link-abbreviated" href="mailto:s.bartolini@iet.unipi.it">s.bartolini@iet.unipi.it</a>
+<a class="moz-txt-link-abbreviated" href="mailto:s.bartolini@computer.org">s.bartolini@computer.org</a>
+<a class="moz-txt-link-abbreviated" href="mailto:sandro.bartolini@acm.org">sandro.bartolini@acm.org</a>
+----------------------------------------------------------</pre>
+        </body>
+        </html>
+
+--------------030205020305070208030800--
+

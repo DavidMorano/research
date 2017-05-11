@@ -1,0 +1,9 @@
+#!/bin/ksh
+
+D=tr032002-0102
+T=timetags
+S=pdf
+
+scp -qp uri:doc/${D}/${T}.${S} . &
+
+

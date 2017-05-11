@@ -1,0 +1,109 @@
+From MAILER-DAEMON Tue Oct  8 07:19:09 2002
+Date: 08 Oct 2002 07:19:10 -0400
+From: Mail System Internal Data <MAILER-DAEMON@ece.neu.edu>
+Subject: DON'T DELETE THIS MESSAGE -- FOLDER INTERNAL DATA
+X-IMAP: 1034075949 0000000000
+Status: RO
+
+This text is part of the internal format of your mail folder, and is not
+a real message.  It is created automatically by the mail system software.
+If deleted, important folder data will be lost, and it will be re-created
+with the data reset to initial values.
+
+From apache@marsa.ac.upc.es  Mon Oct  7 22:24:07 2002
+Return-Path: <apache@marsa.ac.upc.es>
+Received: from calvin.ece.neu.edu (calvin.ece.neu.edu [129.10.62.61])
+	by SMTP1.ECE.NEU.EDU (NUECE 1.1.4) with SMTP id g982O79L005323
+	for <kaeli@ece.neu.edu>; Mon, 7 Oct 2002 22:24:07 -0400 (EDT)
+Received: from dukas.upc.es ([147.83.2.62])
+ by calvin.ece.neu.edu (NAVGW 2.5.2.9) with SMTP id M2002100722240604448
+ for <kaeli@ece.neu.edu>; Mon, 07 Oct 2002 22:24:06 -0400
+Received: from marsa.ac.upc.es (IDENT:root@marsa.ac.upc.es [147.83.30.142])
+	by dukas.upc.es (8.12.1/8.12.1) with ESMTP id g982O3qD018225;
+	Tue, 8 Oct 2002 04:24:03 +0200 (MET DST)
+Received: (from apache@localhost)
+	by marsa.ac.upc.es (8.11.6/8.11.6) id g982O2g30605;
+	Tue, 8 Oct 2002 04:24:02 +0200
+Date: Tue, 8 Oct 2002 04:24:02 +0200
+Message-Id: <200210080224.g982O2g30605@marsa.ac.upc.es>
+To: kaeli@ECE.NEU.EDU
+From: ispass03@ac.upc.es
+Reply-To: ispass03@ac.upc.es
+Cc: ispass03@coderch.ac.upc.es
+Subject: ISPASS03: paper registration
+Status: RO
+X-Status: 
+X-Keywords:                 
+
+
+*****************************************************************************
+ NOTE: This is an automatically generated email from a paper registration
+ system used for the ISPASS03 conference. If you get this email without prior
+ registration of a paper for ISPASS03, it is likely that someone misused our
+ registration system. In this case, we apologize! Please reply to the above
+ address and let us know.
+*****************************************************************************
+
+
+Dear David Kaeli,
+
+You registered the following paper information for submission to ISPASS03:
+
+
+=============================================================================
+Paper ID: 90
+=============================================================================
+Contact Author: David Kaeli
+CA Title      : Implications of Register and Memory Temporal Locality for Distributed Microarchitectures
+Organization  : Northeastern University
+Street Address: 409 Dana Research Center
+City          : Boston
+State         : MA
+Zip           : 02115
+Country       : USA
+Phone         : 617-373-5413
+Fax           : 617-373-8970
+Email         : kaeli@ece.neu.edu
+Paper Title   : Implications of Register and Memory Temporal Locality for Distributed Microarchitectures
+Author Name1  : David Morano
+Author Name2  : Alireza Khalafi
+Author Name3  : David Kaeli
+Author Name4  : Augustus Uht
+Author Name5  : 
+Author Name6  : 
+Papertype     : Paper
+Keyword1      : Workload characterization
+Keyword2      : Characterization of systems
+Keyword3      : Metrics
+Keyword4      : NONE
+Keyword5      : NONE
+Add_Keyword   : Temporal locality
+
+ABSTRACT:
+We explore various intervals between register assignments and the subsequent uses of the same registers.  We also explore memory stores and the subsequent loads to the same memory addresses. Three different types of access intervals
+are defined and data are gathered on them using benchmarks.
+This data serves to provide insight about how a distributed microarchitecture might take advantage of the register or memory access behavior in order to reduce the overhead of accessing centralized machine resources like a register file (in the case of register operations)or the memory hierarchy in the case of memory operations. A proposed distributed microarchitecture is briefly presented and data about its ability to allow operand bypassing of centralized machine resources to satisfy memory load requests is provided.
+
+
+
+=============================================================================
+
+
+To upload your paper at our submission site, please use link
+below or use the following url for later use:
+
+  http://ispass03.ac.upc.es/cgi-bin/OPEN/upload_front.cgi?id=90&pw=euecenenekaeluedu
+
+
+
+Papers of no more than 20 double-spaced pages, including figures, are solicited.
+The cover page of each submitted paper should include paper title, brief
+abstract, list of keywords, full names of authors, affiliations, complete
+addresses, telephone numbers, and email addresses. Authors are requested to
+submit papers in Postscript or PDF format. 
+
+Best regards
+
+ISPASS organization committee
+
+

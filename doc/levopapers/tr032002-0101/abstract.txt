@@ -1,0 +1,26 @@
+Realizing High IPC Through a Large Microarchitecture
+
+A. Khalafi, D. Morano, D.R. Kaeli, A.K. Uht
+
+
+This paper explores a microarchitecture that can achieve high execution
+performance on conventional single-threaded program codes.  Larger
+microarchitectures can speculatively have possibly several hundreds of
+instructions in-flight simultaneously.  This provides a means to
+extract larger amounts of instruction level parallelism even from
+programs that are very sequential in nature.  However, several problems
+are associated with a large microarchitecture.  Among these are
+scalability issues and the fact that mispredicted control flow can
+cause large numbers of instructions to be squashed, wasting valuable
+machine resource-clock slots.
+
+We present a basic overview of our microarchitecture and how it
+addresses the problem of scalability.  We also show how multipath
+execution addresses the problem of mispredicted conditional branches by
+avoiding or reducing the penalties associated with them.  We provide
+simulation results for several configurations of our microarchitecture
+that illustrate how higher ILP can be extracted from serial-oriented
+integer programs.  We also present data that shows the positive effects
+of applying multipath execution to the same programs.  Finally, we
+present some data that shows the insensitivity of the machine performance
+to some varying aspects of the memory hierarchy.

@@ -1,0 +1,12 @@
+#!/bin/ksh
+
+D=book
+T=$1
+if [[ -z "${T}" ]] ; then
+  T=ch16
+fi
+
+
+scp -qp uri:doc/${D}/${T}.pdf . 
+
+

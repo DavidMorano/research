@@ -1,0 +1,113 @@
+Hi all,
+
+Here's the plan for MICRO. I have tried to take all of your comments
+into account. (Please note that one BIG hole left concerns the
+benchmarks; Dave M. and Ali are currently thrashing through this one.
+[Dave K., Dave M. informs me that the problem is not benchmarks per se
+but the homebrew tools used to generate the traces for them, for the
+MIPS machine. Thus, it's not SPECint or something else, it's MIPS vs.
+something else (say Alpha).] I strongly oppose moving to a new ISA at
+this point. I think it's opening a big can of worms. I believe Dave K.
+agrees with me on this. Thus, the thrust is to devise methods to get
+the bugs out of the tools real fast. Dave M. and Ali are coming (have
+come) up with a plan to address this.)
+
+First, the big picture. The paper will have the following
+topics/contents:
+
+- supremely clear, concise, illuminating description of Levo
+microarchitecture with example.
+
+- more benchmark results (see above)
+
+- basic characterization of Levo wrt geometry (w-x-y-z)
+
++- concentrate on machine geometries realizable in, say, 5 years
+(that's likely to be something(s) around 8-8-8-8) for other
+characterization data
+
++- perform profiling as needed to explain the results and generate
+directions for further IPC gains
+
+Summary: tell what Levo is, how well it works, and why it works that well.
+
+- We need to be able to completely justify our results. This requires
+both the explanatory simulations mentioned above, as well as real
+subsidiary components (like the memory system).  WRT the latter, we
+must be able to argue and demonstrate that Levo can operate at high
+frequencies with large main memory and L2 latencies. Part of this comes
+from the regular simulations above, once the memory parameters are
+determined to model real application hit rates, etc., and part of it
+comes from a high-level layout with analysis.
+
+Deadlines:
+Paper due: Monday June 10, 2002
+W/extension: Monday June 17, 2002
+
+No info yet on paper length. Presumably the usual. PDF.
+
+Our general schedule: from today, 4/9/2002, that's about 10 weeks to
+get it all done. ALL data taking for the paper will CEASE 2.5 to 3
+weeks before the due date. The paper will be ready for our own external
+reviews 2 weeks before the due date.
+
+Status reports: Tues. 2 PM and Fri. 2 PM, every week, starting with Fri.
+4/12/2002. No more than half a page. (Same as before.)
+
+>>>>>>>>>>>>>>>>
+Detailed schedule for MICRO; these are DUE dates unless specified otherwise:
+
+4/11 - Dave M. and Ali come up with strategy for debugging, quickly, benchmark
+tracing tools for MIPS ISA (our standard one).
+
+4/18 - Bar chart determination method completed or abandoned. - Ali and Dave K.
+
+4/25 - Five NEW SPECint 2000 benchmarks compiled and simulation debugged. 
+- Dave M. and Ali
+
+4/25 - D-path profiling completed, on existing 5 benchmarks. - Ali
+
+4/25 - High level layout completed (with long line problem addressed). - Gus.
+
+5/2  - D-path profiling completed, on remaining 5 benchmarks. - Ali
+
+5/2  - Improved data value speculation method designed. - Ali and Dave M.
+
+5/2  - Levo description and example sketched out. - Gus.
+
+5/9  - D-path and related I-fetch mods designed and implemented in FastLevo. - Ali
+
+5/9  - Other I-fetch mods (Marcos's) implemented in FastLevo. - Ali
+
+5/9  - Improved data value speculation method implemented. - Dave M.
+
+5/9  - Memory latency justification completed. - Dave M.
+
+5/9  - First pass simulations for final IPC determination begun. Ali and Dave M.
+
+5/13 - First draft of Levo description and example completed. - Gus.
+
+5/16 - First pass experiments for final IPC determination finished. 
+Ali and Dave M.
+
+5/16 - Simplescalar baseline measurements finished. Ali and Dave M.
+
+5/21 - First draft of complete paper written, sans last pass experiments. - Gus
+
+5/27 - Last pass experiments completed, including analysis. - Ali and Dave M.
+
+5/27 - Internal reviews of first draft completed. - Ali, Dave M. and Dave K.
+
+6/3  - Second complete draft of paper written, incorporating last experiments; 
+sent out to our external reviewers today. - Gus
+
+6/7  - Our external reviews in. 
+
+6/11 - External comments addressed. - Gus, with guidance from rest of gang.
+
+6/14 - Ali, Dave M. and Dave K. final comments in.
+
+6/16 - FINAL version of paper completed by Gus.
+
+6/17 - Paper deadline. Final edits by Gus and Dave K.
+

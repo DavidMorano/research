@@ -1,0 +1,16 @@
+#!/bin/ksh
+# MKEPS
+
+
+: ${DEBHOME:=/usr/add-on/dwb}
+
+PATH=${DWBHOME}/bin:${PATH}
+export PATH
+
+
+for F in bftden bftdis bbtden bbtdis htden htdis bpden bpdis ; do 
+  grap ${F}.dwb | pic | troff -Tpost | dpost -B > ${F}.ps 
+done
+
+
+

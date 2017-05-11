@@ -1,0 +1,11 @@
+#!/bin/ksh
+
+D=ics04
+T=$1
+if [[ -z "${T}" ]] ; then
+  T=executions
+fi
+
+scp -qp uri:doc/${D}/${T}.ps .
+
+

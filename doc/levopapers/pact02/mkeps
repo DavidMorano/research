@@ -1,0 +1,9 @@
+#!/bin/ksh
+# MKEPS
+
+for F in $* ; do
+  textclean -s inplace $F
+done
+
+
+

@@ -1,0 +1,21 @@
+I have put all three graphs in one.  Do you prefer to get them
+individually in seperate files?
+
+here are the speedup graphs.  I created them in matlab and haven't yet
+figures how to fix the x axis labeling.  I might need to use PPT if I
+cannot fix this.
+
+Here is the IPC graph, The xaxis corresponds to 
+go , gap , bzip, gzip and parser from left to right.
+
+each group consists of the following configurations
+(left to right)
+
+    SG    AS    Columns
+     8     4    16
+     8     4     8
+     8     8     8
+     8     8    16
+     8    16    16
+     8    16     8
+

@@ -1,0 +1,12 @@
+.G1
+frame ht 4 wid 4.5
+label top "register useful-lifetime distribution"
+label left "percent" "register" "writes" left .1
+label bot "useful-lifetime (in instructions)"
+coord x 0,100 y 0,100
+ticks left out from 0 to 100 by 10
+ticks right out from 0 to 100 by 10
+ticks bot out from 0 to 100 by 25
+draw solid dot
+copy "${MEANFILE}" thru X next at $1,($2 * 100) X
+.G2

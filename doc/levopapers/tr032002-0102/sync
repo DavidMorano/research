@@ -1,0 +1,6 @@
+#!/bin/ksh
+
+
+rsync -t source.eps window.eps timetags.tex timetags.bib uri:tr/
+
+

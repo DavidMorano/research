@@ -1,0 +1,74 @@
+1. on value prediction: was Dave's AS snarfing delay mechanism used?
+no.
+
+2. Compress still looks weird. The numbers are low, they're about the same
+for all IDEAL/REAL assumptions, and IDEAL_MEM to REAl F/M IPC goes the 
+wrong way.
+??? will look at it at instruction level ???
+
+3. Are we using the SimpleScalar results from a couple of days ago
+for the baseline?
+yes.
+
+4. line 40: is this prediction rate for this configuration WITH value
+prediction?
+~yes. 8_4_8 - 2_2_1, realistic, yes.
+
+5. Prior results were without value prediction? Without per row predictors?
+earlier date - yes; blue - no - with 1cycle bus delay
+
+6. Need another config: realistic assumptions-  8_4_8 - 4_4_4 configuration.
+have it at line 22.
+
+7. What is spanning bus length, in ASs? (That's the loading factor, not
+SG's, as I recall?
+1 column throughout.
+
+8. What were L0 cache sizes? Data with varying L0 sizes?
+32 entries. Not yet.
+
+9. Data with variable forwarding unit delays, including 0 (same as infinite
+spanning bus length)?
+no.
+
+10. What's "great fetch" (lines 58-60)?
+ Great front-end predictor? What are its parameters?
+synthetic better predictor. 96% .  no great front-end predictor.
+
+11. Please refresh my memory: what is the D-spawning algorithm?
+Do we have data with/without newer version?
+release. see PACT ; was best method.
+
+12. Maybe you said this: 64_16_16 data for ideal mem and real f/m?
+will get them.
+
+13. Are we unrolling loops at I-Fetch time?
+yes.
+
+14. ijpeg results also look low, anomalous (config to config, lines
+7-8, 13-14.
+yes; bus contention
+
+15. I-cache params.? Do I-accesses go through L2, main mem?
+see Dave's email. yes.
+l0/l1 bus lines not interleaved. m buses in exec. window not interleaved
+
+16. Refresh my memory: what exactly is Ideal I-fetch? Perfect domain/no-
+domain prediction?
+never flushes, perfect I-fetch predictor. not an oracle. not a perfect oracle
+due to changing predicates, DEE paths.
+
+17. vary branch distance threshold ---TBD
+
+
+
+more contention for buses.
+
+
+misprediction w/ D-path - FU's re-issue results from d-path column; 
+later m-path state kept.
+
+line 53 one overall instead of one per row
+
+results with real great predictor
+

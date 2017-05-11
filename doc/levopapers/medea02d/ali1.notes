@@ -1,0 +1,161 @@
+From akhalafi@gateway.ece.neu.edu Wed Jul 10 17:15:19 2002
+Return-Path: <akhalafi@gateway.ece.neu.edu>
+Received: from sert.ac.upc.es (sert.ac.upc.es [147.83.30.70])
+	by roura.ac.upc.es (8.12.5/8.12.5) with ESMTP id g6AFFIeR027327
+	for <dkaeli@ac.upc.es>; Wed, 10 Jul 2002 17:15:18 +0200 (MET DST)
+Received: from SMTP1.ECE.NEU.EDU (markov.ece.neu.edu [129.10.60.83])
+	by sert.ac.upc.es (Postfix) with ESMTP id 173504500
+	for <dkaeli@ac.upc.es>; Wed, 10 Jul 2002 17:15:18 +0200 (MET DST)
+Received: from dharma.ece.neu.edu (dharma.ece.neu.edu [129.10.60.101])
+	by SMTP1.ECE.NEU.EDU (8.11.3/8.11.3) with SMTP id g6ACulC02296
+	for <dkaeli@ac.upc.es>; Wed, 10 Jul 2002 08:57:27 -0400 (EDT)
+Received: from lespaul.ece.neu.edu ([129.10.60.240])
+ by dharma.ece.neu.edu (NAVGW 2.5.2.9) with SMTP id M2002071008564603101
+ ; Wed, 10 Jul 2002 08:56:47 -0400
+Received: from localhost by lespaul.ece.neu.edu (8.9.3/8.9.3) with ESMTP id IAA21797;
+	Wed, 10 Jul 2002 08:56:18 -0400 (EDT)
+X-Authentication-Warning: lespaul.ece.neu.edu: akhalafi owned process doing -bs
+Date: Wed, 10 Jul 2002 08:56:18 -0400 (EDT)
+From: Alireza Khalafi <akhalafi@ECE.NEU.EDU>
+X-Sender: akhalafi@lespaul
+To: David Kaeli <dkaeli@ac.upc.es>
+Cc: "Augustus (Gus) K. Uht" <uht@ele.uri.edu>,
+   David Morano <dmorano@ECE.NEU.EDU>
+Subject: Re: Statistics on Memory accesses
+In-Reply-To: <20020710081341.GJ4244@ac.upc.es>
+Message-ID: <Pine.GSO.4.21.0207100827440.21789-100000@lespaul>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Status: RO
+X-Status: A
+Content-Length: 4753
+Lines: 127
+
+Dave
+> 
+> This is very interesting data.  So these hit rates include
+> only loads (no stores), both committed and squashed load
+> instructions, and both loads using correct and wrong addresses
+> (speculative load addresses which may or may not be correct).
+> I just want to be clear on this data.
+
+You are right.  I just need to mention that not all speculative loads or
+stores are executed.  If the memory addresss is out of memory space, then
+the AS will wait for the next forwarded value.  This is to reduce wrong
+speculative executions.
+
+> Snoop seems to be a lot more beneficial than a backwarding
+> request.  Can I assume all loads access L0?  The loads that
+> miss L0 all go to L1, etc....?
+
+Snooping is the main mechanism in Levo but sometimes we don't have any
+other choise except sending a backwarding request.  Backwarding requests
+are needed if the AS resolves the memory address after the previous store
+has already sent out its value. 
+A Backwarding request to L0 and request to L1 both start at the same time
+through backwarding buses and hirizontal memory buses.  The reason is that
+there is a good chance that the data is not in L0.  Also note that access
+to L0 might take multiple cycles.
+
+> It seems you have just opened up a whole new area of interesting work
+> in Levo, network-based caching.  Doug Burger has been sitting next
+> to me the last 2 days here in BCN and I gave him a copy of our Micro paper.
+> He has a paper in APLOS on his machine, and a lot of what he is 
+> considering includes a distributed cache architecture through his
+> network.  BTW, he loves our ability to be ISA independent, and the
+> idea of timetags.  
+
+It is interesting to see his work.  Moving the memory into the
+execution window solved part of our problems.
+
+> While we still need to focus on improving I-fetch to get high ILP,
+> I think there are several interesting ideas here in d-caching.
+
+I agree. Although I think I-fetch should be the first priority for us at
+this moment.
+
+Ali
+
+
+> 
+> Dave
+> 
+> 
+>  On Wed, Jul 10, 2002 at 12:15:23AM -0400, Alireza Khalafi wrote:
+> > Hi
+> > 
+> > I tought you might be interested in the following statistics.  The
+> > data shows the percentage of all executed loads that are satisfied in L0,
+> > L1, L2 or Main Memory.  The percentage of loads that go to the
+> > memory are very low (less than 0.1%).  L0 satisfies around %25 - %35 of
+> > the loads which I think is very good.  The "L0 bwreq" are the percentage 
+> > of loads satisfied by sending a backwarding request and "L0 snoop" are the
+> > percentage that are satisfied by snooping the forwarded values without
+> > sending a backwarding request.
+> > 
+> > As you see the L0 cache in 16-8-8 doesn't satisfy as many loads as 8-4-8.
+> > I think this is because there are more speculative loads in 16-8-8 that
+> > do not hit at L0.  One problem with large configurations is that the
+> > distance between recenly issued instruction and committed ones is too far
+> > that the issued instructions do not have a correct initial value to start
+> > with.  Although this is just a guess. 
+> > 
+> > Ali
+> > 
+> > 
+> > The following stats are normalized wrt total executed loads.
+> > 
+> > 4-4-4		bzip2	parser
+> > L0 Hit rate	25.7%	30.3%
+> > L1D Hit rate	98.71%	99.39%
+> > L2 Hit rate	79.8%	80.05%
+> > L0 bwreq	6.7%	6.2%
+> > L0 snoop	19.0%	24.2%
+> > L1		73.5%	69.1%
+> > L2		0.8%	0.6%
+> > Mem		0.0%	0.0%
+> >  
+> > 
+> > 8-4-8
+> > 
+> > Loads		bzip2	parser
+> > L0 Hit rate	28.3%	33.7%
+> > L1 Hit rate	98.94	99.35
+> > L2 Hit Delay	79.66	81.59
+> > L0 bwreq	4.1%	4.5%
+> > L0 snoop	24.2%	29.2%
+> > L1		71.1%	65.7%
+> > L2		0.6%	0.6%
+> > Mem		0.0%	0.0%
+> > 
+> > 16-8-8
+> > 
+> > Loads		bzip2	parser
+> > L0 Hit rate	21.8%	34.0%
+> > L1D Hit rate	98.85	99.28
+> > L2 Hit rate	89.38	86.74
+> > L0 bwreq	3.6%	5.2%
+> > L0 snoop	18.2%	28.8%
+> > L1		77.3%	65.4%
+> > L2		0.9%	1.1%
+> > Mem		0.0%	0.0%
+> > 
+> > 
+> 
+> -- 
+> ***********************************************************
+> ***********************************************************
+> **      Professor David R. Kaeli                         **
+> **      Dept. of Electrical and Computer Engineering     **
+> **      Northeastern University                          **
+> **      318 Dana Research Center                         **
+> **      Boston, MA  02115                                **
+> **      email: kaeli@ece.neu.edu                         **
+> **      Prof. Kaeli is presently on sabbatical leave     **
+> **      in Barcelona, Spain.  His phone number           **
+> **      there is: +34 93 401 74 09                       **
+> **      fax is: +34 93 401 70 55                         **
+> ***********************************************************
+> ***********************************************************
+> 
+

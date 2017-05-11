@@ -1,0 +1,38 @@
+
+Page 2 - "employed a large raio of general..."  awkward... instead...
+"employed a large number of general purpose execution resources, as
+compared to the number of instruction being executed,"
+
+I think you need to cite the reservation station idea from the IBM 360/91
+paper.
+
+Page 5 - you should say which bus fabric we consier in this work...
+You don't define this clearly....
+
+Page 14 - you have a repeated "of of"
+
+Page 16 - "are show in Table 3"
+
+This is all I could find.
+
+Dave
+
+
+=====================================================================
+= Prof. David Kaeli   email: kaeli@ece.neu.edu phone: 617-373-5413  =
+=    ECE Dept.   318 Dana Research Center, NEU, Boston, MA 02115    =
+=               URL:  www.ece.neu.edu/faculty/kaeli.html            =
+=                                                                   =
+=       "I think there is a world market for maybe 5 computers."    =
+=                       Thomas Watson, 1943                         =
+=====================================================================
+
+On Tue, 22 Feb 2005, Dave Morano wrote:
+
+> > Some initial comments:
+>
+> Thanks for the feedback.  I'm working them now.
+>
+> Dave
+>
+

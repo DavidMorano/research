@@ -1,0 +1,16 @@
+SimpleSim statistics 020321_0848:20
+statistics for job=bzip2r logid=frodo8703
+
+total instructions       600000000
+included instructions    100000000:   500000000
+branch paths              59335110
+instructions per BP            8.4267
+branch path statistics
+IPBP mean                      8.4267
+IPBP variance                 73.3976
+IPBP stddev                    8.5672
+branch target-distance statistics
+IPBT mean                     21.4439
+IPBT variance               1111.7523
+IPBT stddev                   33.3430
+SS hammocks               13918698 (23.46 percent)

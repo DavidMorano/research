@@ -1,0 +1,17 @@
+Subject: Re: good if could be done
+
+some comments,
+
+
+> + like L2 cache hit rate
+I had already sent the L2 hit rete data.  Is there something else that 
+you are looking at?  I am repeating this data here again.
+
+			Bzip	Parser	Go	Gzip	Gap
+L1 I-C hit rate		97.16	96.63	92.38	94.7  89.04
+L1 D-C hit rate		98.79	99.07	99.83	99.75 99.26
+L2 U-C hit rate		90.1	85.96	96.75	73.02 88.47
+
+
+
+

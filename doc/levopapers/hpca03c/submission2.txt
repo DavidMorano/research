@@ -1,0 +1,80 @@
+From hpca9@CS.Arizona.EDU Fri Jul 19 21:02:52 EDT 2002 
+received:
+	by rca.rightcore.com
+	; 19 Jul 2002 21:06:47 -0400 (EDT)
+Return-Path: <hpca9@CS.Arizona.EDU>
+Received: from Flemming.computer.org (flemming.computer.org [206.99.235.24])
+	by leviathan.ele.uri.edu (8.12.2/8.12.2) with ESMTP id g6K12ovi012614
+	for <morano@ele.uri.edu>; Fri, 19 Jul 2002 21:02:50 -0400 (EDT)
+Received: from cheltenham.cs.arizona.edu (cheltenham.cs.arizona.edu [192.12.69.60])
+	by Flemming.computer.org (Switch-2.1.1/Switch-2.1.1) with ESMTP id U6K1026S21397
+	for <morano@computer.org>; Fri, 19 Jul 2002 21:02:11 -0400
+Received: from lectura.CS.Arizona.EDU (lectura.CS.Arizona.EDU [192.12.69.186])
+	by cheltenham.cs.arizona.edu (8.11.1/8.11.1) with ESMTP id g6K16HU28350;
+	Fri, 19 Jul 2002 18:06:19 -0700 (MST)
+Received: from mogollon.CS.Arizona.EDU (mogollon.CS.Arizona.EDU [192.12.69.126])
+	by lectura.CS.Arizona.EDU (8.11.6+Sun/8.11.6) with SMTP id g6K10wp08258;
+	Fri, 19 Jul 2002 18:00:58 -0700 (MST)
+Message-Id: <200207200100.g6K10wp08258@lectura.CS.Arizona.EDU>
+From: HPCA 9 - CyberChair <hpca9@CS.Arizona.EDU>
+To: morano@computer.org
+Cc: hpca9@CS.Arizona.EDU, hpca9@CS.Arizona.EDU
+Subject: HPCA 9 Paper Submission Form Feedback
+Date: Fri Jul 19 18:00:00 2002 MDT
+Reply-To: hpca9@CS.Arizona.EDU
+X-Mailer: Python smtplib
+Content-Length: 947
+
+Dear David, 
+
+You have submitted the following data for the HPCA 9 Conference:
+
+-=-=-=-=-= Beginning of submission data (step 2)=-=-=-=-=-
+
+
+Contact Person: 
+	Name: David Morano
+	Address:
+		200 Mountain Ave. , # 30
+		Malden, MA  02148-2752
+	Phone: 1 (781) 388-1799
+	Fax: [None Given]
+	Email: morano@computer.org
+
+Title: Using Timetags for Program Dependency Enforcement
+
+Author 1:
+	Name: Alireza Khalafi
+	Affiliation: Northeastern University
+
+Author2:
+	Name: David Morano
+	Affiliation: Northeastern University
+
+Author3:
+	Name: David Kaeli
+	Affiliation: Northeastern University
+
+Author4:
+	Name: Augustus Uht
+	Affiliation: University of Rhode Island
+
+Author is PC Member: No
+
+File: timetags.pdf
+File format: PDF (.pdf)
+File size: 158727 bytes
+Number of pages: 12
+
+Remarks:
+
+
+-=-=-=-=-=-= End of paper submission data =-=-=-=-=-=-
+
+If you have questions about this message, please contact hpca9
+(hpca9@cs.arizona.edu).
+
+--- End of this message ---
+
+
+

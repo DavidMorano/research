@@ -1,0 +1,20 @@
+bzip2
+& 188.9%
+crafty
+& 190.4%
+eon
+& 206.8%
+gcc
+& 303.0%
+gzip
+& 213.2%
+parser
+& 232.8%
+perlbmk
+& 186.6%
+twolf
+& 245.9%
+vortex
+& 206.2%
+vpr
+& 225.6%

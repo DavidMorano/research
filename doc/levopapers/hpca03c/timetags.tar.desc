@@ -1,0 +1,41 @@
+Dave,
+
+I think we have a pretty good paper here.  You did some nice
+writing.  I hope most of this will appear in your thesis.  It
+is a great description of time tags.
+
+I looked at the data Ali sent, but am not sure what it is.  If
+you can figure out how to use it, go right ahead.  I might
+suggest just quoting a mean from the numbers.  
+
+One place that needs more work is you have to fill in the
+reorder buffer and window size for the Simplescalar numbers.
+I think this is key.
+
+I have high hopes for this paper.  If you could include a
+little more data (not sure what), I think it will be a winner.
+
+tar file attached.  I used dvips -P pdf -t letter fn.dvi -0 fn.ps
+
+
+Great job.
+
+Dave
+
+p.s. I may be back online around 7PM your time, but I can not commit
+to it.  Good luck
+-- 
+***********************************************************
+***********************************************************
+**      Professor David R. Kaeli                         **
+**      Dept. of Electrical and Computer Engineering     **
+**      Northeastern University                          **
+**      318 Dana Research Center                         **
+**      Boston, MA  02115                                **
+**      email: kaeli@ece.neu.edu                         **
+**      Prof. Kaeli is presently on sabbatical leave     **
+**      in Barcelona, Spain.  His phone number           **
+**      there is: +34 93 401 74 09                       **
+**      fax is: +34 93 401 70 55                         **
+***********************************************************
+***********************************************************

@@ -1,0 +1,73 @@
+comments on JILP paper revision
+03/07/11
+Dave Morano
+
+
+=> Typos or things that might be better clarified in the text
+
+= sec. 2.1, 2nd par, 1st sen.
+
+context: the number of both executing and reorder-buffer stores grows.
+
+This seems to be awkwardly worded.  What are "stores" in this
+contect.  Are they register destination updates or memory stores.
+The work "store" is often closely identified with "memory stores"
+so its use here might be a little confusing.
+
+
+= sec. 3.3.1, par. 2, sen. 3
+
+context: Each branch has ...
+
+In the PDF version, the words "Each branch" are run together.
+
+
+= sec 4.2.1, par. 2, sen. 6
+
+context: The PCB holds
+
+The words "PCB holds" run together in the PDF version.  There may be
+a few more of these where you deleted something in the text leaving
+the remaining words to run together when a PDF is made.
+
+
+=> On reviewer comments
+
+From reviewer #1
+
+> The paper doesn't talk about the processor's pipeline - can LEVO be
+> described as a pipeline and how many pipeline stages does it have? 
+>	 --Levo cannot readily be described as a pipeline without
+>	obscuring its logical operation. Also, such a description
+>	could be misleading: each column could be thought of as a 
+>	pipeline stage, but this is clearly not the operational
+>	case or intention.
+>	--No changes made for this comment.
+
+Gus, your response here is exactly on target.  I think that many
+readers may have this reviewer's question in their minds.  Disavowing
+readers that column shifts correspond to pipeline stages is also
+possibly important since I think some readers of our past work fell
+into that trap.  I think that many people are very "pipeline" centric
+because so much of the literature seems to dwell on pipeline stages.
+
+I'd like to respond to this sort of question with some brief statement
+in the text but I am not sure that I know what that should be.  It may
+be useful to put some text in the paper for maybe a summary orientation
+of the reader that explains that instructions are processed in similar
+stages of life as in all machines: with FETCH, DISPATCH (or loading
+into ASes), ISSUE to PE (AS to PE), EXECUTE (although it can be
+repeated as necessary), WRITE-BACK (for memory -> PCBs transfer to L1,
+for registers -> nothing - the destination data has already been stored
+in an RFU for later use) and then WAIT-FOR-COMMIT (or retirement - but
+no ROB needed).  Even if you just put your above response to the
+reviewer in the paper, I think that would be useful for readers.  It's
+your call.
+
+I think that all of the other reviewer comments were handled well.
+
+
+=> General
+
+I think the paper looks good and I am still surprised at what seems
+to be quite complementary reviews ! :-)  I'm not used to that ! :-)

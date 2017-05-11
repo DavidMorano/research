@@ -1,0 +1,19 @@
+#!/bin/ksh
+
+
+P=$0
+
+if [ ! -r "${1}" ] ; then
+  echo "${P}: need a data-base file" >&2
+  exit 1
+fi
+
+
+for P in yags bpalpha gspag ; do 
+  rm -f ${P}_*.txt
+done
+
+bpsort $1
+
+
+

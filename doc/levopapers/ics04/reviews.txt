@@ -1,0 +1,279 @@
+>>> Review #355 For Paper #258
+> > 
+> > Questions specifically for the author to address in the rebuttal 
+> 
+> In Table 3, while the number of issue stations increased from 64 to
+> 256, the achieved IPC reduced significantly. In some cases, it dropped
+> by 2 times. In superscalar out-of-order processors, I have never seen
+> such behaviors with larger re-order buffer (or large issue windows).
+> With a larger issue window, the processor should be able to make more
+> effective use of the functional units. Table 3 shows a drastic slow
+> down. This should be well explained in the paper. The current
+> explaination of contention for functional unit is not convincing.
+> 
+> The OpTiFlow achieves a much higher ILP (about 4x) than a conventional
+> superscalar out-of-order micro-architecture. What features make such a
+> big difference? How much is it due to operand value prediction? How much
+> is it due to dynamic tagging? How much is it due to the use of issue
+> stations? The purpose of micro-architecture simulation is trying to
+> answer such questions. Section 3 presents lots of numbers without
+> sufficient analysis and discussion.
+
+> Provide detailed comments to the author.
+
+You may include comments here regarding spelling, punctuation, and
+grammar. Section 3, page 10,
+
+"A short sequence of instructions are then executed to warm up the
+functional simulator. The next 400 million instructions are then
+functionally executed on the machine."
+
+The functional simulator in this sentence seems to refer to
+micro-architecture simulation. Otherwise, this means a trace of 400M
+instructions is generated, and used for later simulations.
+
+It would be better if some simulation results can be provided with a
+reasonable cache hierarchy and dynamic branch prediction scheme.
+
+Please explain why MCF and GAP were not used in the simulation results.
+
+Table 2, please explain why Levo has a much higher ILP than OpTiFlow for
+benchmark bzip2.
+
+Table 3, why increased issue stations would result in lower IPC. This is
+counter intuition. The explaination in this section on contention for
+functional units is not convincing. The difference in IPC is as high as
+2 times. This is really troublesome.
+
+This could be a nice paper if you can use micro-architecure simulation
+to provide insights on what features contribute to the significant
+increase of IPC.
+
+Section 2 on the OpTiFlow micro-architecture can be described more
+concisely. One example could be provided to show how instructions go
+through the issue stations, functional units, and finally retirement stage.
+
+It is quite obvious that the authors have put much efforts in designing
+the details of the micro-architecture. This paper could be an excellent
+one if simulation results were reasonably analysed and insights of
+micro-architecture features on high IPC provided.
+
+
+>> Review #339 For Paper #258
+
+> What is the strength of the paper? (1-3 sentences) 
+
+It can exploit any possible ILP in a very natural way based on the
+execution/re-execution mechanism defined in this microarchitecture.
+
+What is the weakness of the paper? (1-3 sentences) It is not clear how a
+real fetch, memory hierarchy and branch execution units are integrated
+in the pipeline. The design is too optimisitic about latencies and the
+amount of wiring that can be used to connect all the Issue Stations to
+all the functional units. Moreover, the description doesn't really get
+into the way a real design based on this microarchitecture could work.
+Provide a short summary of the paper This paper presents and analyzes a
+new microarchitecture where the reservation stations are enhanced to
+become a decentralized mechanism to speculatively issue instructions to
+the functional units.
+
+> Questions specifically for the author to address in the rebuttal 
+
+The paper spends too much time just describing fields and boxes without
+really getting in how it works when all is put together. There are lots
+of paragraphs devoted to describe fields that are not used in this
+paper but that could be used in other designs if needed (predication
+and multipath support). It would be much better to just remove all the
+unused fields from the drawings and the description of the
+microarchitecture.
+
+What differentiates the proposal in the paper from the previous work
+presented in [22] and [23]?
+
+In table 1: I wouldn't call 8 integer ALU the typical number of ALUs.
+
+The claim that the proposal uses the same amount of hardware than
+current proposals is not completely true: The Issue Stations are heavier
+than the reservation stations (or similar structure) used in any current
+proposal. Moreover, the total number of functional units can be the same
+but not the number of functional units that can be used simultaneously
+in a given cycle. The current designs group the functional units in
+clusters and only one FU in each cluster can be used in a given cycle.
+This is done to reduce the amount of wiring and the complexity of the
+schedulers.
+
+Why is the microarchitecture presented in the paper able to use more
+functional units? why does it scale better than current
+microarchitectures? what is the fundamental thing that has changed?
+
+What is the impact of pipelining all the buses in the proposed design to
+make it more realistic?
+
+Does the number of re-executions increase when the latencies of the FUs
+are increased?
+
+What is the exact configuration of the superscalar microarchitecture
+used for comparison? How many instructions can be issued per cycle? is
+it modeled with ideal fetch and caches? (the superscalar IPCs from table
+2 seem to low for such an ideal architecture).
+
+> Provide detailed comments to the author.
+
+You may include comments here regarding spelling, punctuation, and
+grammar. At the beginning of section 2.4: "Rather then ..." should be
+"Rather than..."
+
+At the end of section 2.5: ".. will allows for ..." should be "... will
+allow for ..."
+
+
+>> Review #361 For Paper #258
+
+> What is the strength of the paper? (1-3 sentences) 
+
+I could not find a real strength in this paper...
+
+> What is the weakness of the paper? (1-3 sentences) 
+
+The biggest weakness of this paper is the lack of analysis of the
+scheme proposed. Important issues such as latency, resource conflicts
+and instruction re-execution are not addressed.
+
+> Provide a short summary of the paper 
+
+This paper presents a microarchitecture (OpTiFlow) where instructions
+are speculatively scheduled and executed, as soon as the functional
+units able to execute them become ready. The dependencies are checked
+only after execution, and if an instruction has executed with incorrect
+sources (the instruction producing the sources have not correctly
+executed yet), then this instruction is re-executed.
+
+The concept of "issue station" is introduced; the issue stations being
+responsible for the scheduling and re-scheduling of an instruction. The
+authors present IPC numbers for various hardware configurations - all
+with perfect caches and perfect branch prediction - with a high number
+of issue stations and execution units.
+
+> Questions specifically for the author to address in the rebuttal 
+
+In the body of the paper, you keep comparing the amount of "hardware
+resources" for your architecture to that of existing processors, or
+next generation processors. You also make references to the EV6,
+Pentium 4 and Itanium processors. However, when you talk about
+performance numbers, you compare the performance of OpTiFlow to much
+wider machines. This is very misleading, as the hardware required for
+OpTiFlow is very far from those superscalar processors you are
+referring to: "conventional superscalar" processors do not have 8 ALUs
+today.
+
+The choice of showing numbers for a perfect data cache is very
+questionable when your study relies on the fact that a lot of ILP can be
+found, and that instructions do not need to be re-executed often. Also,
+this does not fit well with your choice of benchmarks (only SpecInt). Do
+you have any interesting data on other benchmarks ?
+
+You mention that load-store instructions are executed in the IS. What
+operation exactly is executed in the IS ?
+
+What is the fetch width of OpTiFlow ? This is an important data missing
+from this paper. I understand that the instruction cache is perfect and
+that the branch predictions are always correct, but i could not
+understand if the fetch width was actually 1 cache line per cycle or as
+many instructions as ISs. Although it is not clearly stated in the
+paper, i'm afraid the latter was assumed. This raises the interesting
+question of how to fetch 16 to 256 instructions every cycle... You did
+not address that issue at all.
+
+Also, what is the fetch bandwidth of the other models you are comparing
+yours to in section 3 ? Is the MASE model fetching more than one cache
+line per cycle ? This would need to be clearly explained in order to
+understand your IPC comparisons.
+
+It seems that the decrement of the time tags has to happen every cycle,
+after instructions have retired and before the next instructions can be
+issued. It looks like a complex computation to do in a very short amount
+of time. You should detail that loop.
+
+> Provide detailed comments to the author.
+
+You may include comments here regarding spelling, punctuation, and
+grammar. Several times in the paper, you make reference to predication
+and multipath execution. This is terribly confusing as it is not clearly
+stated until quite late in the paper that those features are NOT
+supported by OpTiFlow. Either you support those features and you talk
+about them, or you don't support them and there is no point mentioning
+them over and over again. However, if you believe that your scheme could
+benefit from those features, or that it is well suited for those
+features, you may want to dedicate a paragraph to how to integrate them
+in OpTiFlow.
+
+It is not clearly explained that an IS can hold only one instruction.
+You should clarify that as early as section 2.1, when you introduce the
+concept of IS. Basically, each one of your ISs is a ROB entry.
+
+The connectivity issue is not discussed at all. Somewhere (late) in the
+paper, you mention a one cycle latency to bypass results. However, it is
+not clear if this latency would be the same with 16 or 256 issue
+stations. The latency between ISs, especially if you have 256 of them,
+is very likely to be a function of their distance... The connectivity
+(16x16 to 256x256) is also likely to be very power hungry. These issues
+are not discussed at all.
+
+Is the cycle spent in the bypass network added to the latency of every
+unit ? Did you look at sending dependent instructions to the same FU and
+avoid paying this latency ? Not much detail is given on the scheduling
+scheme. Maybe you should better explain the exact scheme.
+
+The concept of IS and the way renaming is handled is interesting, but
+nothing is said about recovery in case of misprediction. I understand
+that you have assumed a perfect branch predictor in this study, but
+eventually you'll need to recover from a misprediction. This will have a
+strong impact on your hardware and should be discussed in details.
+
+You may consider moving Table 1 to where it is first referenced (section
+2.1).
+
+It would probably make the paper easier to read if the dependency
+ordering (section 2.4) was described earlier.
+
+I could not understand the meaning of the last sentence of section 2.5:
+" This simple rule ... maximum concurrency to occur".
+
+Section 3, you start by mentioning "the machine presented". There is no
+clear definition of the configuration you are talking about. By then,
+you should have made it clear what the width, length of your machine is,
+and which features are supported.
+
+You may consider adding a H-MEAN line to table 2.
+
+Section 3.2 would need a much deeper analysis, starting with explaining
+the benefit of having 128 ISs and only 8 ALUs. Do we really use this
+deep scheduling window ? Also, The behavior of eon should be explained
+in this section. Is the latency of FP instructions the culprit ?
+
+FU stalls are never really explained. Before quoting the percentage of
+cycles lost in FU stalls, you should explain what a FU stall is, and how
+it happens.
+
+The numbers of re-executions are quoted but we do not know where they
+are coming from. You should consider adding a graph for those numbers.
+Also, you should comment on these numbers, not just quote them. I would
+make similar comments for section 3.3.
+
+The last sentence of section 3.4 is very confusing... Why would an IS
+try and schedule an instruction that is already being executed ? You
+have assumed so far that only one instance of an instruction can be in
+flight at any time. Did you look at another scheme where an IS would
+re-schedule its instruction (on a different FU) as soon as a source was
+available ?
+
+Overall, the scheme described in this paper is interesting, but the
+paper is hard to read, with a lot of confusing comments. Also, the
+results shown (section 3) do not match the assumptions made all along
+the paper (including introduction and conclusion) that the
+microarchitecture of OpTiFlow requires similar hardware as existing
+superscalar processors. This is clearly not true. Finally, given the
+title of the paper, i was expecting much more insight on instruction
+re-execution, but the data on re-execution is not analyzed at all in
+this paper.
+

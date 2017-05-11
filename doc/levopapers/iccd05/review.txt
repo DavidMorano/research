@@ -1,0 +1,82 @@
+From kaeli@gateway.ece.neu.edu  Fri May 13 11:51:06 2005
+Return-Path: <kaeli@gateway.ece.neu.edu>
+Received: from calvin.ece.neu.edu (calvin.ece.neu.edu [129.10.62.61])
+	by SMTP1.ECE.NEU.EDU (8.12.5/8.12.5) with SMTP id j4DFnqnE018995
+	for <dmorano@ECE.NEU.EDU>; Fri, 13 May 2005 11:51:06 -0400 (EDT)
+Received: (from gateway [129.10.60.71])
+ by calvin.ece.neu.edu (SAVSMTP 3.1.0.29) with SMTP id M2005051309321532570
+ for <dmorano@ECE.NEU.EDU>; Fri, 13 May 2005 09:32:16 -0400
+Date: Fri, 13 May 2005 09:32:16 -0400 (EDT)
+From: "Prof. David Kaeli" <kaeli@ECE.NEU.EDU>
+To: David Morano <dmorano@ECE.NEU.EDU>
+Subject: Paper
+Message-ID: <Pine.GSO.4.58.0505130901230.19263@gateway.ece.neu.edu>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Spam-Checker-Version: SpamAssassin 3.0.1-ecenet_3.2 (2004-10-22) on 
+	markov.ece.neu.edu
+X-Spam-Status: No, score=-2.8 required=7.0 tests=ALL_TRUSTED,AWL 
+	autolearn=ham version=3.0.1-ecenet_3.2
+X-Spam-Level: 
+
+
+Dave,
+
+I would make the following changes to the paper:
+
+1. While I like the title, I am not sure others will.  How about
+something like: "Re-execution - An Approach to Simplify the Datapath in
+Aggressive Out-of-Order Processors"
+
+2. Pg. 1 - change course to coarse
+
+3. Pg. 2 - ICCD is a design conference.  You don't stress design
+complexity issues enough.  How does eliminate the ROB?  You allude
+to this on page 6, but do not stress how ROBs limit scalability.
+You need to discuss this in the intro to motivate the whole design.
+
+How do we
+implement the bussing structure?  Is the design scalable?  I think
+we want to argue that this is a significant improvement in design
+complexity compared to other machines, so we are enabling future
+design that will have billions of transistors (the overriding
+theme of the conference).
+
+4. Pg. 8 - Why are the baseline results using on one decimal place,
+and the rest of the IPCs using two places???
+
+5. Pg. 8 - You put a lot of stuff in one Table.  It might have been
+nice to have one graph as well (any room)?
+
+6. Pg. 8 - Eliminate the term "proposed" in Table 2.  Use a better
+label the doesn't suggest that this is just a paper design (we have
+actually developed a model of it...)  It is okay to use the phrase
+"our proposed design" in the text, but labeling with the word "proposed"
+conveys a different message.
+
+7. Pg. 7 - Correct the text "way clear way"
+
+8. Pg. 6 - Why say that we don't have a clue about the number of
+re-executions.  Of course there will be some changes due to various
+dependencies.  So why do you report it?  Because it gets better.  Can
+we just leave it at "and the number of re-executions is reduced..."
+Saying anything more just digs a hole for you....
+
+pg. 4 - In the caption for Figure 2 - "is shown" shoud be "are shown"
+
+pg. 8 - Try to move Table 2 to appear earlier in the text.
+
+This is all for now.
+
+Dave
+
+
+=====================================================================
+= Prof. David Kaeli   email: kaeli@ece.neu.edu phone: 617-373-5413  =
+=    ECE Dept.   318 Dana Research Center, NEU, Boston, MA 02115    =
+=               URL:  www.ece.neu.edu/faculty/kaeli.html            =
+=                                                                   =
+=       "I think there is a world market for maybe 5 computers."    =
+=                       Thomas Watson, 1943                         =
+=====================================================================
+

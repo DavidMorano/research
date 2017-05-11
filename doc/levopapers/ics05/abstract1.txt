@@ -1,0 +1,16 @@
+We present a new microarchitectural approach for managing
+parallel and speculative instruction execution within
+the processor.  Instructions are allowed to enter into
+execution without first determining control or data
+dependencies.  All instruction dependencies are determined
+dynamically at execution time.  This approach might be
+characterized by first letting all instructions enter
+into execution as there are available machine resources,
+and then re-execute instructions as necessary in order
+to create the correct program state for commitment.
+Instructions are re-executed without being refetched
+or redispatched (but re-issued) as the correct input
+dependencies are dynamically determined.  Simulation
+results are presented that shows that this approach
+outperforms conventional superscalars given similar
+hardware sizes.

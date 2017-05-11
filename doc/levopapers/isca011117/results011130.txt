@@ -1,0 +1,37 @@
+From dam Fri Nov 30 17:25:35 EST 2001
+Date: Fri, 30 Nov 2001 15:27:53 -0500 (EST)
+From: Alireza Khalafi <alireza@ele.uri.edu>
+To: Augustus Uht <uht@ele.uri.edu>
+Cc: David Kaeli <kaeli@ele.uri.edu>
+Subject: Simulation results
+content-length: 587
+
+Hi,
+Here are the final data.  The model includes the subroutine cache and as
+you can see it results in higer performace for larger architectures.
+
+Thanks
+Alireza
+
+	Real Cache Memory				
+	Bzip2	Go	Gap	Gzip	Parser
+"4,4,4"	2.7	2.9	3.3	2.8	2.7
+"8,4,4"	3.9	4.4	5	4.2	4.2
+"8,4,8"	4.5	5.6	6.1	5.2	5.3
+"8,8,8"	5.3	6.9	6.8	7	6.7
+"16,8,4"4.7	5.2	6.1	5.9	5
+"8,4,16"5	5.9	6.3	5.7	5.8
+
+
+
+	No Cache Memory				
+	Bzip2	Go	Gap	Gzip	Parser
+"4,4,4"	3.5	3.7	3.7	3.4	3.3
+"8,4,4"	5.4	6	5.4	5.3	5.5
+"8,4,8"	6.5	7.7	6.9	6.7	7.2
+"8,8,8"	8.1	9.2	8.6	8.4	8.9
+"16,8,4"6.9	7	7.3	7.9	6.9
+"8,4,16"6.3	7.9	8.1	6.7	7
+
+
+

@@ -1,0 +1,6654 @@
+%!PS-Adobe-2.0
+%%Copyright: Copyright (c) 1993 AT&T, All Rights Reserved
+%%Version: 3.4.1
+%%DocumentFonts: (atend)
+%%Pages: (atend)
+%%EndComments
+/DpostDict 200 dict def
+DpostDict begin
+%
+% Copyright (c) 1993 AT&T, All Rights Reserved
+%
+% Version 3.4 prologue for troff files.
+%
+
+/#copies 1 store
+/Prologue (dpost.ps) def
+/aspectratio 1 def
+/formsperpage 1 def
+/landscape false def
+/linewidth .3 def
+/magnification 1 def
+/margin 0 def
+/orientation 0 def
+/resolution 720 def
+/rotation 1 def
+/xoffset 0 def
+/yoffset 0 def
+
+/roundpage true def
+/useclippath true def
+/pagebbox [0 0 612 792] def
+
+/R  /Times-Roman def
+/I  /Times-Italic def
+/B  /Times-Bold def
+/BI /Times-BoldItalic def
+/H  /Helvetica def
+/HI /Helvetica-Oblique def
+/HB /Helvetica-Bold def
+/HX /Helvetica-BoldOblique def
+/CW /Courier def
+/CO /Courier def
+/CI /Courier-Oblique def
+/CB /Courier-Bold def
+/CX /Courier-BoldOblique def
+/PA /Palatino-Roman def
+/PI /Palatino-Italic def
+/PB /Palatino-Bold def
+/PX /Palatino-BoldItalic def
+/Hr /Helvetica-Narrow def
+/Hi /Helvetica-Narrow-Oblique def
+/Hb /Helvetica-Narrow-Bold def
+/Hx /Helvetica-Narrow-BoldOblique def
+/KR /Bookman-Light def
+/KI /Bookman-LightItalic def
+/KB /Bookman-Demi def
+/KX /Bookman-DemiItalic def
+/AR /AvantGarde-Book def
+/AI /AvantGarde-BookOblique def
+/AB /AvantGarde-Demi def
+/AX /AvantGarde-DemiOblique def
+/NR /NewCenturySchlbk-Roman def
+/NI /NewCenturySchlbk-Italic def
+/NB /NewCenturySchlbk-Bold def
+/NX /NewCenturySchlbk-BoldItalic def
+/ZD /ZapfDingbats def
+/ZI /ZapfChancery-MediumItalic def
+/S  /S def
+/S1 /S1 def
+/GR /Symbol def
+
+/inch {72 mul} bind def
+/min {2 copy gt {exch} if pop} bind def
+
+/setup {
+	counttomark 2 idiv {def} repeat pop
+
+	landscape {/orientation 90 orientation add def} if
+	/scaling 72 resolution div def
+	linewidth setlinewidth
+	1 setlinecap
+
+	pagedimensions
+	xcenter ycenter translate
+	orientation rotation mul rotate
+	width 2 div neg height 2 div translate
+	xoffset inch yoffset inch neg translate
+	margin 2 div dup neg translate
+	magnification dup aspectratio mul scale
+	scaling scaling scale
+
+	addmetrics
+	0 0 moveto
+} def
+
+/pagedimensions {
+	useclippath userdict /gotpagebbox known not and {
+		/pagebbox [clippath pathbbox newpath] def
+		roundpage currentdict /roundpagebbox known and {roundpagebbox} if
+	} if
+	pagebbox aload pop
+	4 -1 roll exch 4 1 roll 4 copy
+	landscape {4 2 roll} if
+	sub /width exch def
+	sub /height exch def
+	add 2 div /xcenter exch def
+	add 2 div /ycenter exch def
+	userdict /gotpagebbox true put
+} def
+
+/landscapepage {
+	landscape not {
+		0 height scaling div neg translate	% not quite
+		90 rotate
+	} if
+} bind def
+
+/portraitpage {
+	landscape {
+		width scaling div 0 translate	% not quite
+		-90 rotate
+	} if
+} bind def
+
+/addmetrics {
+	/Symbol /S null Sdefs cf
+	/Times-Roman /S1 StandardEncoding dup length array copy S1defs cf
+} def
+
+/pagesetup {
+	/page exch def
+	currentdict /pagedict known currentdict page known and {
+		page load pagedict exch get cvx exec
+	} if
+} def
+
+/decodingdefs [
+	{counttomark 2 idiv {y moveto show} repeat}
+	{neg /y exch def counttomark 2 idiv {y moveto show} repeat}
+	{neg moveto {2 index stringwidth pop sub exch div 0 32 4 -1 roll widthshow} repeat}
+	{neg moveto {spacewidth sub 0.0 32 4 -1 roll widthshow} repeat}
+	{counttomark 2 idiv {y moveto show} repeat}
+	{neg setfunnytext}
+] def
+
+/setdecoding {/t decodingdefs 3 -1 roll get bind def} bind def
+
+/w {neg moveto show} bind def
+/m {neg dup /y exch def moveto} bind def
+/done {/lastpage where {pop lastpage} if} def
+
+/f {
+	dup /font exch def findfont exch
+	dup /ptsize exch def scaling div dup /size exch def scalefont setfont
+	linewidth ptsize mul scaling 10 mul div setlinewidth
+	/spacewidth ( ) stringwidth pop def
+} bind def
+
+/changefont {
+	/fontheight exch def
+	/fontslant exch def
+	currentfont [
+		1 0
+		fontheight ptsize div fontslant sin mul fontslant cos div
+		fontheight ptsize div
+		0 0
+	] makefont setfont
+} bind def
+
+/sf {f} bind def
+
+/cf {
+	dup length 2 idiv
+	/entries exch def
+	/chtab exch def
+	/newencoding exch def
+	/newfont exch def
+
+	findfont dup length 1 add dict
+	/newdict exch def
+	{1 index /FID ne {newdict 3 1 roll put}{pop pop} ifelse} forall
+
+	newencoding type /arraytype eq {newdict /Encoding newencoding put} if
+
+	newdict /Metrics entries dict put
+	newdict /Metrics get
+	begin
+		chtab aload pop
+		1 1 entries {pop def} for
+		newfont newdict definefont pop
+	end
+} bind def
+
+%
+% A few arrays used to adjust reference points and character widths in some
+% of the printer resident fonts. If square roots are too high try changing
+% the lines describing /radical and /radicalex to,
+%
+%	/radical	[0 -75 550 0]
+%	/radicalex	[-50 -75 500 0]
+%
+% Move braceleftbt a bit - default PostScript character is off a bit.
+%
+
+/Sdefs [
+	/bracketlefttp		[201 500]
+	/bracketleftbt		[201 500]
+	/bracketrighttp		[-81 380]
+	/bracketrightbt		[-83 380]
+	/braceleftbt		[203 490]
+	/bracketrightex		[220 -125 500 0]
+	/radical		[0 0 550 0]
+	/radicalex		[-50 0 500 0]
+	/parenleftex		[-20 -170 0 0]
+	/integral		[100 -50 500 0]
+	/infinity		[10 -75 730 0]
+] def
+
+/S1defs [
+	/underscore		[0 80 500 0]
+	/endash			[7 90 650 0]
+] def
+%
+% Copyright (c) 1993 AT&T, All Rights Reserved
+%
+% A first cut at a company wide version of postcommon.ps.
+% Includes Matthijs Melchior's version of roundpagebbox,
+% but disables adjustments for postprint. This is just an
+% example - it should not be considered final or official.
+%
+
+/roundpagebbox {
+	Prologue (postprint.ps) ne {
+		pagebbox dup 0 get pagebbox 2 get add 2 exch put
+		pagebbox dup 1 get pagebbox 3 get add 3 exch put
+		pagebbox 0 0 put
+		pagebbox 1 0 put
+		userdict /origin-at-paper-edge true put
+	} if
+} bind def
+
+end
+%%EndProlog
+%%BeginSetup
+DpostDict begin
+mark
+/resolution 720 def
+setup
+2 setdecoding
+end
+%%EndSetup
+%%Page: 1 1
+DpostDict begin
+/saveobj save def
+mark
+1 pagesetup
+10 R f
+(- 1 -)2 166 1 2797 480 t
+(this is a test)3 470 1 720 960 t
+cleartomark
+saveobj restore
+end
+%%BeginDocument: frwdbuss.eps
+%ps_include: begin
+save
+/ed {exch def} def
+{} /showpage ed
+{} /copypage ed
+{} /erasepage ed
+{} /letter ed
+currentdict /findfont known systemdict /findfont known and {
+	/findfont systemdict /findfont get def
+} if
+36 dict dup /PS-include-dict-dw ed begin
+/context ed
+count array astore /o-stack ed
+%ps_include: variables begin
+/llx 65 def
+/lly 274 def
+/urx 491 def
+/ury 709 def
+/w 0 def
+/o 1 def
+/s 0 def
+/cx 3240 def
+/cy -2760 def
+/sx 3600 def
+/sy 2880 def
+/ax 0.5 def
+/ay 1 def
+/rot -0 def
+%ps_include: variables end
+{llx lly urx ury} /bbox ed
+{newpath 2 index exch 2 index exch dup 6 index exch
+ moveto 3 {lineto} repeat closepath} /boxpath ed
+{dup mul exch dup mul add sqrt} /len ed
+{2 copy gt {exch} if pop} /min ed
+{2 copy lt {exch} if pop} /max ed
+{transform round exch round exch A itransform} /nice ed
+{6 array} /n ed
+n defaultmatrix n currentmatrix n invertmatrix n concatmatrix /A ed
+urx llx sub 0 A dtransform len /Sx ed
+0 ury lly sub A dtransform len /Sy ed
+llx urx add 2 div lly ury add 2 div A transform /Cy ed /Cx ed
+rot dup sin abs /S ed cos abs /C ed
+Sx S mul Sy C mul add /H ed
+Sx C mul Sy S mul add /W ed
+sy H div /Scaley ed
+sx W div /Scalex ed
+s 0 eq {Scalex Scaley min dup /Scalex ed /Scaley ed} if
+sx Scalex W mul sub 0 max ax 0.5 sub mul cx add /cx ed
+sy Scaley H mul sub 0 max ay 0.5 sub mul cy add /cy ed
+urx llx sub 0 A dtransform exch atan rot exch sub /rot ed
+n currentmatrix initgraphics setmatrix
+cx cy translate
+Scalex Scaley scale
+rot rotate
+Cx neg Cy neg translate
+A concat
+bbox boxpath clip newpath
+w 0 ne {gsave bbox boxpath 1 setgray fill grestore} if
+end
+gsave
+%ps_include: inclusion begin
+%!PS-Adobe-3.0 EPSF-3.0
+/AutoFlatness false def
+/AutoSteps 0 def
+/CMYKMarks true def
+/UseLevel 1 def
+%Build: CorelDRAW 9 Version 9.397
+%Color profile:  Generic offset separations profile
+/wCorel9Dict 300 dict def wCorel9Dict begin
+% Copyright (c)1992-1999 Corel Corporation
+% All rights reserved.     v9.0 r0.5
+/bd{bind def}bind def/ld{load def}bd/xd{exch def}bd/_ null def/rp{{pop}repeat}
+bd/@cp/closepath ld/@gs/gsave ld/@gr/grestore ld/@np/newpath ld/Tl/translate ld
+/$sv 0 def/@sv{/$sv save def}bd/@rs{$sv restore}bd/spg/showpage ld/showpage{}
+bd currentscreen/@dsp xd/$dsp/@dsp def/$dsa xd/$dsf xd/$sdf false def/$SDF
+false def/$Scra 0 def/SetScr/setscreen ld/@ss{2 index 0 eq{$dsf 3 1 roll 4 -1
+roll pop}if exch $Scra add exch load SetScr}bd/SepMode_5 where{pop}{/SepMode_5
+0 def}ifelse/CurrentInkName_5 where{pop}{/CurrentInkName_5(Composite)def}
+ifelse/$ink_5 where{pop}{/$ink_5 -1 def}ifelse/$c 0 def/$m 0 def/$y 0 def/$k 0
+def/$t 1 def/$n _ def/$o 0 def/$fil 0 def/$C 0 def/$M 0 def/$Y 0 def/$K 0 def
+/$T 1 def/$N _ def/$O 0 def/$PF false def/s1c 0 def/s1m 0 def/s1y 0 def/s1k 0
+def/s1t 0 def/s1n _ def/$bkg false def/SK 0 def/SM 0 def/SY 0 def/SC 0 def/$op
+false def matrix currentmatrix/$ctm xd/$ptm matrix def/$ttm matrix def/$stm
+matrix def/$ffpnt true def/CorelDrawReencodeVect[16#0/grave 16#5/breve
+16#6/dotaccent 16#8/ring 16#A/hungarumlaut 16#B/ogonek 16#C/caron 16#D/dotlessi
+16#27/quotesingle 16#60/grave 16#7C/bar
+16#82/quotesinglbase/florin/quotedblbase/ellipsis/dagger/daggerdbl
+16#88/circumflex/perthousand/Scaron/guilsinglleft/OE
+16#91/quoteleft/quoteright/quotedblleft/quotedblright/bullet/endash/emdash
+16#98/tilde/trademark/scaron/guilsinglright/oe 16#9F/Ydieresis
+16#A1/exclamdown/cent/sterling/currency/yen/brokenbar/section
+16#a8/dieresis/copyright/ordfeminine/guillemotleft/logicalnot/minus/registered/macron
+16#b0/degree/plusminus/twosuperior/threesuperior/acute/mu/paragraph/periodcentered
+16#b8/cedilla/onesuperior/ordmasculine/guillemotright/onequarter/onehalf/threequarters/questiondown
+16#c0/Agrave/Aacute/Acircumflex/Atilde/Adieresis/Aring/AE/Ccedilla
+16#c8/Egrave/Eacute/Ecircumflex/Edieresis/Igrave/Iacute/Icircumflex/Idieresis
+16#d0/Eth/Ntilde/Ograve/Oacute/Ocircumflex/Otilde/Odieresis/multiply
+16#d8/Oslash/Ugrave/Uacute/Ucircumflex/Udieresis/Yacute/Thorn/germandbls
+16#e0/agrave/aacute/acircumflex/atilde/adieresis/aring/ae/ccedilla
+16#e8/egrave/eacute/ecircumflex/edieresis/igrave/iacute/icircumflex/idieresis
+16#f0/eth/ntilde/ograve/oacute/ocircumflex/otilde/odieresis/divide
+16#f8/oslash/ugrave/uacute/ucircumflex/udieresis/yacute/thorn/ydieresis]def
+/L2?/languagelevel where{pop languagelevel 2 ge}{false}ifelse def/Comp?{
+/LumSepsDict where{pop false}{/AldusSepsDict where{pop false}{1 0 0 0 @gs
+setcmykcolor currentcmykcolor @gr add add add 0 ne 0 1 0 0 @gs setcmykcolor
+currentcmykcolor @gr add add add 0 ne 0 0 1 0 @gs setcmykcolor currentcmykcolor
+@gr add add add 0 ne 0 0 0 1 @gs setcmykcolor currentcmykcolor @gr add add add
+0 ne and and and}ifelse}ifelse}bd/@PL{/LV where{pop LV 2 ge L2? not and{@np
+/Courier findfont 12 scalefont setfont 72 144 m
+(The PostScript level set in the Corel application is higher than)show 72 132 m
+(the PostScript level of this device. Change the PS Level in the Corel)show 72
+120 m(application to Level 1 by selecting the PostScript tab in the print)show
+72 108 m(dialog, and selecting Level 1 from the Compatibility drop down list.)
+show flush spg quit}if}if}bd/@BeginSysCorelDict{systemdict/Corel30Dict known
+{systemdict/Corel30Dict get exec}if systemdict/CorelLexDict known{1 systemdict
+/CorelLexDict get exec}if}bd/@EndSysCorelDict{systemdict/Corel30Dict known
+{end}if/EndCorelLexDict where{pop EndCorelLexDict}if}bd AutoFlatness{/@ifl{dup
+currentflat exch sub 10 gt{
+([Error: PathTooComplex; OffendingCommand: AnyPaintingOperator]\n)print flush
+@np exit}{currentflat 2 add setflat}ifelse}bd/@fill/fill ld/fill{currentflat{
+{@fill}stopped{@ifl}{exit}ifelse}bind loop setflat}bd/@eofill/eofill ld/eofill
+{currentflat{{@eofill}stopped{@ifl}{exit}ifelse}bind loop setflat}bd/@clip
+/clip ld/clip{currentflat{{@clip}stopped{@ifl}{exit}ifelse}bind loop setflat}
+bd/@eoclip/eoclip ld/eoclip{currentflat{{@eoclip}stopped{@ifl}{exit}ifelse}
+bind loop setflat}bd/@stroke/stroke ld/stroke{currentflat{{@stroke}stopped
+{@ifl}{exit}ifelse}bind loop setflat}bd}if L2?{/@ssa{true setstrokeadjust}bd}{
+/@ssa{}bd}ifelse/d/setdash ld/j/setlinejoin ld/J/setlinecap ld/M/setmiterlimit
+ld/w/setlinewidth ld/O{/$o xd}bd/R{/$O xd}bd/W/eoclip ld/c/curveto ld/C/c ld/l
+/lineto ld/L/l ld/rl/rlineto ld/m/moveto ld/n/newpath ld/N/newpath ld/P{11 rp}
+bd/u{}bd/U{}bd/A{pop}bd/q/@gs ld/Q/@gr ld/&{}bd/@j{@sv @np}bd/@J{@rs}bd/g{1
+exch sub/$k xd/$c 0 def/$m 0 def/$y 0 def/$t 1 def/$n _ def/$fil 0 def}bd/G{1
+sub neg/$K xd _ 1 0 0 0/$C xd/$M xd/$Y xd/$T xd/$N xd}bd/k{1 index type
+/stringtype eq{/$t xd/$n xd}{/$t 0 def/$n _ def}ifelse/$k xd/$y xd/$m xd/$c xd
+/$fil 0 def}bd/K{1 index type/stringtype eq{/$T xd/$N xd}{/$T 0 def/$N _ def}
+ifelse/$K xd/$Y xd/$M xd/$C xd}bd/x/k ld/X/K ld/sf{1 index type/stringtype eq{
+/s1t xd/s1n xd}{/s1t 0 def/s1n _ def}ifelse/s1k xd/s1y xd/s1m xd/s1c xd}bd/i{
+dup 0 ne{setflat}{pop}ifelse}bd/v{4 -2 roll 2 copy 6 -2 roll c}bd/V/v ld/y{2
+copy c}bd/Y/y ld/@w{matrix rotate/$ptm xd matrix scale $ptm dup concatmatrix
+/$ptm xd 1 eq{$ptm exch dup concatmatrix/$ptm xd}if 1 w}bd/@g{1 eq dup/$sdf xd
+{/$scp xd/$sca xd/$scf xd}if}bd/@G{1 eq dup/$SDF xd{/$SCP xd/$SCA xd/$SCF xd}
+if}bd/@D{2 index 0 eq{$dsf 3 1 roll 4 -1 roll pop}if 3 copy exch $Scra add exch
+load SetScr/$dsp xd/$dsa xd/$dsf xd}bd/$ngx{$SDF{$SCF SepMode_5 0 eq{$SCA}
+{$dsa}ifelse $SCP @ss}if}bd/p{/$pm xd 7 rp/$pyf xd/$pxf xd/$pn xd/$fil 1 def}
+bd/@MN{2 copy le{pop}{exch pop}ifelse}bd/@MX{2 copy ge{pop}{exch pop}ifelse}bd
+/InRange{3 -1 roll @MN @MX}bd/@sqr{dup 0 rl dup 0 exch rl neg 0 rl @cp}bd
+/currentscale{1 0 dtransform matrix defaultmatrix idtransform dup mul exch dup
+mul add sqrt 0 1 dtransform matrix defaultmatrix idtransform dup mul exch dup
+mul add sqrt}bd/@unscale{}bd/wDstChck{2 1 roll dup 3 -1 roll eq{1 add}if}bd
+/@dot{dup mul exch dup mul add 1 exch sub}bd/@lin{exch pop abs 1 exch sub}bd
+/cmyk2rgb{3{dup 5 -1 roll add 1 exch sub dup 0 lt{pop 0}if exch}repeat pop}bd
+/rgb2cmyk{3{1 exch sub 3 1 roll}repeat 3 copy @MN @MN 3{dup 5 -1 roll sub neg
+exch}repeat}bd/rgb2g{2 index .299 mul 2 index .587 mul add 1 index .114 mul add
+4 1 roll pop pop pop}bd/WaldoColor_5 where{pop}{/SetRgb/setrgbcolor ld/GetRgb
+/currentrgbcolor ld/SetGry/setgray ld/GetGry/currentgray ld/SetRgb2 systemdict
+/setrgbcolor get def/GetRgb2 systemdict/currentrgbcolor get def/SetHsb
+systemdict/sethsbcolor get def/GetHsb systemdict/currenthsbcolor get def
+/rgb2hsb{SetRgb2 GetHsb}bd/hsb2rgb{3 -1 roll dup floor sub 3 1 roll SetHsb
+GetRgb2}bd/setcmykcolor where{pop/LumSepsDict where{pop/SetCmyk_5{LumSepsDict
+/setcmykcolor get exec}def}{/AldusSepsDict where{pop/SetCmyk_5{AldusSepsDict
+/setcmykcolor get exec}def}{/SetCmyk_5/setcmykcolor ld}ifelse}ifelse}{
+/SetCmyk_5{cmyk2rgb SetRgb}bd}ifelse/currentcmykcolor where{pop/GetCmyk
+/currentcmykcolor ld}{/GetCmyk{GetRgb rgb2cmyk}bd}ifelse/setoverprint where
+{pop}{/setoverprint{/$op xd}bd}ifelse/currentoverprint where{pop}{
+/currentoverprint{$op}bd}ifelse/@tc_5{5 -1 roll dup 1 ge{pop}{4{dup 6 -1 roll
+mul exch}repeat pop}ifelse}bd/@trp{exch pop 5 1 roll @tc_5}bd
+/setprocesscolor_5{SepMode_5 0 eq{SetCmyk_5}{0 4 $ink_5 sub index exch pop 5 1
+roll pop pop pop pop SepsColor true eq{$ink_5 3 gt{1 sub neg SetGry}{0 0 0 4
+$ink_5 roll SetCmyk_5}ifelse}{1 sub neg SetGry}ifelse}ifelse}bd
+/findcmykcustomcolor where{pop}{/findcmykcustomcolor{5 array astore}bd}ifelse
+/setcustomcolor where{pop}{/setcustomcolor{exch aload pop SepMode_5 0 eq{pop
+@tc_5 setprocesscolor_5}{CurrentInkName_5 eq{4 index}{0}ifelse 6 1 roll 5 rp 1
+sub neg SetGry}ifelse}bd}ifelse/@scc_5{dup type/booleantype eq{setoverprint}{1
+eq setoverprint}ifelse dup _ eq{pop setprocesscolor_5 pop}{findcmykcustomcolor
+exch setcustomcolor}ifelse SepMode_5 0 eq{true}{GetGry 1 eq currentoverprint
+and not}ifelse}bd/colorimage where{pop/ColorImage{colorimage}def}{/ColorImage{
+/ncolors xd/$multi xd $multi true eq{ncolors 3 eq{/daqB xd/daqG xd/daqR xd pop
+pop exch pop abs{daqR pop daqG pop daqB pop}repeat}{/daqK xd/daqY xd/daqM xd
+/daqC xd pop pop exch pop abs{daqC pop daqM pop daqY pop daqK pop}repeat}
+ifelse}{/dataaq xd{dataaq ncolors dup 3 eq{/$dat xd 0 1 $dat length 3 div 1 sub
+{dup 3 mul $dat 1 index get 255 div $dat 2 index 1 add get 255 div $dat 3 index
+2 add get 255 div rgb2g 255 mul cvi exch pop $dat 3 1 roll put}for $dat 0 $dat
+length 3 idiv getinterval pop}{4 eq{/$dat xd 0 1 $dat length 4 div 1 sub{dup 4
+mul $dat 1 index get 255 div $dat 2 index 1 add get 255 div $dat 3 index 2 add
+get 255 div $dat 4 index 3 add get 255 div cmyk2rgb rgb2g 255 mul cvi exch pop
+$dat 3 1 roll put}for $dat 0 $dat length ncolors idiv getinterval}if}ifelse}
+image}ifelse}bd}ifelse/setcmykcolor{1 5 1 roll _ currentoverprint @scc_5
+/$ffpnt xd}bd/currentcmykcolor{GetCmyk}bd/setrgbcolor{rgb2cmyk setcmykcolor}bd
+/currentrgbcolor{currentcmykcolor cmyk2rgb}bd/sethsbcolor{hsb2rgb setrgbcolor}
+bd/currenthsbcolor{currentrgbcolor rgb2hsb}bd/setgray{dup dup setrgbcolor}bd
+/currentgray{currentrgbcolor rgb2g}bd/InsideDCS false def/IMAGE/image ld/image
+{InsideDCS{IMAGE}{/EPSDict where{pop SepMode_5 0 eq{IMAGE}{dup type/dicttype eq
+{dup/ImageType get 1 ne{IMAGE}{dup dup/BitsPerComponent get 8 eq exch
+/BitsPerComponent get 1 eq or currentcolorspace 0 get/DeviceGray eq and{
+CurrentInkName_5(Black)eq{IMAGE}{dup/DataSource get/TCC xd/Height get abs{TCC
+pop}repeat}ifelse}{IMAGE}ifelse}ifelse}{2 index 1 ne{CurrentInkName_5(Black)eq
+{IMAGE}{/TCC xd pop pop exch pop abs{TCC pop}repeat}ifelse}{IMAGE}ifelse}
+ifelse}ifelse}{IMAGE}ifelse}ifelse}bd}ifelse/WaldoColor_5 true def/@sft{$tllx
+$pxf add dup $tllx gt{$pwid sub}if/$tx xd $tury $pyf sub dup $tury lt{$phei
+add}if/$ty xd}bd/@stb{pathbbox/$ury xd/$urx xd/$lly xd/$llx xd}bd/@ep{{cvx exec
+}forall}bd/@tp{@sv/$in true def 2 copy dup $lly le{/$in false def}if $phei sub
+$ury ge{/$in false def}if dup $urx ge{/$in false def}if $pwid add $llx le{/$in
+false def}if $in{@np 2 copy m $pwid 0 rl 0 $phei neg rl $pwid neg 0 rl 0 $phei
+rl clip @np $pn cvlit load aload pop 7 -1 roll 5 index sub 7 -1 roll 3 index
+sub Tl matrix currentmatrix/$ctm xd @ep pop pop pop pop}{pop pop}ifelse @rs}bd
+/@th{@sft 0 1 $tly 1 sub{dup $psx mul $tx add{dup $llx gt{$pwid sub}{exit}
+ifelse}loop exch $phei mul $ty exch sub 0 1 $tlx 1 sub{$pwid mul 3 copy 3 -1
+roll add exch @tp pop}for pop pop}for}bd/@tv{@sft 0 1 $tlx 1 sub{dup $pwid mul
+$tx add exch $psy mul $ty exch sub{dup $ury lt{$phei add}{exit}ifelse}loop 0 1
+$tly 1 sub{$phei mul 3 copy sub @tp pop}for pop pop}for}bd/$fm 0 def/wfill{1
+$fm eq{fill}{eofill}ifelse}bd/wclip{1 $fm eq{clip}{eoclip}ifelse}bd/@pf{@gs
+$ctm setmatrix $pm concat @stb wclip @sv Bburx Bbury $pm itransform/$tury xd
+/$turx xd Bbllx Bblly $pm itransform/$tlly xd/$tllx xd newpath $tllx $tlly m
+$tllx $tury l $turx $tury l $turx $tlly l $tllx $tlly m @cp pathbbox @rs/$tury
+xd/$turx xd/$tlly xd/$tllx xd/$wid $turx $tllx sub def/$hei $tury $tlly sub def
+@gs $vectpat{1 0 0 0 0 _ $o @scc_5{wfill}if}{$t $c $m $y $k $n $o @scc_5{
+SepMode_5 0 eq $pfrg or{$tllx $tlly Tl $wid $hei scale <00> 8 1 false[8 0 0 1 0
+0]{}imagemask}{/$bkg true def}ifelse}if}ifelse @gr $wid 0 gt $hei 0 gt and{$pn
+cvlit load aload pop/$pd xd 3 -1 roll sub/$phei xd exch sub/$pwid xd $wid $pwid
+div ceiling 1 add/$tlx xd $hei $phei div ceiling 1 add/$tly xd $psx 0 eq{@tv}{
+@th}ifelse}if @gr @np/$bkg false def}bd/@Pf{@sv SepMode_5 0 eq $Psc 0 ne or
+$ink_5 3 eq or{0 J 0 j[]0 d $t $c $m $y $k $n $o @scc_5 pop $ctm setmatrix 72
+1000 div dup matrix scale dup concat dup Bburx exch Bbury exch itransform
+ceiling cvi/Bbury xd ceiling cvi/Bburx xd Bbllx exch Bblly exch itransform
+floor cvi/Bblly xd floor cvi/Bbllx xd $Prm aload pop $Psn load exec}{1 SetGry
+wfill}ifelse @rs @np}bd/F{matrix currentmatrix $sdf{$scf $sca $scp @ss}if $fil
+1 eq{@pf}{$fil 2 eq{@ff}{$fil 3 eq{@Pf}{$t $c $m $y $k $n $o @scc_5{wfill}
+{@np}ifelse}ifelse}ifelse}ifelse $sdf{$dsf $dsa $dsp @ss}if setmatrix}bd/f{@cp
+F}bd/S{matrix currentmatrix $ctm setmatrix $SDF{$SCF $SCA $SCP @ss}if $T $C $M
+$Y $K $N $O @scc_5{matrix currentmatrix $ptm concat stroke setmatrix}
+{@np}ifelse $SDF{$dsf $dsa $dsp @ss}if setmatrix}bd/s{@cp S}bd/B{@gs F @gr S}
+bd/b{@cp B}bd/_E{5 array astore exch cvlit xd}bd/@cc{currentfile $dat
+readhexstring pop}bd/@sm{/$ctm $ctm currentmatrix def}bd/@E{/Bbury xd/Bburx xd
+/Bblly xd/Bbllx xd}bd/@c{@cp}bd/@p{/$fil 1 def 1 eq dup/$vectpat xd{/$pfrg true
+def}{@gs $t $c $m $y $k $n $o @scc_5/$pfrg xd @gr}ifelse/$pm xd/$psy xd/$psx xd
+/$pyf xd/$pxf xd/$pn xd}bd/@P{/$fil 3 def/$Psn xd/$Psc xd array astore/$Prm xd
+}bd/@ii{concat 3 index 3 index m 3 index 1 index l 2 copy l 1 index 3 index l 3
+index 3 index l clip pop pop pop pop}bd/tcc{@cc}def/@i{@sm @gs @ii 6 index 1 ne
+{/$frg true def pop pop}{1 eq{s1t s1c s1m s1y s1k s1n $O @scc_5/$frg xd}{/$frg
+false def}ifelse 1 eq{@gs $ctm setmatrix F @gr}if}ifelse @np/$ury xd/$urx xd
+/$lly xd/$llx xd/$bts xd/$hei xd/$wid xd/$dat $wid $bts mul 8 div ceiling cvi
+string def $bkg $frg or{$SDF{$SCF $SCA $SCP @ss}if $llx $lly Tl $urx $llx sub
+$ury $lly sub scale $bkg{$t $c $m $y $k $n $o @scc_5 pop}if $wid $hei abs $bts
+1 eq{$bkg}{$bts}ifelse[$wid 0 0 $hei neg 0 $hei 0 gt{$hei}{0}ifelse]/tcc load
+$bts 1 eq{imagemask}{image}ifelse $SDF{$dsf $dsa $dsp @ss}if}{$hei abs{tcc pop}
+repeat}ifelse @gr $ctm setmatrix}bd/@I{@sm @gs @ii @np/$ury xd/$urx xd/$lly xd
+/$llx xd/$ncl xd/$bts xd/$hei xd/$wid xd $ngx $llx $lly Tl $urx $llx sub $ury
+$lly sub scale $wid $hei abs $bts[$wid 0 0 $hei neg 0 $hei 0 gt{$hei}{0}ifelse
+]$msimage false eq $ncl 1 eq or{/$dat $wid $bts mul $ncl mul 8 div ceiling cvi
+string def/@cc load false $ncl ColorImage}{$wid $bts mul 8 div ceiling cvi $ncl
+3 eq{dup dup/$dat1 exch string def/$dat2 exch string def/$dat3 exch string def
+/@cc1 load/@cc2 load/@cc3 load}{dup dup dup/$dat1 exch string def/$dat2 exch
+string def/$dat3 exch string def/$dat4 exch string def/@cc1 load/@cc2 load
+/@cc3 load/@cc4 load}ifelse true $ncl ColorImage}ifelse $SDF{$dsf $dsa $dsp
+@ss}if @gr $ctm setmatrix}bd/@cc1{currentfile $dat1 readhexstring pop}bd/@cc2{
+currentfile $dat2 readhexstring pop}bd/@cc3{currentfile $dat3 readhexstring pop
+}bd/@cc4{currentfile $dat4 readhexstring pop}bd/$msimage false def/COMP 0 def
+/MaskedImage false def L2?{/@I_2{@sm @gs @ii @np/$ury xd/$urx xd/$lly xd/$llx
+xd/$ncl xd/$bts xd/$hei xd/$wid xd/$dat $wid $bts mul $ncl mul 8 div ceiling
+cvi string def $ngx $ncl 1 eq{/DeviceGray}{$ncl 3 eq{/DeviceRGB}{/DeviceCMYK}
+ifelse}ifelse setcolorspace $llx $lly Tl $urx $llx sub $ury $lly sub scale 8
+dict begin/ImageType 1 def/Width $wid def/Height $hei abs def/BitsPerComponent
+$bts def/Decode $ncl 1 eq{[0 1]}{$ncl 3 eq{[0 1 0 1 0 1]}{[0 1 0 1 0 1 0 1]}
+ifelse}ifelse def/ImageMatrix[$wid 0 0 $hei neg 0 $hei 0 gt{$hei}{0}ifelse]def
+/DataSource currentfile/ASCII85Decode filter COMP 1 eq{/DCTDecode filter}{COMP
+2 eq{/RunLengthDecode filter}if}ifelse def currentdict end image $SDF{$dsf $dsa
+$dsp @ss}if @gr $ctm setmatrix}bd}{/@I_2{}bd}ifelse/@I_3{@sm @gs @ii @np/$ury
+xd/$urx xd/$lly xd/$llx xd/$ncl xd/$bts xd/$hei xd/$wid xd/$dat $wid $bts mul
+$ncl mul 8 div ceiling cvi string def $ngx $ncl 1 eq{/DeviceGray}{$ncl 3 eq
+{/DeviceRGB}{/DeviceCMYK}ifelse}ifelse setcolorspace $llx $lly Tl $urx $llx sub
+$ury $lly sub scale/ImageDataDict 8 dict def ImageDataDict begin/ImageType 1
+def/Width $wid def/Height $hei abs def/BitsPerComponent $bts def/Decode $ncl 1
+eq{[0 1]}{$ncl 3 eq{[0 1 0 1 0 1]}{[0 1 0 1 0 1 0 1]}ifelse}ifelse def
+/ImageMatrix[$wid 0 0 $hei neg 0 $hei 0 gt{$hei}{0}ifelse]def/DataSource
+currentfile/ASCII85Decode filter COMP 1 eq{/DCTDecode filter}{COMP 2 eq{
+/RunLengthDecode filter}if}ifelse def end/MaskedImageDict 7 dict def
+MaskedImageDict begin/ImageType 3 def/InterleaveType 3 def/MaskDict
+ImageMaskDict def/DataDict ImageDataDict def end MaskedImageDict image $SDF
+{$dsf $dsa $dsp @ss}if @gr $ctm setmatrix}bd/@SetMask{/$mbts xd/$mhei xd/$mwid
+xd/ImageMaskDict 8 dict def ImageMaskDict begin/ImageType 1 def/Width $mwid def
+/Height $mhei abs def/BitsPerComponent $mbts def/DataSource maskstream def
+/ImageMatrix[$mwid 0 0 $mhei neg 0 $mhei 0 gt{$mhei}{0}ifelse]def/Decode[1 0]
+def end}bd/@B{@gs S @gr F}bd/@b{@cp @B}bd/@sep{CurrentInkName_5(Composite)eq
+{/$ink_5 -1 def}{CurrentInkName_5(Cyan)eq{/$ink_5 0 def}{CurrentInkName_5
+(Magenta)eq{/$ink_5 1 def}{CurrentInkName_5(Yellow)eq{/$ink_5 2 def}{
+CurrentInkName_5(Black)eq{/$ink_5 3 def}{/$ink_5 4 def}ifelse}ifelse}ifelse}
+ifelse}ifelse}bd/@whi{@gs -72000 dup m -72000 72000 l 72000 dup l 72000 -72000
+l @cp 1 SetGry fill @gr}bd/@neg{[{1 exch sub}/exec cvx currenttransfer/exec
+cvx]cvx settransfer @whi}bd/deflevel 0 def/@sax{/deflevel deflevel 1 add def}
+bd/@eax{/deflevel deflevel dup 0 gt{1 sub}if def deflevel 0 gt{/eax load}{eax}
+ifelse}bd/eax{{exec}forall}bd/@rax{deflevel 0 eq{@rs @sv}if}bd/@daq{dup type
+/arraytype eq{{}forall}if}bd/@BMP{/@cc xd UseLevel 3 eq MaskedImage true eq and
+{7 -2 roll pop pop @I_3}{12 index 1 gt UseLevel 2 eq UseLevel 3 eq or and{7 -2
+roll pop pop @I_2}{11 index 1 eq{12 -1 roll pop @i}{7 -2 roll pop pop @I}
+ifelse}ifelse}ifelse}bd systemdict/pdfmark known not{/pdfmark/cleartomark ld}
+if
+/z{exch findfont exch scalefont setfont}bd/ZB{9 dict dup begin 4 1 roll
+/FontType 3 def/FontMatrix xd/FontBBox xd/Encoding 256 array def 0 1 255{
+Encoding exch/.notdef put}for/CharStrings 256 dict def CharStrings/.notdef{}
+put/Metrics 256 dict def Metrics/.notdef 3 -1 roll put/BuildChar{exch dup
+/$char exch/Encoding get 3 index get def dup/Metrics get $char get aload pop
+setcachedevice begin Encoding exch get CharStrings exch get end exec}def end
+definefont pop}bd/ZBAddChar{findfont begin dup 4 1 roll dup 6 1 roll Encoding 3
+1 roll put CharStrings 3 1 roll put Metrics 3 1 roll put end}bd/Z{findfont dup
+maxlength 2 add dict exch dup{1 index/FID ne{3 index 3 1 roll put}{pop pop}
+ifelse}forall pop dup dup/Encoding get 256 array copy dup/$fe xd/Encoding exch
+put dup/Fontname 3 index put 3 -1 roll dup length 0 ne{0 exch{dup type 0 type
+eq{exch pop}{$fe exch 2 index exch put 1 add}ifelse}forall pop}if dup 256 dict
+dup/$met xd/Metrics exch put dup/FontMatrix get 0 get 1000 mul 1 exch div 3
+index length 256 eq{0 1 255{dup $fe exch get dup/.notdef eq{pop pop}{5 index 3
+-1 roll get 2 index mul $met 3 1 roll put}ifelse}for}if pop definefont pop pop
+}bd/@ftx{{currentpoint 3 -1 roll(0)dup 3 -1 roll 0 exch put dup @gs true
+charpath $ctm setmatrix @@txt @gr @np stringwidth pop 3 -1 roll add exch m}
+forall}bd/@ft{matrix currentmatrix exch $sdf{$scf $sca $scp @ss}if $fil 1 eq
+{/@@txt/@pf ld @ftx}{$fil 2 eq{/@@txt/@ff ld @ftx}{$fil 3 eq{/@@txt/@Pf ld
+@ftx}{$t $c $m $y $k $n $o @scc_5{show}{pop}ifelse}ifelse}ifelse}ifelse $sdf
+{$dsf $dsa $dsp @ss}if setmatrix}bd/@st{matrix currentmatrix exch $SDF{$SCF
+$SCA $SCP @ss}if $T $C $M $Y $K $N $O @scc_5{{currentpoint 3 -1 roll(0)dup 3 -1
+roll 0 exch put dup @gs true charpath $ctm setmatrix $ptm concat stroke @gr @np
+stringwidth pop 3 -1 roll add exch m}forall}{pop}ifelse $SDF{$dsf $dsa $dsp
+@ss}if setmatrix}bd/@te{@ft}bd/@tr{@st}bd/@ta{dup @gs @ft @gr @st}bd/@t@a{dup
+@gs @st @gr @ft}bd/@tm{@sm concat}bd/e{/t{@te}def}bd/r{/t{@tr}def}bd/o{/t{pop}
+def}bd/a{/t{@ta}def}bd/@a{/t{@t@a}def}bd/t{@te}def/T{@np $ctm setmatrix/$ttm
+matrix def}bd/ddt{t}def/@t{/$stm $stm currentmatrix def 3 1 roll m $ttm concat
+ddt $stm setmatrix}bd/@n{/$ttm exch matrix rotate def}bd/@s{}bd/@l{}bd
+/_lineorientation 0 def/_bitfont null def/_bitlobyte 0 def/_bitkey null def
+/_bithibyte 0 def
+end
+wCorel9Dict begin
+@BeginSysCorelDict
+2.6131 setmiterlimit
+1.00 setflat
+/$fst 128 def
+[ 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 778 250 
+333 408 500 500 833 778 180 333 333 500 564 250 333 250 278 500 
+500 500 500 500 500 500 500 500 500 278 278 564 564 564 444 921 
+722 667 667 722 611 556 722 722 333 389 722 611 889 722 722 556 
+722 667 556 611 722 722 944 722 722 611 333 278 333 469 500 333 
+444 500 444 500 444 333 500 500 278 278 500 278 778 500 500 500 
+500 333 389 278 500 500 722 500 500 444 480 200 480 541 778 500 
+778 333 500 444 1000 500 500 333 1000 556 333 889 778 778 778 778 
+333 333 444 444 350 500 1000 333 980 389 333 722 778 778 722 250 
+333 500 500 500 500 200 500 333 760 276 500 564 333 760 500 400 
+549 300 300 333 576 453 250 333 300 310 500 750 750 750 444 722 
+722 722 722 722 722 889 667 611 611 611 611 333 333 333 333 722 
+722 722 722 722 722 722 564 722 722 722 722 722 722 556 500 444 
+444 444 444 444 444 667 444 444 444 444 444 278 278 278 278 500 
+500 500 500 500 500 500 549 500 500 500 500 500 500 500 500 ]
+CorelDrawReencodeVect /_R23-TimesNewRoman /TimesNewRoman Z
+%LogicalPage: 1
+@sv
+@sm
+@sv
+@rax %Note: Object
+108.00000 585.00000 126.00000 603.00000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+108.00000 603.00000 m
+126.00000 603.00000 L
+126.00000 585.00000 L
+108.00000 585.00000 L
+108.00000 603.00000 L
+@c
+S
+
+@rax 109.33002 589.31802 124.02567 597.62580 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 116.99999572 589.49997844] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax %Note: Object
+130.50000 585.00000 148.50000 603.00000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+130.50000 603.00000 m
+148.50000 603.00000 L
+148.50000 585.00000 L
+130.50000 585.00000 L
+130.50000 603.00000 L
+@c
+S
+
+@rax 131.83002 589.31802 146.52567 597.62580 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 139.49999490 589.49997844] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax %Note: Object
+108.00000 562.50000 126.00000 580.50000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+108.00000 580.50000 m
+126.00000 580.50000 L
+126.00000 562.50000 L
+108.00000 562.50000 L
+108.00000 580.50000 L
+@c
+S
+
+@rax 109.33002 566.81802 124.02567 575.12580 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 116.99999572 566.99997926] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax %Note: Object
+130.50000 562.50000 148.50000 580.50000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+130.50000 580.50000 m
+148.50000 580.50000 L
+148.50000 562.50000 L
+130.50000 562.50000 L
+130.50000 580.50000 L
+@c
+S
+
+@rax 131.83002 566.81802 146.52567 575.12580 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 139.49999490 566.99997926] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax 111.66491 607.50000 122.08280 615.44608 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 116.99999572 607.49997778] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-18821 0 (M) @t
+T
+@rax 135.16696 607.50000 143.37694 615.44608 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 139.49999490 607.49997778] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-15286 0 (D) @t
+T
+@rax %Note: Object
+103.50000 558.00000 153.00000 621.00000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+103.50000 621.00000 m
+153.00000 621.00000 L
+153.00000 558.00000 L
+103.50000 558.00000 L
+103.50000 621.00000 L
+@c
+S
+
+@rax %Note: Object
+108.00000 513.00000 126.00000 531.00000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+108.00000 531.00000 m
+126.00000 531.00000 L
+126.00000 513.00000 L
+108.00000 513.00000 L
+108.00000 531.00000 L
+@c
+S
+
+@rax 109.33002 517.31802 124.02567 525.62580 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 116.99999572 517.49998107] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax %Note: Object
+130.50000 513.00000 148.50000 531.00000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+130.50000 531.00000 m
+148.50000 531.00000 L
+148.50000 513.00000 L
+130.50000 513.00000 L
+130.50000 531.00000 L
+@c
+S
+
+@rax 131.83002 517.31802 146.52567 525.62580 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 139.49999490 517.49998107] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax %Note: Object
+108.00000 490.50000 126.00000 508.50000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+108.00000 508.50000 m
+126.00000 508.50000 L
+126.00000 490.50000 L
+108.00000 490.50000 L
+108.00000 508.50000 L
+@c
+S
+
+@rax 109.33002 494.81802 124.02567 503.12580 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 116.99999572 494.99998189] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax %Note: Object
+130.50000 490.50000 148.50000 508.50000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+130.50000 508.50000 m
+148.50000 508.50000 L
+148.50000 490.50000 L
+130.50000 490.50000 L
+130.50000 508.50000 L
+@c
+S
+
+@rax 131.83002 494.81802 146.52567 503.12580 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 139.49999490 494.99998189] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax 111.66491 535.50000 122.08280 543.44608 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 116.99999572 535.49998041] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-18821 0 (M) @t
+T
+@rax 135.16696 535.50000 143.37694 543.44608 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 139.49999490 535.49998041] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-15286 0 (D) @t
+T
+@rax %Note: Object
+103.50000 486.00000 153.00000 549.00000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+103.50000 549.00000 m
+153.00000 549.00000 L
+153.00000 486.00000 L
+103.50000 486.00000 L
+103.50000 549.00000 L
+@c
+S
+
+@rax %Note: Object
+108.00000 441.00000 126.00000 459.00000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+108.00000 459.00000 m
+126.00000 459.00000 L
+126.00000 441.00000 L
+108.00000 441.00000 L
+108.00000 459.00000 L
+@c
+S
+
+@rax 109.33002 445.31802 124.02567 453.62580 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 116.99999572 445.49998370] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax %Note: Object
+130.50000 441.00000 148.50000 459.00000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+130.50000 459.00000 m
+148.50000 459.00000 L
+148.50000 441.00000 L
+130.50000 441.00000 L
+130.50000 459.00000 L
+@c
+S
+
+@rax 131.83002 445.31802 146.52567 453.62580 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 139.49999490 445.49998370] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax %Note: Object
+108.00000 418.50000 126.00000 436.50000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+108.00000 436.50000 m
+126.00000 436.50000 L
+126.00000 418.50000 L
+108.00000 418.50000 L
+108.00000 436.50000 L
+@c
+S
+
+@rax 109.33002 422.81802 124.02567 431.12580 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 116.99999572 422.99998453] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax %Note: Object
+130.50000 418.50000 148.50000 436.50000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+130.50000 436.50000 m
+148.50000 436.50000 L
+148.50000 418.50000 L
+130.50000 418.50000 L
+130.50000 436.50000 L
+@c
+S
+
+@rax 131.83002 422.81802 146.52567 431.12580 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 139.49999490 422.99998453] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax 111.66491 463.50000 122.08280 471.44608 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 116.99999572 463.49998305] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-18821 0 (M) @t
+T
+@rax 135.16696 463.50000 143.37694 471.44608 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 139.49999490 463.49998305] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-15286 0 (D) @t
+T
+@rax %Note: Object
+103.50000 414.00000 153.00000 477.00000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+103.50000 477.00000 m
+153.00000 477.00000 L
+153.00000 414.00000 L
+103.50000 414.00000 L
+103.50000 477.00000 L
+@c
+S
+
+@rax %Note: Object
+108.00000 369.00000 126.00000 387.00000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+108.00000 387.00000 m
+126.00000 387.00000 L
+126.00000 369.00000 L
+108.00000 369.00000 L
+108.00000 387.00000 L
+@c
+S
+
+@rax 109.33002 373.31802 124.02567 381.62580 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 116.99999572 373.49998634] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax %Note: Object
+130.50000 369.00000 148.50000 387.00000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+130.50000 387.00000 m
+148.50000 387.00000 L
+148.50000 369.00000 L
+130.50000 369.00000 L
+130.50000 387.00000 L
+@c
+S
+
+@rax 131.83002 373.31802 146.52567 381.62580 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 139.49999490 373.49998634] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax %Note: Object
+108.00000 346.50000 126.00000 364.50000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+108.00000 364.50000 m
+126.00000 364.50000 L
+126.00000 346.50000 L
+108.00000 346.50000 L
+108.00000 364.50000 L
+@c
+S
+
+@rax 109.33002 350.81802 124.02567 359.12580 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 116.99999572 350.99998716] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax %Note: Object
+130.50000 346.50000 148.50000 364.50000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+130.50000 364.50000 m
+148.50000 364.50000 L
+148.50000 346.50000 L
+130.50000 346.50000 L
+130.50000 364.50000 L
+@c
+S
+
+@rax 131.83002 350.81802 146.52567 359.12580 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 139.49999490 350.99998716] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax 111.66491 391.50000 122.08280 399.44608 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 116.99999572 391.49998568] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-18821 0 (M) @t
+T
+@rax 135.16696 391.50000 143.37694 399.44608 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 139.49999490 391.49998568] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-15286 0 (D) @t
+T
+@rax %Note: Object
+103.50000 342.00000 153.00000 405.00000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+103.50000 405.00000 m
+153.00000 405.00000 L
+153.00000 342.00000 L
+103.50000 342.00000 L
+103.50000 405.00000 L
+@c
+S
+
+@rax %Note: Object
+94.50000 333.00000 103.50000 387.00000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+103.50000 387.00000 m
+94.50000 387.00000 L
+94.50000 333.00000 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+94.50000 331.73802 m
+92.48400 332.74602 L
+92.48400 334.26198 L
+94.50000 333.25200 L
+96.51402 334.26198 L
+96.51600 332.74602 L
+94.50000 331.73802 L
+f
+@J
+
+@rax %Note: Object
+85.50000 324.00000 103.50000 459.00000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+103.50000 459.00000 m
+85.50000 459.00000 L
+85.50000 324.00000 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+85.50000 322.73802 m
+83.48400 323.74602 L
+83.48400 325.26198 L
+85.50000 324.25200 L
+87.51402 325.26198 L
+87.51600 323.74602 L
+85.50000 322.73802 L
+f
+@J
+
+@rax %Note: Object
+76.50000 315.00000 103.50000 531.00000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+103.50000 531.00000 m
+76.50000 531.00000 L
+76.50000 315.00000 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+76.50000 313.73802 m
+74.48400 314.74602 L
+74.48400 316.26198 L
+76.50000 315.25200 L
+78.51402 316.26198 L
+78.51600 314.74602 L
+76.50000 313.73802 L
+f
+@J
+
+@rax %Note: Object
+67.50000 306.00000 103.50000 603.00000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+103.50000 603.00000 m
+67.50000 603.00000 L
+67.50000 306.00000 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+67.50000 304.73802 m
+65.48400 305.74602 L
+65.48400 307.26198 L
+67.50000 306.25200 L
+69.51402 307.26198 L
+69.51600 305.74602 L
+67.50000 304.73802 L
+f
+@J
+
+@rax %Note: Object
+220.50000 585.00000 238.50000 603.00000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+220.50000 603.00000 m
+238.50000 603.00000 L
+238.50000 585.00000 L
+220.50000 585.00000 L
+220.50000 603.00000 L
+@c
+S
+
+@rax 221.83002 589.31802 236.52567 597.62580 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 229.49999160 589.49997844] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax %Note: Object
+243.00000 585.00000 261.00000 603.00000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+243.00000 603.00000 m
+261.00000 603.00000 L
+261.00000 585.00000 L
+243.00000 585.00000 L
+243.00000 603.00000 L
+@c
+S
+
+@rax 244.33002 589.31802 259.02567 597.62580 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 251.99999078 589.49997844] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax %Note: Object
+220.50000 562.50000 238.50000 580.50000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+220.50000 580.50000 m
+238.50000 580.50000 L
+238.50000 562.50000 L
+220.50000 562.50000 L
+220.50000 580.50000 L
+@c
+S
+
+@rax 221.83002 566.81802 236.52567 575.12580 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 229.49999160 566.99997926] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax %Note: Object
+243.00000 562.50000 261.00000 580.50000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+243.00000 580.50000 m
+261.00000 580.50000 L
+261.00000 562.50000 L
+243.00000 562.50000 L
+243.00000 580.50000 L
+@c
+S
+
+@rax 244.33002 566.81802 259.02567 575.12580 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 251.99999078 566.99997926] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax 224.16491 607.50000 234.58280 615.44608 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 229.49999160 607.49997778] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-18821 0 (M) @t
+T
+@rax 247.66696 607.50000 255.87694 615.44608 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 251.99999078 607.49997778] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-15286 0 (D) @t
+T
+@rax %Note: Object
+216.00000 558.00000 265.50000 621.00000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+216.00000 621.00000 m
+265.50000 621.00000 L
+265.50000 558.00000 L
+216.00000 558.00000 L
+216.00000 621.00000 L
+@c
+S
+
+@rax %Note: Object
+220.50000 513.00000 238.50000 531.00000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+220.50000 531.00000 m
+238.50000 531.00000 L
+238.50000 513.00000 L
+220.50000 513.00000 L
+220.50000 531.00000 L
+@c
+S
+
+@rax 221.83002 517.31802 236.52567 525.62580 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 229.49999160 517.49998107] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax %Note: Object
+243.00000 513.00000 261.00000 531.00000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+243.00000 531.00000 m
+261.00000 531.00000 L
+261.00000 513.00000 L
+243.00000 513.00000 L
+243.00000 531.00000 L
+@c
+S
+
+@rax 244.33002 517.31802 259.02567 525.62580 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 251.99999078 517.49998107] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax %Note: Object
+220.50000 490.50000 238.50000 508.50000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+220.50000 508.50000 m
+238.50000 508.50000 L
+238.50000 490.50000 L
+220.50000 490.50000 L
+220.50000 508.50000 L
+@c
+S
+
+@rax 221.83002 494.81802 236.52567 503.12580 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 229.49999160 494.99998189] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax %Note: Object
+243.00000 490.50000 261.00000 508.50000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+243.00000 508.50000 m
+261.00000 508.50000 L
+261.00000 490.50000 L
+243.00000 490.50000 L
+243.00000 508.50000 L
+@c
+S
+
+@rax 244.33002 494.81802 259.02567 503.12580 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 251.99999078 494.99998189] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax 224.16491 535.50000 234.58280 543.44608 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 229.49999160 535.49998041] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-18821 0 (M) @t
+T
+@rax 247.66696 535.50000 255.87694 543.44608 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 251.99999078 535.49998041] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-15286 0 (D) @t
+T
+@rax %Note: Object
+216.00000 486.00000 265.50000 549.00000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+216.00000 549.00000 m
+265.50000 549.00000 L
+265.50000 486.00000 L
+216.00000 486.00000 L
+216.00000 549.00000 L
+@c
+S
+
+@rax %Note: Object
+220.50000 441.00000 238.50000 459.00000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+220.50000 459.00000 m
+238.50000 459.00000 L
+238.50000 441.00000 L
+220.50000 441.00000 L
+220.50000 459.00000 L
+@c
+S
+
+@rax 221.83002 445.31802 236.52567 453.62580 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 229.49999160 445.49998370] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax %Note: Object
+243.00000 441.00000 261.00000 459.00000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+243.00000 459.00000 m
+261.00000 459.00000 L
+261.00000 441.00000 L
+243.00000 441.00000 L
+243.00000 459.00000 L
+@c
+S
+
+@rax 244.33002 445.31802 259.02567 453.62580 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 251.99999078 445.49998370] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax %Note: Object
+220.50000 418.50000 238.50000 436.50000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+220.50000 436.50000 m
+238.50000 436.50000 L
+238.50000 418.50000 L
+220.50000 418.50000 L
+220.50000 436.50000 L
+@c
+S
+
+@rax 221.83002 422.81802 236.52567 431.12580 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 229.49999160 422.99998453] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax %Note: Object
+243.00000 418.50000 261.00000 436.50000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+243.00000 436.50000 m
+261.00000 436.50000 L
+261.00000 418.50000 L
+243.00000 418.50000 L
+243.00000 436.50000 L
+@c
+S
+
+@rax 244.33002 422.81802 259.02567 431.12580 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 251.99999078 422.99998453] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax 224.16491 463.50000 234.58280 471.44608 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 229.49999160 463.49998305] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-18821 0 (M) @t
+T
+@rax 247.66696 463.50000 255.87694 471.44608 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 251.99999078 463.49998305] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-15286 0 (D) @t
+T
+@rax %Note: Object
+216.00000 414.00000 265.50000 477.00000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+216.00000 477.00000 m
+265.50000 477.00000 L
+265.50000 414.00000 L
+216.00000 414.00000 L
+216.00000 477.00000 L
+@c
+S
+
+@rax %Note: Object
+220.50000 369.00000 238.50000 387.00000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+220.50000 387.00000 m
+238.50000 387.00000 L
+238.50000 369.00000 L
+220.50000 369.00000 L
+220.50000 387.00000 L
+@c
+S
+
+@rax 221.83002 373.31802 236.52567 381.62580 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 229.49999160 373.49998634] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax %Note: Object
+243.00000 369.00000 261.00000 387.00000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+243.00000 387.00000 m
+261.00000 387.00000 L
+261.00000 369.00000 L
+243.00000 369.00000 L
+243.00000 387.00000 L
+@c
+S
+
+@rax 244.33002 373.31802 259.02567 381.62580 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 251.99999078 373.49998634] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax %Note: Object
+220.50000 346.50000 238.50000 364.50000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+220.50000 364.50000 m
+238.50000 364.50000 L
+238.50000 346.50000 L
+220.50000 346.50000 L
+220.50000 364.50000 L
+@c
+S
+
+@rax 221.83002 350.81802 236.52567 359.12580 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 229.49999160 350.99998716] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax %Note: Object
+243.00000 346.50000 261.00000 364.50000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+243.00000 364.50000 m
+261.00000 364.50000 L
+261.00000 346.50000 L
+243.00000 346.50000 L
+243.00000 364.50000 L
+@c
+S
+
+@rax 244.33002 350.81802 259.02567 359.12580 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 251.99999078 350.99998716] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax 224.16491 391.50000 234.58280 399.44608 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 229.49999160 391.49998568] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-18821 0 (M) @t
+T
+@rax 247.66696 391.50000 255.87694 399.44608 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 251.99999078 391.49998568] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-15286 0 (D) @t
+T
+@rax %Note: Object
+216.00000 342.00000 265.50000 405.00000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+216.00000 405.00000 m
+265.50000 405.00000 L
+265.50000 342.00000 L
+216.00000 342.00000 L
+216.00000 405.00000 L
+@c
+S
+
+@rax %Note: Object
+207.00000 333.00000 216.00000 387.00000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+216.00000 387.00000 m
+207.00000 387.00000 L
+207.00000 333.00000 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+207.00000 331.73802 m
+204.98400 332.74602 L
+204.98400 334.26198 L
+207.00000 333.25200 L
+209.01402 334.26198 L
+209.01600 332.74602 L
+207.00000 331.73802 L
+f
+@J
+
+@rax %Note: Object
+198.00000 324.00000 216.00000 459.00000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+216.00000 459.00000 m
+198.00000 459.00000 L
+198.00000 324.00000 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+198.00000 322.73802 m
+195.98400 323.74602 L
+195.98400 325.26198 L
+198.00000 324.25200 L
+200.01402 325.26198 L
+200.01600 323.74602 L
+198.00000 322.73802 L
+f
+@J
+
+@rax %Note: Object
+189.00000 315.00000 216.00000 531.00000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+216.00000 531.00000 m
+189.00000 531.00000 L
+189.00000 315.00000 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+189.00000 313.73802 m
+186.98400 314.74602 L
+186.98400 316.26198 L
+189.00000 315.25200 L
+191.01402 316.26198 L
+191.01600 314.74602 L
+189.00000 313.73802 L
+f
+@J
+
+@rax %Note: Object
+180.00000 306.00000 216.00000 603.00000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+216.00000 603.00000 m
+180.00000 603.00000 L
+180.00000 306.00000 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+180.00000 304.73802 m
+177.98400 305.74602 L
+177.98400 307.26198 L
+180.00000 306.25200 L
+182.01402 307.26198 L
+182.01600 305.74602 L
+180.00000 304.73802 L
+f
+@J
+
+@rax %Note: Object
+202.50000 391.50000 211.50000 405.00000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+202.50000 405.00000 m
+211.50000 405.00000 L
+211.50000 391.50000 L
+202.50000 391.50000 L
+202.50000 405.00000 L
+@c
+S
+
+@rax 205.00186 394.84800 210.21591 403.16797 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 206.99999243 394.84798556] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-7049 0 (f) @t
+T
+@rax %Note: Object
+193.50000 463.50000 202.50000 477.00000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+193.50000 477.00000 m
+202.50000 477.00000 L
+202.50000 463.50000 L
+193.50000 463.50000 L
+193.50000 477.00000 L
+@c
+S
+
+@rax 196.00186 466.84800 201.21591 475.16797 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 197.99999276 466.84798292] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-7049 0 (f) @t
+T
+@rax %Note: Object
+184.50000 535.50000 193.50000 549.00000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+184.50000 549.00000 m
+193.50000 549.00000 L
+193.50000 535.50000 L
+184.50000 535.50000 L
+184.50000 549.00000 L
+@c
+S
+
+@rax 187.00186 538.84800 192.21591 547.16797 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 188.99999309 538.84798029] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-7049 0 (f) @t
+T
+@rax %Note: Object
+175.50000 607.50000 184.50000 621.00000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+175.50000 621.00000 m
+184.50000 621.00000 L
+184.50000 607.50000 L
+175.50000 607.50000 L
+175.50000 621.00000 L
+@c
+S
+
+@rax 178.00186 610.84800 183.21591 619.16797 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 179.99999342 610.84797766] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-7049 0 (f) @t
+T
+@rax %Note: Object
+179.99943 603.00000 180.00057 607.50000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+180.00000 607.50000 m
+180.00000 603.00000 L
+S
+
+@rax %Note: Object
+188.99943 531.00000 189.00057 535.50000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+189.00000 535.50000 m
+189.00000 531.00000 L
+S
+
+@rax %Note: Object
+197.99943 459.00000 198.00057 463.50000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+198.00000 463.50000 m
+198.00000 459.00000 L
+S
+
+@rax %Note: Object
+206.99943 387.00000 207.00057 391.50000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+207.00000 391.50000 m
+207.00000 387.00000 L
+S
+
+@rax %Note: Object
+206.99943 405.00000 207.00057 670.50000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+207.00000 670.50000 m
+207.00000 408.54614 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+207.00000 669.23802 m
+204.98400 670.24602 L
+204.98400 671.76198 L
+207.00000 670.75200 L
+209.01402 671.76198 L
+209.01600 670.24602 L
+207.00000 669.23802 L
+f
+@J
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+207.00000 405.00000 m
+210.02400 412.05600 L
+208.00800 411.04800 205.99200 411.04800 203.97600 412.05600 C
+207.00000 405.00000 L
+f
+@J
+
+@rax %Note: Object
+197.99943 477.00000 198.00057 661.50000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+198.00000 661.50000 m
+198.00000 480.54614 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+198.00000 660.23802 m
+195.98400 661.24602 L
+195.98400 662.76198 L
+198.00000 661.75200 L
+200.01402 662.76198 L
+200.01600 661.24602 L
+198.00000 660.23802 L
+f
+@J
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+198.00000 477.00000 m
+201.02400 484.05600 L
+199.00800 483.04800 196.99200 483.04800 194.97600 484.05600 C
+198.00000 477.00000 L
+f
+@J
+
+@rax %Note: Object
+188.99943 549.00000 189.00057 652.50000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+189.00000 652.50000 m
+189.00000 552.54614 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+189.00000 651.23802 m
+186.98400 652.24602 L
+186.98400 653.76198 L
+189.00000 652.75200 L
+191.01402 653.76198 L
+191.01600 652.24602 L
+189.00000 651.23802 L
+f
+@J
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+189.00000 549.00000 m
+192.02400 556.05600 L
+190.00800 555.04800 187.99200 555.04800 185.97600 556.05600 C
+189.00000 549.00000 L
+f
+@J
+
+@rax %Note: Object
+179.99943 621.00000 180.00057 643.50000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+180.00000 643.50000 m
+180.00000 624.54614 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+180.00000 642.23802 m
+177.98400 643.24602 L
+177.98400 644.76198 L
+180.00000 643.75200 L
+182.01402 644.76198 L
+182.01600 643.24602 L
+180.00000 642.23802 L
+f
+@J
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+180.00000 621.00000 m
+183.02400 628.05600 L
+181.00800 627.04800 178.99200 627.04800 176.97600 628.05600 C
+180.00000 621.00000 L
+f
+@J
+
+@rax %Note: Object
+85.50000 449.99943 103.50000 450.00057 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+85.50000 450.00000 m
+100.82891 450.00000 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+100.81276 450.00198 m
+100.81276 452.01600 L
+103.49802 452.01600 L
+106.18526 450.00198 L
+103.49802 447.98598 L
+100.81276 447.98598 L
+100.81276 450.00198 L
+S
+@J
+
+@rax %Note: Object
+76.50000 440.99943 103.50000 441.00057 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+76.50000 441.00000 m
+100.82891 441.00000 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+100.81276 441.00198 m
+100.81276 443.01600 L
+103.49802 443.01600 L
+106.18526 441.00198 L
+103.49802 438.98598 L
+100.81276 438.98598 L
+100.81276 441.00198 L
+S
+@J
+
+@rax %Note: Object
+67.50000 431.99943 103.50000 432.00057 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+67.50000 432.00000 m
+100.82891 432.00000 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+100.81276 432.00198 m
+100.81276 434.01600 L
+103.49802 434.01600 L
+106.18526 432.00198 L
+103.49802 429.98598 L
+100.81276 429.98598 L
+100.81276 432.00198 L
+S
+@J
+
+@rax %Note: Object
+67.50000 593.99943 103.50000 594.00057 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+67.50000 594.00000 m
+100.82891 594.00000 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+100.81276 594.00198 m
+100.81276 596.01600 L
+103.49802 596.01600 L
+106.18526 594.00198 L
+103.49802 591.98598 L
+100.81276 591.98598 L
+100.81276 594.00198 L
+S
+@J
+
+@rax %Note: Object
+76.50000 521.99943 103.50000 522.00057 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+76.50000 522.00000 m
+100.82891 522.00000 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+100.81276 522.00198 m
+100.81276 524.01600 L
+103.49802 524.01600 L
+106.18526 522.00198 L
+103.49802 519.98598 L
+100.81276 519.98598 L
+100.81276 522.00198 L
+S
+@J
+
+@rax %Note: Object
+67.50000 512.99943 103.50000 513.00057 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+67.50000 513.00000 m
+100.82891 513.00000 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+100.81276 513.00198 m
+100.81276 515.01600 L
+103.49802 515.01600 L
+106.18526 513.00198 L
+103.49802 510.98598 L
+100.81276 510.98598 L
+100.81276 513.00198 L
+S
+@J
+
+@rax %Note: Object
+94.50000 377.99943 103.50000 378.00057 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+94.50000 378.00000 m
+100.82891 378.00000 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+100.81276 378.00198 m
+100.81276 380.01600 L
+103.49802 380.01600 L
+106.18526 378.00198 L
+103.49802 375.98598 L
+100.81276 375.98598 L
+100.81276 378.00198 L
+S
+@J
+
+@rax %Note: Object
+85.50000 368.99887 103.50000 369.00000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+85.50000 368.99943 m
+100.82891 368.99943 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+100.81276 369.00142 m
+100.81276 371.01543 L
+103.49802 371.01543 L
+106.18526 369.00142 L
+103.49802 366.98542 L
+100.81276 366.98542 L
+100.81276 369.00142 L
+S
+@J
+
+@rax %Note: Object
+76.50000 359.99887 103.50000 360.00000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+76.50000 359.99943 m
+100.82891 359.99943 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+100.81276 360.00142 m
+100.81276 362.01543 L
+103.49802 362.01543 L
+106.18526 360.00142 L
+103.49802 357.98542 L
+100.81276 357.98542 L
+100.81276 360.00142 L
+S
+@J
+
+@rax %Note: Object
+67.50000 350.99887 103.50000 351.00000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+67.50000 350.99943 m
+100.82891 350.99943 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+100.81276 351.00142 m
+100.81276 353.01543 L
+103.49802 353.01543 L
+106.18526 351.00142 L
+103.49802 348.98542 L
+100.81276 348.98542 L
+100.81276 351.00142 L
+S
+@J
+
+@rax %Note: Object
+207.00000 377.99887 216.00000 378.00000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+207.00000 377.99943 m
+213.32891 377.99943 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+213.31276 378.00142 m
+213.31276 380.01543 L
+215.99802 380.01543 L
+218.68526 378.00142 L
+215.99802 375.98542 L
+213.31276 375.98542 L
+213.31276 378.00142 L
+S
+@J
+
+@rax %Note: Object
+198.00000 368.99830 216.00000 368.99943 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+198.00000 368.99887 m
+213.32891 368.99887 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+213.31276 369.00085 m
+213.31276 371.01487 L
+215.99802 371.01487 L
+218.68526 369.00085 L
+215.99802 366.98485 L
+213.31276 366.98485 L
+213.31276 369.00085 L
+S
+@J
+
+@rax %Note: Object
+189.00000 359.99830 216.00000 359.99943 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+189.00000 359.99887 m
+213.32891 359.99887 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+213.31276 360.00085 m
+213.31276 362.01487 L
+215.99802 362.01487 L
+218.68526 360.00085 L
+215.99802 357.98485 L
+213.31276 357.98485 L
+213.31276 360.00085 L
+S
+@J
+
+@rax %Note: Object
+180.00000 350.99830 216.00000 350.99943 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+180.00000 350.99887 m
+213.32891 350.99887 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+213.31276 351.00085 m
+213.31276 353.01487 L
+215.99802 353.01487 L
+218.68526 351.00085 L
+215.99802 348.98485 L
+213.31276 348.98485 L
+213.31276 351.00085 L
+S
+@J
+
+@rax %Note: Object
+207.00000 450.00057 216.00000 450.00170 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+207.00000 450.00113 m
+213.32891 450.00113 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+213.31276 450.00312 m
+213.31276 452.01713 L
+215.99802 452.01713 L
+218.68526 450.00312 L
+215.99802 447.98712 L
+213.31276 447.98712 L
+213.31276 450.00312 L
+S
+@J
+
+@rax %Note: Object
+198.00000 441.00000 216.00000 441.00113 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+198.00000 441.00057 m
+213.32891 441.00057 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+213.31276 441.00255 m
+213.31276 443.01657 L
+215.99802 443.01657 L
+218.68526 441.00255 L
+215.99802 438.98655 L
+213.31276 438.98655 L
+213.31276 441.00255 L
+S
+@J
+
+@rax %Note: Object
+189.00000 432.00000 216.00000 432.00113 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+189.00000 432.00057 m
+213.32891 432.00057 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+213.31276 432.00255 m
+213.31276 434.01657 L
+215.99802 434.01657 L
+218.68526 432.00255 L
+215.99802 429.98655 L
+213.31276 429.98655 L
+213.31276 432.00255 L
+S
+@J
+
+@rax %Note: Object
+180.00000 423.00000 216.00000 423.00113 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+180.00000 423.00057 m
+213.32891 423.00057 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+213.31276 423.00255 m
+213.31276 425.01657 L
+215.99802 425.01657 L
+218.68526 423.00255 L
+215.99802 420.98655 L
+213.31276 420.98655 L
+213.31276 423.00255 L
+S
+@J
+
+@rax %Note: Object
+207.00000 521.99887 216.00000 522.00000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+207.00000 521.99943 m
+213.32891 521.99943 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+213.31276 522.00142 m
+213.31276 524.01543 L
+215.99802 524.01543 L
+218.68526 522.00142 L
+215.99802 519.98542 L
+213.31276 519.98542 L
+213.31276 522.00142 L
+S
+@J
+
+@rax %Note: Object
+198.00000 512.99830 216.00000 512.99943 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+198.00000 512.99887 m
+213.32891 512.99887 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+213.31276 513.00085 m
+213.31276 515.01487 L
+215.99802 515.01487 L
+218.68526 513.00085 L
+215.99802 510.98485 L
+213.31276 510.98485 L
+213.31276 513.00085 L
+S
+@J
+
+@rax %Note: Object
+189.00000 503.99830 216.00000 503.99943 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+189.00000 503.99887 m
+213.32891 503.99887 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+213.31276 504.00085 m
+213.31276 506.01487 L
+215.99802 506.01487 L
+218.68526 504.00085 L
+215.99802 501.98485 L
+213.31276 501.98485 L
+213.31276 504.00085 L
+S
+@J
+
+@rax %Note: Object
+180.00000 494.99830 216.00000 494.99943 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+180.00000 494.99887 m
+213.32891 494.99887 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+213.31276 495.00085 m
+213.31276 497.01487 L
+215.99802 497.01487 L
+218.68526 495.00085 L
+215.99802 492.98485 L
+213.31276 492.98485 L
+213.31276 495.00085 L
+S
+@J
+
+@rax %Note: Object
+207.00000 593.99887 216.00000 594.00000 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+207.00000 593.99943 m
+213.32891 593.99943 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+213.31276 594.00142 m
+213.31276 596.01543 L
+215.99802 596.01543 L
+218.68526 594.00142 L
+215.99802 591.98542 L
+213.31276 591.98542 L
+213.31276 594.00142 L
+S
+@J
+
+@rax %Note: Object
+198.00000 584.99830 216.00000 584.99943 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+198.00000 584.99887 m
+213.32891 584.99887 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+213.31276 585.00085 m
+213.31276 587.01487 L
+215.99802 587.01487 L
+218.68526 585.00085 L
+215.99802 582.98485 L
+213.31276 582.98485 L
+213.31276 585.00085 L
+S
+@J
+
+@rax %Note: Object
+189.00000 575.99830 216.00000 575.99943 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+189.00000 575.99887 m
+213.32891 575.99887 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+213.31276 576.00085 m
+213.31276 578.01487 L
+215.99802 578.01487 L
+218.68526 576.00085 L
+215.99802 573.98485 L
+213.31276 573.98485 L
+213.31276 576.00085 L
+S
+@J
+
+@rax %Note: Object
+180.00000 566.99830 216.00000 566.99943 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+180.00000 566.99887 m
+213.32891 566.99887 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+213.31276 567.00085 m
+213.31276 569.01487 L
+215.99802 569.01487 L
+218.68526 567.00085 L
+215.99802 564.98485 L
+213.31276 564.98485 L
+213.31276 567.00085 L
+S
+@J
+
+@rax 66.00246 274.71288 95.95417 302.94170 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 80.99999704 296.99998914] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 35278.00000 z
+-13720 0 (to) @t
+-30369 -39071 (next) @t
+-52908 -78142 (column) @t
+T
+@rax 178.50246 274.71288 208.45417 302.94170 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 193.49999292 296.99998914] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 35278.00000 z
+-13720 0 (to) @t
+-30369 -39071 (next) @t
+-52908 -78142 (column) @t
+T
+@rax 176.24721 679.71288 210.36756 708.93326 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 193.49999292 701.99997432] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 35278.00000 z
+-34288 0 (from) @t
+-60746 -39071 (previous) @t
+-52908 -78142 (column) @t
+T
+@rax %Note: Object
+333.00000 584.78712 351.00000 602.78712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+333.00000 602.78712 m
+351.00000 602.78712 L
+351.00000 584.78712 L
+333.00000 584.78712 L
+333.00000 602.78712 L
+@c
+S
+
+@rax 334.33002 589.10513 349.02567 597.41291 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 341.99998749 589.28709655] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax %Note: Object
+355.50000 584.78712 373.50000 602.78712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+355.50000 602.78712 m
+373.50000 602.78712 L
+373.50000 584.78712 L
+355.50000 584.78712 L
+355.50000 602.78712 L
+@c
+S
+
+@rax 356.83002 589.10513 371.52567 597.41291 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 364.49998667 589.28709655] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax %Note: Object
+333.00000 562.28712 351.00000 580.28712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+333.00000 580.28712 m
+351.00000 580.28712 L
+351.00000 562.28712 L
+333.00000 562.28712 L
+333.00000 580.28712 L
+@c
+S
+
+@rax 334.33002 566.60513 349.02567 574.91291 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 341.99998749 566.78709738] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax %Note: Object
+355.50000 562.28712 373.50000 580.28712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+355.50000 580.28712 m
+373.50000 580.28712 L
+373.50000 562.28712 L
+355.50000 562.28712 L
+355.50000 580.28712 L
+@c
+S
+
+@rax 356.83002 566.60513 371.52567 574.91291 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 364.49998667 566.78709738] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax 336.66491 607.28712 347.08280 615.23320 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 341.99998749 607.28709590] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-18821 0 (M) @t
+T
+@rax 360.16696 607.28712 368.37694 615.23320 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 364.49998667 607.28709590] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-15286 0 (D) @t
+T
+@rax %Note: Object
+328.50000 557.78712 378.00000 620.78712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+328.50000 620.78712 m
+378.00000 620.78712 L
+378.00000 557.78712 L
+328.50000 557.78712 L
+328.50000 620.78712 L
+@c
+S
+
+@rax %Note: Object
+333.00000 512.78712 351.00000 530.78712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+333.00000 530.78712 m
+351.00000 530.78712 L
+351.00000 512.78712 L
+333.00000 512.78712 L
+333.00000 530.78712 L
+@c
+S
+
+@rax 334.33002 517.10513 349.02567 525.41291 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 341.99998749 517.28709919] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax %Note: Object
+355.50000 512.78712 373.50000 530.78712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+355.50000 530.78712 m
+373.50000 530.78712 L
+373.50000 512.78712 L
+355.50000 512.78712 L
+355.50000 530.78712 L
+@c
+S
+
+@rax 356.83002 517.10513 371.52567 525.41291 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 364.49998667 517.28709919] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax %Note: Object
+333.00000 490.28712 351.00000 508.28712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+333.00000 508.28712 m
+351.00000 508.28712 L
+351.00000 490.28712 L
+333.00000 490.28712 L
+333.00000 508.28712 L
+@c
+S
+
+@rax 334.33002 494.60513 349.02567 502.91291 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 341.99998749 494.78710001] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax %Note: Object
+355.50000 490.28712 373.50000 508.28712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+355.50000 508.28712 m
+373.50000 508.28712 L
+373.50000 490.28712 L
+355.50000 490.28712 L
+355.50000 508.28712 L
+@c
+S
+
+@rax 356.83002 494.60513 371.52567 502.91291 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 364.49998667 494.78710001] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax 336.66491 535.28712 347.08280 543.23320 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 341.99998749 535.28709853] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-18821 0 (M) @t
+T
+@rax 360.16696 535.28712 368.37694 543.23320 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 364.49998667 535.28709853] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-15286 0 (D) @t
+T
+@rax %Note: Object
+328.50000 485.78712 378.00000 548.78712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+328.50000 548.78712 m
+378.00000 548.78712 L
+378.00000 485.78712 L
+328.50000 485.78712 L
+328.50000 548.78712 L
+@c
+S
+
+@rax %Note: Object
+333.00000 440.78712 351.00000 458.78712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+333.00000 458.78712 m
+351.00000 458.78712 L
+351.00000 440.78712 L
+333.00000 440.78712 L
+333.00000 458.78712 L
+@c
+S
+
+@rax 334.33002 445.10513 349.02567 453.41291 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 341.99998749 445.28710182] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax %Note: Object
+355.50000 440.78712 373.50000 458.78712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+355.50000 458.78712 m
+373.50000 458.78712 L
+373.50000 440.78712 L
+355.50000 440.78712 L
+355.50000 458.78712 L
+@c
+S
+
+@rax 356.83002 445.10513 371.52567 453.41291 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 364.49998667 445.28710182] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax %Note: Object
+333.00000 418.28712 351.00000 436.28712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+333.00000 436.28712 m
+351.00000 436.28712 L
+351.00000 418.28712 L
+333.00000 418.28712 L
+333.00000 436.28712 L
+@c
+S
+
+@rax 334.33002 422.60513 349.02567 430.91291 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 341.99998749 422.78710264] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax %Note: Object
+355.50000 418.28712 373.50000 436.28712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+355.50000 436.28712 m
+373.50000 436.28712 L
+373.50000 418.28712 L
+355.50000 418.28712 L
+355.50000 436.28712 L
+@c
+S
+
+@rax 356.83002 422.60513 371.52567 430.91291 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 364.49998667 422.78710264] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax 336.66491 463.28712 347.08280 471.23320 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 341.99998749 463.28710116] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-18821 0 (M) @t
+T
+@rax 360.16696 463.28712 368.37694 471.23320 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 364.49998667 463.28710116] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-15286 0 (D) @t
+T
+@rax %Note: Object
+328.50000 413.78712 378.00000 476.78712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+328.50000 476.78712 m
+378.00000 476.78712 L
+378.00000 413.78712 L
+328.50000 413.78712 L
+328.50000 476.78712 L
+@c
+S
+
+@rax %Note: Object
+333.00000 368.78712 351.00000 386.78712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+333.00000 386.78712 m
+351.00000 386.78712 L
+351.00000 368.78712 L
+333.00000 368.78712 L
+333.00000 386.78712 L
+@c
+S
+
+@rax 334.33002 373.10513 349.02567 381.41291 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 341.99998749 373.28710446] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax %Note: Object
+355.50000 368.78712 373.50000 386.78712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+355.50000 386.78712 m
+373.50000 386.78712 L
+373.50000 368.78712 L
+355.50000 368.78712 L
+355.50000 386.78712 L
+@c
+S
+
+@rax 356.83002 373.10513 371.52567 381.41291 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 364.49998667 373.28710446] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax %Note: Object
+333.00000 346.28712 351.00000 364.28712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+333.00000 364.28712 m
+351.00000 364.28712 L
+351.00000 346.28712 L
+333.00000 346.28712 L
+333.00000 364.28712 L
+@c
+S
+
+@rax 334.33002 350.60513 349.02567 358.91291 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 341.99998749 350.78710528] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax %Note: Object
+355.50000 346.28712 373.50000 364.28712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+355.50000 364.28712 m
+373.50000 364.28712 L
+373.50000 346.28712 L
+355.50000 346.28712 L
+355.50000 364.28712 L
+@c
+S
+
+@rax 356.83002 350.60513 371.52567 358.91291 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 364.49998667 350.78710528] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax 336.66491 391.28712 347.08280 399.23320 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 341.99998749 391.28710380] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-18821 0 (M) @t
+T
+@rax 360.16696 391.28712 368.37694 399.23320 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 364.49998667 391.28710380] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-15286 0 (D) @t
+T
+@rax %Note: Object
+328.50000 341.78712 378.00000 404.78712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+328.50000 404.78712 m
+378.00000 404.78712 L
+378.00000 341.78712 L
+328.50000 341.78712 L
+328.50000 404.78712 L
+@c
+S
+
+@rax %Note: Object
+319.50000 332.78712 328.50000 386.78712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+328.50000 386.78712 m
+319.50000 386.78712 L
+319.50000 332.78712 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+319.50000 331.52513 m
+317.48400 332.53313 L
+317.48400 334.04910 L
+319.50000 333.03912 L
+321.51402 334.04910 L
+321.51600 332.53313 L
+319.50000 331.52513 L
+f
+@J
+
+@rax %Note: Object
+310.50000 323.78712 328.50000 458.78712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+328.50000 458.78712 m
+310.50000 458.78712 L
+310.50000 323.78712 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+310.50000 322.52513 m
+308.48400 323.53313 L
+308.48400 325.04910 L
+310.50000 324.03912 L
+312.51402 325.04910 L
+312.51600 323.53313 L
+310.50000 322.52513 L
+f
+@J
+
+@rax %Note: Object
+301.50000 314.78712 328.50000 530.78712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+328.50000 530.78712 m
+301.50000 530.78712 L
+301.50000 314.78712 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+301.50000 313.52513 m
+299.48400 314.53313 L
+299.48400 316.04910 L
+301.50000 315.03912 L
+303.51402 316.04910 L
+303.51600 314.53313 L
+301.50000 313.52513 L
+f
+@J
+
+@rax %Note: Object
+292.50000 305.78712 328.50000 602.78712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+328.50000 602.78712 m
+292.50000 602.78712 L
+292.50000 305.78712 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+292.50000 304.52513 m
+290.48400 305.53313 L
+290.48400 307.04910 L
+292.50000 306.03912 L
+294.51402 307.04910 L
+294.51600 305.53313 L
+292.50000 304.52513 L
+f
+@J
+
+@rax %Note: Object
+315.00000 391.28712 324.00000 404.78712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+315.00000 404.78712 m
+324.00000 404.78712 L
+324.00000 391.28712 L
+315.00000 391.28712 L
+315.00000 404.78712 L
+@c
+S
+
+@rax 317.50186 394.63512 322.71591 402.95509 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 319.49998831 394.63510367] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-7049 0 (f) @t
+T
+@rax %Note: Object
+306.00000 463.28712 315.00000 476.78712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+306.00000 476.78712 m
+315.00000 476.78712 L
+315.00000 463.28712 L
+306.00000 463.28712 L
+306.00000 476.78712 L
+@c
+S
+
+@rax 308.50186 466.63512 313.71591 474.95509 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 310.49998864 466.63510104] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-7049 0 (f) @t
+T
+@rax %Note: Object
+297.00000 535.28712 306.00000 548.78712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+297.00000 548.78712 m
+306.00000 548.78712 L
+306.00000 535.28712 L
+297.00000 535.28712 L
+297.00000 548.78712 L
+@c
+S
+
+@rax 299.50186 538.63512 304.71591 546.95509 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 301.49998897 538.63509841] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-7049 0 (f) @t
+T
+@rax %Note: Object
+288.00000 607.28712 297.00000 620.78712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+288.00000 620.78712 m
+297.00000 620.78712 L
+297.00000 607.28712 L
+288.00000 607.28712 L
+288.00000 620.78712 L
+@c
+S
+
+@rax 290.50186 610.63512 295.71591 618.95509 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 292.49998930 610.63509577] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-7049 0 (f) @t
+T
+@rax %Note: Object
+292.49943 602.78712 292.50057 607.28712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+292.50000 607.28712 m
+292.50000 602.78712 L
+S
+
+@rax %Note: Object
+301.49943 530.78712 301.50057 535.28712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+301.50000 535.28712 m
+301.50000 530.78712 L
+S
+
+@rax %Note: Object
+310.49943 458.78712 310.50057 463.28712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+310.50000 463.28712 m
+310.50000 458.78712 L
+S
+
+@rax %Note: Object
+319.49943 386.78712 319.50057 391.28712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+319.50000 391.28712 m
+319.50000 386.78712 L
+S
+
+@rax %Note: Object
+319.49943 404.78712 319.50057 670.28712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+319.50000 670.28712 m
+319.50000 408.33326 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+319.50000 669.02513 m
+317.48400 670.03313 L
+317.48400 671.54910 L
+319.50000 670.53912 L
+321.51402 671.54910 L
+321.51600 670.03313 L
+319.50000 669.02513 L
+f
+@J
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+319.50000 404.78712 m
+322.52400 411.84312 L
+320.50800 410.83512 318.49200 410.83512 316.47600 411.84312 C
+319.50000 404.78712 L
+f
+@J
+
+@rax %Note: Object
+310.49943 476.78712 310.50057 661.28712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+310.50000 661.28712 m
+310.50000 480.33326 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+310.50000 660.02513 m
+308.48400 661.03313 L
+308.48400 662.54910 L
+310.50000 661.53912 L
+312.51402 662.54910 L
+312.51600 661.03313 L
+310.50000 660.02513 L
+f
+@J
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+310.50000 476.78712 m
+313.52400 483.84312 L
+311.50800 482.83512 309.49200 482.83512 307.47600 483.84312 C
+310.50000 476.78712 L
+f
+@J
+
+@rax %Note: Object
+301.49943 548.78712 301.50057 652.28712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+301.50000 652.28712 m
+301.50000 552.33326 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+301.50000 651.02513 m
+299.48400 652.03313 L
+299.48400 653.54910 L
+301.50000 652.53912 L
+303.51402 653.54910 L
+303.51600 652.03313 L
+301.50000 651.02513 L
+f
+@J
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+301.50000 548.78712 m
+304.52400 555.84312 L
+302.50800 554.83512 300.49200 554.83512 298.47600 555.84312 C
+301.50000 548.78712 L
+f
+@J
+
+@rax %Note: Object
+292.49943 620.78712 292.50057 643.28712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+292.50000 643.28712 m
+292.50000 624.33326 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+292.50000 642.02513 m
+290.48400 643.03313 L
+290.48400 644.54910 L
+292.50000 643.53912 L
+294.51402 644.54910 L
+294.51600 643.03313 L
+292.50000 642.02513 L
+f
+@J
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+292.50000 620.78712 m
+295.52400 627.84312 L
+293.50800 626.83512 291.49200 626.83512 289.47600 627.84312 C
+292.50000 620.78712 L
+f
+@J
+
+@rax %Note: Object
+319.50000 377.78598 328.50000 377.78712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+319.50000 377.78655 m
+325.82891 377.78655 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+325.81276 377.78854 m
+325.81276 379.80255 L
+328.49802 379.80255 L
+331.18526 377.78854 L
+328.49802 375.77254 L
+325.81276 375.77254 L
+325.81276 377.78854 L
+S
+@J
+
+@rax %Note: Object
+310.50000 368.78542 328.50000 368.78655 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+310.50000 368.78598 m
+325.82891 368.78598 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+325.81276 368.78797 m
+325.81276 370.80198 L
+328.49802 370.80198 L
+331.18526 368.78797 L
+328.49802 366.77197 L
+325.81276 366.77197 L
+325.81276 368.78797 L
+S
+@J
+
+@rax %Note: Object
+301.50000 359.78542 328.50000 359.78655 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+301.50000 359.78598 m
+325.82891 359.78598 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+325.81276 359.78797 m
+325.81276 361.80198 L
+328.49802 361.80198 L
+331.18526 359.78797 L
+328.49802 357.77197 L
+325.81276 357.77197 L
+325.81276 359.78797 L
+S
+@J
+
+@rax %Note: Object
+292.50000 350.78542 328.50000 350.78655 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+292.50000 350.78598 m
+325.82891 350.78598 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+325.81276 350.78797 m
+325.81276 352.80198 L
+328.49802 352.80198 L
+331.18526 350.78797 L
+328.49802 348.77197 L
+325.81276 348.77197 L
+325.81276 350.78797 L
+S
+@J
+
+@rax %Note: Object
+319.50000 449.78769 328.50000 449.78882 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+319.50000 449.78825 m
+325.82891 449.78825 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+325.81276 449.79024 m
+325.81276 451.80425 L
+328.49802 451.80425 L
+331.18526 449.79024 L
+328.49802 447.77424 L
+325.81276 447.77424 L
+325.81276 449.79024 L
+S
+@J
+
+@rax %Note: Object
+310.50000 440.78712 328.50000 440.78825 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+310.50000 440.78769 m
+325.82891 440.78769 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+325.81276 440.78967 m
+325.81276 442.80369 L
+328.49802 442.80369 L
+331.18526 440.78967 L
+328.49802 438.77367 L
+325.81276 438.77367 L
+325.81276 440.78967 L
+S
+@J
+
+@rax %Note: Object
+301.50000 431.78712 328.50000 431.78825 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+301.50000 431.78769 m
+325.82891 431.78769 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+325.81276 431.78967 m
+325.81276 433.80369 L
+328.49802 433.80369 L
+331.18526 431.78967 L
+328.49802 429.77367 L
+325.81276 429.77367 L
+325.81276 431.78967 L
+S
+@J
+
+@rax %Note: Object
+292.50000 422.78712 328.50000 422.78825 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+292.50000 422.78769 m
+325.82891 422.78769 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+325.81276 422.78967 m
+325.81276 424.80369 L
+328.49802 424.80369 L
+331.18526 422.78967 L
+328.49802 420.77367 L
+325.81276 420.77367 L
+325.81276 422.78967 L
+S
+@J
+
+@rax %Note: Object
+319.50000 521.78598 328.50000 521.78712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+319.50000 521.78655 m
+325.82891 521.78655 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+325.81276 521.78854 m
+325.81276 523.80255 L
+328.49802 523.80255 L
+331.18526 521.78854 L
+328.49802 519.77254 L
+325.81276 519.77254 L
+325.81276 521.78854 L
+S
+@J
+
+@rax %Note: Object
+310.50000 512.78542 328.50000 512.78655 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+310.50000 512.78598 m
+325.82891 512.78598 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+325.81276 512.78797 m
+325.81276 514.80198 L
+328.49802 514.80198 L
+331.18526 512.78797 L
+328.49802 510.77197 L
+325.81276 510.77197 L
+325.81276 512.78797 L
+S
+@J
+
+@rax %Note: Object
+301.50000 503.78542 328.50000 503.78655 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+301.50000 503.78598 m
+325.82891 503.78598 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+325.81276 503.78797 m
+325.81276 505.80198 L
+328.49802 505.80198 L
+331.18526 503.78797 L
+328.49802 501.77197 L
+325.81276 501.77197 L
+325.81276 503.78797 L
+S
+@J
+
+@rax %Note: Object
+292.50000 494.78542 328.50000 494.78655 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+292.50000 494.78598 m
+325.82891 494.78598 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+325.81276 494.78797 m
+325.81276 496.80198 L
+328.49802 496.80198 L
+331.18526 494.78797 L
+328.49802 492.77197 L
+325.81276 492.77197 L
+325.81276 494.78797 L
+S
+@J
+
+@rax %Note: Object
+319.50000 593.78598 328.50000 593.78712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+319.50000 593.78655 m
+325.82891 593.78655 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+325.81276 593.78854 m
+325.81276 595.80255 L
+328.49802 595.80255 L
+331.18526 593.78854 L
+328.49802 591.77254 L
+325.81276 591.77254 L
+325.81276 593.78854 L
+S
+@J
+
+@rax %Note: Object
+310.50000 584.78542 328.50000 584.78655 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+310.50000 584.78598 m
+325.82891 584.78598 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+325.81276 584.78797 m
+325.81276 586.80198 L
+328.49802 586.80198 L
+331.18526 584.78797 L
+328.49802 582.77197 L
+325.81276 582.77197 L
+325.81276 584.78797 L
+S
+@J
+
+@rax %Note: Object
+301.50000 575.78542 328.50000 575.78655 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+301.50000 575.78598 m
+325.82891 575.78598 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+325.81276 575.78797 m
+325.81276 577.80198 L
+328.49802 577.80198 L
+331.18526 575.78797 L
+328.49802 573.77197 L
+325.81276 573.77197 L
+325.81276 575.78797 L
+S
+@J
+
+@rax %Note: Object
+292.50000 566.78542 328.50000 566.78655 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+292.50000 566.78598 m
+325.82891 566.78598 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+325.81276 566.78797 m
+325.81276 568.80198 L
+328.49802 568.80198 L
+331.18526 566.78797 L
+328.49802 564.77197 L
+325.81276 564.77197 L
+325.81276 566.78797 L
+S
+@J
+
+@rax 291.00246 274.50000 320.95417 302.72882 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 305.99998881 296.78710725] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 35278.00000 z
+-13720 0 (to) @t
+-30369 -39071 (next) @t
+-52908 -78142 (column) @t
+T
+@rax 288.74721 679.50000 322.86756 708.72038 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 305.99998881 701.78709244] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 35278.00000 z
+-34288 0 (from) @t
+-60746 -39071 (previous) @t
+-52908 -78142 (column) @t
+T
+@rax %Note: Object
+445.50000 584.78712 463.50000 602.78712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+445.50000 602.78712 m
+463.50000 602.78712 L
+463.50000 584.78712 L
+445.50000 584.78712 L
+445.50000 602.78712 L
+@c
+S
+
+@rax 446.83002 589.10513 461.52567 597.41291 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 454.49998337 589.28709655] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax %Note: Object
+468.00000 584.78712 486.00000 602.78712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+468.00000 602.78712 m
+486.00000 602.78712 L
+486.00000 584.78712 L
+468.00000 584.78712 L
+468.00000 602.78712 L
+@c
+S
+
+@rax 469.33002 589.10513 484.02567 597.41291 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 476.99998255 589.28709655] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax %Note: Object
+445.50000 562.28712 463.50000 580.28712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+445.50000 580.28712 m
+463.50000 580.28712 L
+463.50000 562.28712 L
+445.50000 562.28712 L
+445.50000 580.28712 L
+@c
+S
+
+@rax 446.83002 566.60513 461.52567 574.91291 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 454.49998337 566.78709738] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax %Note: Object
+468.00000 562.28712 486.00000 580.28712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+468.00000 580.28712 m
+486.00000 580.28712 L
+486.00000 562.28712 L
+468.00000 562.28712 L
+468.00000 580.28712 L
+@c
+S
+
+@rax 469.33002 566.60513 484.02567 574.91291 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 476.99998255 566.78709738] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax 449.16491 607.28712 459.58280 615.23320 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 454.49998337 607.28709590] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-18821 0 (M) @t
+T
+@rax 472.66696 607.28712 480.87694 615.23320 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 476.99998255 607.28709590] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-15286 0 (D) @t
+T
+@rax %Note: Object
+441.00000 557.78712 490.50000 620.78712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+441.00000 620.78712 m
+490.50000 620.78712 L
+490.50000 557.78712 L
+441.00000 557.78712 L
+441.00000 620.78712 L
+@c
+S
+
+@rax %Note: Object
+445.50000 512.78712 463.50000 530.78712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+445.50000 530.78712 m
+463.50000 530.78712 L
+463.50000 512.78712 L
+445.50000 512.78712 L
+445.50000 530.78712 L
+@c
+S
+
+@rax 446.83002 517.10513 461.52567 525.41291 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 454.49998337 517.28709919] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax %Note: Object
+468.00000 512.78712 486.00000 530.78712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+468.00000 530.78712 m
+486.00000 530.78712 L
+486.00000 512.78712 L
+468.00000 512.78712 L
+468.00000 530.78712 L
+@c
+S
+
+@rax 469.33002 517.10513 484.02567 525.41291 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 476.99998255 517.28709919] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax %Note: Object
+445.50000 490.28712 463.50000 508.28712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+445.50000 508.28712 m
+463.50000 508.28712 L
+463.50000 490.28712 L
+445.50000 490.28712 L
+445.50000 508.28712 L
+@c
+S
+
+@rax 446.83002 494.60513 461.52567 502.91291 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 454.49998337 494.78710001] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax %Note: Object
+468.00000 490.28712 486.00000 508.28712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+468.00000 508.28712 m
+486.00000 508.28712 L
+486.00000 490.28712 L
+468.00000 490.28712 L
+468.00000 508.28712 L
+@c
+S
+
+@rax 469.33002 494.60513 484.02567 502.91291 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 476.99998255 494.78710001] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax 449.16491 535.28712 459.58280 543.23320 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 454.49998337 535.28709853] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-18821 0 (M) @t
+T
+@rax 472.66696 535.28712 480.87694 543.23320 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 476.99998255 535.28709853] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-15286 0 (D) @t
+T
+@rax %Note: Object
+441.00000 485.78712 490.50000 548.78712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+441.00000 548.78712 m
+490.50000 548.78712 L
+490.50000 485.78712 L
+441.00000 485.78712 L
+441.00000 548.78712 L
+@c
+S
+
+@rax %Note: Object
+445.50000 440.78712 463.50000 458.78712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+445.50000 458.78712 m
+463.50000 458.78712 L
+463.50000 440.78712 L
+445.50000 440.78712 L
+445.50000 458.78712 L
+@c
+S
+
+@rax 446.83002 445.10513 461.52567 453.41291 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 454.49998337 445.28710182] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax %Note: Object
+468.00000 440.78712 486.00000 458.78712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+468.00000 458.78712 m
+486.00000 458.78712 L
+486.00000 440.78712 L
+468.00000 440.78712 L
+468.00000 458.78712 L
+@c
+S
+
+@rax 469.33002 445.10513 484.02567 453.41291 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 476.99998255 445.28710182] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax %Note: Object
+445.50000 418.28712 463.50000 436.28712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+445.50000 436.28712 m
+463.50000 436.28712 L
+463.50000 418.28712 L
+445.50000 418.28712 L
+445.50000 436.28712 L
+@c
+S
+
+@rax 446.83002 422.60513 461.52567 430.91291 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 454.49998337 422.78710264] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax %Note: Object
+468.00000 418.28712 486.00000 436.28712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+468.00000 436.28712 m
+486.00000 436.28712 L
+486.00000 418.28712 L
+468.00000 418.28712 L
+468.00000 436.28712 L
+@c
+S
+
+@rax 469.33002 422.60513 484.02567 430.91291 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 476.99998255 422.78710264] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax 449.16491 463.28712 459.58280 471.23320 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 454.49998337 463.28710116] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-18821 0 (M) @t
+T
+@rax 472.66696 463.28712 480.87694 471.23320 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 476.99998255 463.28710116] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-15286 0 (D) @t
+T
+@rax %Note: Object
+441.00000 413.78712 490.50000 476.78712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+441.00000 476.78712 m
+490.50000 476.78712 L
+490.50000 413.78712 L
+441.00000 413.78712 L
+441.00000 476.78712 L
+@c
+S
+
+@rax %Note: Object
+445.50000 368.78712 463.50000 386.78712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+445.50000 386.78712 m
+463.50000 386.78712 L
+463.50000 368.78712 L
+445.50000 368.78712 L
+445.50000 386.78712 L
+@c
+S
+
+@rax 446.83002 373.10513 461.52567 381.41291 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 454.49998337 373.28710446] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax %Note: Object
+468.00000 368.78712 486.00000 386.78712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+468.00000 386.78712 m
+486.00000 386.78712 L
+486.00000 368.78712 L
+468.00000 368.78712 L
+468.00000 386.78712 L
+@c
+S
+
+@rax 469.33002 373.10513 484.02567 381.41291 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 476.99998255 373.28710446] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax %Note: Object
+445.50000 346.28712 463.50000 364.28712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+445.50000 364.28712 m
+463.50000 364.28712 L
+463.50000 346.28712 L
+445.50000 346.28712 L
+445.50000 364.28712 L
+@c
+S
+
+@rax 446.83002 350.60513 461.52567 358.91291 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 454.49998337 350.78710528] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax %Note: Object
+468.00000 346.28712 486.00000 364.28712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+468.00000 364.28712 m
+486.00000 364.28712 L
+486.00000 346.28712 L
+468.00000 346.28712 L
+468.00000 364.28712 L
+@c
+S
+
+@rax 469.33002 350.60513 484.02567 358.91291 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 476.99998255 350.78710528] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-27058 0 (AS) @t
+T
+@rax 449.16491 391.28712 459.58280 399.23320 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 454.49998337 391.28710380] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-18821 0 (M) @t
+T
+@rax 472.66696 391.28712 480.87694 399.23320 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 476.99998255 391.28710380] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-15286 0 (D) @t
+T
+@rax %Note: Object
+441.00000 341.78712 490.50000 404.78712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+441.00000 404.78712 m
+490.50000 404.78712 L
+490.50000 341.78712 L
+441.00000 341.78712 L
+441.00000 404.78712 L
+@c
+S
+
+@rax %Note: Object
+432.00000 378.00000 441.00000 386.78712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+441.00000 386.78712 m
+432.00000 386.78712 L
+432.00000 378.00000 L
+S
+
+@rax %Note: Object
+423.00000 369.00000 441.00000 458.78712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+441.00000 458.78712 m
+423.00000 458.78712 L
+423.00000 369.00000 L
+S
+
+@rax %Note: Object
+414.00000 360.00000 441.00000 530.78712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+441.00000 530.78712 m
+414.00000 530.78712 L
+414.00000 360.00000 L
+S
+
+@rax %Note: Object
+405.00000 351.00000 441.00000 602.78712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+441.00000 602.78712 m
+405.00000 602.78712 L
+405.00000 351.00000 L
+S
+
+@rax %Note: Object
+427.50000 391.28712 436.50000 404.78712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+427.50000 404.78712 m
+436.50000 404.78712 L
+436.50000 391.28712 L
+427.50000 391.28712 L
+427.50000 404.78712 L
+@c
+S
+
+@rax 430.00186 394.63512 435.21591 402.95509 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 431.99998420 394.63510367] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-7049 0 (f) @t
+T
+@rax %Note: Object
+418.50000 463.28712 427.50000 476.78712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+418.50000 476.78712 m
+427.50000 476.78712 L
+427.50000 463.28712 L
+418.50000 463.28712 L
+418.50000 476.78712 L
+@c
+S
+
+@rax 421.00186 466.63512 426.21591 474.95509 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 422.99998453 466.63510104] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-7049 0 (f) @t
+T
+@rax %Note: Object
+409.50000 535.28712 418.50000 548.78712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+409.50000 548.78712 m
+418.50000 548.78712 L
+418.50000 535.28712 L
+409.50000 535.28712 L
+409.50000 548.78712 L
+@c
+S
+
+@rax 412.00186 538.63512 417.21591 546.95509 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 413.99998486 538.63509841] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-7049 0 (f) @t
+T
+@rax %Note: Object
+400.50000 607.28712 409.50000 620.78712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+400.50000 620.78712 m
+409.50000 620.78712 L
+409.50000 607.28712 L
+400.50000 607.28712 L
+400.50000 620.78712 L
+@c
+S
+
+@rax 403.00186 610.63512 408.21591 618.95509 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 404.99998518 610.63509577] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 42333.00000 z
+-7049 0 (f) @t
+T
+@rax %Note: Object
+404.99943 602.78712 405.00057 607.28712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+405.00000 607.28712 m
+405.00000 602.78712 L
+S
+
+@rax %Note: Object
+413.99943 530.78712 414.00057 535.28712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+414.00000 535.28712 m
+414.00000 530.78712 L
+S
+
+@rax %Note: Object
+422.99943 458.78712 423.00057 463.28712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+423.00000 463.28712 m
+423.00000 458.78712 L
+S
+
+@rax %Note: Object
+431.99943 386.78712 432.00057 391.28712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+432.00000 391.28712 m
+432.00000 386.78712 L
+S
+
+@rax %Note: Object
+431.99943 404.78712 432.00057 670.28712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+432.00000 670.28712 m
+432.00000 408.33326 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+432.00000 669.02513 m
+429.98400 670.03313 L
+429.98400 671.54910 L
+432.00000 670.53912 L
+434.01402 671.54910 L
+434.01600 670.03313 L
+432.00000 669.02513 L
+f
+@J
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+432.00000 404.78712 m
+435.02400 411.84312 L
+433.00800 410.83512 430.99200 410.83512 428.97600 411.84312 C
+432.00000 404.78712 L
+f
+@J
+
+@rax %Note: Object
+422.99943 476.78712 423.00057 661.28712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+423.00000 661.28712 m
+423.00000 480.33326 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+423.00000 660.02513 m
+420.98400 661.03313 L
+420.98400 662.54910 L
+423.00000 661.53912 L
+425.01402 662.54910 L
+425.01600 661.03313 L
+423.00000 660.02513 L
+f
+@J
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+423.00000 476.78712 m
+426.02400 483.84312 L
+424.00800 482.83512 421.99200 482.83512 419.97600 483.84312 C
+423.00000 476.78712 L
+f
+@J
+
+@rax %Note: Object
+413.99943 548.78712 414.00057 652.28712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+414.00000 652.28712 m
+414.00000 552.33326 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+414.00000 651.02513 m
+411.98400 652.03313 L
+411.98400 653.54910 L
+414.00000 652.53912 L
+416.01402 653.54910 L
+416.01600 652.03313 L
+414.00000 651.02513 L
+f
+@J
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+414.00000 548.78712 m
+417.02400 555.84312 L
+415.00800 554.83512 412.99200 554.83512 410.97600 555.84312 C
+414.00000 548.78712 L
+f
+@J
+
+@rax %Note: Object
+404.99943 620.78712 405.00057 643.28712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+405.00000 643.28712 m
+405.00000 624.33326 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+405.00000 642.02513 m
+402.98400 643.03313 L
+402.98400 644.54910 L
+405.00000 643.53912 L
+407.01402 644.54910 L
+407.01600 643.03313 L
+405.00000 642.02513 L
+f
+@J
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+405.00000 620.78712 m
+408.02400 627.84312 L
+406.00800 626.83512 403.99200 626.83512 401.97600 627.84312 C
+405.00000 620.78712 L
+f
+@J
+
+@rax %Note: Object
+432.00000 377.78598 441.00000 377.78712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+432.00000 377.78655 m
+438.32891 377.78655 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+438.31276 377.78854 m
+438.31276 379.80255 L
+440.99802 379.80255 L
+443.68526 377.78854 L
+440.99802 375.77254 L
+438.31276 375.77254 L
+438.31276 377.78854 L
+S
+@J
+
+@rax %Note: Object
+423.00000 368.78542 441.00000 368.78655 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+423.00000 368.78598 m
+438.32891 368.78598 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+438.31276 368.78797 m
+438.31276 370.80198 L
+440.99802 370.80198 L
+443.68526 368.78797 L
+440.99802 366.77197 L
+438.31276 366.77197 L
+438.31276 368.78797 L
+S
+@J
+
+@rax %Note: Object
+414.00000 359.78542 441.00000 359.78655 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+414.00000 359.78598 m
+438.32891 359.78598 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+438.31276 359.78797 m
+438.31276 361.80198 L
+440.99802 361.80198 L
+443.68526 359.78797 L
+440.99802 357.77197 L
+438.31276 357.77197 L
+438.31276 359.78797 L
+S
+@J
+
+@rax %Note: Object
+405.00000 350.78542 441.00000 350.78655 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+405.00000 350.78598 m
+438.32891 350.78598 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+438.31276 350.78797 m
+438.31276 352.80198 L
+440.99802 352.80198 L
+443.68526 350.78797 L
+440.99802 348.77197 L
+438.31276 348.77197 L
+438.31276 350.78797 L
+S
+@J
+
+@rax %Note: Object
+432.00000 449.78769 441.00000 449.78882 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+432.00000 449.78825 m
+438.32891 449.78825 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+438.31276 449.79024 m
+438.31276 451.80425 L
+440.99802 451.80425 L
+443.68526 449.79024 L
+440.99802 447.77424 L
+438.31276 447.77424 L
+438.31276 449.79024 L
+S
+@J
+
+@rax %Note: Object
+423.00000 440.78712 441.00000 440.78825 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+423.00000 440.78769 m
+438.32891 440.78769 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+438.31276 440.78967 m
+438.31276 442.80369 L
+440.99802 442.80369 L
+443.68526 440.78967 L
+440.99802 438.77367 L
+438.31276 438.77367 L
+438.31276 440.78967 L
+S
+@J
+
+@rax %Note: Object
+414.00000 431.78712 441.00000 431.78825 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+414.00000 431.78769 m
+438.32891 431.78769 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+438.31276 431.78967 m
+438.31276 433.80369 L
+440.99802 433.80369 L
+443.68526 431.78967 L
+440.99802 429.77367 L
+438.31276 429.77367 L
+438.31276 431.78967 L
+S
+@J
+
+@rax %Note: Object
+405.00000 422.78712 441.00000 422.78825 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+405.00000 422.78769 m
+438.32891 422.78769 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+438.31276 422.78967 m
+438.31276 424.80369 L
+440.99802 424.80369 L
+443.68526 422.78967 L
+440.99802 420.77367 L
+438.31276 420.77367 L
+438.31276 422.78967 L
+S
+@J
+
+@rax %Note: Object
+432.00000 521.78598 441.00000 521.78712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+432.00000 521.78655 m
+438.32891 521.78655 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+438.31276 521.78854 m
+438.31276 523.80255 L
+440.99802 523.80255 L
+443.68526 521.78854 L
+440.99802 519.77254 L
+438.31276 519.77254 L
+438.31276 521.78854 L
+S
+@J
+
+@rax %Note: Object
+423.00000 512.78542 441.00000 512.78655 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+423.00000 512.78598 m
+438.32891 512.78598 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+438.31276 512.78797 m
+438.31276 514.80198 L
+440.99802 514.80198 L
+443.68526 512.78797 L
+440.99802 510.77197 L
+438.31276 510.77197 L
+438.31276 512.78797 L
+S
+@J
+
+@rax %Note: Object
+414.00000 503.78542 441.00000 503.78655 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+414.00000 503.78598 m
+438.32891 503.78598 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+438.31276 503.78797 m
+438.31276 505.80198 L
+440.99802 505.80198 L
+443.68526 503.78797 L
+440.99802 501.77197 L
+438.31276 501.77197 L
+438.31276 503.78797 L
+S
+@J
+
+@rax %Note: Object
+405.00000 494.78542 441.00000 494.78655 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+405.00000 494.78598 m
+438.32891 494.78598 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+438.31276 494.78797 m
+438.31276 496.80198 L
+440.99802 496.80198 L
+443.68526 494.78797 L
+440.99802 492.77197 L
+438.31276 492.77197 L
+438.31276 494.78797 L
+S
+@J
+
+@rax %Note: Object
+432.00000 593.78598 441.00000 593.78712 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+432.00000 593.78655 m
+438.32891 593.78655 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+438.31276 593.78854 m
+438.31276 595.80255 L
+440.99802 595.80255 L
+443.68526 593.78854 L
+440.99802 591.77254 L
+438.31276 591.77254 L
+438.31276 593.78854 L
+S
+@J
+
+@rax %Note: Object
+423.00000 584.78542 441.00000 584.78655 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+423.00000 584.78598 m
+438.32891 584.78598 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+438.31276 584.78797 m
+438.31276 586.80198 L
+440.99802 586.80198 L
+443.68526 584.78797 L
+440.99802 582.77197 L
+438.31276 582.77197 L
+438.31276 584.78797 L
+S
+@J
+
+@rax %Note: Object
+414.00000 575.78542 441.00000 575.78655 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+414.00000 575.78598 m
+438.32891 575.78598 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+438.31276 575.78797 m
+438.31276 577.80198 L
+440.99802 577.80198 L
+443.68526 575.78797 L
+440.99802 573.77197 L
+438.31276 573.77197 L
+438.31276 575.78797 L
+S
+@J
+
+@rax %Note: Object
+405.00000 566.78542 441.00000 566.78655 @E
+0 J 0 j [] 0 d 0 R 0 @G
+0.00 0.00 0.00 1.00 K
+0 0.50003 0.50003 0.00000 @w
+/$fm 0 def
+405.00000 566.78598 m
+438.32891 566.78598 L
+S
+@j
+0.00 0.00 0.00 1.00 K
+0.00 0.00 0.00 1.00 k
+0 @g
+0 @G
+[] 0 d 0 J 0 j
+0 R 0 O
+0 1.00800 1.00800 0 @w
+438.31276 566.78797 m
+438.31276 568.80198 L
+440.99802 568.80198 L
+443.68526 566.78797 L
+440.99802 564.77197 L
+438.31276 564.77197 L
+438.31276 566.78797 L
+S
+@J
+
+@rax 401.24721 679.50000 435.36756 708.72038 @E
+[0.00028346 0.00000000 0.00000000 0.00028346 418.49998469 701.78709244] @tm
+ 0 O 0 @g
+0.00 0.00 0.00 1.00 k
+e
+/_R23-TimesNewRoman 35278.00000 z
+-34288 0 (from) @t
+-60746 -39071 (previous) @t
+-52908 -78142 (column) @t
+T
+@rs
+@rs
+@EndSysCorelDict
+end
+%ps_include: inclusion end
+grestore
+PS-include-dict-dw begin
+o 0 ne {gsave A defaultmatrix /A ed llx lly nice urx ury nice
+	initgraphics 0.1 setlinewidth boxpath stroke grestore} if
+clear o-stack aload pop
+context end restore
+%ps_include: end
+%%EndDocument
+DpostDict begin
+/saveobj save def
+mark
+10 R f
+( do)1 132( What)1 273( it appear that that is happening ?)7 1372( Does)1 262( the picture.)2 488(This is text that is supposed to go alongside)8 1793 6 720 4320 t
+( is text that)3 454( This)1 232( you for your support.)4 890( Thank)1 309( matter.)1 309( let me know your thoughts in this)7 1405( Please)1 310(you think.)1 411 8 720 4440 t
+( Please)1 308( you think.)2 437( do)1 127( What)1 268( it appear that that is happening ?)7 1337( Does)1 257(is supposed to go alongside the picture.)6 1586 7 720 4560 t
+( is text that is supposed to go)7 1194( This)1 233( you for your support.)4 894( Thank)1 310( in this matter.)3 593(let me know your thoughts)4 1096 6 720 4680 t
+( let me know your)4 735( Please)1 307( do you think.)3 562( What)1 268( is happening ?)3 608( it appear that that)4 725( Does)1 256(alongside the picture.)2 859 8 720 4800 t
+( is text that is supposed to go alongside the)9 1849( This)1 243( your support.)2 588( you for)2 348( Thank)1 321(thoughts in this matter.)3 971 6 720 4920 t
+( let me know your thoughts in)6 1236( Please)1 311( do you think.)3 574( What)1 272( it appear that that is happening ?)7 1365(picture. Does)1 562 6 720 5040 t
+( it)1 85( Does)1 259( is supposed to go alongside the picture.)7 1627( is text that)3 457( This)1 233( you for your support.)4 894( Thank)1 310(this matter.)1 455 8 720 5160 t
+( let me know your thoughts in this matter.)8 1811( Please)1 322( do you think.)3 607( What)1 283(appear that that is happening ?)5 1297 5 720 5280 t
+( it appear that)3 564( Does)1 261( that is supposed to go alongside the picture.)8 1822( is text)2 281( This)1 235(Thank you for your support.)4 1157 6 720 5400 t
+( you for)2 332( Thank)1 313( let me know your thoughts in this matter.)8 1739( Please)1 313( do you think.)3 577( What)1 273(that is happening ?)3 773 7 720 5520 t
+( it appear that that is happening)6 1254( Does)1 255( alongside the picture.)3 882( is text that is supposed to go)7 1166( This)1 229(your support.)1 534 6 720 5640 t
+( This)1 232( you for your support.)4 890( Thank)1 309( thoughts in this matter.)4 964( let me know your)4 739( Please)1 308( do you think.)3 565(? What)1 313 8 720 5760 t
+( do you)2 316( What)1 274( it appear that that is happening ?)7 1379( Does)1 263(is text that is supposed to go alongside the picture.)9 2088 5 720 5880 t
+( is text that is)4 570( This)1 237( you for your support.)4 910( Thank)1 314( know your thoughts in this matter.)6 1457( let me)2 288(think. Please)1 544 7 720 6000 t
+( let)1 125( Please)1 305( do you think.)3 556( What)1 266( that that is happening ?)5 952( it appear)2 373( Does)1 256(supposed to go alongside the picture.)5 1487 8 720 6120 t
+( go)1 138( is text that is supposed to)6 1106( This)1 240( you for your support.)4 922( Thank)1 317(me know your thoughts in this matter.)6 1597 6 720 6240 t
+( let me know your)4 731( Please)1 306( you think.)2 433( do)1 127( What)1 268( it appear that that is happening ?)7 1337( Does)1 257(alongside the picture.)2 861 8 720 6360 t
+( you for your support.)4 874( Thank)1 305(thoughts in this matter.)3 923 3 720 6480 t
+cleartomark
+showpage
+saveobj restore
+end
+%%EndPage: 1 1
+%%Page: 2 2
+DpostDict begin
+/saveobj save def
+mark
+2 pagesetup
+10 R f
+(- 2 -)2 166 1 2797 480 t
+cleartomark
+saveobj restore
+end
+%%BeginDocument: registers1.eps
+%ps_include: begin
+save
+/ed {exch def} def
+{} /showpage ed
+{} /copypage ed
+{} /erasepage ed
+{} /letter ed
+currentdict /findfont known systemdict /findfont known and {
+	/findfont systemdict /findfont get def
+} if
+36 dict dup /PS-include-dict-dw ed begin
+/context ed
+count array astore /o-stack ed
+%ps_include: variables begin
+/llx 101 def
+/lly 255 def
+/urx 509 def
+/ury 671 def
+/w 0 def
+/o 0 def
+/s 0 def
+/cx 2880 def
+/cy -2520 def
+/sx 3600 def
+/sy 2880 def
+/ax 0.5 def
+/ay 0.5 def
+/rot -0 def
+%ps_include: variables end
+{llx lly urx ury} /bbox ed
+{newpath 2 index exch 2 index exch dup 6 index exch
+ moveto 3 {lineto} repeat closepath} /boxpath ed
+{dup mul exch dup mul add sqrt} /len ed
+{2 copy gt {exch} if pop} /min ed
+{2 copy lt {exch} if pop} /max ed
+{transform round exch round exch A itransform} /nice ed
+{6 array} /n ed
+n defaultmatrix n currentmatrix n invertmatrix n concatmatrix /A ed
+urx llx sub 0 A dtransform len /Sx ed
+0 ury lly sub A dtransform len /Sy ed
+llx urx add 2 div lly ury add 2 div A transform /Cy ed /Cx ed
+rot dup sin abs /S ed cos abs /C ed
+Sx S mul Sy C mul add /H ed
+Sx C mul Sy S mul add /W ed
+sy H div /Scaley ed
+sx W div /Scalex ed
+s 0 eq {Scalex Scaley min dup /Scalex ed /Scaley ed} if
+sx Scalex W mul sub 0 max ax 0.5 sub mul cx add /cx ed
+sy Scaley H mul sub 0 max ay 0.5 sub mul cy add /cy ed
+urx llx sub 0 A dtransform exch atan rot exch sub /rot ed
+n currentmatrix initgraphics setmatrix
+cx cy translate
+Scalex Scaley scale
+rot rotate
+Cx neg Cy neg translate
+A concat
+bbox boxpath clip newpath
+w 0 ne {gsave bbox boxpath 1 setgray fill grestore} if
+end
+gsave
+%ps_include: inclusion begin
+%!PS-Adobe-3.0 EPSF-3.0
+%RBINumCopies: 1
+%RBINupNess: 1 1
+%ADO_ImageableArea: 30 31 582 761
+userdict/dscInfo 5 dict dup begin
+/Title(registers1.dr)def
+/Creator(AppleWorks: LaserWriter 8 8.6)def
+/CreationDate(19:34 Saturday, 2000 January, 08)def
+/For(dam)def
+/Pages 1 def
+end put
+/md 200 dict def md begin/currentpacking where {pop /sc_oldpacking currentpacking def true setpacking}if
+/bd{bind def}bind def
+/ld{load def}bd
+/xs{exch store}bd
+/Z{0 def}bd
+/T true def
+/F false def
+/level2
+/languagelevel where
+{
+pop languagelevel 2 ge
+}{
+F
+}ifelse
+def
+/odictstk Z
+/oopstk Z
+/fcl
+{
+count oopstk sub dup 0 gt
+{
+{pop}repeat
+}{
+pop
+}ifelse
+countdictstack odictstk sub dup 0 gt
+{
+{end}repeat
+}{
+pop
+}ifelse
+}bd
+/sfcl2
+{
+/odictstk countdictstack store
+count/oopstk xs
+}bd
+/efcl2
+{
+stopped{$error/newerror F put}if
+fcl
+}bd
+/noload Z
+/startnoload
+{
+{/noload save store}if
+}bd
+/endnoload
+{
+{noload restore}if
+}bd
+/setcopies{
+level2
+{
+1 dict begin/NumCopies exch def currentdict end setpagedevice
+}{
+userdict/#copies 3 -1 roll put
+}ifelse
+}def
+level2 startnoload
+/ststpgdev{}def
+/dopgdev{}def
+/stpgdev{}def
+/buf Z
+/didstop T def
+/sfcl
+{
+/didstop T store
+/odictstk countdictstack store
+count/oopstk xs
+currentfile cvx stopped
+{
+$error/newerror F put
+didstop
+{
+save/didstop xs
+/buf vmstatus exch sub exch pop dup 0 lt{pop 0}if
+dup 64000 gt{pop 64000}if string store
+{
+currentfile buf readline
+{
+(}efcl)eq{exit}if
+}{
+/UnexpectedEOF errordict/rangecheck get exec
+}ifelse
+}loop
+didstop restore
+}if
+}if
+fcl
+}bd
+/efcl
+{
+/didstop F store
+exec
+stop
+}bd
+level2 endnoload level2 not startnoload
+/setpagedevice where{pop/realstpgdev/setpagedevice ld}if
+/SC_topddict Z
+/SC_spdict Z
+/$spusrdict F def
+/dopgdev
+{
+userdict/setpagedevice undef
+$spusrdict
+{
+userdict/setpagedevice/realstpgdev load put
+/$spusrdict F store
+}if
+SC_topddict realstpgdev
+}bd
+/stpgdev
+{
+SC_topddict dup 3 -1 roll
+{
+SC_spdict 2 index known
+{
+SC_spdict 2 index get
+dup 3 -1 roll
+{
+put dup
+}forall
+pop put dup
+}{
+put dup
+}ifelse
+}forall
+pop pop
+}bd
+/ststpgdev
+{
+/setpagedevice where
+{
+userdict eq
+{
+/$spusrdict T store
+}if
+}if
+userdict/setpagedevice/stpgdev load put
+/SC_topddict 0 dict store
+/SC_spdict 3 dict begin
+/InputAttributes 0 dict def
+/Policies 0 dict def
+/OutputAttributes 0 dict def
+currentdict
+end
+store
+}def
+/sfcl/sfcl2 ld
+/efcl/efcl2 ld
+level2 not endnoload
+/xdf{exch def}bd
+/:L/lineto
+/lw/setlinewidth
+/:M/moveto
+/rl/rlineto
+/rm/rmoveto
+/:C/curveto
+/:T/translate
+/:K/closepath
+/:mf/makefont
+/gS/gsave
+/gR/grestore
+/np/newpath
+12{ld}repeat
+/framewidth -1 def
+/QDframwid -1 def
+/numframes Z
+/mTS matrix def
+/$m matrix def
+/av 86 def
+/por T def
+/normland F def
+/psb-nosave{}def
+/pse-nosave{}def
+/us Z
+/psb{/us save store}bd
+/pse{us restore}bd
+/level3
+/languagelevel where
+{
+pop languagelevel 3 ge
+}{
+F
+}ifelse
+def
+level2 startnoload
+/setjob
+{
+statusdict/jobname 3 -1 roll put
+}bd
+/devg/DeviceGray def
+/devr/DeviceRGB def
+/devc/DeviceCMYK def
+level2 endnoload level2 not startnoload
+/setjob
+{
+1 dict begin/JobName xdf currentdict end setuserparams
+}bd
+/devg[/DeviceGray]def
+/devr[/DeviceRGB]def
+/devc[/DeviceCMYK]def
+level2 not endnoload
+/pm Z
+/mT Z
+/sD Z
+/initializepage
+{
+mT $m currentmatrix mTS concatmatrix pop
+/pm save store mT concat
+}bd
+/endp
+{
+pm restore
+}bd
+/adjRect
+{
+dup 2 mul 6 2 roll
+4 index sub exch 5 -1 roll sub exch
+4 2 roll
+4 index add exch 5 -1 roll add exch
+4 2 roll
+}bd
+/frame1up
+{
+gS
+mTS setmatrix
+QDframwid lw
+/setstrokeadjust where{pop T setstrokeadjust}if
+clippath pathbbox
+2 index sub exch
+3 index sub exch
+currentlinewidth framewidth mul
+adjRect
+numframes dup 0 lt{pop 0}if
+{
+4 copy
+rS
+currentlinewidth framewidth
+mul 4 mul
+adjRect
+}repeat
+pop pop pop pop
+gR
+}bd
+/$c devr def
+/rectclip where
+{
+pop/rC/rectclip ld
+}{
+/rC
+{
+np 4 2 roll
+:M
+1 index 0 rl
+0 exch rl
+neg 0 rl
+:K
+clip np
+}bd
+}ifelse
+/rectfill where
+{
+pop/rF/rectfill ld
+}{
+/rF
+{
+gS
+np
+4 2 roll
+:M
+1 index 0 rl
+0 exch rl
+neg 0 rl
+fill
+gR
+}bd
+}ifelse
+/rectstroke where
+{
+pop/rS/rectstroke ld
+}{
+/rS
+{
+gS
+np
+4 2 roll
+:M
+1 index 0 rl
+0 exch rl
+neg 0 rl
+:K
+stroke
+gR
+}bd
+}ifelse
+level3 startnoload
+/rectclip where
+{
+pop/rCa/rectclip ld
+}{
+/rCa
+{
+np 0
+1 index length 4 idiv
+{
+2 copy
+4 getinterval
+aload pop
+4 2 roll
+:M
+1 index 0 rl
+0 exch rl
+neg 0 rl
+:K
+4 add
+}repeat
+clip np
+pop pop
+}bd
+}ifelse
+/savedstack Z
+/subsavedstack Z
+/execstring Z
+/saferCa
+{
+/execstring xs
+/odictstk countdictstack store
+/oopstk 0 store
+count 0 ne
+{
+savedstack 0 eq{
+count 100 gt{count}{100}ifelse
+array/savedstack xs
+}{
+count savedstack length gt
+{
+count array/savedstack xs
+}if
+}ifelse
+count savedstack 0 3 -1 roll
+getinterval
+astore/subsavedstack xs
+}{
+/subsavedstack 0 store
+}ifelse
+execstring cvx stopped
+{
+$error/newerror F put
+newpath
+}if
+fcl
+subsavedstack 0 ne{
+subsavedstack aload pop
+}if
+}bd
+level3 endnoload level3 not startnoload
+/saferCa/pop ld
+level3 not endnoload
+/G/setgray ld
+/:F1/setgray ld
+/:F/setrgbcolor ld
+/:F4/setcmykcolor where
+{
+pop
+/setcmykcolor ld
+}{
+{
+3
+{
+dup
+3 -1 roll add
+dup 1 gt{pop 1}if
+1 exch sub
+4 1 roll
+}repeat
+pop
+setrgbcolor
+}bd
+}ifelse
+/:Fx
+{
+counttomark
+{0{G}0{:F}{:F4}}
+exch get
+exec
+pop
+}bd
+/$cs Z
+/:rg{devr :ss}bd
+/:sc{$cs :ss}bd
+/:dc
+{
+dup type/arraytype eq{0 get}if
+dup/DeviceCMYK eq
+{
+pop devc
+}{
+/DeviceGray eq
+{
+devg
+}{
+devr
+}ifelse
+}ifelse
+/$cs xdf
+}bd
+/:sgl{}def
+/:dr{}bd
+/:fCRD{pop}bd
+/:ckcs{}bd
+/:ss{/$c xdf}bd
+/@a
+{
+np :M 0 rl :L 0 exch rl 0 rl :L fill
+}bd
+/@b
+{
+np :M 0 rl 0 exch rl :L 0 rl 0 exch rl fill
+}bd
+/@c
+{
+moveto 0 rlineto stroke
+}bd
+/@w
+{
+moveto 0 exch rlineto stroke
+}bd
+/arct where
+{
+pop
+}{
+/arct
+{
+arcto pop pop pop pop
+}bd
+}ifelse
+/x1 Z
+/x2 Z
+/y1 Z
+/y2 Z
+/rad Z
+/@q
+{
+/rad xs
+/y2 xs
+/x2 xs
+/y1 xs
+/x1 xs
+np
+x2 x1 add 2 div y1 :M
+x2 y1 x2 y2 rad arct
+x2 y2 x1 y2 rad arct
+x1 y2 x1 y1 rad arct
+x1 y1 x2 y1 rad arct
+fill
+}bd
+/@s
+{
+/rad xs
+/y2 xs
+/x2 xs
+/y1 xs
+/x1 xs
+np
+x2 x1 add 2 div y1 :M
+x2 y1 x2 y2 rad arct
+x2 y2 x1 y2 rad arct
+x1 y2 x1 y1 rad arct
+x1 y1 x2 y1 rad arct
+:K
+stroke
+}bd
+/@i
+{
+np 0 360 arc fill
+}bd
+/@j
+{
+gS
+np
+:T
+scale
+0 0 .5 0 360 arc
+fill
+gR
+}bd
+/@e
+{
+np
+0 360 arc
+:K
+stroke
+}bd
+/@f
+{
+np
+$m currentmatrix
+pop
+:T
+scale
+0 0 .5 0 360 arc
+:K
+$m setmatrix
+stroke
+}bd
+/@k
+{
+gS
+np
+:T
+0 0 :M
+0 0 5 2 roll
+arc fill
+gR
+}bd
+/@l
+{
+gS
+np
+:T
+0 0 :M
+scale
+0 0 .5 5 -2 roll arc
+fill
+gR
+}bd
+/@m
+{
+np
+arc
+stroke
+}bd
+/@n
+{
+np
+$m currentmatrix
+pop
+:T
+scale
+0 0 .5 5 -2 roll arc
+$m setmatrix
+stroke
+}bd
+/S/show ld
+/A{
+0.0 exch ashow
+}bd
+/R{
+0.0 exch 32 exch widthshow
+}bd
+/W{
+0.0 3 1 roll widthshow
+}bd
+/J{
+0.0 32 4 2 roll 0.0 exch awidthshow
+}bd
+/V{
+0.0 4 1 roll 0.0 exch awidthshow
+}bd
+/fcflg T def
+/fc{
+fcflg{
+vmstatus exch sub 50000 lt{
+(%%[ Warning: Running out of memory ]%%\r)print flush/fcflg F store
+}if pop
+}if
+}bd
+/$f[1 0 0 -1 0 0]def
+/:ff{$f :mf}bd
+/MacEncoding StandardEncoding 256 array copy def
+MacEncoding dup 9/space put dup 39/quotesingle put 96/grave put
+/Adieresis/Aring/Ccedilla/Eacute/Ntilde/Odieresis/Udieresis/aacute
+/agrave/acircumflex/adieresis/atilde/aring/ccedilla/eacute/egrave
+/ecircumflex/edieresis/iacute/igrave/icircumflex/idieresis/ntilde/oacute
+/ograve/ocircumflex/odieresis/otilde/uacute/ugrave/ucircumflex/udieresis
+/dagger/degree/cent/sterling/section/bullet/paragraph/germandbls
+/registered/copyright/trademark/acute/dieresis/notequal/AE/Oslash
+/infinity/plusminus/lessequal/greaterequal/yen/mu/partialdiff/summation
+/product/pi/integral/ordfeminine/ordmasculine/Omega/ae/oslash
+/questiondown/exclamdown/logicalnot/radical/florin/approxequal/Delta/guillemotleft
+/guillemotright/ellipsis/space/Agrave/Atilde/Otilde/OE/oe
+/endash/emdash/quotedblleft/quotedblright/quoteleft/quoteright/divide/lozenge
+/ydieresis/Ydieresis/fraction/Euro/guilsinglleft/guilsinglright/fi/fl
+/daggerdbl/periodcentered/quotesinglbase/quotedblbase/perthousand
+/Acircumflex/Ecircumflex/Aacute/Edieresis/Egrave/Iacute/Icircumflex/Idieresis/Igrave
+/Oacute/Ocircumflex/apple/Ograve/Uacute/Ucircumflex/Ugrave/dotlessi/circumflex/tilde
+/macron/breve/dotaccent/ring/cedilla/hungarumlaut/ogonek/caron
+MacEncoding 128 128 getinterval astore pop
+level2 startnoload
+/copyfontdict
+{
+findfont dup length dict
+begin
+{
+1 index/FID ne{def}{pop pop}ifelse
+}forall
+}bd
+/$ckeyd md def
+/:skey
+{
+1 index maxlength 2 index
+length sub
+ge
+{
+begin
+/$mkeys 20 dict def
+/$mkeys load
+end
+dup/$ckeyd xs
+}if
+3 1 roll put
+}bd
+/fD1pass
+{
+40
+$ckeyd
+//md
+ne
+{
+pop 1
+}if
+$ckeyd exch
+:skey
+}bd
+/:searchdict Z
+/:searchdict
+{
+exch 2 copy
+known
+{
+get
+}{
+exch/$mkeys
+get
+:searchdict
+}ifelse
+}bd
+/lU
+{
+//md exch 2 copy
+known
+{
+get
+}{
+exch
+/$mkeys get
+:searchdict
+}ifelse
+}bd
+/:xs{
+exch 0 1 2 index length 1 sub{
+3 copy
+gsave 1 getinterval show grestore
+exch
+get 0.0
+rmoveto
+}for pop pop
+}bd
+/:ys{
+exch 0 1 2 index length 1 sub{
+3 copy
+gsave 1 getinterval show grestore
+exch
+get 0.0 exch
+rmoveto
+}for pop pop
+}bd
+/:xys{
+exch 0 1 2 index length 1 sub{
+3 copy
+gsave 1 getinterval show grestore
+exch 2 mul 2 copy
+1 add get 3 -2 roll get exch
+rmoveto
+}for pop pop
+}bd
+level2 endnoload level2 not startnoload
+/copyfontdict
+{
+findfont dup length dict
+copy
+begin
+}bd
+/fD1pass/def ld
+/lU/load ld
+level2{
+/:xs/xshow ld
+/:ys/yshow ld
+/:xys/xyshow ld
+}if
+level2 not endnoload
+/fD Z
+/sf Z
+/scf Z
+/sf1pass
+{
+lU setfont
+}bd
+/scf1pass
+{
+exch lU exch scalefont fD
+}bd
+/scf2pass
+{
+scalefont fD
+}bd
+md/fontname known not{
+/fontname/customfont def
+}if
+/Encoding Z
+/:mre
+{
+copyfontdict
+/Encoding MacEncoding def
+fontname currentdict
+end
+definefont :ff fD
+}bd
+/:bsr
+{
+copyfontdict
+/Encoding Encoding 256 array copy def
+Encoding dup
+}bd
+/pd{put dup}bd
+/:esr
+{
+pop pop
+fontname currentdict
+end
+definefont :ff fD
+}bd
+/ps Z
+/fz{/ps xs}bd
+/cF/currentfont ld
+/mbf
+{
+/makeblendedfont where
+{
+pop
+makeblendedfont
+/ABlend exch definefont
+}{
+pop
+}ifelse
+fD
+}def
+/currentpacking where {pop sc_oldpacking setpacking}if end
+md begin
+/fD/def ld/sf/setfont ld /scf/scf2pass ld
+/mT[1 0 0 -1 30 761]def
+/sD 16 dict def
+/f44/Helvetica
+:mre
+/f58 f44 10 scf
+/f71 f44 12 scf
+/Courier findfont[10 0 0 -10 0 0]:mf setfont
+%PostScript Hack by Mike Brors 12/7/90
+/DisableNextSetRGBColor
+{
+userdict begin
+/setrgbcolor 
+{
+pop
+pop
+pop
+userdict begin
+/setrgbcolor systemdict /setrgbcolor get def
+end
+} def
+end
+} bind def
+/bcarray where {
+pop
+bcarray 2 {
+/da 4 ps div def
+df setfont gsave cs wi
+1 index 0 ne{exch da add exch}if grestore setcharwidth
+cs 0 0 smc da 0 smc da da smc 0 da smc c
+gray
+{ gl}
+{1 setgray}ifelse
+da 2. div dup moveto show
+}bind put
+} if
+%
+% Used to snap to device pixels, 1/4th of the pixel in.
+/stp {  % x y  pl  x y                % Snap To Pixel, pixel  (auto stroke adjust)
+transform
+0.25 sub round 0.25 add exch
+0.25 sub round 0.25 add exch
+itransform
+} bind def
+
+/snapmoveto { % x y  m  -             % moveto, auto stroke adjust
+stp  moveto
+} bind def
+
+/snaplineto { % x y  l  -             % lineto, auto stroke adjust
+stp lineto
+} bind def
+initializepage
+gS 0 0 552 730 rC
+1 G
+296 242 37 28 rF
+0 G
+296.5 242.5 36 27 rS
+1 G
+80 242 37 28 rF
+0 G
+80.5 242.5 36 27 rS
+1 G
+152 242 37 28 rF
+0 G
+152.5 242.5 36 27 rS
+1 G
+224 242 37 28 rF
+0 G
+224.5 242.5 36 27 rS
+1 G
+377 215 73 28 rF
+0 G
+377.5 215.5 72 27 rS
+90 252 14 12 rC
+gR
+gS 85 216 24 48 rC
+90 261 :M
+f58 sf
+.66(AS)A
+gR
+gS 81 108 144 60 rC
+gR
+gS 76 72 154 96 rC
+81 117 :M
+f58 sf
+-.112(8 ML    Active Stations)A
+81 129 :M
+.039 .004(8 DEE Active Stations)J
+81 141 :M
+-.183(2 ML    columns)A
+81 153 :M
+.031 .003(2 DEE columns)J
+81 165 :M
+-.015(4  sharing groups)A
+gR
+gS 81 189 36 12 rC
+gR
+gS 76 153 46 48 rC
+92 198 :M
+f58 sf
+.113(ML)A
+gR
+gS 225 189 36 12 rC
+gR
+gS 220 153 46 48 rC
+236 198 :M
+f58 sf
+.113(ML)A
+gR
+gS 297 189 36 12 rC
+gR
+gS 292 153 46 48 rC
+305 198 :M
+f58 sf
+.221(DEE)A
+gR
+gS 153 189 36 12 rC
+gR
+gS 148 153 46 48 rC
+161 198 :M
+f58 sf
+.221(DEE)A
+gR
+gS 162 252 14 12 rC
+gR
+gS 157 216 24 48 rC
+162 261 :M
+f58 sf
+.66(AS)A
+gR
+gS 234 252 14 12 rC
+gR
+gS 229 216 24 48 rC
+234 261 :M
+f58 sf
+.66(AS)A
+gR
+gS 306 252 14 12 rC
+gR
+gS 301 216 24 48 rC
+306 261 :M
+1 G
+f58 sf
+0 G
+.66(AS)A
+gR
+1 G
+gS 0 0 552 730 rC
+80 314 37 28 rF
+0 G
+80.5 314.5 36 27 rS
+1 G
+152 314 37 28 rF
+0 G
+152.5 314.5 36 27 rS
+1 G
+224 314 37 28 rF
+0 G
+224.5 314.5 36 27 rS
+1 G
+296 314 37 28 rF
+0 G
+296.5 314.5 36 27 rS
+90 324 14 12 rC
+gR
+gS 85 288 24 48 rC
+90 333 :M
+0 G
+f58 sf
+.66(AS)A
+gR
+0 G
+gS 162 324 14 12 rC
+gR
+gS 157 288 24 48 rC
+162 333 :M
+f58 sf
+.66(AS)A
+gR
+gS 234 324 14 12 rC
+gR
+gS 229 288 24 48 rC
+234 333 :M
+f58 sf
+.66(AS)A
+gR
+gS 306 324 14 12 rC
+gR
+gS 301 288 24 48 rC
+306 333 :M
+1 G
+f58 sf
+0 G
+.66(AS)A
+gR
+1 G
+gS 0 0 552 730 rC
+80 386 37 28 rF
+0 G
+80.5 386.5 36 27 rS
+1 G
+152 386 37 28 rF
+0 G
+152.5 386.5 36 27 rS
+1 G
+224 386 37 28 rF
+0 G
+224.5 386.5 36 27 rS
+1 G
+296 386 37 28 rF
+0 G
+296.5 386.5 36 27 rS
+90 396 14 12 rC
+gR
+gS 85 360 24 48 rC
+90 405 :M
+0 G
+f58 sf
+.66(AS)A
+gR
+0 G
+gS 162 396 14 12 rC
+gR
+gS 157 360 24 48 rC
+162 405 :M
+f58 sf
+.66(AS)A
+gR
+gS 234 396 14 12 rC
+gR
+gS 229 360 24 48 rC
+234 405 :M
+f58 sf
+.66(AS)A
+gR
+gS 306 396 14 12 rC
+gR
+gS 301 360 24 48 rC
+306 405 :M
+1 G
+f58 sf
+0 G
+.66(AS)A
+gR
+1 G
+gS 0 0 552 730 rC
+80 458 37 28 rF
+0 G
+80.5 458.5 36 27 rS
+1 G
+152 458 37 28 rF
+0 G
+152.5 458.5 36 27 rS
+1 G
+224 458 37 28 rF
+0 G
+224.5 458.5 36 27 rS
+1 G
+296 458 37 28 rF
+0 G
+296.5 458.5 36 27 rS
+90 468 14 12 rC
+gR
+gS 85 432 24 48 rC
+90 477 :M
+0 G
+f58 sf
+.66(AS)A
+gR
+0 G
+gS 162 468 14 12 rC
+gR
+gS 157 432 24 48 rC
+162 477 :M
+f58 sf
+.66(AS)A
+gR
+gS 234 468 14 12 rC
+gR
+gS 229 432 24 48 rC
+234 477 :M
+f58 sf
+.66(AS)A
+gR
+gS 306 468 14 12 rC
+gR
+gS 301 432 24 48 rC
+306 477 :M
+f58 sf
+.66(AS)A
+gR
+gS 0 0 552 730 rC
+.016 lw
+71.5 233.5 126 117 rS
+215.5 233.5 126 117 rS
+71.5 377.5 126 117 rS
+215.5 377.5 126 117 rS
+158 92 279 14 rC
+gR
+gS 153 56 289 50 rC
+217 102 :M
+f71 sf
+.28 .028(ISA Architected Register Files)J
+gR
+gS 0 0 552 730 rC
+28 395.5 215 @w
+28 413.5 215 @w
+28 431.5 215 @w
+19 197 251.5 @c
+19 197 467.5 @c
+19 197 323.5 @c
+19 197 395.5 @c
+100 341 251.5 @c
+100 341 323.5 @c
+100 341 395.5 @c
+100 341 467.5 @c
+1 G
+377 287 73 28 rF
+0 G
+377.5 287.5 72 27 rS
+28 395.5 287 @w
+28 413.5 287 @w
+28 431.5 287 @w
+1 G
+377 359 73 28 rF
+0 G
+377.5 359.5 72 27 rS
+28 395.5 359 @w
+28 413.5 359 @w
+28 431.5 359 @w
+1 G
+377 431 73 28 rF
+0 G
+377.5 431.5 72 27 rS
+28 395.5 431 @w
+28 413.5 431 @w
+28 431.5 431 @w
+10 386.5 242 @w
+10 404.5 242 @w
+10 422.5 242 @w
+10 440.5 242 @w
+10 386.5 314 @w
+10 404.5 314 @w
+10 422.5 314 @w
+10 440.5 314 @w
+10 386.5 386 @w
+10 404.5 386 @w
+10 422.5 386 @w
+10 440.5 386 @w
+10 386.5 458 @w
+10 404.5 458 @w
+10 422.5 458 @w
+10 440.5 458 @w
+4 lw
+292 477 214 @w
+31 448 225 @c
+31 448 297 @c
+31 448 369 @c
+31 448 441 @c
+360 189 108 12 rC
+gR
+gS 355 153 118 48 rC
+377 198 :M
+f58 sf
+-.087(ISA  register files)A
+gR
+endp
+showpage
+end
+%ps_include: inclusion end
+grestore
+PS-include-dict-dw begin
+o 0 ne {gsave A defaultmatrix /A ed llx lly nice urx ury nice
+	initgraphics 0.1 setlinewidth boxpath stroke grestore} if
+clear o-stack aload pop
+context end restore
+%ps_include: end
+%%EndDocument
+DpostDict begin
+/saveobj save def
+mark
+cleartomark
+showpage
+saveobj restore
+end
+%%EndPage: 2 2
+%%Trailer
+DpostDict begin
+done
+end
+%%Pages: 2
+%%DocumentFonts: Times-Roman

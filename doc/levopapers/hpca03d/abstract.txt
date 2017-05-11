@@ -1,0 +1,16 @@
+We discuss how time tags can be used for the enforcement of
+program dependencies.  Time tags can serve as the basic ordering
+enforcement mechanism when a large number of instructions are executing
+concurrently.  Proposed and future microarchitectures can have hundreds
+or several hundreds of instructions in flight simultaneously. Using
+standard reservation tags, physical register addresses, and reorder
+buffers, performance does not scale well even for moderate-sized
+instruction windows.  Time tags address much of the complication of
+these units.
+
+In this paper we discuss the design, use and management of time tags.
+We also provide simulation data for an example microarchitecture that
+illustrates the advantages of using time tags for dependency
+enforcement.  IPC's in the range of 3.8-5.1 are obtained for the range
+of machine configurations studied running SpecInt-2000 and SpecInt-95
+programs.

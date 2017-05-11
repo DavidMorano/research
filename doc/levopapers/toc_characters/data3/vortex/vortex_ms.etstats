@@ -1,0 +1,94 @@
+SimpleSim statistics 020905_2356:59
+statistics for job=vortex_ms logid=frodo3153
+started 020905_2128:59 (elapsed time   0-02:28:00)
+real   time=  0-02:28:00.360000
+user   time=  0-00:45:36.360000
+system time=  0-00:00:55.190000
+
+total instructions       600000000
+included instructions    500000000 (100000000:500000000)
+CF instructions           73411795 ( 12.235%)
+CF-IND instructions        6798929 (  1.133%)
+relative branches         59880560 (  9.980%)
+CF-UNC                    29313919 (  4.886%)
+conditional branches      44097876 (  7.350%)
+forward c-branches        36074054 (  6.012%)
+backward c-branches        8023822 (  1.337%)
+branch SS-hammocks         4694798 (  0.782%)
+instructions per BP           11.3384
+= branch path statistics
+instructions per branch path
+IPBP mean                     11.3331
+IPBP stddev                   12.0827
+= branch target-distance statistics
+instructions per forward branch target
+IPFBT mean                    27.8372
+IPFBT stddev                  45.4939
+instructions per backward branch target
+IPBBT mean                     8.0432
+IPBBT stddev                  53.9383
+= hammock branch target-distance statistics
+IPHT mean                      7.5233
+IPHT stddev                    6.6749
+forward c-branches        36074054 ( 81.80 % of conditional)
+backward c-branches        8023822 ( 18.20 % of conditional)
+SS hammocks                4694798 ( 10.65% of conditional)
+= dynamically loaded branch predictors :
+rows                             0
+delay                            0
+= register statistics
+read-interval mean                   3.9710
+read-interval stddev                42.3611
+read-interval overflow               0.0024 %
+lifetime mean                        6.9351
+lifetime stddev                     73.2201
+lifetime overflow                    0.0068 %
+def-use mean                        40.8987
+def-use stddev                     159.8600
+def-use overflow                     0.0127 %
+= memory statistics
+memory reads                 148660140
+memory writes                 99181667
+memory variables               1138632
+memory read variables           227063
+memory write variables          525657
+tracking pages                    2150 (in 68 groups)
+storage allocated                   17 MiBytes
+2^0 density (65536 entries)
+read-interval mean                2985.1212
+read-interval stddev             11891.7349
+read-interval overflow               2.8743 %
+read-interval 70% cov              154.0000
+read-interval 80% cov              544.0000
+read-interval 90% cov             2890.0000
+lifetime mean                     1245.7811
+lifetime stddev                   7414.7559
+lifetime overflow                    0.8128 %
+lifetime 70% cov                    19.0000
+lifetime 80% cov                    60.0000
+lifetime 90% cov                   569.0000
+def-use mean                     21519.2435
+def-use stddev                   29446.8561
+def-use overflow                    29.5077 %
+defuse 70% cov                   55420.0000
+defuse 80% cov                   65535.0000
+defuse 90% cov                   65535.0000
+2^10 density (65536 entries)
+1k read-interval mean               59.9281
+1k read-interval stddev           1719.8225
+1k read-interval overflow            0.0584 %
+1k read-interval 70% cov             0.0000
+1k read-interval 80% cov             0.0000
+1k read-interval 90% cov             2.0000
+1k lifetime mean                     7.3139
+1k lifetime stddev                 510.9653
+1k lifetime overflow                 0.0045 %
+1k lifetime 70% cov                  0.0000
+1k lifetime 80% cov                  0.0000
+1k lifetime 90% cov                  0.0000
+1k def-use mean                  17730.1897
+1k def-use stddev                29036.9217
+1k def-use overflow                 26.7985 %
+1k def-use 70% cov                  54.0000
+1k def-use 80% cov               65535.0000
+1k def-use 90% cov               65535.0000

@@ -1,0 +1,15 @@
+CH16
+
+chapter title
+"Resource Flow Microarchitectures"
+by David Morano, Augustus Uht, and David Kaeli
+
+is chapter 16 in the book 
+"Speculative Execution in High Performance Computer Architectures"
+
+edited by
+D.R.Kaili and P.Yew
+
+Chapman & Hall/CRC Press
+ISBN-10 1584884479
+

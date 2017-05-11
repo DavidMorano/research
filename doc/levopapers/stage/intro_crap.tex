@@ -1,0 +1,123 @@
+As computer microarchitectures have increased in complexity and
+size, the need to access and update centralized microarchitectural
+resources has become increasing problematic.
+Access contention for centralized microarchitectural resources
+increases substantially as the machine is enhanced to perform
+a greater and greater number of operations in parallel.
+The goal of these microarchitectures is to generally increase
+program execution performance through the extraction of higher
+amounts of Instruction Level Parallelism (ILP) from substantially
+sequential programs.
+Generally, this is achieved by introducing multiple
+execution units into the microarchitecture where each unit
+can independently process a part of the single threaded program's
+instruction stream.  
+However, these multiple execution units
+still all need access to a common set of architected machine registers
+as well as the architected memory of the computer.
+In addition to access contention for centralized resources,
+the routing complexity required to access and update those
+resources becomes an increasingly difficult implementation issue
+in the silicon layout.
+
+Some example microarchitectures that have explored the
+use of multiple execution units are the Multiscalar-like
+processors~\cite{Sohi95,sundararaman97multiscalar},
+the SuperThreaded processor model~\cite{tsai96superthread},
+and
+the Parallel Execution Window processor model ~\cite{kemp96pew}.
+Other microarchitecture proposals such as the MultiCluster machine
+model by 
+Farkas et al.~\cite{farkas97multicluster} are also in this category.
+More recently, much work on trace processor microarchitecture 
+models~\cite{rotenberg97trace,rotenberg99control,vajapeyam97sequences}
+have also explored multiple distributed execution units and their associated
+problems.
+Another example of a distributed microarchitecture is that
+of the Grid Processor described by Nagarajan et al.~\cite{ nagarajan01grid}.
+Further, microarchitectures have been proposed that feature both
+a large number of distributed execution units along with more
+generalized multipath execution~\cite{morano02high,uht02realizing}.
+These machines are very sensitive to the problems associated with accessing
+centralized machine resources.
+
+In addition to these research-oriented microarchitectures, it should
+be noted that processors such as the 
+Silicon Graphics (SGI) R10000~\cite{yeager96r10000}, 
+and the Digital Equipment (DEC) processor such as the
+Alpha 21264~\cite{kessler98alpha,leibholz97alpha}
+also feature multiple execution units.
+Although these latter processors are not generally considered to
+feature large distributed microarchitectures, they represent a 
+possible trend as to where commercial microarchitectures might evolve.
+As the number of execution units in the microarchitecture increases
+beyond eight, sixteen or more, there will be an increasing need
+to consider the problems associated with accessing both
+the memory hierarchy as well as even the architected register
+file.
+%% NOTE citation for EV8
+
+The more obvious examples of centralized machine resources include
+the register file (for register access and update),
+and the L1 data cache for memory location access and update.
+Other machine resources also form bottlenecks to increasing
+execution parallelism but those are not the focus of this present
+paper.
+In the case of memory, there is a further dimension associated
+with it beyond the problems of access and update contention.
+The additional problem for memory access is the long latencies
+that can be incurred especially for memory reads.
+While the current trend is to use hierarchical memory to mitigate
+long access latencies, the problem of
+handling many accesses simultaneously due to machine parallelism remains.
+An example of a microarchitecture mechanism to better handle
+multiple simultaneous memory requests was the Address Resolution
+Buffer proposed by Franklin and Sohi~\cite{franklin96arb}.
+An example of providing distributed access to the architected
+register file was described by Jiser et al. in their paper on
+\textit{Global Register Partitioning}~\cite{Jiser00}.
+However, their approach (and similar to that of the Multiscalar
+work and the Grid Processor work mentioned above) includes
+the use of the compiler to facilitate a total distributed 
+machine model.
+We are interested in a more restricted design space where an existing
+ISA must be maintained such is the case with the R10000 or the Alpha
+processors.
+
+Our primary goal is to investigate distributed microarchitectures
+(similar to many of the above examples) that feature very large
+instruction windows with multiple distributed execution units.
+We want to explore the feasibility of having in-flight operands
+(of both register or memory variety) that can bypass both the
+architected register file as well the traditional L1
+data cache and the load-store queue (LSQ) for subsequent uses of
+those operands.
+Although register operand bypassing of the architected register 
+file has been done for a long time~\cite{Tom67},
+it has not been expanded into the realm of large and spatially distributed
+microarchitectures.
+Also, as the snooping of the familiar load-store queue can be
+thought of as bypassing (if there is a hit) the L1 data cache, it
+itself simply becomes the next centralized resource for which
+access contention becomes the problem.
+We want to investigate the feasibility of having 
+either register or memory operands bypass any centralized
+machine resource entirely.  
+Two general mechanisms can be envisioned to facilitate
+operand bypass.  
+One such mechanism is the direct forwarding of a generated
+operand from the source instruction to the corresponding sink
+instructions.
+This can generally only occur when
+both the source of the operand and the instruction sinks of the same
+operand are both located within the instruction window of the
+processor simultaneously.  
+This prompts the question as to how
+often this can be expected to occur.
+The second general mechanism to facilitate operand
+bypass is the use of buffering or caching within the execution
+window of the processor.
+More specifically, this would constitute either buffering or caching of
+operands at some spatial location between operand sourcing instructions
+and the corresponding sink instructions for the same operands.
+

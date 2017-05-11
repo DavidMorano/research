@@ -1,0 +1,94 @@
+SimpleSim statistics 020905_2355:01
+statistics for job=gcc_ms logid=frodo2443
+started 020905_2128:21 (elapsed time   0-02:26:40)
+real   time=  0-02:26:40.360000
+user   time=  0-00:43:36.360000
+system time=  0-00:00:56.670000
+
+total instructions       600000000
+included instructions    500000000 (100000000:500000000)
+CF instructions           93618489 ( 15.603%)
+CF-IND instructions        7334125 (  1.222%)
+relative branches         81007269 ( 13.501%)
+CF-UNC                    19033794 (  3.172%)
+conditional branches      74584695 ( 12.431%)
+forward c-branches        55825486 (  9.304%)
+backward c-branches       18759209 (  3.127%)
+branch SS-hammocks         3299586 (  0.550%)
+instructions per BP            6.7038
+= branch path statistics
+instructions per branch path
+IPBP mean                      6.7038
+IPBP stddev                    6.3600
+= branch target-distance statistics
+instructions per forward branch target
+IPFBT mean                    56.1042
+IPFBT stddev                 172.6731
+instructions per backward branch target
+IPBBT mean                    40.5263
+IPBBT stddev                 160.0057
+= hammock branch target-distance statistics
+IPHT mean                      5.7562
+IPHT stddev                    5.0641
+forward c-branches        55825486 ( 74.85 % of conditional)
+backward c-branches       18759209 ( 25.15 % of conditional)
+SS hammocks                3299586 (  4.42% of conditional)
+= dynamically loaded branch predictors :
+rows                             0
+delay                            0
+= register statistics
+read-interval mean                   8.0949
+read-interval stddev                88.4656
+read-interval overflow               0.0065 %
+lifetime mean                       15.2390
+lifetime stddev                    137.5378
+lifetime overflow                    0.0140 %
+def-use mean                       198.4063
+def-use stddev                     900.7402
+def-use overflow                     0.5650 %
+= memory statistics
+memory reads                 118255018
+memory writes                 75759056
+memory variables                793934
+memory read variables           516208
+memory write variables          589683
+tracking pages                     874 (in 28 groups)
+storage allocated                    7 MiBytes
+2^0 density (65536 entries)
+read-interval mean                9955.4194
+read-interval stddev             21265.6713
+read-interval overflow              10.7679 %
+read-interval 70% cov             1602.0000
+read-interval 80% cov             8924.0000
+read-interval 90% cov            65535.0000
+lifetime mean                     1949.6364
+lifetime stddev                   9565.0378
+lifetime overflow                    1.7236 %
+lifetime 70% cov                    29.0000
+lifetime 80% cov                    67.0000
+lifetime 90% cov                  1383.0000
+def-use mean                     36661.0327
+def-use stddev                   31468.6843
+def-use overflow                    52.8990 %
+defuse 70% cov                   65535.0000
+defuse 80% cov                   65535.0000
+defuse 90% cov                   65535.0000
+2^10 density (65536 entries)
+1k read-interval mean              355.5663
+1k read-interval stddev           3606.0816
+1k read-interval overflow            0.1526 %
+1k read-interval 70% cov             1.0000
+1k read-interval 80% cov             8.0000
+1k read-interval 90% cov            70.0000
+1k lifetime mean                   178.0425
+1k lifetime stddev                2720.6531
+1k lifetime overflow                 0.1030 %
+1k lifetime 70% cov                  0.0000
+1k lifetime 80% cov                  0.0000
+1k lifetime 90% cov                  1.0000
+1k def-use mean                  20059.4282
+1k def-use stddev                26758.2221
+1k def-use overflow                 19.3489 %
+1k def-use 70% cov               31838.0000
+1k def-use 80% cov               62159.0000
+1k def-use 90% cov               65535.0000

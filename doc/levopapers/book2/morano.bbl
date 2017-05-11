@@ -1,0 +1,169 @@
+\begin{thebibliography}{10}\setlength{\itemsep}{-1ex}\small
+
+\bibitem{Cle95}
+{Cleary J.G, Pearson M.W and Kinawi H.}
+\newblock {The Architecture of an Optimistic CPU: The Warp Engine}.
+\newblock In {\em {Proceedings of the Hawaii Internationl Conference on System
+  Science}}, pages 163--172, Jan. 1995.
+
+\bibitem{farkas97multicluster}
+{Farkas K.I., Chow P., Jouppi N.P., Vranesic Z.}
+\newblock The multicluster architecture: Reducing cycle time through
+  partiioning.
+\newblock In {\em {Proceedings of the 30th International Symposium on
+  Microarchitecture}}, pages 149--159, 1997.
+
+\bibitem{Fer87}
+{Ferrante J., Ottenstein K., Warren J.}
+\newblock The progream dependence graph and its use in optimization.
+\newblock {\em ACM Transactions on Programming Languages and Systems},
+  9(3):319--349, July 1987.
+
+\bibitem{Franklin92}
+{Franklin M. and Sohi G.S.}
+\newblock {Register Traffic Analysis for Streamlining Inter-Operation
+  Communication in Fine-Grained Parallel Processors}.
+\newblock In {\em {Proceedings of the 25th International Symposium on
+  Microarchitecture}}, pages 236--245, New York, NY, Dec 1992. ACM Press.
+
+\bibitem{Gon97}
+{Gonzalez J. and Gonzalez A.}
+\newblock {Limits on Instruction-Level Parallelism with Data Speculation}.
+\newblock Technical Report {UPC-DAC-1997-34}, {UPC, Barcelona Spain}, 1997.
+
+\bibitem{hinton01pentium}
+{Hinton G., Sager D., Upton M., Boggs D. Carmean D., Kyker A. Roussel P.}
+\newblock The microarchitecture of the {Pentium-4} processor.
+\newblock {\em Intel Technical Journal - Q1}, 2001.
+
+\bibitem{iA64}
+Intel.
+\newblock {\em Intel Itanium2 Processor Reference Manual for Software
+  Development and Optimization}, June 2002.
+
+\bibitem{intel99ia}
+{Intel Corp.}
+\newblock {\em {iA-64 Application Developer's Architecture Guide}}, 1999.
+
+\bibitem{kemp96pew}
+{Kemp G.A., Franklin M.}
+\newblock {PEWs: A} decentralized dynamic scheduler for {ILP} processing.
+\newblock In {\em {Proceedings of the 24th International Conference on Parallel
+  Computing}}, pages 239--246, 1996.
+
+\bibitem{Lam92}
+{Lam M.S. and Wilson R.P.}
+\newblock {Limits of Control Flow on Parallelism}.
+\newblock In {\em {Proc. of ISCA-19}}, pages 46--57. {ACM}, May 1992.
+
+\bibitem{Lip97}
+{Lipasti M.H and Shen J.P.}
+\newblock {Superspeculative Microarchitecture for Beyond AD 2000}.
+\newblock {\em {IEEE Computer}}, {30}({9}), Sep 1997.
+
+\bibitem{morano02predication}
+{Morano D.A.}
+\newblock {Execution-time Instruction Predication}.
+\newblock Technical Report {TR 032002-0100}, {Dept. of ECE, URI}, Mar 2002.
+
+\bibitem{morano02high}
+{Morano D.A., Khalafi A., Kaeli D.R., Uht A.K.}
+\newblock Realizing high {IPC} through a scalable memory-latency tolerant
+  multipath microarchitecture.
+\newblock In {\em Proceedings of MEDEA Workshop {(held in conjuction with
+  PACT'02)}}, 2002.
+
+\bibitem{Nag01}
+{Nagarajan R., Sankaralingam K., Burger D. and Keckler S.W.}
+\newblock A design space evaluation of grid processor architectures.
+\newblock In {\em {Proceedings of the 34th International Symposium on
+  Microarchitecture}}, New York, NY, Nov 2001. ACM Press.
+
+\bibitem{Preston02}
+{Preston R.P., Badeau R.W., Bailey D.W., Bell S.L., Biro L.L., Bowhill W.J.,
+  Dever D.E., Felix S., Gammack R., Germini V., Gowan M.K., Gronowski P.,
+  Jackson D.B., Mehta S., Morton S.V., Pickholtz J.D., Reilly N.H., Smith M.J.}
+\newblock Design of an {8-wide} superscalar {RISC} microprocessor with
+  simultaneous multithreading.
+\newblock In {\em Proceedings of the International Solid State Circuits
+  Conference}, Jan 2002.
+
+\bibitem{Ranganathan98}
+{Ranganathan N. and Franklin M.}
+\newblock An empirical study of decentralized {ILP} execution models.
+\newblock In {\em Proceedings of the {8th} International Conference on
+  Architectural Support for Programming Languages and Operating Systems}, pages
+  272--281, New York, NY, October 1998. ACM Press.
+
+\bibitem{Sank01b}
+{Sankaranarayanan K. and Skadron K.}
+\newblock {A Scheme for Selective Squash and Re-issue for Single-Sided Branch
+  Hammocks}.
+\newblock IEEE Press, Oct 2001.
+
+\bibitem{schlansker00epic}
+{Schlansker M.S. and Rau B.R.}
+\newblock {EPIC}: Explicitly parallel instruction computing.
+\newblock {\em Computer}, 33(2):37--45, Feb 2000.
+
+\bibitem{Smi88}
+{Smith J.E., Pleszkun A.R.}
+\newblock Implementing precise interrupts in pipelined processors.
+\newblock {\em IEEE Transactions on Computers}, 37(5):562--573, Sep 1988.
+
+\bibitem{Sohi95}
+{Sohi G.S., Breach S. and Vijaykumar T.N.}
+\newblock {Multiscalar Processors}.
+\newblock In {\em {Proceedings of the 22th International Symposium on Computer
+  Architecture}}, New York, NY, Jun 1995. ACM Press.
+
+\bibitem{sundararaman97multiscalar}
+{Sundararaman K.K., Franklin M.}
+\newblock Multiscalar execution along a single flow of control.
+\newblock In {\em {Proceedings of the International Conference on Parallel
+  Computing}}, pages 106--113, 1997.
+
+\bibitem{tjaden73matrices}
+{Tjaden G.S., Flynn M.J.}
+\newblock Representation of concurrency with ordering matrices.
+\newblock In {\em Proceedings of {COMPCON}}, volume {C-22}, pages 752--761, Aug
+  1973.
+
+\bibitem{Tom67}
+{Tomasulo R.M.}
+\newblock {An Efficient Algorithm for Exploiting Multiple Arithmetic Units}.
+\newblock {\em {IBM Journal of Research and Development}}, 11(1):25--33, Jan
+  1967.
+
+\bibitem{tsai96superthread}
+{Tsai J-Y., Yew P-C.}
+\newblock The superthreaded architecture: Thread pipelining with run-time data
+  dependence checking and control speculation.
+\newblock In {\em {Proceedings of the International Conference on Parallel
+  Architectures and Compilation Techniques}}, pages 35--46, 1996.
+
+\bibitem{Uht86}
+{Uht, A. K.}
+\newblock {An Efficient Hardware Algorithm to Extract Concurrency From
+  General-Purpose Code}.
+\newblock In {\em {Proceedings of the Nineteenth Annual Hawaii International
+  Conference on System Sciences}}, pages {41--50}. {University of Hawaii, in
+  cooperation with the ACM and the IEEE Computer Society}, {January} 1986.
+\newblock {Second Place for Best Paper in Computer Architecture Track}.
+
+\bibitem{Uht95}
+{Uht A. K. and Sindagi V.}
+\newblock {Disjoint Eager Execution: An Optimal Form of Speculative Execution}.
+\newblock In {\em {Proc. MICRO-28}}, pages 313--325. {ACM}, Nov 1995.
+
+\bibitem{uht03levo}
+{Uht A.K., Morano D., Khalafi A., Alba M. and Kaeli D.}
+\newblock {Levo -- A Scalable Processor With High IPC}.
+\newblock {\em Journal of Instruction Level Parallelism}, 5, Aug 2003.
+
+\bibitem{uht02realizing}
+{Uht A.K., Morano D.A., Khalafi A., de Alba M., Kaeli D.}
+\newblock Realizing high {IPC} using time-tagged resource-flow computing.
+\newblock In {\em Proceedings of the the {EUROPAR} Conference}, Aug 2002.
+
+\end{thebibliography}

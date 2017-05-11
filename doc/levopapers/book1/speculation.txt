@@ -1,0 +1,72 @@
+possible title: Speculative Execution With Time-tag Dependency Ordering
+
+
+= Introduction
+
+= The Active Station concept and time-tags
+
+	- speculative and repeated instruction execution
+	- the operand as a first class entity
+	- time-tags
+	- renaming operands
+	- requesting input operands and forwarding output operands
+	- snooping
+	- snarfing
+
+= Simple organization
+
+	- register file
+	- active stations
+	- forwarding (result) and backwarding (request) buses
+	- function units
+	- load-store queue
+
+= Organizing for component scalability (a.k.a. Levo-family organizations)
+
+	- column-wide dispatch
+	- column renaming and execution window rotation
+	- forwarding and backwarding buses
+		* bus spans
+	- operand forwarding, filtering, and caching
+	- register operand forwarding and the Register Filter Unit
+		* forwarding register operands
+			| forwarding register operands
+			| filtering register operands
+			| caching register operands
+		* speculative registers and register files
+		* rotating the architected register file
+	- memory operand forwarding and the Memory Filter Unit
+		* forwarding memory operands
+			| forwarding memory operands
+			| filtering memory operands
+			| caching memory operands
+		* speculative memory caching and caches
+		* committing memory stores
+
+= Bus networks
+
+	- operand specific buses
+	- operand multiplexed buses
+	- multiple parallel buses
+	- multiple operand paths
+		* enhanced snooping
+
+= Execution predicate operands
+
+	- dynamic micro-architectural predication
+		* instruction dispatch time
+		* instruction execution time
+	- predicate forwarding units
+
+= Speculative execution
+
+	- control independent speculative execution
+	- multi-path speculative execution
+		* using micro-architectural predication
+		* multiple independent speculative paths
+
+= Physical layout considerations
+
+= Future work
+
+

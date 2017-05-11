@@ -1,0 +1,11 @@
+
+T=intervals
+
+latex ${T}
+latex ${T}
+
+dvips -P pdf -t letter ${T}
+
+
+
+

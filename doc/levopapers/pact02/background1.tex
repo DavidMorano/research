@@ -1,0 +1,57 @@
+%
+\section{Background on Multipath Execution}
+%
+Early work on multipath execution was
+dominated by IBM in the
+late 1970s and 1980s \cite{Conners79}.
+The earliest attempts at multipath
+execution started with the ability to prefetch down both
+outcomes of a conditional branch.  This became more aggressive
+to the point of actually executing down both outcomes of
+a conditional branch.  Aggressively executing down both outcomes
+of conditional branches has been explored in work such as that by
+Wang \cite{Wang90}.  
+More aggressive research by Uht and
+Sindagi \cite{Uht95} explored the intersection of both
+multipath execution and future large-scale microarchitectures
+capable of possibly hundreds of instructions being executed simultaneously.
+They also addressed the general question of speculatively executing
+more than two paths simultaneously.
+Work on dual path execution (only two speculative paths) has
+been done by Heil and Smith~\cite{Heil96}.
+Examining multipath execution on the PolyPath microarchitecture,
+Klauser et al explored several implementation details
+as well as demonstrating an improvement of three speculative paths
+over just having two.
+
+An increasingly attractive approach to multipath execution is that
+of using a basic simultaneous multi-threaded (SMT) processor
+to provide the resources for essentially executing multiple paths
+of a single architected program thread.  This work follows from
+the original SMT idea and followed from the work by
+Tullsen et al~\cite{Tullsen96}.  
+The work by Tullsen et al focused
+on making better use of the processor when
+branch mispredictions are encountered by filling processor resources with
+work from other architected threads following a misprediction.
+An extension of this idea is to use resources for executing
+the alternative path (not predicted path) of a mispredicted branch.
+An example of this approach has been discussed by 
+Wallace et al \cite{Wallace98}.  This general approach of combining
+both simultaneous multithreading with multipath execution appears
+to be a good compromise to the problem of most efficiently using
+processor resources.  This approach also lends itself towards
+hardware that possibly can be programmed at run-time for providing either
+maximum single threaded execution speed or maximum multithreaded throughput.
+
+Ahuja et al \cite{Ahuja98} explore some limits for speedups from
+multipath execution but their work is still largely restricted to more
+conventional (modest sized) microarchitectures with less than approximately
+128
+speculative instructions in flight.  Our present work explores the use
+of multipath execution on a significantly larger microarchitecture than
+that of Ahuja or the other past work with the exception of that by
+Uht and 
+Sindagi \cite{Uht95}.
+Our present work is capable of having several hundred or more
+speculative instructions in flight and is most patterned after the

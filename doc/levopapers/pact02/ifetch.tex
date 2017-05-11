@@ -1,0 +1,85 @@
+%
+\subsubsection{I-fetch Unit}
+%
+The i-fetch unit has some additional responsibilities beyond just
+the fetching of instructions from the most predicted execution path
+of the program.  
+Some of the responsibilities of our i-fetch unit are :
+%
+\begin{itemize}
+\item{fetching of instructions along predicted program paths}
+\item{decoding of instructions}
+\item{making initial predictions for conditional branch outcomes}
+\item{staging of instructions for loading into the execution window}
+\item{storage of instruction traces for possible loading into the
+execution window}
+\end{itemize}   
+%
+With the exception of the storage of instruction traces,
+these functions are rather conventional.
+The i-fetch unit first fetches instructions from i-cache
+along one or more predicted program paths.
+In our microarchitecture, instructions are immediately
+decoded after being fetched.
+All further handling of the instructions is done in their decoded
+form.
+The primary function is to stage decoded instructions 
+into a \textit{load buffer}
+so that they are available to be shifted into the execution
+window.  This load buffer is organized so that
+a large number of instructions can be broadside loaded into the
+execution window in a single clock.
+The multiple buses going from the i-fetch unit to the
+execution window in Figure \ref{fig:high} is meant to
+reflect this operation.  Six buses are shown in that figure
+and the significance of that number will shown in the
+section that discusses the execution window.
+The number of instructions that can be loaded simultaneously
+in a single clock will be later referred to as 
+the \textit{column height} of the machine.  This meaning
+of this will become
+evident in the section discussing the execution window.
+
+In addition to staging one set of instructions to be
+next loaded into the execution window, the load buffer
+may optionally have several sets of instructions prepared
+for a possible load operation.
+The relationship between the multiple sets of staged instructions
+might be one of a FIFO arrangement or something more complicated.
+A FIFO arrangement only allows the set of instructions closest
+to the execution window to be loaded next and often requires a
+complete flush of the entire FIFO if program control flow deviates
+from what was predicted by the i-fetch unit (a partial flush
+is possible but it would always be from the head of the FIFO).  
+A more complicated
+structure is also possible where the next set of instructions
+to be loaded can come from any one of several sets that
+have been prepared and are waiting in the load buffer.  
+This latter arrangement may offer some additional flexibility
+due to control flow requirements by the execution window.
+The goal is to try and always satisfy the need for the
+next proper set of instructions by the execution window.
+This load buffer is similar in
+many respects to an instruction prefetch buffer of a sort,
+except that all instructions at this stage in our machine
+are already fully decoded.
+
+The i-fetch unit may also optionally have a cache of
+instruction traces.  We have not explored this option 
+in detail as yet
+but it is a rather obvious one based on similar work.
+In our case, traces of instructions would correspond closely
+with the sets of instructions that need to be staged
+in the load buffer (column height worth of instructions).
+These stored instruction traces would allow for the quick
+preparation of a new set of instructions to be loaded
+into the execution window when a control flow misprediction
+requiring a major machine flush might occur.
+Obviously, the flushing of large numbers of instructions
+anywhere in the machine is undesirable but keeping the
+execution window satisfied with new instructions is also
+a primary concern.  Our machine performance so far has
+not prompted us to more aggressively explore the management
+of the caching of instruction traces in our i-fetch unit
+but this is certainly something that may be useful as
+we explore larger machines than we are at the moment.

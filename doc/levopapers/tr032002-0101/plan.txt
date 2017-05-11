@@ -1,0 +1,85 @@
+PACT'02 paper experimental plan
+
+
+Goal for paper
+========================
+
+I think that this paper is very similar to the previous ISCA and HPCA
+paper from last year (2001).  We want to describe a new
+microarchitecture for a future machine that can achieve high IPCs
+(greater than 10).
+
+First, I think that this means that we need to simulate some machine
+sizes that clearly give IPCs of 10 or more.  Do you agree with this or
+can we somehow stay with the existing sized machines that we have been
+working with in the past (8-8-8 or so) ?
+
+
+Simulation Parameters
+=======================
+
+The basic simulation parameters that affect the size of the
+machine are :
+
++ number of SG rows
+
++ number of AS rows per SG
+
++ number of SG columns
+
+Besides parameters for the basic size of the machine, we now also
+can change (correct me if I am wrong with any one) :
+
++ size of L1 instruction cache
+
++ size of L1 data cache
+
++ size of unified L2 I/D cache
+
++ hit and miss penalties for L1 instruction cache
+
++ hit and miss penalties for L1 data cache
+
++ hit and miss penalties for unified L2 I/D cache
+
+Note: the miss penalty for the unified L2 cache is the same
+as the access delay to main memory.  Is this correct ?
+
+We also can change some parameters associated with multipath
+execution.  These are :
+
++ number of additional speculative paths besides the most
+  predicted path (also know as the main-line path) ; this
+  number can be anything from :
+
+- 0 (additional paths are turned off)
+- number of SG columns configured for the machine
+
+Is it indeed true that you can set the number of additional speculative
+paths up to the number of SG columns of the machine ?
+
+Also, we will have the following "DEE" related parameter to play
+with :
+
++ the earliest column number (relative to a conditional branch) where an
+  additional speculative path is spawned from
+
+Finally, we *may* have the following multipath parameters to play with :
+
++ the length of an alternative speculative path ("DEE" path)
+
++ some means to control the nature of the abandoning of existing
+  alternative speculative paths in order to make resource room
+  for new alternative speculative paths that are associated
+  with later conditional branchs that have not yet had an additional
+  speculative path spawned for it yet
+
+
+Questions
+=======================
+
+Are there any other parameters that you will have available that
+can be changed in the simulator that you think might be useful
+for this PACT paper ?
+
+

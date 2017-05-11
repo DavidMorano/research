@@ -1,0 +1,40 @@
+
+Branch predictor used :
+
+2-level gshare w/ 1024 BHT and 4096 GPHT, 2-bit saturating counter
+default is one per AS row
+
+
+Value predictor used :
+
+computational-stride predictor w/ 4096 entries
+2 source operands per entry, 2-bit saturating counter per operand
+one per AS row
+
+
+Default machine parameters :
+
+L1-I hit latency		1 clock
+L1-I size			64 kBytes
+L1-I configuration		2-way set associative
+L1-I block size			32 bytes
+
+L1-D hit latency		1 clock
+L1-D size			64 kBytes
+L1-D configuration		2-way set associative
+L1-D block size			32 bytes
+
+L2 unified I/D
+L2 hit latency			10 clocks
+L2 size				2 MBytes
+L2 configuration		direct mapped
+L2 block size			32 bytes
+
+main memory latency		100 clocks
+main memory interleave factor	4
+
+minimum forwarding unit delay	1 clock
+forwarding bus delay		1 clock
+
+
+

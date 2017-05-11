@@ -1,0 +1,9 @@
+.G1
+frame ht 2 wid 4.5
+label left "percent" "${TYPE1}" "${TYPE2}" left .1
+label bot "branch path length"
+coord x 0,40 y 0.0,1.0
+ticks bot out at 0, 10, 20, 30, 40
+draw solid dot
+copy "bzip2.bpdis"
+.G2

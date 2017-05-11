@@ -1,0 +1,311 @@
+%
+\subsection{Operand Forwarding Strategies and Bus Transactions}
+%
+Although we have so far described the operand forwarding mechanism
+in simple terms as being the broadcasting of operands
+to those instructions with higher valued 
+time tags, there are some additional details that need to be
+addressed for a correctly working forwarding solution.
+These details also differ depending on type of operand.
+There are many possible strategies for forwarding of operands
+(and of operands of differing types). 
+We now briefly outline three such strategies.
+One of these is suitable for registers.
+Another is suitable for registers or memory operands.
+The third is oriented for the forwarding of predicates.
+These three strategies are termed \textit{relay forwarding},
+\textit{nullify forwarding}, and \textit{predicate forwarding}
+respectively.
+In general, each forwarding strategy employs bus transactions
+of one or more types to implement its complete forwarding solution.
+%
+%
+\subsubsection{Relay Forwarding}
+%
+This forwarding strategy is quite simple but is also entirely
+adequate for the forwarding of register operands.
+In this strategy, when a new register operand needs to be forwarded
+from an instruction, the standard operand information, as 
+previously described
+in general, is packaged up into what is termed
+a \textit{register store} transaction.
+This transaction type consists of :
+%
+\begin{itemize}
+\vspace{-0.10in}
+\item{transaction ID of \textit{register-store}}
+\vspace{-0.10in}
+\item{path ID}
+\vspace{-0.10in}
+\item{time tag of the originating instruction}
+\vspace{-0.10in}
+\item{register address}
+\vspace{-0.10in}
+\item{value of the register}
+\vspace{-0.10in}
+\end{itemize}   
+%
+A request is made to arbitrate for an outgoing forwarding bus
+and this transaction is placed on the bus when it becomes available.
+
+When an instruction obtains 
+a new input operand, it will re-execute, producing a new
+output operand.  In this forwarding strategy, the new output
+operand is both stored locally 
+and is sent out on the outgoing forwarding buses
+to subsequent (higher time-tag valued) instructions.
+Previous values of the instruction's output operand are also
+snooped as if they were input operands and are also stored locally.
+It should also be noted that if the enabling execution predicate
+for the current instruction changes, either from being enabled
+to disabled or visa versa, a new output operand is forwarded.
+If the instruction predicate changes from disabled to enabled,
+the output operand that was computed by the instruction is
+forwarded.  If the instruction predicate changes from enabled
+to disabled, the previous value of the output operand (before being
+changed due to the instruction execution) is forwarded.
+That previous value is available to the instruction because
+it gets snooped as if it was an additional input.
+Newly forwarded operands will always supersede any previously
+forwarded operands.
+With this strategy, instructions that are located in the program
+ordered future will eventually always get the correct
+value that will end up being the committed value if the
+current instruction ends up being committed itself (ends
+up being predicated to execute).
+This is an elegant forwarding strategy and
+the simplest of the forwarding strategies investigated so far, and
+is a reasonable choice for the handling of register operands.
+The inclusion of the time tag in the transaction is the
+key element that allows for the correct ordering of
+dependencies in the committed program.
+%
+%
+\subsubsection{Nullify Forwarding}
+%
+There are limitations to the applicability of the previously
+discussed forwarding strategy (relay forwarding).
+That strategy depends upon the fact that the address of the
+architected operand does not change during the life time of
+the instruction while it is executing.
+For example, the architected addresses for register operands
+do not change for instructions.  If the instruction takes
+as an input operand a register \textit{r6}, for example,
+the address of the operand never changes for this particular
+instruction (it stays \textit{6}).
+This property is not generally true of memory operands.
+The difficulty with memory operands is that many memory
+related instructions determine the address of a memory operand
+value from an input register operand of the same instruction.
+Since we allow for instructions to execute and re-execute
+on entirely speculative operand values, the values of
+input register operands can be of essentially any value
+(including a wildly incorrect value) and thus the
+address of a memory operand can also change while 
+the instruction is in flight.
+This presents a problem for the correct enforcement of
+memory operand values and the dependencies among them.
+If we examine the case of a memory store instruction,
+when it
+re-executes acquiring a new memory store value, the address of that
+memory store may also have changed !  
+We cannot simply forward that new memory operand (address and value)
+as with the relay forwarding strategy above.  The reason is
+that we would not be superseding the previous memory operand
+that we forwarded previously because it quite likely had a different
+architected address.  Rather, we need some way to cancel the effect of
+any previously forwarded memory operands.
+This present forwarding strategy does just that.
+
+In this strategy, memory operands that need to be forwarded
+employ a similar transaction as above for registers (described
+in the context of relay forwarding) but would instead have
+a transaction ID of \textit{memory-store} and would
+include the memory operand address and its value (along with the
+path and time-tag information).
+However, when an instruction either re-executes or
+its enabling predicate changes to being disabled, a different
+type of forwarding transaction is sent out.
+This new type of transaction is termed a \textit{nullify transaction}
+and has the property of nullifying the effect of a previous
+store transaction to the same architected operand address.
+This transaction type consists of :
+%
+\begin{itemize}
+\vspace{-0.10in}
+\item{transaction ID of \textit{memory-nullify}}
+\vspace{-0.10in}
+\item{path ID}
+\vspace{-0.10in}
+\item{time tag of the originating instruction}
+\vspace{-0.10in}
+\item{memory operand address}
+\vspace{-0.10in}
+\item{value of the memory operand}
+\vspace{-0.10in}
+\end{itemize}   
+%
+When this transaction is snooped by subsequent instructions,
+for those instructions that have a memory operand as an input
+(that would be for instructions that load memory values in
+one way or another),
+a search is made for a match of an existing memory
+operand.  If a match is detected,
+the time-tag of that particular memory operand is set to
+a state such that any future \textit{memory store} transaction,
+regardless of its time-tag value, will be accepted.
+Further, on reception of this \textit{memory nullify} transaction,
+a request is sent backwards in program order for a memory
+operand with the desired memory address.
+The transaction that represents a request for a memory
+operand would consist of :
+%
+\begin{itemize}
+\vspace{-0.10in}
+\item{transaction ID of \textit{memory-request}}
+\vspace{-0.10in}
+\item{path ID}
+\vspace{-0.10in}
+\item{time tag of the originating instruction}
+\vspace{-0.10in}
+\item{memory operand address}
+\vspace{-0.10in}
+\end{itemize}   
+%
+Of course, the memory address for the operand desired
+needs to be in the transaction, but it is not as obvious why
+the originating instruction's time tag is also included.  In some
+interconnection fabrics, the time tag is included in backwarding
+requests to limit the scope of the travel of the transaction
+through the execution window.  This same scope-limiting function
+is usually performed for forward going transactions as well.
+When the request is sent backwards in program order, previous
+instructions or the memory system itself will eventually snoop
+the request and respond with another \textit{memory store}
+transaction.
+As discussed, this forwarding strategy is very useful for memory
+operands but it can also be used for register operands with
+appropriate changes to the applicable transaction elements.
+Again, the inclusion of a time tag value is what allows
+for proper operand dependency enforcement
+in the committed program.
+%
+%
+\subsubsection{Predicate Forwarding}
+%
+There are several ways in which instructions can be predicated
+in the microarchitecture.  
+Some of these techniques are discussed in the papers by
+by Uht et al ~\cite{Uht01} and Morano ~\cite{Morano02}.
+Predicate register values are essentially
+operands that need to be computed, evaluated, and forwarded
+much like register or memory operands.
+Each instruction computes its own enabling predicate by
+snooping for and snarfing predicate operands that are forwarded
+to it from previous instructions from the program-ordered past.
+Depending on the particular predication mechanism used,
+relay forwarding (described above) may be a suitable (if not a good) choice 
+for handling the forwarding of predicate operands.
+However, some predication mechanisms need additional transaction
+types (besides a base store transaction) to communicate.
+For example, the predication strategy described by Morano ~\cite{Morano02}
+requires three transactions to be fully implemented and is
+used as the example in this section for discussing the forwarding
+of predicate information.
+
+This predication strategy requires two store-type transactions
+rather than just one (as with register or memory operands).  
+These two transactions are similar
+to the previous operand store transactions 
+but one of these holds two values rather than just one.
+The first of these is the \textit{region predicate store}
+transaction and consists of :
+%
+\begin{itemize}
+\vspace{-0.10in}
+\item{transaction ID of the \textit{region-predicate-store}}
+\vspace{-0.10in}
+\item{path ID}
+\vspace{-0.10in}
+\item{time tag of the originating instruction}
+\vspace{-0.10in}
+\item{region predicate value}
+\vspace{-0.10in}
+\end{itemize}   
+%
+This transaction is analogous to a register or memory
+store, but instead is used to forward a single bit value (the
+current \textit{region predicate} for instructions following the
+instruction that forwarded the transaction).  A region predicate
+is a single bit that determines the execution status
+(enabled or disabled) for instructions that lie beyond the
+not-taken output path of a conditional branch.
+This particular transaction could be forwarded by either
+a conditional branch or by a non-branch instruction.
+In the
+case of a non-branch instruction, the only
+predicate value that makes sense is the same as its
+own enabling predicate, and so only one value needs
+to be forwarded.
+
+In the case of a conditional branch instruction,
+there are two possible output predicates that need to be considered: 
+1) for the taken output path and
+and 2) for the not-taken path.
+In order, to forward both values for these instructions,
+to program-ordered future, the second store transaction
+type (mentioned previously) is used.
+This transaction, termed a \textit{branch target predicate store},
+consists of :
+%
+\begin{itemize}
+\vspace{-0.10in}
+\item{transaction ID of \textit{branch-target-predicate-store}}
+\vspace{-0.10in}
+\item{path ID}
+\vspace{-0.10in}
+\item{time tag of the originating instruction}
+\vspace{-0.10in}
+\item{branch target instruction address}
+\vspace{-0.10in}
+\item{region predicate value}
+\vspace{-0.10in}
+\item{branch target predicate value}
+\vspace{-0.10in}
+\end{itemize}   
+%
+This is identical to the previous \textit{region predicate store}
+transaction but also includes the instruction address
+for the target of the conditional branch (the \textit{taken} address)
+and the single bit predicate
+governing the execution status for instructions
+following the target of the conditional branch in program-ordered
+future.
+
+Finally, a third transaction is used to invalidate a previously
+forwarded branch target predicate.  This transaction is
+a \textit{branch target invalidation} and consists of :
+%
+\begin{itemize}
+\vspace{-0.10in}
+\item{transaction ID of \textit{branch-target-invalidation}}
+\vspace{-0.10in}
+\item{path ID}
+\vspace{-0.10in}
+\item{time tag of the originating instruction}
+\vspace{-0.10in}
+\item{branch target instruction address}
+\vspace{-0.10in}
+\item{time tag of target predicate to be invalidated}
+\vspace{-0.10in}
+\end{itemize}   
+%
+This is similar to other such invalidation transactions in
+that when it is snooped by instructions in the program-ordered future,
+a search is made for some state (in this case some predicate
+register state) that matches the given transaction criteria.
+The inclusion of the second time tag in this transaction allows
+for certain efficiencies that are particular to the predication
+mechanism described.
+%
+%

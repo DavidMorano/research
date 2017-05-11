@@ -1,0 +1,9 @@
+# DVIPS
+
+
+# Synopsis :
+
+dvips -P pdf -G0 -t letter flowing
+
+
+

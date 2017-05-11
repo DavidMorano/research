@@ -1,0 +1,362 @@
+%PDF-1.2  
+%‚„œ”
+  
+10 0 obj
+<<
+/Length 11 0 R
+>>
+stream
+BT
+90 693.6  TD
+0 0 0 rg  
+/F0 16.08  Tf
+0.0038  Tc 0  Tw (Introduction) Tj
+93.84 0  TD 0  Tc 0.0898  Tw ( ) Tj
+-93.84 -17.76  TD /F1 12  Tf
+-0.0338  Tc 0.1538  Tw (Motivation for Proposing a new Microarchitecture) Tj
+241.2 0  TD 0  Tc 0.12  Tw ( ) Tj
+-241.2 -13.92  TD -0.0039  Tc 0.1239  Tw (Background and Literature Study) Tj
+160.08 0  TD 0  Tc 0.12  Tw ( ) Tj
+-160.08 -29.28  TD /F0 16.08  Tf
+-0.0396  Tc 0  Tw (Resource) Tj
+72.96 0  TD -0.0746  Tc (-) Tj
+5.28 0  TD 0.004  Tc 0.0857  Tw (Flow execution model) Tj
+168.48 0  TD 0  Tc 0.0898  Tw ( ) Tj
+-246.72 -17.76  TD /F1 12  Tf
+0.12  Tw ( ) Tj
+36 0  TD -0.0416  Tc 0.1616  Tw (Speculative data) Tj
+78.24 0  TD 0.084  Tc 0  Tw (-) Tj
+4.08 0  TD -0.0644  Tc 0.1844  Tw (flow execution of code) Tj
+109.44 0  TD 0  Tc 0.12  Tw ( ) Tj
+-191.76 -13.92  TD -0.0726  Tc 0.1926  Tw (Using a couple of examples we introduce the concept of Time Tags, snooping and ) Tj
+0 -13.68  TD -0.0513  Tc 0.1713  Tw (forwarding a) Tj
+60.96 0  TD -0.0859  Tc 0.2059  Tw (s the fundamental way of enforcing data and control dependencies.   ) Tj
+326.88 0  TD 0  Tc 0.12  Tw ( ) Tj
+-387.84 -27.84  TD /F2 13.92  Tf
+-0.0523  Tc 0.0226  Tw (Time Tags) Tj
+68.4 0  TD 0  Tc -0.0298  Tw ( ) Tj
+-32.4 -17.04  TD /F1 12  Tf
+-0.13  Tc 0.25  Tw (A Simple example that shows the basic idea behind using time tags) Tj
+317.28 0  TD 0  Tc 0.12  Tw ( ) Tj
+-353.28 -27.84  TD /F2 13.92  Tf
+-0.0454  Tc 0.0157  Tw (Nullifying and memory operations) Tj
+223.68 0  TD 0  Tc -0.0298  Tw ( ) Tj
+-187.68 -17.04  TD /F1 12  Tf
+-0.0848  Tc 0.2048  Tw (Another example to demonstrate handling of memory operations using ) Tj
+0 -13.92  TD -0.052  Tc 0.172  Tw (time tags, ) Tj
+49.44 0  TD -0.1568  Tc 0.2768  Tw (backwarding buses and nullifies.) Tj
+153.36 0  TD 0  Tc 0.12  Tw ( ) Tj
+-238.8 -27.6  TD /F2 13.92  Tf
+-0.0417  Tc 0.012  Tw (Branches and Dynamic Predication) Tj
+232.32 0  TD 0  Tc -0.0298  Tw ( ) Tj
+-196.32 -17.28  TD /F1 12  Tf
+-0.1276  Tc 0.2236  Tw (Dynamic Predication is explained through an example.  Expaline how ) Tj
+0 -13.92  TD -0.0525  Tc 0.1725  Tw (backward branches are converted into forward branches.) Tj
+270 0  TD 0  Tc 0.12  Tw ( ) Tj
+-342 -29.28  TD /F0 16.08  Tf
+0.0069  Tc -0.4372  Tw (Execution Window of a Resource Flow Microarchitecture) Tj
+432 0  TD 0  Tc 0.0898  Tw ( ) Tj
+-432 -17.76  TD /F1 12  Tf
+0.12  Tw ( ) Tj
+0 -13.92  TD ( ) Tj
+36 0  TD -0.1968  Tc 0.3168  Tw (A high level) Tj
+57.12 0  TD -0.0583  Tc 0.1783  Tw ( description of Levo is presented. ) Tj
+162 0  TD 0  Tc 0.12  Tw ( ) Tj
+-219.12 -27.6  TD /F2 13.92  Tf
+-0.0403  Tc 0.0105  Tw (Sharing Groups) Tj
+104.64 0  TD 0  Tc -0.0298  Tw ( ) Tj
+-68.64 -17.28  TD /F1 12  Tf
+-0.084  Tc 0.204  Tw (The internal structure of a SG is explained.   AS as an issue slot, AS logic, ) Tj
+0 -13.68  TD -0.0884  Tc 0.2084  Tw (PE and incoming and outgoing buses.) Tj
+179.52 0  TD 0  Tc 0.12  Tw ( ) Tj
+-215.52 -27.84  TD /F2 13.92  Tf
+-0.0459  Tc 0.0161  Tw (Segmented Buses) Tj
+120 0  TD 0  Tc -0.0298  Tw ( ) Tj
+-84 -17.04  TD /F1 12  Tf
+-0.0892  Tc 0.1852  Tw (Register and Memory Filter Units are introduced in conjunction with ) Tj
+0 -13.92  TD -0.1594  Tc 0  Tw (segment) Tj
+39.36 0  TD -0.084  Tc 0.204  Tw (ed buses.) Tj
+43.68 0  TD 0  Tc 0.12  Tw ( ) Tj
+-119.04 -27.6  TD /F2 13.92  Tf
+-0.054  Tc 0.0242  Tw (Commitment, flushes and window shifting) Tj
+277.2 0  TD 0  Tc -0.0298  Tw ( ) Tj
+-241.2 -17.28  TD /F1 12  Tf
+-0.0995  Tc 0.2395  Tw (The logical rotating window is explained as well as issues related to ) Tj
+0 -13.68  TD -0.1817  Tc 0.3017  Tw (commitment and flushing) Tj
+120 0  TD 0  Tc 0.12  Tw ( ) Tj
+-156 -27.84  TD /F2 13.92  Tf
+-0.0525  Tc 0.0227  Tw (Multipath Execution) Tj
+131.28 0  TD 0  Tc -0.0298  Tw ( ) Tj
+-95.28 -17.04  TD /F1 12  Tf
+-0.1066  Tc 0.1066  Tw (Disjoint execution ) Tj
+89.76 0  TD 0  Tc 0.12  Tw ( ) Tj
+-161.76 -29.52  TD /F0 16.08  Tf
+-0.0132  Tc 0.103  Tw (Instruction Fetch and Issue) Tj
+209.04 0  TD 0  Tc 0.0898  Tw ( ) Tj
+-209.04 -17.76  TD /F1 12  Tf
+0.12  Tw ( ) Tj
+36 0  TD -0.1595  Tc 0.2795  Tw (Unrolling, inlining, Dynamic Fetch and Trac) Tj
+209.52 0  TD -0.126  Tc 0.246  Tw (e Cache) Tj
+37.92 0  TD 0  Tc 0.12  Tw ( ) Tj
+-283.44 -13.92  TD ( ) Tj
+ET
+endstream
+endobj
+11 0 obj
+4209
+endobj
+4 0 obj
+<<
+/Type /Page
+/Parent 5 0 R
+/Resources <<
+/Font <<
+/F0 6 0 R  
+/F1 8 0 R  
+/F2 12 0 R  
+>>
+/ProcSet 2 0 R
+>>
+/Contents 10 0 R
+>>
+endobj
+15 0 obj
+<<
+/Length 16 0 R
+>>
+stream
+BT
+90 705.6  TD
+0 0 0 rg  
+/F0 16.08  Tf
+-0.1239  Tc 0.2137  Tw (Memory System) Tj
+122.16 0  TD 0  Tc 0.0898  Tw ( ) Tj
+-122.16 -17.76  TD /F1 12  Tf
+0.12  Tw ( ) Tj
+36 0  TD -0.025  Tc 0.145  Tw (L0, PCB, Horizontal buses, \205) Tj
+146.64 0  TD 0  Tc 0.12  Tw ( ) Tj
+-182.64 -29.52  TD /F0 16.08  Tf
+-0.0495  Tc 0.1393  Tw (Simulation Results) Tj
+144.48 0  TD 0  Tc 0.0898  Tw ( ) Tj
+-144.48 -17.76  TD /F1 12  Tf
+0.12  Tw ( ) Tj
+0 -13.68  TD -0.0783  Tc 0.1983  Tw (Baseline, IPC v.s. Geometry, Sensitivity data \(Forwarding Units, Bus Span, Memory and ) Tj
+0 -13.92  TD -0.018  Tc 0.138  Tw (L1\), Effect of DEE, ) Tj
+98.16 0  TD 0  Tc 0.12  Tw ( ) Tj
+-98.16 -13.68  TD ( ) Tj
+0 -13.92  TD ( ) Tj
+0 -13.68  TD ( ) Tj
+0 -13.92  TD ( ) Tj
+ET
+endstream
+endobj
+16 0 obj
+742
+endobj
+14 0 obj
+<<
+/Type /Page
+/Parent 5 0 R
+/Resources <<
+/Font <<
+/F0 6 0 R  
+/F1 8 0 R  
+>>
+/ProcSet 2 0 R
+>>
+/Contents 15 0 R
+>>
+endobj
+6 0 obj
+<<
+/Type /Font
+/Subtype /TrueType
+/Name /F0
+/BaseFont /Arial,Bold
+/FirstChar 32
+/LastChar 255
+/Widths [ 278 333 474 556 556 889 722 238 333 333 389 584 278 333 278 278  
+556 556 556 556 556 556 556 556 556 556 333 333 584 584 584 611  
+975 722 722 722 722 667 611 778 722 278 556 722 611 833 722 778  
+667 778 722 667 611 722 667 944 667 667 611 333 278 333 584 556  
+333 556 611 556 611 556 333 611 611 278 278 556 278 889 611 611  
+611 611 389 556 333 611 556 778 556 556 500 389 280 389 584 750  
+556 750 278 556 500 1000 556 556 333 1000 667 333 1000 750 611 750  
+750 278 278 500 500 350 556 1000 333 1000 556 333 944 750 500 667  
+278 333 556 556 556 556 280 556 333 737 370 556 584 333 737 552  
+400 549 333 333 333 576 556 278 333 333 365 556 834 834 834 611  
+722 722 722 722 722 722 1000 722 667 667 667 667 278 278 278 278  
+722 722 778 778 778 778 778 584 778 722 722 722 722 667 667 611  
+556 556 556 556 556 556 889 556 556 556 556 556 278 278 278 278  
+611 611 611 611 611 611 611 549 611 611 611 611 611 556 611 556  
+]
+/Encoding /WinAnsiEncoding
+/FontDescriptor 7 0 R
+>>
+endobj
+7 0 obj
+<<
+/Type /FontDescriptor
+/FontName /Arial,Bold
+/Flags 16416
+/FontBBox [ -250 -212 1118 1000 ]
+/MissingWidth 310
+/StemV 153
+/StemH 153
+/ItalicAngle 0
+/CapHeight 905
+/XHeight 453
+/Ascent 905
+/Descent -212
+/Leading 150
+/MaxWidth 932
+/AvgWidth 479
+>>
+endobj
+8 0 obj
+<<
+/Type /Font
+/Subtype /TrueType
+/Name /F1
+/BaseFont /TimesNewRoman
+/FirstChar 32
+/LastChar 255
+/Widths [ 250 333 408 500 500 833 778 180 333 333 500 564 250 333 250 278  
+500 500 500 500 500 500 500 500 500 500 278 278 564 564 564 444  
+921 722 667 667 722 611 556 722 722 333 389 722 611 889 722 722  
+556 722 667 556 611 722 722 944 722 722 611 333 278 333 469 500  
+333 444 500 444 500 444 333 500 500 278 278 500 278 778 500 500  
+500 500 333 389 278 500 500 722 500 500 444 480 200 480 541 778  
+500 778 333 500 444 1000 500 500 333 1000 556 333 889 778 611 778  
+778 333 333 444 444 350 500 1000 333 980 389 333 722 778 444 722  
+250 333 500 500 500 500 200 500 333 760 276 500 564 333 760 500  
+400 549 300 300 333 576 453 250 333 300 310 500 750 750 750 444  
+722 722 722 722 722 722 889 667 611 611 611 611 333 333 333 333  
+722 722 722 722 722 722 722 564 722 722 722 722 722 722 556 500  
+444 444 444 444 444 444 667 444 444 444 444 444 278 278 278 278  
+500 500 500 500 500 500 500 549 500 500 500 500 500 500 500 500  
+]
+/Encoding /WinAnsiEncoding
+/FontDescriptor 9 0 R
+>>
+endobj
+9 0 obj
+<<
+/Type /FontDescriptor
+/FontName /TimesNewRoman
+/Flags 34
+/FontBBox [ -250 -216 1150 1000 ]
+/MissingWidth 319
+/StemV 73
+/StemH 73
+/ItalicAngle 0
+/CapHeight 891
+/XHeight 446
+/Ascent 891
+/Descent -216
+/Leading 149
+/MaxWidth 958
+/AvgWidth 401
+>>
+endobj
+12 0 obj
+<<
+/Type /Font
+/Subtype /TrueType
+/Name /F2
+/BaseFont /Arial,BoldItalic
+/FirstChar 32
+/LastChar 255
+/Widths [ 278 333 474 556 556 889 722 238 333 333 389 584 278 333 278 278  
+556 556 556 556 556 556 556 556 556 556 333 333 584 584 584 611  
+975 722 722 722 722 667 611 778 722 278 556 722 611 833 722 778  
+667 778 722 667 611 722 667 944 667 667 611 333 278 333 584 556  
+333 556 611 556 611 556 333 611 611 278 278 556 278 889 611 611  
+611 611 389 556 333 611 556 778 556 556 500 389 280 389 584 750  
+556 750 278 556 500 1000 556 556 333 1000 667 333 1000 750 611 750  
+750 278 278 500 500 350 556 1000 333 1000 556 333 944 750 500 667  
+278 333 556 556 556 556 280 556 333 737 370 556 584 333 737 552  
+400 549 333 333 333 576 556 278 333 333 365 556 834 834 834 611  
+722 722 722 722 722 722 1000 722 667 667 667 667 278 278 278 278  
+722 722 778 778 778 778 778 584 778 722 722 722 722 667 667 611  
+556 556 556 556 556 556 889 556 556 556 556 556 278 278 278 278  
+611 611 611 611 611 611 611 549 611 611 611 611 611 556 611 556  
+]
+/Encoding /WinAnsiEncoding
+/FontDescriptor 13 0 R
+>>
+endobj
+13 0 obj
+<<
+/Type /FontDescriptor
+/FontName /Arial,BoldItalic
+/Flags 16480
+/FontBBox [ -250 -212 1188 1000 ]
+/MissingWidth 330
+/StemV 153
+/StemH 153
+/ItalicAngle -11
+/CapHeight 905
+/XHeight 453
+/Ascent 905
+/Descent -212
+/Leading 150
+/MaxWidth 990
+/AvgWidth 479
+>>
+endobj
+2 0 obj
+[ /PDF /Text  ]
+endobj
+5 0 obj
+<<
+/Kids [4 0 R 14 0 R ]
+/Count 2
+/Type /Pages
+/MediaBox [ 0 0 612 792 ]
+>>
+endobj
+1 0 obj
+<<
+/Creator <FEFF0074006F00630031002E0064006F00630020002D0020004D006900630072006F0073006F0066007400200057006F00720064>
+/CreationDate (D:20020804013938)
+/Title <FEFF0074006F00630031002E005000440046>
+/Author <FEFF0041006C006900720065007A0061>
+/Producer (Acrobat PDFWriter 4.0 for Windows NT)
+>>
+endobj
+3 0 obj
+<<
+/Pages 5 0 R
+/Type /Catalog
+>>
+endobj
+xref
+0 17
+0000000000 65535 f  
+0000009584 00000 n  
+0000009462 00000 n  
+0000009892 00000 n  
+0000004304 00000 n  
+0000009493 00000 n  
+0000005394 00000 n  
+0000006483 00000 n  
+0000006745 00000 n  
+0000007834 00000 n  
+0000000019 00000 n  
+0000004283 00000 n  
+0000008094 00000 n  
+0000009191 00000 n  
+0000005263 00000 n  
+0000004446 00000 n  
+0000005243 00000 n  
+trailer
+<<
+/Size 17
+/Root 3 0 R
+/Info 1 0 R
+/ID [<5cd1f6b417cea145a24e3ff50f7aba53><5cd1f6b417cea145a24e3ff50f7aba53>]
+>>
+startxref
+9941
+%%EOF

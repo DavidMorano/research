@@ -1,0 +1,49 @@
+Most processor performance improvements have been almost
+entirely due to process improvements in the integrate
+circuit design and fabrication.  These improvements
+have allowed for an exponential growth in clocks speeds
+over time with correspondingly significant performance
+increases.  However as clock speeds start to eventually
+level out, new ways to achieve processor performance have
+to be explored.  The common technique of parallelizing
+the workload at the application level with multiple
+threads or processes is appropriate for many computing
+applications (as has been demonstrated with the success of
+the many large clustered supercomputers now available)
+but this does not address the large number of remaining
+applications that are inherently still very serial in
+nature.  To address this latter class of applications, many
+proposals have been put forth to exploit the instruction
+level parallelism within serial programs.  These approaches
+have only been marginally successful so far.  One of
+the challenges for extracting more parallelism has been
+the management and tracking difficulties associated with
+dynamic instruction scheduling and instruction speculation.
+
+In this paper, we present a new microarchitectural approach
+for managing parallel and speculative instruction execution
+within the processor.  We employ both control-flow
+speculation and a modest data-flow speculation as
+other processors do.  However instead of only allowing
+instructions to dispatch and execution after their control
+and data dependencies are determined, we employ a new
+technique where instructions are allowed to enter into
+execution without the machine first even knowing what
+their dependencies are.  Rather both control and data
+dependencies are determined dynamically at execution
+time rather than beforehand.  This approach might be
+characterized by first letting all instructions enter
+into execution as there are available machine resources,
+and then re-execute instructions as necessary in order
+to create the correct program state for commitment.
+Since instructions may obviously execute with incorrect
+input data, we have a microarchitecture that allows for
+easy instruction re-execution without having to re-fetch
+or re-dispatch the affected instructions.
+
+We describe this new microarchitecture approach and
+present some simulation data that compares it against a
+conventional superscalar machine approach.  For similarly
+sized machine resources, our approach outperforms a
+conventional superscalar on most of the serial oriented
+benchmark programs that we targeted.

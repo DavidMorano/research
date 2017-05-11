@@ -1,0 +1,255 @@
+Gus,
+
+Here are some comments on the Micro paper.  I will likely have
+more comments later also.
+
+
+Specific comments
+
+
+On the abstract, does Micro want the italic and regular fonts
+swapped as the paper now has them ?  (just wondering).
+
+
+= sec 1, par 1, 2nd last sentence
+
+current:	their operands (speculative or otherwise) are free
+
+Is may read better with:
+		the operands (speculative or otherwise) are acquired
+
+Operands are not "free" in the sense that resources are ! :-)
+
+
+= sec 1 , last par
+
+Normally numbers below ten or twenty in the text are spelled out rather
+than given in numeric form but I have been told that when citing
+section numbers, they should be numeric.  I do not really know the
+proper rule though.
+
+
+= sec 2.1
+
+The last sentence dealing with scalability might be either moved
+or repeated in the section (2.2) on scalability (or lack thereof).
+
+
+= sec 2.3, 3rd sentence
+
+context:	in the latter study
+
+It didn't seem clear to me which study this was referring to.
+
+
+= sec 2.3, last sen
+
+context:	[6] demonstrated ...
+
+Maybe it would read a little nicer if it read something like :
+		Gonzalez [6] demonstrated ...
+
+
+= fig 1, bottom of picture
+
+There looks like there are some miscellaneous random marks at the
+bottom left of the picture.  These appear in my print-out just above
+the text "Figure 1."  Was this maybe a printing error of some sort ?
+
+
+= sec 3, 1st par, 2nd sen
+
+context:	Levo is the n X m
+
+Might this look better as :
+		Levo is the N x M
+?
+
+
+= sec, 3, 1st par, sen 5
+
+context:	Small numbers of row adjacent ...
+
+Should probably be hyphenated :
+		Small number of row-adjacent ...
+
+
+= sec 3, 2nd par, 1st sen
+
+Is there a reason that "Instruction Set" is capitalized ?
+You probably meant to mention that any ISA can be implemented
+using this microarchitecture ?
+
+
+= sec 3.1. 1st par
+
+You state that Active Stations and this version of time-tagging are
+both novel.  Although this is precisely correct, as far as I know, a
+critic might note that regular super-scalar machine also share the idea
+of re-issuing an instruction for re-execution from an issue slot.  This
+is done (for example) in those proposed machines that do value
+prediction.
+
+
+= sec 3.1, 4th par, last sentence
+
+context:	This all combines in time-tagging having a ...
+
+Maybe it would read better as :
+		This all combines with time-tagging having a ...
+but I am not sure which is more correct or better.
+
+
+= sec 3.1, last par, 3rd sen
+
+context:	The latter's implementation was relied on the use of ...
+
+Something is incorrect here with the grammar.
+
+
+= sec 3.2, par 1, 1st sen
+
+context:	In Levo segmented ...
+
+Maybe add a comma here as:
+		In Levo, segmented ...
+??
+
+
+= sec 3.2, par 1, 4st sen
+
+context:	which introduce a small, say one cycle ...
+
+Maybe:
+		which introduce a small, usually one cycle ...
+
+
+= fig 4
+
+Many of the horizontal buses connected a vertical bus to
+the sharing groups are not drawn properly showing each
+vertical bus being connected once to the SG.  Also, although
+there are only four vertical buses, some SGs have (improperly)
+five horizontal connecting buses.
+
+
+= sec 3.2, par 4, 2nd sentence
+
+context:		, following the same paths as the forwarding buses ..
+
+This may be too detailed for discussion in the paper but this
+does not have to necessarily be so.  In fact, in LevoSim, we had
+slightly different paths for the forwarding and backwarding buses.
+I forget the reason, or advantage but there was something useful for
+that.  Of course, there may be other reasons for having different
+paths for forwarding and backwarding that we are not even aware of 
+at the present.
+
+
+= sec 3.3.1, par 3, sen 6
+
+context:	as there is one or more entry in the a table
+
+Maybe should be :
+		as there is one or more entries in the table
+					^
+
+
+= sec 3.3.1 par 4, sen 2
+
+It seems like this use of the term "canceling predicate" is not
+the same as how you used it in the invention disclosure back in 2000.
+Is this intentional ?
+
+
+= sec 3.3.2, par 2, sen 1
+
+Maybe it might be a little clearer with :
+
+	DEE is realized in Levo by including in the hardware ASes
+	solely dedicated to D-path execution ...
+
+
+= sec 3.3.2, par 3, 1st sen
+
+context:	and as soon as a D-path is free ...
+suggestion:
+		and as soon as D-path resources are free ...
+
+
+= sec 3.3.2, par 3, 2nd to last sen
+
+context:	the M-path is relabeled to be free D-paths.
+suggestion:
+		the M-path ASes are relabeled to be free D-path
+		ASes
+
+
+= sec 4.2, par 5, last sen.
+
+context:		and then broadcasts it on its column bus
+
+Hmm.  The term "broadcasts" might not be the best term to use.  The
+word "broadcasts" tends to suggest something that we want to avoid
+(when having scalability in mind).  Maybe a word like "sends" is more
+appropriate.  Also, how is a very high column possibly handled ?
+It is not clear if a column bus has to span the entire height of
+a column or not.
+
+
+= sec 5, par 2, sec 1
+
+context:		with it that hold its ...
+fix:		with it that holds its
+
+
+
+= sec 5, par 2, last sen
+
+What does the term "regenerated" mean here ?  Is this just signifying
+the concatenation of the row and column part of a time-tag ?
+
+
+= sec 5, par 3
+
+Maybe this single sen. par. should just be merged with the previous
+par.
+
+
+General comments
+
+
+You might want to say something about how the machine operates
+at a very high view from the outset.
+
+Specifically, that instructions are fetched, possibly along both
+dynamic and static fetch paths, and then staged in some sort of buffer
+in the i-fetch unit.  This i-fetch buffer (serving as a "dispatch"
+buffer of a more conventional machine) can be either a non-trace
+oriented buffer or a trace cache type of buffer, or a combination or use
+of both.
+
+Instructions are then loaded into the e-window (or "dispatched" as a
+regular machine would call it) to ASes.
+
+Also, I do not remember if you mentioned that ASes hold an execution
+for the whole course of all of its executions (possibly more than one)
+until it is retired (either squashed or committed).  The idea that
+instructions in ASes can get re-issued to an execution unit and
+re-executed several times (due to speculative source operands)
+was not made out to be a primary feature of the ASes.
+
+You might also point out that our ASes sort of serve the role of both
+an "issue slot" and a "reorder buffer entry" of a regular machine.
+At least this is not as clear as it could be.
+
+I'm not sure, but I think that Figure 1 is the only place where an
+"instruction window" is mentioned.   Since our use of "instruction
+window" in this figure is different from what seems to be the more
+general meaning of this term (the set of entries that hold
+instructions from which they are "issued" to execution units), we might
+want to clarify what we mean by it.
+
+I hope that these comments help.
+
+Dave M.

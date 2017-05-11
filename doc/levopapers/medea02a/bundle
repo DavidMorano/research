@@ -1,0 +1,16 @@
+#!/bin/ksh
+
+
+FILES=
+FILES="${FILES} high.bib latex8.bst high.tex "
+FILES="${FILES} high.eps window.eps source.eps "
+FILES="${FILES} l1icache.eps l1dcache.eps l2cache.eps dram.eps"
+FILES="${FILES} release.eps ipc1.eps ipc2.eps ipc3.eps"
+
+
+tar -cf high.tar $FILES
+rm -f high.tar.gz
+gzip high.tar
+
+
+

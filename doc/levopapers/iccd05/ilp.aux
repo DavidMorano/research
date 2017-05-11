@@ -1,0 +1,67 @@
+\relax 
+\citation{Lam92}
+\citation{Uht95}
+\citation{Gon97}
+\citation{waingold97}
+\citation{taylor02}
+\citation{Sohi95}
+\citation{sundararaman97multiscalar}
+\citation{tsai96superthread}
+\citation{kemp96pew}
+\citation{farkas97multicluster}
+\citation{Nag01}
+\citation{Lip97}
+\citation{Anderson67}
+\citation{Tom67}
+\select@language{english}
+\@writefile{toc}{\select@language{english}}
+\@writefile{lof}{\select@language{english}}
+\@writefile{lot}{\select@language{english}}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Microarchitecture overview}{2}}
+\citation{henry99}
+\citation{undisclosed2}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces {\em  High-level block diagram of our microarchitecture.} \relax \fontsize  {9}{11}\selectfont  \abovedisplayskip 8.5\p@ plus3\p@ minus4\p@ \abovedisplayshortskip \z@ plus2\p@ \belowdisplayshortskip 4\p@ plus2\p@ minus2\p@ \def \leftmargin \leftmargini \parsep 4\p@ plus2\p@ minus\p@ \topsep 8\p@ plus2\p@ minus4\p@ \itemsep 4\p@ plus2\p@ minus\p@ {\leftmargin \leftmargini \topsep 4\p@ plus2\p@ minus2\p@ \parsep 2\p@ plus\p@ minus\p@ \itemsep \parsep }\belowdisplayskip \abovedisplayskip { Issues stations are shown on the left and various function units on the right. An architected register file and a load-store-queue are shown at the top. Bidirectional operand request and forwarding buses are shown vertically oriented (to the right of the Issue Stations). Buses to transport an instruction operation and its source operands to the function units are also shown. Likewise buses to return result operands are present. } }}{3}}
+\newlabel{fig:overview}{{1}{3}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Core component detail}{3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Issue Stations}{3}}
+\citation{intel99ia}
+\citation{schlansker00epic}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces {\em  High-level block diagram of our Issue Station.} \relax \fontsize  {9}{11}\selectfont  \abovedisplayskip 8.5\p@ plus3\p@ minus4\p@ \abovedisplayshortskip \z@ plus2\p@ \belowdisplayshortskip 4\p@ plus2\p@ minus2\p@ \def \leftmargin \leftmargini \parsep 4\p@ plus2\p@ minus\p@ \topsep 8\p@ plus2\p@ minus4\p@ \itemsep 4\p@ plus2\p@ minus\p@ {\leftmargin \leftmargini \topsep 4\p@ plus2\p@ minus2\p@ \parsep 2\p@ plus\p@ minus\p@ \itemsep \parsep }\belowdisplayskip \abovedisplayskip { The major state and sub-blocks associated with an Issue Station is shown. General instruction state (shown in dash-lined boxes) is on the left, while four operand blocks (two source and two destination), and the four primary bus group interfaces (grouped by function at upper right and lower right) to the rest of the execution window are on the right. } }}{4}}
+\newlabel{fig:issuestation}{{2}{4}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Operands}{4}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Operand forwarding and snooping}{4}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces {\em  Block diagram of an Operand Block.} \relax \fontsize  {9}{11}\selectfont  \abovedisplayskip 8.5\p@ plus3\p@ minus4\p@ \abovedisplayshortskip \z@ plus2\p@ \belowdisplayshortskip 4\p@ plus2\p@ minus2\p@ \def \leftmargin \leftmargini \parsep 4\p@ plus2\p@ minus\p@ \topsep 8\p@ plus2\p@ minus4\p@ \itemsep 4\p@ plus2\p@ minus\p@ {\leftmargin \leftmargini \topsep 4\p@ plus2\p@ minus2\p@ \parsep 2\p@ plus\p@ minus\p@ \itemsep \parsep }\belowdisplayskip \abovedisplayskip { Each Operand Block holds an effectively renamed operand within the Issue Stations. Several operand blocks are employed within each Issue Station depending on the needs of the ISA being implemented. The primary state register information maintained for each operand (shown in dash-lined boxes) along with the major data paths and enabling signals for its major functions are shown. } }}{5}}
+\newlabel{fig:operand}{{3}{5}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces {\em  Snooping logic for operand updates.} \relax \fontsize  {9}{11}\selectfont  \abovedisplayskip 8.5\p@ plus3\p@ minus4\p@ \abovedisplayshortskip \z@ plus2\p@ \belowdisplayshortskip 4\p@ plus2\p@ minus2\p@ \def \leftmargin \leftmargini \parsep 4\p@ plus2\p@ minus\p@ \topsep 8\p@ plus2\p@ minus4\p@ \itemsep 4\p@ plus2\p@ minus\p@ {\leftmargin \leftmargini \topsep 4\p@ plus2\p@ minus2\p@ \parsep 2\p@ plus\p@ minus\p@ \itemsep \parsep }\belowdisplayskip \abovedisplayskip { The snooping logic for one of several possible source operands is shown. This logic would reside in each of the operand blocks within an issue station and they would all perform the snoop operation simultaneously. Just one operand forwarding bus is shown being snooped but typically several forwarding buses are snooped simultaneously. } }}{5}}
+\newlabel{fig:source}{{4}{5}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Experimental results}{5}}
+\citation{Austin97}
+\citation{ibrahim03}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces {\em  General machine characteristics.} \relax \fontsize  {9}{11}\selectfont  \abovedisplayskip 8.5\p@ plus3\p@ minus4\p@ \abovedisplayshortskip \z@ plus2\p@ \belowdisplayshortskip 4\p@ plus2\p@ minus2\p@ \def \leftmargin \leftmargini \parsep 4\p@ plus2\p@ minus\p@ \topsep 8\p@ plus2\p@ minus4\p@ \itemsep 4\p@ plus2\p@ minus\p@ {\leftmargin \leftmargini \topsep 4\p@ plus2\p@ minus2\p@ \parsep 2\p@ plus\p@ minus\p@ \itemsep \parsep }\belowdisplayskip \abovedisplayskip { These machine parameters are used for all simulations unless otherwise specified. } }}{6}}
+\newlabel{tab:baseline}{{1}{6}}
+\bibstyle{latex8}
+\bibdata{ilp}
+\bibcite{Anderson67}{1}
+\bibcite{Austin97}{2}
+\bibcite{farkas97multicluster}{3}
+\bibcite{Gon97}{4}
+\bibcite{henry99}{5}
+\bibcite{ibrahim03}{6}
+\bibcite{intel99ia}{7}
+\bibcite{kemp96pew}{8}
+\bibcite{Lam92}{9}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces {\em  IPC and re-execution results.} \relax \fontsize  {9}{11}\selectfont  \abovedisplayskip 8.5\p@ plus3\p@ minus4\p@ \abovedisplayshortskip \z@ plus2\p@ \belowdisplayshortskip 4\p@ plus2\p@ minus2\p@ \def \leftmargin \leftmargini \parsep 4\p@ plus2\p@ minus\p@ \topsep 8\p@ plus2\p@ minus4\p@ \itemsep 4\p@ plus2\p@ minus\p@ {\leftmargin \leftmargini \topsep 4\p@ plus2\p@ minus2\p@ \parsep 2\p@ plus\p@ minus\p@ \itemsep \parsep }\belowdisplayskip \abovedisplayskip { IPC performance of a MASE baseline superscalar machine and our proposed microarchitecture is presented. The column titled REX gives the percent of extra instructions executed for the newly proposed machine as compared with the committed instructions. } }}{7}}
+\newlabel{tab:results}{{2}{7}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Summary}{7}}
+\bibcite{Lip97}{10}
+\bibcite{Nag01}{11}
+\bibcite{schlansker00epic}{12}
+\bibcite{Sohi95}{13}
+\bibcite{sundararaman97multiscalar}{14}
+\bibcite{taylor02}{15}
+\bibcite{Tom67}{16}
+\bibcite{tsai96superthread}{17}
+\bibcite{Uht95}{18}
+\bibcite{undisclosed2}{19}
+\bibcite{waingold97}{20}

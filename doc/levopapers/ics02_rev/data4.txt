@@ -1,0 +1,11 @@
+
+Note that in our model the miss penaly for L1 was 20 cycles.
+
+benchmark	br-pred	rate	avg. L1 miss rate  dynamic-branch-cound
+
+go		72.1		96.6			45M
+gap		94.5		98.9			31M
+parser		92.6		98.3			65M
+gzip		85.4		97			44M
+bzip		90.5		98.5			35M
+

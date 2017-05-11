@@ -1,0 +1,70 @@
+
+Predicates are snooped and snarfed in a similar manner as data values
+but since predicates are chained with a hardware oriented linked-list
+scheme, there is no need for the time restriction scheme associated
+with snarfing of data values.  Only the predicate addresses being
+snooped need be compared, as register addresses were compared with the
+forwarded output data snooping.
+
+** continuing **
+
+Note that predicate register addresses are actually time tags of
+instructions loaded into some other active stations of the 
+instruction window.  For this reason, there must exist
+arithmetic decrementing logic needed to substract one from the
+column address part of the time tag when a logic left-shift
+operation occurs on the instruction window.
+As with data dependencies, predicates are chained to
+form control dependency trees that correspond to that
+in the program being executed.
+
+Just as when a new updated value of a data source becomes
+available for an instruction, causing it to become enabled to
+execute again, so too can a changed predicate value cause
+an instruction to enable to execute again.  A predicate
+value can change due to the fact that a previous branch,
+for which the instruction is control dependent, either becomes
+resolved or changes its prediction for some reason.
+
+If a predicate value is broadcast but its value does not change, any
+instructions depending on that predicate rebroadcast their output
+values.  This requirement handles the situation where a branch
+prediction was changed causing a replacement of a segment of the ML
+path with a corresponding DEE path.  In this case, the output values of
+the instructions, beyond the branch having the prediction that changed,
+have to be rebroadcast since they are usually different than the output
+values that were last broadcast from the former ML path of active
+stations.  Schemes to selectively avoid this later re-broadcasting of
+output values are being worked on but does not affect the general
+operation of the machine but merely would be a performance
+optimization.
+
+In those cases where an instruction is simultaneously the target of two
+or more branches, extra active stations are allocated for the
+instruction at instruction load time in order to utilize the extra
+cancelling predicate register hardware in the active station.
+Figure~\ref{activestation} showed only one set of cancelling predicate
+hardware but an implementation may contain more than one set of this
+hardware as an optimization.  One set of cancelling predicate hardware
+is required for each branch that an instruction may be the target for.
+In cases where an instruction is the target of more than one branch and
+where there are not enough cancelling predicate hardware sets in the
+active station to accommodate the number, the cancelling predicate
+hardware sets of the following active station is also used for
+detecting when a predicate changes.  In any event, an instruction is
+enabled for re-execution when any of its input predicates or cancelling
+predicates changed or are just rebroadcast.
+
+Finally, it has been shown that instructions can be speculatively
+executed far ahead of the committed execution state while still
+being able to eventually re-execute as necessary in order to
+eventually correspond to the final committed state.
+We have created mechanisms that mange both the data dependencies and
+the control dependencies that trigger an instruction to re-execute
+when either a predicted data values changes or a predicated
+control condition changes.  Using these means, instructions
+can be dispatched for execution according to a priority scheme
+that only has to minimally consider the availability of resources
+in the machine.  Hence, this new paradigm has been termed
+resource flow execution.
+

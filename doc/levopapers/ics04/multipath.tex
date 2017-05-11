@@ -1,0 +1,35 @@
+Early work on multipath execution was
+dominated by IBM in the
+late 1970s and 1980s \cite{Conners79}.
+The earliest attempts at multipath
+execution started with the ability to prefetch down both
+outcomes of a conditional branch.  This became more aggressive
+to the point of actually executing down both outcomes of
+a conditional branch.  This has
+been explored in work such as that by
+Wang \cite{Wang90}.  
+More aggressive research by Uht and
+Sindagi \cite{Uht95} explored the intersection of both
+multipath execution and future large-scale microarchitectures
+capable of possibly hundreds of instructions being executed simultaneously.
+They also addressed the general question of speculatively executing
+more than two paths simultaneously.
+Work on dual path execution (only two speculative paths) has
+been done by Heil and Smith~\cite{Heil96}.
+Klauser et al 
+explored multipath execution (including more than two
+speculative paths)
+on the PolyPath microarchitecture ~\cite{Klauser98}.
+
+Exploring multipath execution in the context of
+simultaneous multithreading (SMT)
+has been done by
+Wallace et al \cite{Wallace98}.  
+Ahuja et al \cite{Ahuja98} explore some limits for speedups from
+multipath execution but their work is still largely restricted to more
+conventional (modest sized) microarchitectures.
+Our present work explores the use
+of multipath execution on a significantly larger scale
+than that of Ahuja or most previous work.
+%
+

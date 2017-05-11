@@ -1,0 +1,47 @@
+\begin{thebibliography}{1}\setlength{\itemsep}{-1ex}\small
+
+\bibitem{Uht01}
+{ Uht A.K., Morano D.A., Khalafi A., de Alba M., Wenisch T., Ashouei M., and
+  Kaeli D.}
+\newblock {IPC in the 10's via Resource Flow Computing with Levo}.
+\newblock Technical Report {092001-001}, {Dept. of Electrical and Computer
+  Engineering, University of Rhode Island}, {September} 2001.
+
+\bibitem{Austin97}
+{Austin T.M., Burger D.}
+\newblock { SimpleScalar Tutorial }.
+\newblock In {\em {Proceedings of the 30th Annual International Symposium on
+  Microarchitecture}}, {November} 1997.
+
+\bibitem{Gon97}
+{Gonzalez J. and Gonzalez A.}
+\newblock {Limits on Instruction-Level Parallelism with Data Speculation}.
+\newblock Technical Report {UPC-DAC-1997-34}, {Department Architectura de
+  Computadores, Universitat Po}, 1997.
+
+\bibitem{Lam92}
+{Lam M.S. and Wilson R.P.}
+\newblock {Limits of Control Flow on Parallelism}.
+\newblock In {\em {Proceedings of the 19th Annual International Symposium on
+  Computer Architecture}}, pages {46--57}. {ACM}, {May} 1992.
+
+\bibitem{Thornton64}
+{Thornton J.E.}
+\newblock {Parallel Operation in the Control Data 6600}.
+\newblock In {\em {Proceedings of the AFIPS Fall Joint Computer Conference,
+  Part II}}, volume~26, pages {33--40}, 1964.
+
+\bibitem{Tom67}
+{Tomasulo R.M.}
+\newblock {An Efficient Algorithm for Exploiting Multiple Arithmetic Units}.
+\newblock {\em {IBM Journal of Research and Development}}, {11}({1}):{25--33},
+  {Jan} 1967.
+
+\bibitem{Uht95}
+{Uht A. K. and Sindagi V.}
+\newblock {Disjoint Eager Execution: An Optimal Form of Speculative Execution}.
+\newblock In {\em {Proceedings of the 28th International Symposium on
+  Microarchitecture, MICRO-28}}, pages 313--325. {ACM-IEEE},
+  {November/December} 1995.
+
+\end{thebibliography}

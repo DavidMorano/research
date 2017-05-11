@@ -1,0 +1,121 @@
+% memory latencies
+%
+%\documentclass[10pt,twocolumn,dvips]{article}
+\documentclass[10pt,dvips]{article}
+\usepackage[english]{babel}
+\usepackage{epsfig}
+%
+%\usepackage{fancyheadings}
+%\usepackage[T1]{fontenc}
+%\usepackage[latin1]{inputenc}
+%
+%\usepackage{twocolumn}
+%\usepackage{verbatim,moreverb,doublespace}
+%\usepackage{rotate,lscape,dcolumn,array,rotating,latexsym}
+%
+%\input{epsf}
+%
+\textwidth 6.5in
+\textheight 9.0in
+\topmargin -0.6in
+\oddsidemargin 0mm
+\evensidemargin 0mm
+%
+%\pagestyle{empty}
+%
+\begin{document}
+\parskip 2mm
+%
+%
+\title{Memory Latency Notes}
+%
+\author{
+D. Morano\\
+Northeastern University\\
+dmorano@ece.neu.edu\\
+}
+%
+\maketitle
+%\thispagestyle{empty}
+%
+% abstract goes here if you have one
+%
+%
+\section{Introduction}
+%
+These notes include some information on 
+Dynamic Random Access Memory (DRAM) latencies
+in current, and possibly future, machines.
+Some information and background on the increasing 
+problem that DRAM latency performance presents to the whole
+computer design is also included.
+%
+\section{Current DRAM Latencies}
+%
+Cuppu et al \cite{cuppu01high) presents a good analysis of
+various DRAM design architectures using the various different DRAM chip
+technologies that are currently available or are soon to be
+available.  Their analysis largely focuses on the higher-end
+workstation design point.
+This work was an extension of prior work by Cuppu et ~/cite{cuppu99performance}.
+They show
+how the chip DRAM timing (precharge, row, column, and data
+transfer) for Enhanced Synchronous DRAMs (ESDRAM) 
+(among other DRAM chip variants) translates
+into average access latencies for a realistic memory system design.  
+They show
+that 100 MHz ESDRAM (a very conservative design choice at the present time) 
+translates into average main
+memory latencies of between 120 and 170 nsecs for the benchmarks that
+they investigated (SpecInt-95).  For a 1 GHz processor clocks,
+this results in approximately 120 to 170 clocks of delay
+before the data from an average cold access (new DRAM page) 
+can be returned to the processor.  This result was largely
+insensitive to the choice of L1 and L2 caches latencies.
+
+Wulf et al ~\cite{wulf95hit} (and Hennessy et al ~\cite{hennpatt95})
+report only an average DRAM
+latency speed increase of about 7 \%.  
+Burger et al ~/cite(burger95declining}
+give an average speed increase of between 5 \% and 10 \%.
+The slow increase in average DRAM latency is largely due to the
+technology used for the core of DRAMs.  The core DRAM technology
+is largely the same for all DRAM interface variants.
+There was some improvement with the transition to the newer
+enahnced SDRAMs that appeared started at the 133 MHz clock
+frequencies (for example DDR133).
+Processor clocks increase at a much higher rate and approximate
+a growth of 40 \% to 80 \% a year ~\cite{davis00new}.
+Extrapolating about five years into the future and assumming a
+current process clock rate of 2.4 GHz (the latest Pentium 4
+processors) and a conservative growth rate of about 40 \%, 
+processor clocks
+can likely be at around 10 GHz.  However DRAM average access
+latencies will only be at about (using the 7 \% figure)
+between 100 nsec and 120 nsec.  This represents a latency in
+processor clocks of 1000 and 1200 respectively.
+%
+\section{Background}
+%
+The need to deal with the processor/memory performance gap has
+been reported by many including Wulf
+Wulf et al ~\cite{wulf95hit},
+Hennessy et al ~\cite{hennpatt95},
+Burger et al ~\cite{burger97limited}, and others.
+
+Cuppu et al ~\cite{cuppu99performance}, Davis et al ~\cite{davis00ddr2},
+and Davis et al again later in 2000 ~\cite{davis00new} have
+all explored the impact of the newer DRAM interface technologies
+on program execution time performance.  
+The newer interfaces have also helped with reducing average
+access latencies but these are considered one-time fixes to the
+overall problem since the core DRAM technology follows the
+7 \% growth rate throughout.
+%
+%
+%
+\bibliographystyle{latex8}
+\bibliography{mem}
+\end{document}
+%
+%

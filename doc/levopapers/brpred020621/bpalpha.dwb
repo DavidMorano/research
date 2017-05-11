@@ -1,0 +1,58 @@
+.\"_
+.\"_
+.SP 8
+.G1
+frame ht 4 wid 4.5
+label left "percent" "accuracy" left .1
+label bot "predictor size in bits"
+coord x 1000,200000 y 0,100 log x
+ticks left out at 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100
+ticks bot out at 1000, 2000, 4000, 8000, 16000, 32000, 64000, 128000
+new solid "2"
+copy "bpalpha_compress.txt"
+new solid "3"
+copy "bpalpha_crafty.txt"
+new solid "4"
+copy "bpalpha_gcc.txt"
+new solid "5"
+copy "bpalpha_go.txt"
+new solid "6"
+copy "bpalpha_gzip.txt"
+new solid "7"
+copy "bpalpha_ijpeg.txt"
+new solid "8"
+copy "bpalpha_mcf.txt"
+new solid "9"
+copy "bpalpha_parser.txt"
+new solid "10"
+copy "bpalpha_vortex.txt"
+.G2
+.SP 2
+.S 18
+Accuracy results for the Tournament branch predictor.
+.SP
+.S 12
+.VL 8
+.LI 2
+compress
+.LI 3
+crafty
+.LI 4
+gcc
+.LI 5
+go
+.LI 6
+gzip
+.LI 7
+ijpeg
+.LI 8
+mcf
+.LI 9
+parser
+.LI 10
+vortex
+.LE
+.sp 0.5
+.\"_
+.S 10
+.\"_

@@ -1,0 +1,57 @@
+SimpleSim statistics 020905_1128:16
+statistics for job=gcc_ms logid=frodo26747
+started 020905_0850:41 (elapsed time   0-02:37:35)
+real   time=  0-02:37:35.330000
+user   time=  0-00:48:31.330000
+system time=  0-00:00:59.710000
+
+total instructions       600000000
+included instructions    500000000 (100000000:500000000)
+CF instructions           93618489 ( 15.603%)
+CF-IND instructions        7334125 (  1.222%)
+relative branches         81007269 ( 13.501%)
+CF-UNC                    19033794 (  3.172%)
+conditional branches      74584695 ( 12.431%)
+forward c-branches        55825486 (  9.304%)
+backward c-branches       18759209 (  3.127%)
+branch SS-hammocks         3299586 (  0.550%)
+instructions per BP            6.7038
+= branch path statistics
+instructions per branch path
+IPBP mean                      6.7038
+IPBP stddev                    6.3600
+= branch target-distance statistics
+instructions per forward branch target
+IPFBT mean                    56.1042
+IPFBT stddev                 172.6731
+instructions per backward branch target
+IPBBT mean                    40.5263
+IPBBT stddev                 160.0057
+= hammock branch target-distance statistics
+IPHT mean                      5.7562
+IPHT stddev                    5.0641
+forward c-branches        55825486 ( 74.85 % of conditional)
+backward c-branches       18759209 ( 25.15 % of conditional)
+SS hammocks                3299586 (  4.42% of conditional)
+= dynamically loaded branch predictors :
+rows                             0
+delay                            0
+= register statistics
+read-interval mean                8.0949
+read-interval stddev             88.4656
+lifetime mean                    15.2391
+lifetime stddev                 137.5394
+def-use mean                    198.4063
+def-use stddev                  900.7402
+= memory statistics
+memory reads              141561674
+memory writes              88148871
+memory variables             793934
+tracking pages                  874 (in 28 groups)
+storage allocated                 7 MiBytes
+read-interval mean             9955.4194
+read-interval stddev          21265.6713
+lifetime mean                  1949.6364
+lifetime stddev                9565.0378
+def-use mean                  36661.0327
+def-use stddev                31468.6843

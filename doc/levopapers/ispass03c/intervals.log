@@ -1,0 +1,143 @@
+This is TeX, Version 3.14159 (Web2C 7.3.1) (format=latex 2002.1.17)  7 OCT 2002 22:01
+**intervals
+(intervals.tex
+LaTeX2e <1999/12/01> patch level 1
+Babel <v3.6Z> and hyphenation patterns for american, french, german, ngerman, n
+ohyphenation, loaded.
+(/usr/local/tetex/share/texmf/tex/latex/base/article.cls
+Document Class: article 1999/09/10 v1.4a Standard LaTeX document class
+(/usr/local/tetex/share/texmf/tex/latex/base/size10.clo
+File: size10.clo 1999/09/10 v1.4a Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@section=\count80
+\c@subsection=\count81
+\c@subsubsection=\count82
+\c@paragraph=\count83
+\c@subparagraph=\count84
+\c@figure=\count85
+\c@table=\count86
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+)
+(/usr/local/tetex/share/texmf/tex/generic/babel/babel.sty
+Package: babel 1999/09/09 v3.6Z The Babel package
+
+(/usr/local/tetex/share/texmf/tex/generic/babel/english.ldf
+Language: english 1999/04/11 v3.3i English support from the babel system
+
+(/usr/local/tetex/share/texmf/tex/generic/babel/babel.def
+File: babel.def 1999/09/09 v3.6Z Babel common definitions
+\babel@savecnt=\count87
+\U@D=\dimen103
+)))
+(/usr/local/tetex/share/texmf/tex/latex/graphics/epsfig.sty
+Package: epsfig 1999/02/16 v1.7a (e)psfig emulation (SPQR)
+
+(/usr/local/tetex/share/texmf/tex/latex/graphics/graphicx.sty
+Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/tetex/share/texmf/tex/latex/graphics/keyval.sty
+Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
+\KV@toks@=\toks14
+)
+(/usr/local/tetex/share/texmf/tex/latex/graphics/graphics.sty
+Package: graphics 1999/02/16 v1.0l Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/tetex/share/texmf/tex/latex/graphics/trig.sty
+Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+)
+(/usr/local/tetex/share/texmf/tex/latex/config/graphics.cfg)
+Package graphics Info: Driver file: dvips.def on input line 80.
+
+(/usr/local/tetex/share/texmf/tex/latex/graphics/dvips.def
+File: dvips.def 1999/02/16 v3.0i Driver-dependant file (DPC,SPQR)
+))
+\Gin@req@height=\dimen104
+\Gin@req@width=\dimen105
+)
+\epsfxsize=\dimen106
+\epsfysize=\dimen107
+) (intervals.aux)
+\openout1 = `intervals.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 56.
+LaTeX Font Info:    ... okay on input line 56.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 56.
+LaTeX Font Info:    ... okay on input line 56.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 56.
+LaTeX Font Info:    ... okay on input line 56.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 56.
+LaTeX Font Info:    ... okay on input line 56.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 56.
+LaTeX Font Info:    ... okay on input line 56.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 56.
+LaTeX Font Info:    ... okay on input line 56.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <12> on input line 78.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 78.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 78.
+
+Overfull \hbox (5.63467pt too wide) in paragraph at lines 133--153
+[]\OT1/cmr/m/n/10 Some ex-am-ple mi-croar-chi-tec-tures that have ex-plored the
+ use of mul-ti-ple ex-e-cu-tion units are the Multiscalar-
+ []
+
+[1
+
+] [2] [3]
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 335.
+
+ (/usr/local/tetex/share/texmf/tex/latex/base/omscmr.fd
+File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 335.
+ [4]
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 423.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 423.
+
+[5] [6] [7]
+File: a_over.eps Graphic file (type eps)
+ <a_over.eps>
+File: aa_mrint.eps Graphic file (type eps)
+ <aa_mrint.eps>
+File: ab_mrint.eps Graphic file (type eps)
+ <ab_mrint.eps>
+
+LaTeX Warning: Float too large for page by 3.22429pt on input line 656.
+
+File: aa_mlife.eps Graphic file (type eps)
+<aa_mlife.eps>
+File: ab_mlife.eps Graphic file (type eps)
+ <ab_mlife.eps>
+
+LaTeX Warning: Float too large for page by 3.22429pt on input line 687.
+
+File: aa_muse.eps Graphic file (type eps)
+<aa_muse.eps>
+File: ab_muse.eps Graphic file (type eps)
+ <ab_muse.eps>
+
+LaTeX Warning: Float too large for page by 3.22429pt on input line 718.
+
+File: a_mcum.eps Graphic file (type eps)
+<a_mcum.eps> [8]
+File: overview.eps Graphic file (type eps)
+ <overview.eps> [9] [10] [11] [12] [13] [14] [15] [16] [17]
+(intervals.bbl [18] [19]) [20] (intervals.aux) ) 
+Here is how much of TeX's memory you used:
+ 883 strings out of 10901
+ 9948 string characters out of 72188
+ 61811 words of memory out of 263001
+ 3836 multiletter control sequences out of 10000+0
+ 9053 words of font info for 32 fonts, out of 400000 for 1000
+ 14 hyphenation exceptions out of 1000
+ 32i,9n,23p,451b,378s stack positions out of 300i,100n,500p,50000b,4000s
+
+Output written on intervals.dvi (20 pages, 50432 bytes).

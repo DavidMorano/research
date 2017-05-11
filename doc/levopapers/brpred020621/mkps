@@ -1,0 +1,9 @@
+#!/bin/ksh
+
+
+for F in bphm bpyags bpalpha bpgspag ; do 
+  grap ${F}.dwb | pic | troff -Tpost -mm | dpost > ${F}.ps 
+done
+
+
+

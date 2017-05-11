@@ -1,0 +1,71 @@
+Allo Dave,
+	"buses". I changed the document. I think.
+	Your description is good; I did a little polishing, but basically
+it was what the doctor ordered. I think I put it where you suggested.
+	Your forwarding FIFO: makes sense. Maybe you should change your
+forwarding register to a forwarding buffer (FIFO - or is it?). Glad you
+are thinking deeply about all this.
+	The eps files all came out fine, see attached.
+
+	I've attached the souce tex file and the postscript output,
+as well as two revised figures. I've munged the text a bit, but not
+completely, and have incorporated your figures and text. The
+cross-references should be OK, you might check to see if I have your
+text pointing to the figure you thought it should point to.
+
+	I still owe the scalability text, forwarding buses figure and
+more text hacking. Tomorrow.
+
+	Later.
+
+				----Gus
+
+	
+
+David Morano wrote:
+> 
+> Gus ,
+> 
+> Oh, I just noticed that since there are two correct spellings for the
+> word 'buses' (also 'busses') that we should be consist in our choice of
+> spelling.  I have been using 'buses'.  Let me know if your preference
+> is for the other ! :-)
+> 
+> Please find enclosed the start (maybe a poor start) of the description
+> of the forwarding busses to go along with your bus forwarding figure.
+> Now that I think about where this description belongs, it may best fit
+> just after the discussion of the instruction window and the time tags
+> rather than before it as I suggested on Friday.  Use your judgment as
+> you think is best.
+> 
+> Of course, hack this up as needed or desired !
+> 
+> I also just realized that there may be implementations where we may want
+> to replace the single forwarding register with a forwarding FIFO
+> buffer.  This can accommodate priority schemes that give more
+> preference to a current sharing group forwarding its results than that
+> of a previous sharing group (located a forwarding span back).  It may
+> be much more important to forward results to instructions located
+> more closely in the future relative to an output generating instruction
+> than forwarding results to those instruction further in the future
+> needing an output.  Let me know what you think.
+> 
+> Thanks,
+> Dave Morano
+> morano@computer.org
+> 
+>   ------------------------------------------------------------------------------
+>                      Name: forwarding.tex
+>    forwarding.tex    Type: TeX Document (application/x-tex)
+>                  Encoding: base64
+
+-- 
++-----------------------------------------------------------------------+
+|                     Augustus (Gus) K. Uht, P.E.                       |
+|     Associate Professor of Electrical and Computer Engineering        |
+|                                                                       |
+| University of Rhode Island         Email: mailto:uht@ele.uri.edu      |
+| Kelley Hall                        Phone: 401-874-5431                |
+| 4 East Alumni Ave.                   Fax: 401-782-6422                |
+| Kingston, RI 02881-0805              Web: http://www.ele.uri.edu/~uht |
++-----------------------------------------------------------------------+

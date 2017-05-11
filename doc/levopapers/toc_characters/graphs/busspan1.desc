@@ -1,0 +1,20 @@
+Hi
+
+Here are three graphs that we recently got.
+In the first graph we used the def-use data gathered by Dave M. to
+find the fraction of register instructions which their def-use distance
+fit in a single bus span.  We drew this versuse SG bus span and number of
+AS/SG (for 1 to 8). This graph could be useful in selecting the
+bus spans.
+
+The next two graphs are density graphs for the execution delay of
+register and memory instructions. By execution time, I mean the number of
+cylces from dispatch until the instruction has gone through its last
+execution.  I like to use the term dispatch to commit time but the commit
+time here is different from column commit time.  Instructions can commit
+at soon as the previous Active stations are committed and there is no more
+forwarding has to be done.  I actully like to use a term such as column
+retirement instead of column commit to distinguish commitment from
+retirement.
+
+Alireza

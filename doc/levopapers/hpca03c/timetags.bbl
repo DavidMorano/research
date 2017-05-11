@@ -1,0 +1,176 @@
+\begin{thebibliography}{10}\setlength{\itemsep}{-1ex}\small
+
+\bibitem{Anderson67}
+{Anderson D., Sparacio F. and Tomasulo F.}
+\newblock {The IBM/360 Model 91: Machine Philosophy and Instruction Handling}.
+\newblock {\em {IBM Journal}}, 11(1):8--24, Jan. 1967.
+
+\bibitem{Austin97}
+{Austin T.M. and Burger D.}
+\newblock { SimpleScalar Tutorial }.
+\newblock In {\em {Proc. of MICRO-30}}, {Nov} 1997.
+
+\bibitem{Bannon95}
+{Bannon P. et al}.
+\newblock {Internal Architecture of Alpha 21164 microprocessor}.
+\newblock In {\em {COMPCON'95}}, pages 79--87, Mar 1995.
+
+\bibitem{Cher01}
+{Cher C. and Vijaykumar T.N.}
+\newblock {Skipper: A Microarchitecture for Exploiting Control-Flow
+  Independence}.
+\newblock In {\em {Proceedings of the 34nd International Symposium on
+  Microarchitecture}}, New York, NY, Nov 2001. ACM Press.
+
+\bibitem{Cleary95}
+{Cleary J.G, Pearson M.W and Kinawi H.}
+\newblock {The Architecture of an Optimistic CPU: The Warp Engine}.
+\newblock In {\em {Proc. of the HICSS}}, pages 163--172, Jan. 1995.
+
+\bibitem{Sohi96}
+{Franklin M. and Sohi G.S.}
+\newblock {ARB: A Hardware Mechanism for Dynamic Memory Disambiguation}.
+\newblock {\em IEEE Transactions on Computers}, 45(5):552--571, May 1984.
+
+\bibitem{Franklin92}
+{Franklin M. and Sohi G.S.}
+\newblock {Register Traffic Analysis for Streamlining Inter-Operation
+  Communication in Fine-Grained Parallel Processors}.
+\newblock In {\em {Proceedings of the 25th International Symposium on
+  Microarchitecture}}, pages 236--245, New York, NY, Dec 1992. ACM Press.
+
+\bibitem{Gon97}
+{Gonzalez J. and Gonzalez A.}
+\newblock {Limits on Instruction-Level Parallelism with Data Speculation}.
+\newblock Technical Report {UPC-DAC-1997-34}, {UPC, Barcelona Spain}, 1997.
+
+\bibitem{gonzalez98limits}
+{Gonzlez J. and Gonzlez A.}
+\newblock {Limits of Instruction Level Parallelism with Data Speculation}.
+\newblock In {\em Proceedings of the VECPAR Conference}, pages 585--598, 1998.
+
+\bibitem{Heil96}
+{Heil T.H. and Smith J.E.}
+\newblock {Selective Dual Path Execution}.
+\newblock Technical report, {University of Wisconsin - Madison}, Madison, WI,
+  1996.
+
+\bibitem{iA64}
+Intel.
+\newblock {\em Intel Itanium2 Processor Reference Manual for Software
+  Development and Optimization}, June 2002.
+
+\bibitem{Kessler98}
+{Kessler R.E., McLellan E.J. and Webb D.A.}
+\newblock The alpha 21264 microprocessor architecture.
+\newblock In {\em International Conference on Computer Design}, Oct 1998.
+
+\bibitem{Klauser98}
+{Klauser A.S., Pathankar A. and Grunwald D.}
+\newblock Selective eager execution on the polypath architecture.
+\newblock In {\em Proceedings of the 25th International Symposium on Computer
+  Architecture}, pages 250--259, New York, NY, Jun 1998. ACM Press.
+
+\bibitem{Lam92}
+{Lam M.S. and Wilson R.P.}
+\newblock {Limits of Control Flow on Parallelism}.
+\newblock In {\em {Proc. of ISCA-19}}, pages 46--57. {ACM}, May 1992.
+
+\bibitem{lipasti96exceeding}
+{Lipasti M.H. and Shen J.P.}
+\newblock Exceeding the dataflow limit via value prediction.
+\newblock In {\em International Symposium on Microarchitecture}, pages
+  226--237, 1996.
+
+\bibitem{Lip97}
+{Lipasti M.H and Shen J.P.}
+\newblock {Superspeculative Microarchitecture for Beyond AD 2000}.
+\newblock {\em {IEEE Computer}}, {30}({9}), Sep 1997.
+
+\bibitem{lipasti97performance}
+{Lipasti M.H. and Shen J.P.}
+\newblock {The Performance Potential of Value and Dependence Prediction}.
+\newblock In {\em European Conference on Parallel Processing}, pages
+  1043--1052, 1997.
+
+\bibitem{Morano02}
+{Morano D.A.}
+\newblock {Execution-time Instruction Predication}.
+\newblock Technical Report {TR 032002-0100}, {Dept. of ECE, URI}, {Dec} 2002.
+
+\bibitem{Palacharla97}
+{Palacharla S., Jouppi N.P. and Smith J.E.}
+\newblock {Complexity-Effective Superscalar Processors}.
+\newblock In {\em {ISCA-24}}, pages 206--218, 1997.
+
+\bibitem{Sank01a}
+{Sankaranarayanan K. and Skadron K.}
+\newblock {A Scheme for Selective Squash and Re-issue for Single-Sided Branch
+  Hammocks}.
+\newblock Technical Report {CS-2001-14}, {University of Virginia},
+  Charlottesville, VA, Jul 2001.
+
+\bibitem{Sank01b}
+{Sankaranarayanan K. and Skadron K.}
+\newblock {A Scheme for Selective Squash and Re-issue for Single-Sided Branch
+  Hammocks}.
+\newblock IEEE Press, Oct 2001.
+
+\bibitem{Skadron01}
+{Skadron K. and Ahuja P.S.}
+\newblock {HydraScalar: A Multipath-Capable Simulator}.
+\newblock {\em IEEE Technical Committee on Computer Architecture Newsletter},
+  2001.
+
+\bibitem{Smith95}
+{Smith J.E. and Sohi G.S.}
+\newblock {The Microarchitecture of Superscalar Processors}.
+\newblock {\em Proceedings of the IEEE}, 83:1609--1624, Dec 1995.
+
+\bibitem{Sohi95}
+{Sohi G.S., Breach S. and Vijaykumar T.N.}
+\newblock {Multiscalar Processors}.
+\newblock In {\em {Proceedings of the 22th International Symposium on Computer
+  Architecture}}, New York, NY, Jun 1995. ACM Press.
+
+\bibitem{Thornton64}
+{Thornton J.E.}
+\newblock {Parallel Operation in the Control Data 6600}.
+\newblock In {\em {Proc. of the AFIPS}}, volume~26, pages 33--40, 1964.
+
+\bibitem{Tom67}
+{Tomasulo R.M.}
+\newblock {An Efficient Algorithm for Exploiting Multiple Arithmetic Units}.
+\newblock {\em {IBM Journal of Research and Development}}, 11(1):25--33, Jan
+  1967.
+
+\bibitem{Uht95}
+{Uht A. K. and Sindagi V.}
+\newblock {Disjoint Eager Execution: An Optimal Form of Speculative Execution}.
+\newblock In {\em {Proc. MICRO-28}}, pages 313--325. {ACM}, Nov 1995.
+
+\bibitem{Uht02}
+{Uht A., Morano D., Khalafi A., Alba M. and Kaeli D.}
+\newblock {Realizing High IPC Using Time-tagged Resource-Flow Computing}.
+\newblock In {\em EUROPAR Conference}, Paderborn, Germany, August 2002.
+
+\bibitem{Uht01}
+{Uht A.K., Morano D.A., Khalafi A., de Alba M., Wenisch T., Ashouei M., and
+  Kaeli D.}
+\newblock {IPC in the 10's via Resource Flow Computing with Levo}.
+\newblock Technical Report {TR 092001-001}, {Dept. of ECE, URI}, {Sept} 2001.
+
+\bibitem{Wallace98}
+{Wallace S., Calder B. and Tullsen D.M.}
+\newblock {Threaded Multiple Path Execution}.
+\newblock In {\em {Proceedings of the 25th International Symposium on Computer
+  Architecture}}, New York, NY, Jun 1998. ACM Press.
+
+\bibitem{Wang90}
+{Wang S.S.H and Uht A.K.}
+\newblock {Ideograph/Ideogram: Framework/Architecture for Eager Execution}.
+\newblock In {\em Proceedings of the 23rd Symposium and Workshop on
+  Microprogramming and Microarchitecture}, pages 125--134, New York, NY, Nov
+  1990. ACM Press.
+
+\end{thebibliography}

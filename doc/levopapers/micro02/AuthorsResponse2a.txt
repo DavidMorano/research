@@ -1,0 +1,149 @@
+We have three major comments on the reviews. First, our paper is not
+the typical incremental change paper, rather it presents a design which
+changes almost everything within a CPU; hence, it is not possible to
+describe all of the details going into the design in a single paper.
+Separating the components out would not work, either, if we are to
+present the entire microarchitecture; the components depend on each
+other. Second, it is not possible to have a complete chip design done
+for this paper, we do not have the resources or time available (nor
+would any other researcher); therefore, some realization issues cannot
+be completely addressed in the paper. Thirdly, it is a dense paper,
+which is unavoidable, and requires more than the usual time and effort
+of the reader for full understanding; the reviewers may not have had
+adequate time available to absorb the ideas.
+
+Other detailed responses:
+
+Review #495:
+
+The reviewer is primarily concerned about a possibly high cycle time
+(his/her points (1) and [1]), and a perceived lack of motivation for
+why this microarchitecture is better than a traditional approach
+(his/her point (2)).  We have consistently addressed the cycle time
+issue throughout our design process. As is stated in the paper, the
+steps the reviewer claims WE claim must happen in one cycle are
+actually spread out over several cycles; as is stated in Section 6,
+Table 1, the register file (forwarding unit) delay is 1 cycle, the bus
+delay is one cycle, and the time taken within a Sharing Group (Active
+Stations and functional units only) is one or more cycles, depending on
+the functional unit delay in question. We assume the functional units
+are pipelined. The comparisons mentioned by the reviewer can be done in
+parallel; they need not be done in order.  Also, Section 5 contains
+details demonstrating the low cycle time due to RC delays, the
+dominating factor in future chip designs.
+
+In the early sections of the paper, we give the motivation for why our
+design is superior than traditional designs. Basically, given the
+necessary resources for the high IPC, our design can be built while
+traditional designs cannot, or only at great expense, with high cycle
+time and low performance.
+
+Some of the reviewer's other detailed points are matters of style or
+desire for more detail than we have room to provide.
+
+Addressing the other points:
+
+WRT the sizes of the PCB and the L0 cache: they need not be larger than
+specified in the paper. A load with an unknown address will either a)
+snoop and snarf the value once its address is known or b) once its
+address is known, will request the data using a backwarding bus, which
+in turn will generate a store for that address, which the load will
+snarf. Thus, the PCB and L0 need only store a column's worth of memory
+values in the worst case. The PCB only stores values from the previous
+column, while the L0 cache can hold values occurring in any earlier
+column. The PCB is described in the paper on p. 11, second paragraph.
+More information was not given on the L0 cache, since it primarily has
+the traditional caching function, only closer to the instructions than
+the L1 data cache.
+
+All of our bus bandwidths were limited in the design and the
+simulations.
+
+The taken branch table is not used for hardware PREDICTION but for
+hardware PREDICATION; it is used to help delineate branch domains.
+
+Unrolling backwards branches in hardware exposes more ILP. It is not
+hard to do. This is also true for inlining subroutine calls and
+returns. These operations both happen OUTSIDE of the execution window,
+and are thus not in the critical path.
+
+As stated in the paper, D-paths compose about 10% of the total hardware
+cost yet yield a 45% performance improvement, clearly a win.  (The next
+reviewer had the same cost/benefit concern.)
+
+Review #674:
+
+We are glad that the reviewer has recognized the major strengths of our
+proposed microarchitecture.
+
+WRT quoting performance numbers: In both the introduction and the
+conclusion the limitations of the quoted numbers are specified, in
+particular referring not to the whole machine but to the execution core
+and memory. There was no intent to mislead, only to illustrate the
+potential of the microarchitecture; perhaps we should have been
+clearer.  Also, in Section 7.3, the performance situation of the
+entire, real system is stated clearly: we're not there, but we've come
+a long way, and are almost there.
+
+The trace-based simulator accurately models wrong-path behavior.
+
+The number of RFU, MFU and PFU buses are clearly stated in Table 1 of
+Section 6, Experimental Methodology. We do not need a large number of
+busses to get high performance. This is why the number of busses was
+not expressly addressed in the floorplan.
+
+I received the ISCA 2002 proceedings last week, long after this paper
+was submitted. Regardless of that, our approach to a large instruction
+window (or execution window, as we call it) is substantially different
+from any proposed in the ISCA papers; further, it is just one component
+of an entirely new microarchitecture.
+
+Review #711:
+
+Addressing the major concerns: many if not most of the proposed
+techniques are novel, in particular in their implementation. For
+example, as stated in the paper, time-tagging as we employ it has been
+done before in a general way, but not in an implementable way. Also,
+WRT the "prior" art, our DEE predates Polypath, our prior Minimal
+Control Dependency work (hardware predication) predates the Skipper
+machine and Klauser's dynamic predication work; besides, the latter
+work IS cited in our paper: Reference [6]. Further, our work with DEE
+is much more general and likely easier to implement than in Skipper.
+Also, our segmented broadcast technique is only similar in name to
+Raasch's work. Our patent applications predate it anyway by two years.
+We'd love to put in many more references, but we are space limited and
+thus must concentrate on the most relevant ones.
+
+WRT the other major concern, the lack of a baseline: the paper does in
+fact include simulation results of a non-Levo traditional
+microarchitecture baseline. This is the Simplescalar PISA architecture
+with a very high issue width, as described in the first paragraph of
+Section 7 (experimental results).
+
+Other points: the reviewer states that the dependency enforcement of
+time-tagging is not explained in the text. However, it is, at length,
+on page 4, middle paragraph, as well as in Figure 2. The time tag size
+is also discussed, elsewhere in the paper. The size cannot overflow, by
+construction; see the first part of Section 5.
+
+Review #753:
+
+We are glad the reviewer recognized some of the paper's qualities.
+
+Again, our space is limited; we had no room to go into the memory
+latency details.
+
+The reviewer states that Section 5 and 6 "become meaningless", since
+he/she didn't understand an earlier figure.  In the first place, the
+material of Section 5 is independent of much of what has come before,
+including the figure in question.  In the second place, Section 6 is
+the Experimental Methodology section; how can that possibly be
+meaningless?
+
+The reviewer also says the paper is way too long. This is not true, the
+paper meets the conference word count specification plus or minus 5%.
+
+Lastly, the reviewer seems to be asking for conflicting changes:  1) a
+shorter paper, and 2) more explanation of concepts. These two desires
+are necessarily in conflict in the paper given the large size of the
+design idea presented in the paper.

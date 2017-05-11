@@ -1,0 +1,94 @@
+SimpleSim statistics 020905_2344:04
+statistics for job=bzip2_ms logid=frodo2067
+started 020905_2128:02 (elapsed time   0-02:16:02)
+real   time=  0-02:16:02.810000
+user   time=  0-00:35:43.810000
+system time=  0-00:00:34.700000
+
+total instructions       600000000
+included instructions    500000000 (100000000:500000000)
+CF instructions           70301584 ( 11.717%)
+CF-IND instructions        5483237 (  0.914%)
+relative branches         59335110 (  9.889%)
+CF-UNC                    15838559 (  2.640%)
+conditional branches      54463025 (  9.077%)
+forward c-branches        30664222 (  5.111%)
+backward c-branches       23798803 (  3.966%)
+branch SS-hammocks         1464158 (  0.244%)
+instructions per BP            9.1805
+= branch path statistics
+instructions per branch path
+IPBP mean                      9.1805
+IPBP stddev                    8.9270
+= branch target-distance statistics
+instructions per forward branch target
+IPFBT mean                    16.4596
+IPFBT stddev                  25.0195
+instructions per backward branch target
+IPBBT mean                    19.0150
+IPBBT stddev                  29.7286
+= hammock branch target-distance statistics
+IPHT mean                      5.3401
+IPHT stddev                    1.6087
+forward c-branches        30664222 ( 56.30 % of conditional)
+backward c-branches       23798803 ( 43.70 % of conditional)
+SS hammocks                1464158 (  2.69% of conditional)
+= dynamically loaded branch predictors :
+rows                             0
+delay                            0
+= register statistics
+read-interval mean                   9.3138
+read-interval stddev                68.4729
+read-interval overflow               0.0021 %
+lifetime mean                       11.4946
+lifetime stddev                     93.9390
+lifetime overflow                    0.0038 %
+def-use mean                       384.8575
+def-use stddev                    1620.9700
+def-use overflow                     3.8622 %
+= memory statistics
+memory reads                 112466928
+memory writes                 50553190
+memory variables               2097865
+memory read variables          1406468
+memory write variables         1116239
+tracking pages                    2064 (in 65 groups)
+storage allocated                   16 MiBytes
+2^0 density (65536 entries)
+read-interval mean                7709.9058
+read-interval stddev             19804.8361
+read-interval overflow               9.6322 %
+read-interval 70% cov              321.0000
+read-interval 80% cov             1460.0000
+read-interval 90% cov            52011.0000
+lifetime mean                     4360.5373
+lifetime stddev                  14892.4373
+lifetime overflow                    4.9265 %
+lifetime 70% cov                   104.0000
+lifetime 80% cov                   602.0000
+lifetime 90% cov                  4133.0000
+def-use mean                     37359.1665
+def-use stddev                   31977.4765
+def-use overflow                    55.7771 %
+defuse 70% cov                   65535.0000
+defuse 80% cov                   65535.0000
+defuse 90% cov                   65535.0000
+2^10 density (65536 entries)
+1k read-interval mean             2013.4783
+1k read-interval stddev           9502.2715
+1k read-interval overflow            1.4406 %
+1k read-interval 70% cov             0.0000
+1k read-interval 80% cov             1.0000
+1k read-interval 90% cov            50.0000
+1k lifetime mean                  1298.8404
+1k lifetime stddev                8607.7613
+1k lifetime overflow                 1.4773 %
+1k lifetime 70% cov                  0.0000
+1k lifetime 80% cov                  0.0000
+1k lifetime 90% cov                  4.0000
+1k def-use mean                  25075.9668
+1k def-use stddev                29827.7503
+1k def-use overflow                 32.1132 %
+1k def-use 70% cov               65535.0000
+1k def-use 80% cov               65535.0000
+1k def-use 90% cov               65535.0000

@@ -1,0 +1,17 @@
+#!/bin/ksh
+
+
+SUF="etbftlen etbbtlen ethtlen etbplen "
+
+
+for P in $( < PROGS ) ; do
+
+  for S in $SUF ; do
+
+    scp -qp uri:benchmarks/${P}/${P}_bp.${S} .
+
+  done
+
+done
+
+

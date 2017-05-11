@@ -1,0 +1,47 @@
+This is BibTeX, Version 0.99c (Web2C 7.3.1)
+The top-level auxiliary file: pdpta.aux
+The style file: latex8.bst
+Database file #1: pdpta.bib
+Warning--I didn't find a database entry for "xxx"
+You've used 2 entries,
+            2118 wiz_defined-function locations,
+            515 strings with 4102 characters,
+and the built_in function-call counts, 643 in all, are:
+= -- 65
+> -- 14
+< -- 2
++ -- 7
+- -- 4
+* -- 35
+:= -- 104
+add.period$ -- 6
+call.type$ -- 2
+change.case$ -- 8
+chr.to.int$ -- 0
+cite$ -- 2
+duplicate$ -- 32
+empty$ -- 57
+format.name$ -- 4
+if$ -- 140
+int.to.chr$ -- 0
+int.to.str$ -- 2
+missing$ -- 1
+newline$ -- 13
+num.names$ -- 4
+pop$ -- 10
+preamble$ -- 1
+purify$ -- 6
+quote$ -- 0
+skip$ -- 25
+stack$ -- 0
+substring$ -- 43
+swap$ -- 12
+text.length$ -- 2
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 8
+warning$ -- 0
+while$ -- 7
+width$ -- 3
+write$ -- 24
+(There was 1 warning)

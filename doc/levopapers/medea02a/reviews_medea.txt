@@ -1,0 +1,251 @@
+Subject: MEDEA-2002 Paper Notification of Acceptance
+Date: Thu, 01 Aug 2002 18:14:35 +0200
+From: Sandro Bartolini <s.bartolini@iet.unipi.it>
+To: David Kaeli <dkaeli@ac.upc.es>
+Cc: foglia <foglia@iet.unipi.it>, Sandro Bartolini <s.bartolini@iet.unipi.it>
+
+Dear Author,
+
+Thank you for your submission to MEDEA 2002.  We are pleased to inform 
+you that your paper, titled
+
+"Realizing High IPC Through a Scalable Memory-Latency Tolerant Multipath 
+Microarchitecture"
+has been accepted for presentation in the MEDEA 2002 Workshop.
+Informal Proceedings will be distributed at the Workshop. They also will 
+appear in a special issue of ACM SigArch Computer Architecture NEWS (we 
+are now establishing the possible date of publication).
+
+Please carefully take into account the enclosed comments by the
+reviewers when preparing the camera-ready version.
+
+The paper length is limited to 10 pages and must be written in standard 
+IEEE format for conference Proceedings (see the link in the home page: 
+http://garga.iet.unipi.it/medea )
+
+Your camera-ready paper is due on September 1, 2002 (not the 7 of August). 
+You (or one of your co-authors, if any) are required to attend the 
+workshop as a condition of publication; if this is a
+problem, please notify us **immediately**.
+
+
+
+
+Congratulations on having your paper accepted. We look forward to see 
+you in Charlottesville.
+
+Sincerely,
+
+Sandro Bartolini, Pierfrancesco Foglia, Cosimo Antonio Prete
+Medea 2002 Workshop organizing Committee.
+
+
+------------------------------- REVIEW 1
+b): For the next six queries , please rate the paper on a scale of 1-4, 
+where the quality increases as the number increases.
+Originality             [4]
+Technical merit         [4]
+Readability             [2]
+Relevance             [4]
+Confidence in your review     [3]
+Overall rating             [4]
+
+c:) Recommended action
+REJECT         [ ]
+Weak REJECT     [ ]
+Weak ACCEPT     [ ]
+ACCEPT         [X]
+
+
+d:) Comments to authors.
+>>This paper investigates the best utilization of a large mesh
+of PEs to execute a single-threaded program. The architecture
+can provide a 50% increase in the IPC for some SPEC benchmarks.
+This extra IPC could be exploited to realize a memory-latency
+tolerant multipath architecture.
+
+The paper provides an important contribution and it is well
+suited for the purpose of the MEDEA workshop.
+
+Nevertheless, I'd recommend the authors to address the following
+points.
+
+- Methodology:
+
+* It would be interesting to see what are the results
+for the all SPEC-2000 suite, in order to provide an important
+reference point for all the researchers willing to compare
+their solutions with the authors'.
+
+* The ISA used by the authors is not the same of the 'standard'
+used in the SimpleScalar: this again generates problems for
+comparing their results with others'. It would be nice to have,
+as baseline, the IPC reached with the same banchmarks (and SGI ISA)
+when the basic architecture is a superscalar with large
+Instruction Windows and comparable hardware resources, as provided
+by the SimpleScalar simulator.
+
+- Results:
+
+* The architecture you describe is quite complex: the L0,
+Forwarding Units (FUs), Disjoint Eager Execution (DEE),
+Value Speculation, and quite aggessive optimizations are applied.
+Since it is already known that many of this techniques provides
+an important speedup (e.g. Value Speculation alone could
+provide a 50% increase of IPC), it would be interesting to see
+a breakdown of the IPC showing how each component of the architecture
+improves the IPC.
+
+* A rough extimate of the cost of this implementation would be
+necessary in order to see if configurations like 32-4-16-16
+are actually feasable.
+
+* More important, since the goal of the paper is also to investigate
+the memory-latency tolerance, it would be interesting to see how
+a Superscalar architecture with large IW would tolerate an increase
+in L1-L2-MM latencies. Is this benefit all due to Value Speculation
+and/or L0 cache or not?
+
+- Other issues that need to be improved:
+
+* The presentation of the architecture is to wordy and difficult
+to read. I'd suggest to insert some more detailed figure.
+
+* Please introduce the concepts that you use immediately: some of them
+are only explained much more later in the Section.
+
+
+------------------------------------- REVIEW 2
+
+b): For the next six queries , please rate the paper on a scale of 1-4,
+where 
+
+the quality increases as the number increases. 
+Originality 			[ 4 ] 
+Technical merit 		[ 3 ]
+Readability 			[ 2 ]
+Relevance 			[ 4 ]
+Confidence in your review 	[ 3 ]
+Overall rating 			[ 3 ]
+
+c:) Recommended action
+REJECT 		[ ]
+Weak REJECT 	[ ]
+Weak ACCEPT 	[ ]
+ACCEPT 		[ x ]
+
+
+d:) Comments to authors. 
+
+>>>>The Comments to authors
+>>
+
+This paper introduces an interesting new microprocessor
+microarchitecture with 
+
+excellent simulation results. 
+
+However, the complex microarchitecture is hard to understand. 
+Operating principles and implementation details are mixed in a way which
+is 
+
+hard to digest. 
+
+I suggest to start with the principles, then decribe the
+microarchitecture top 
+
+down.
+Perhaps focus the paper on the decription of the new principles, and
+provide 
+
+less implementation details, e.g. the Operand snoop logic (Fig. 3).
+A block diagram of the overall machine structure might help, also a more 
+
+detailed description how the fetched code is distributed to the AS.
+
+
+---------------------------------- REVIEW 3
+
+
+b): For the next six queries , please rate the paper on a scale of 1-4, 
+where the quality increases as the number increases. Originality 	 [3] 
+Technical merit 		[3]
+Readability 			[3]
+Relevance 			[4]
+Confidence in your review 	[4]
+Overall rating 			[3]
+
+c:) Recommended action
+REJECT 		[ ]
+Weak REJECT 	[ ]
+Weak ACCEPT 	[ ]
+ACCEPT 		[X]
+
+
+d:) Comments to authors. 
+
+>>>>The Comments to authors
+>>
+
+In this paper the authors further explore previosly 
+proposed multipath architecture
+based on a large mesh of processing elements.
+(reference [17], published by the same authors at Europar 2002).
+The simulation results presented in this paper show that
+the performance of the proposed architecture 
+does not significantly decrease with increased L1, L2, and memory latency.
+
+The authors should make a clear distinction between this paper
+and the Europar reference, and emphasize this paper's contribution -
+architecture's insensitivity to memory latency.
+The design space and simulator are also different.
+
+Paper should be carefully checked for consistency,
+for example, a term "D-path" is used just in tables 3 and 4,
+while a term "DEE path" is used throughout the rest of the paper.
+There is no explanation of release D-path strategy (Table 4),
+probably being DEE multipath execution.
+
+Some syntax/semantic remarks:
+Page 3, paragraph 1:
+.."but is simpler is some respects."
+Should be ..."but is simpler in some respects."
+
+Page 3, paragraph 2:
+"The multiple buses going from the i-fetch unit to the execution window
+in Figure 1 is meant"...
+Should be: 
+"The multiple buses going from the i-fetch unit to the execution window
+in Figure 1 are meant"...
+
+Page 7, paragraph 1:
+"Finally, results showing ... is presented."
+Should be: "Finally, results showing ... are presented."
+
+Page 9, paragraph 4:
+"Since our machine is still quite insensitive to main memory latency
+out to 800 clocks"...
+Should be: 
+"Since our machine is still quite insensitive to main memory latency
+up to 800 clocks"...
+
+Page 10, paragraph 1:
+"We have also run experiments modeling a perfect i-cache...
+and measure the effects of"...
+Should be:
+"We have also run experiments modeling a perfect i-cache...
+and measured the effects of"...
+
+
+
+-- 
+----------------------------------------------------------
+Ing. Sandro Bartolini
+CacheLAB - Dipartimento di Ingegneria dell'informazione - Universita' di Pisa
+Via Diotisalvi, 2, 56126 - Pisa, ITALY
+Tel: +39-050-568-530            Fax: +39-050-568-522
+s.bartolini@iet.unipi.it
+s.bartolini@computer.org
+sandro.bartolini@acm.org
+----------------------------------------------------------
+

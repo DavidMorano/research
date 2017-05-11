@@ -1,0 +1,10 @@
+#!/bin/ksh
+
+T=high
+TR=032002-0101
+
+cp -p ${T}.pdf tr${TR}.pdf
+cp -p ${T}.pdf ~/msg/tr${TR}.pdf
+cp -p ${T}.pdf ~/rje/tr${TR}.pdf
+
+

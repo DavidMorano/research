@@ -1,0 +1,363 @@
+This is TeX, Version 3.14159 (C version 6.1) (format=latex 98.3.19)  15 NOV 2002 13:33
+**slides.tex
+(slides.tex
+LaTeX2e <1996/12/01> patch level 1
+Babel <v3.6h> and hyphenation patterns for american, german, loaded.
+(/CDSPnet/Freeware/TeX0.4/texmf/tex/latex/base/slides.cls
+Document Class: slides 1996/09/09 v2.3y Standard LaTeX document class
+(/CDSPnet/Freeware/TeX0.4/texmf/tex/latex/base/slides.def
+File: slides.def 1996/09/09 v2.3y SLiTeX definitions
+ hacks, slides,
+\c@page=\count79
+
+picture, mods,
+\@smashboxa=\box26
+\@smashboxb=\box27
+\@smashboxc=\box28
+ output, init)
+(/CDSPnet/Freeware/TeX0.4/texmf/tex/latex/base/sfonts.def
+File: sfonts.def 1997/01/15 v2.2a Standard LaTeX slide font definitions
+
+(/CDSPnet/Freeware/TeX0.4/texmf/tex/latex/base/ot1lcmss.fd
+File: ot1lcmss.fd 1997/01/15 v2.2a Standard LaTeX slide font definitions
+))
+\c@minutes=\count80
+\c@seconds=\count81
+\c@mv@invisible=\count82
+LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
+(Font)                  OT1/cmr/m/n --> OT1/lcmss/m/n on input line 407.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `normal'
+(Font)                  OML/cmm/m/it --> OML/lcmm/m/it on input line 410.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `normal'
+(Font)                  OMS/cmsy/m/n --> OMS/lcmsy/m/n on input line 412.
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `normal'
+(Font)                  OMX/cmex/m/n --> OMX/lcmex/m/n on input line 414.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `invisible'
+(Font)                  OT1/cmr/m/n --> OT1/lcmss/m/In on input line 417.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `invisible'
+(Font)                  OML/cmm/m/it --> OML/lcmm/m/Iit on input line 419.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `invisible'
+(Font)                  OMS/cmsy/m/n --> OMS/lcmsy/m/In on input line 421.
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `invisibl
+e'
+(Font)                  OMX/cmex/m/n --> OMX/lcmex/m/In on input line 423.
+)
+(/CDSPnet/Freeware/TeX0.4/texmf/tex/generic/babel/babel.sty
+Package: babel 1997/01/23 v3.6h The Babel package
+
+(/CDSPnet/Freeware/TeX0.4/texmf/tex/generic/babel/english.ldf
+File: english.ldf 1996/12/23 v3.3h English support from the babel system
+
+(/CDSPnet/Freeware/TeX0.4/texmf/tex/generic/babel/babel.def
+File: babel.def 1997/01/23 v3.6h Babel common definitions
+\babel@savecnt=\count83
+\U@D=\dimen102
+)))
+(/CDSPnet/Freeware/TeX0.4/texmf/tex/latex/graphics/epsfig.sty
+Package: epsfig 1996/10/04 v1.7 (e)psfig emulation (SPQR)
+
+(/CDSPnet/Freeware/TeX0.4/texmf/tex/latex/graphics/graphicx.sty
+Package: graphicx 1996/10/31 v1.0c Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/CDSPnet/Freeware/TeX0.4/texmf/tex/latex/graphics/keyval.sty
+Package: keyval 1995/09/21 v1.09 key=value parser (DPC)
+)
+(/CDSPnet/Freeware/TeX0.4/texmf/tex/latex/graphics/graphics.sty
+Package: graphics 1996/10/31 v1.0c Standard LaTeX Graphics (DPC,SPQR)
+
+(/CDSPnet/Freeware/TeX0.4/texmf/tex/latex/graphics/trig.sty
+Package: trig 1994/10/16 v1.08 sin cos tan (DPC)
+)
+(/CDSPnet/Freeware/TeX0.4/texmf/tex/latex/config/graphics.cfg)
+Package graphics Info: Driver file: dvips.def on input line 82.
+
+(/CDSPnet/Freeware/TeX0.4/texmf/tex/latex/graphics/dvips.def
+File: dvips.def 1996/12/12 v3.0d Driver-dependant file (DPC,SPQR)
+))
+\Gin@req@height=\dimen103
+\Gin@req@width=\dimen104
+)
+\epsfxsize=\dimen105
+\epsfysize=\dimen106
+)
+(/CDSPnet/Freeware/TeX0.4/texmf/tex/latex/amsfonts/amssymb.sty
+Package: amssymb 1996/11/03 v2.2b
+
+(/CDSPnet/Freeware/TeX0.4/texmf/tex/latex/amsfonts/amsfonts.sty
+Package: amsfonts 1996/11/03 v2.2c
+\@emptytoks=\toks14
+\symAMSa=\mathgroup4
+\symAMSb=\mathgroup5
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 129.
+))
+\c@trans=\count84
+\c@snarf=\count85
+
+
+LaTeX Warning: Unused global option(s):
+    [12pt].
+
+(slides.aux)
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 42.
+LaTeX Font Info:    ... okay on input line 42.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 42.
+LaTeX Font Info:    ... okay on input line 42.
+LaTeX Font Info:    Checking defaults for OT1/lcmss/m/n on input line 42.
+LaTeX Font Info:    ... okay on input line 42.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 42.
+LaTeX Font Info:    ... okay on input line 42.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 42.
+LaTeX Font Info:    ... okay on input line 42.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 42.
+LaTeX Font Info:    ... okay on input line 42.
+LaTeX Font Info:    Try loading font information for OML+lcmm on input line 60.
+
+ (/CDSPnet/Freeware/TeX0.4/texmf/tex/latex/base/omllcmm.fd
+File: omllcmm.fd 1997/01/15 v2.2a Standard LaTeX slide font definitions
+)
+LaTeX Font Info:    Try loading font information for OMS+lcmsy on input line 60
+.
+
+(/CDSPnet/Freeware/TeX0.4/texmf/tex/latex/base/omslcmsy.fd
+File: omslcmsy.fd 1997/01/15 v2.2a Standard LaTeX slide font definitions
+)
+LaTeX Font Info:    Try loading font information for OMX+lcmex on input line 60
+.
+
+(/CDSPnet/Freeware/TeX0.4/texmf/tex/latex/base/omxlcmex.fd
+File: omxlcmex.fd 1997/01/15 v2.2a Standard LaTeX slide font definitions
+)
+LaTeX Font Info:    External font `cmex10 at17.28pt' loaded for size
+(Font)              <19.907> on input line 60.
+LaTeX Font Info:    External font `cmex10 at17.28pt' loaded for size
+(Font)              <16.59> on input line 60.
+LaTeX Font Info:    External font `cmex10 at17.28pt' loaded for size
+(Font)              <13.82> on input line 60.
+LaTeX Font Info:    Try loading font information for U+msa on input line 60.
+
+(/CDSPnet/Freeware/TeX0.4/texmf/tex/latex/amsfonts/umsa.fd
+File: Umsa.fd 1995/01/05 v2.2e AMS font definitions
+)
+
+LaTeX Font Warning: Font shape `U/msa/m/n' in size <19.907> not available
+(Font)              size <20.74> substituted on input line 60.
+
+
+LaTeX Font Warning: Font shape `U/msa/m/n' in size <16.59> not available
+(Font)              size <17.28> substituted on input line 60.
+
+
+LaTeX Font Warning: Font shape `U/msa/m/n' in size <13.82> not available
+(Font)              size <14.4> substituted on input line 60.
+
+LaTeX Font Info:    Try loading font information for U+msb on input line 60.
+(/CDSPnet/Freeware/TeX0.4/texmf/tex/latex/amsfonts/umsb.fd
+File: Umsb.fd 1995/01/05 v2.2e AMS font definitions
+)
+
+LaTeX Font Warning: Font shape `U/msb/m/n' in size <19.907> not available
+(Font)              size <20.74> substituted on input line 60.
+
+
+LaTeX Font Warning: Font shape `U/msb/m/n' in size <16.59> not available
+(Font)              size <17.28> substituted on input line 60.
+
+
+LaTeX Font Warning: Font shape `U/msb/m/n' in size <13.82> not available
+(Font)              size <14.4> substituted on input line 60.
+
+[1
+
+] [2] [3]
+LaTeX Font Info:    External font `cmex10 at17.28pt' loaded for size
+(Font)              <10> on input line 128.
+LaTeX Font Info:    External font `cmex10 at17.28pt' loaded for size
+(Font)              <7> on input line 128.
+
+
+LaTeX Font Warning: Font shape `OT1/cmr/bx/n' in size <13.82> not available
+(Font)              size <14.4> substituted on input line 128.
+
+[4]
+
+LaTeX Font Warning: Font shape `OT1/cmr/bx/n' in size <19.907> not available
+(Font)              size <20.74> substituted on input line 168.
+
+
+LaTeX Font Warning: Font shape `OT1/cmr/bx/n' in size <16.59> not available
+(Font)              size <17.28> substituted on input line 168.
+
+
+Overfull \hbox (1.97885pt too wide) in paragraph at lines 168--170
+[]\OT1/lcmss/m/n/19.907 Instruction operands: reg-is-ter, mem-ory and
+ []
+
+[5]
+Overfull \hbox (39.44016pt too wide) in paragraph at lines 202--204
+[]\OT1/lcmss/m/n/19.907 A rel-e-vant operand value is con-sumed (snarfed) 
+ []
+
+
+Overfull \hbox (34.58102pt too wide) in paragraph at lines 208--219
+[]$ 
+ []
+
+
+Overfull \hbox (34.58102pt too wide) in paragraph at lines 225--236
+[]$ 
+ []
+
+[6]
+File: ttexec.eps Graphic file (type eps)
+ <ttexec.eps>
+Overfull \hbox (36.89pt too wide) in paragraph at lines 252--254
+ [] 
+ []
+
+[7]
+Overfull \hbox (16.49434pt too wide) in paragraph at lines 267--270
+[]\OT1/lcmss/m/n/19.907 Predicated ex-e-cu-tion is an ef-fec-tive ap-proach
+ []
+
+
+Overfull \hbox (1.70226pt too wide) in paragraph at lines 270--273
+[]\OT1/lcmss/m/n/19.907 In our mi-croar-chi-tec-ture pred-i-cates are gen-
+ []
+
+
+Overfull \hbox (0.8729pt too wide) in paragraph at lines 273--276
+[]\OT1/lcmss/m/n/19.907 Each in-struc-tion com-putes its own en-abling
+ []
+
+[8]
+File: brdomain.eps Graphic file (type eps)
+ <brdomain.eps>
+LaTeX Font Info:    External font `cmex10 at17.28pt' loaded for size
+(Font)              <12> on input line 297.
+
+
+LaTeX Font Warning: Command \small invalid in math mode on input line 311.
+
+LaTeX Font Info:    Calculating math sizes for size <> on input line 314.
+
+LaTeX Font Warning: Font shape `OT1/lcmss/m/n' in size <> not available
+(Font)              size <7> substituted on input line 314.
+
+
+LaTeX Font Warning: Font shape `OT1/lcmss/m/n' in size <0.7> not available
+(Font)              size <7> substituted on input line 314.
+
+
+LaTeX Font Warning: Font shape `OT1/lcmss/m/n' in size <0.5> not available
+(Font)              size <7> substituted on input line 314.
+
+
+LaTeX Font Warning: Font shape `OML/lcmm/m/it' in size <> not available
+(Font)              size <7> substituted on input line 314.
+
+
+LaTeX Font Warning: Font shape `OML/lcmm/m/it' in size <0.7> not available
+(Font)              size <7> substituted on input line 314.
+
+
+LaTeX Font Warning: Font shape `OML/lcmm/m/it' in size <0.5> not available
+(Font)              size <7> substituted on input line 314.
+
+
+LaTeX Font Warning: Font shape `OMS/lcmsy/m/n' in size <> not available
+(Font)              size <7> substituted on input line 314.
+
+
+LaTeX Font Warning: Font shape `OMS/lcmsy/m/n' in size <0.7> not available
+(Font)              size <7> substituted on input line 314.
+
+
+LaTeX Font Warning: Font shape `OMS/lcmsy/m/n' in size <0.5> not available
+(Font)              size <7> substituted on input line 314.
+
+LaTeX Font Info:    External font `cmex10 at17.28pt' loaded for size
+(Font)              <> on input line 314.
+LaTeX Font Info:    External font `cmex10 at17.28pt' loaded for size
+(Font)              <0.7> on input line 314.
+LaTeX Font Info:    External font `cmex10 at17.28pt' loaded for size
+(Font)              <0.5> on input line 314.
+
+LaTeX Font Warning: Font shape `OT1/cmr/bx/n' in size <> not available
+(Font)              size <5> substituted on input line 314.
+
+
+LaTeX Font Warning: Font shape `OT1/cmr/bx/n' in size <0.7> not available
+(Font)              size <5> substituted on input line 314.
+
+
+LaTeX Font Warning: Font shape `OT1/cmr/bx/n' in size <0.5> not available
+(Font)              size <5> substituted on input line 314.
+
+
+LaTeX Font Warning: Font shape `U/msa/m/n' in size <> not available
+(Font)              size <5> substituted on input line 314.
+
+
+LaTeX Font Warning: Font shape `U/msa/m/n' in size <0.7> not available
+(Font)              size <5> substituted on input line 314.
+
+
+LaTeX Font Warning: Font shape `U/msa/m/n' in size <0.5> not available
+(Font)              size <5> substituted on input line 314.
+
+
+LaTeX Font Warning: Font shape `U/msb/m/n' in size <> not available
+(Font)              size <5> substituted on input line 314.
+
+
+LaTeX Font Warning: Font shape `U/msb/m/n' in size <0.7> not available
+(Font)              size <5> substituted on input line 314.
+
+
+LaTeX Font Warning: Font shape `U/msb/m/n' in size <0.5> not available
+(Font)              size <5> substituted on input line 314.
+
+[9]
+Overfull \hbox (72.03835pt too wide) in paragraph at lines 345--356
+[]$ 
+ []
+
+[10]
+File: dynpred.eps Graphic file (type eps)
+ <dynpred.eps>
+Overfull \hbox (36.89pt too wide) in paragraph at lines 373--375
+[][] 
+ []
+
+[11] [12]
+Overfull \hbox (0.73462pt too wide) in paragraph at lines 445--448
+\OT1/lcmss/m/n/19.907 ear-lier ac-tive sta-tions will for-ward the mem-
+ []
+
+[13]
+Underfull \hbox (badness 10000) in paragraph at lines 476--479
+
+ []
+
+[14]
+Overfull \hbox (12.76556pt too wide) in paragraph at lines 496--531
+ [] 
+ []
+
+[15] (slides.aux)
+
+LaTeX Font Warning: Size substitutions with differences
+(Font)              up to 6.5pt have occured.
+
+ ) 
+Here is how much of TeX's memory you used:
+ 1276 strings out of 10906
+ 14559 string characters out of 71977
+ 62404 words of memory out of 262141
+ 4106 multiletter control sequences out of 9500
+ 15391 words of font info for 57 fonts, out of 150000 for 255
+ 14 hyphenation exceptions out of 607
+ 32i,8n,24p,218b,259s stack positions out of 300i,40n,60p,3000b,4000s
+
+Output written on slides.dvi (15 pages, 16072 bytes).

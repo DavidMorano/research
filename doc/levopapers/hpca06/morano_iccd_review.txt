@@ -1,0 +1,408 @@
+============================================================================ 
+ICCD 2005 Reviews for Submission #219
+============================================================================ 
+
+Title: Re-execution: An Approach to Simplify the Datapath in Aggressive Out-of-Order Processors
+
+Authors: David A. Morano, David Kaeli
+============================================================================
+                            REVIEWER #1
+============================================================================ 
+
+
+                           Reviewer's Scores
+                  -----------------------------------
+
+                            Paper length: 8 pages  or less
+                 Topic relevance to ICCD: 10
+              Originality and innovation: 10
+                  Technical contribution: 7
+                      Quality of writing: 2
+                          Overall rating: 4
+               Reviewer's recommendation: Reject
+              Best paper award candidate: No
+
+
+---------------------------------------------------------------------------
+                          Detailed Comments
+---------------------------------------------------------------------------
+
+The wording "Unlike our work, all of these proposals have either not achieved
+their performance objectives or..." does sound a bit self serving.
+
+The first paragraph on page 2 (starting on page 1) is hard to understand,
+because the authors presume that the reader is familiar with the content of
+this paper.  The statements made need explanation as to how the issues are
+resolved satisfactorily, or some of the points need to be deferred until later
+in the paper. It is not clear how dependence check bveing spatially distributed
+is accomplished, or how it helps at this point in the paper.
+Likewise, how is the ROB eliminated?
+
+The sentence "Forwarding of instruction execution results is done from
+the issue station itself, rather from the FU (if one was used)." is (*) not
+clear, and missing a THAN (rather THAN) or BUT (BUT rather).  Even with the
+right word added, I could not visualize what this means, though.
+
+"This arrangement allows for some simple instructions to be executed within the
+issue without circulating through the function unit pipelines." -- within the
+issue WHAT?  More generally though, if you are trying to state you can do
+execution without a function unit/pipeline, the moment you are building logic
+in the issue station, you have built an FU.  The one exception might be copy
+ops, but if it is this what you mean, you should state so explicitly.
+
+When are the registers read to obtain initial values. (i.e., if no updates are
+in flight)?
+
+Is there any preference given to older instructions to help forward progress on
+instruction issue?  
+
+Page 3 - functionalLY differentiated (missing LY).
+
+In the center of "the figure" what figure? If you mean figure 1, say so. 
+
+What do you mean by "statistically multiplexed". Also, you assert that "Note
+that all of these buses are either point-to-point or multimaster buses,
+but do not constitute a complex switching network as
+used for example in the Ultrascalar design [5]." but offer no proof or even
+argument to support this claim.
+
+No space before a colon (:) in the typesetting for the English language.
+
+It goes without saying that the fields of an instruction would be ISA specific.
+
+The mention of time tag has me intrigued, esp. since you want to hold its size
+to the number of issue stations.  Is there a 1:1 relationship? Do you compact
+issue stations?  If so, do you relabel time tags?  If not, how do you deal with
+wrap-around?  Does your comparison logic require extra inputs to handle this
+(i.e., at least 2x tags compared to issue stations?)
+
+You explain when a snarf occurs, not what it is. (Page 5)   I presume you mean
+the act of revoking an operand?  Are there race conditions possibly, where an
+operand is to be revoked, but the instruction ends up being committed before
+the srevocation reaches this instruction?  How do you avoid this?  
+
+There needs to be more analysis of the results, and explanation of how the
+microarchitecture works.  Some of the questions in this review are questions
+that come immediately to mind, but surely you will find many other things that
+need to be explained, as you review this.
+
+You will also want to add discussion of items like how often a typical
+instruction gets executed before its value stabilizes, how to minimize this
+number to reduce energy consumption and wasting issue slots, and so forth.
+
+Finally, you are lacking a discussion of prior art.  This should include
+typical replay architectures, such as the Alpha 264 described by Kessler, and
+the BOA research prototype described in IEEE Computer 2000 and its very replay
+oriented architecture described in IBM Research Report 23113.  Finally, in the
+context of ILP extraction, the analysis of oracle ILP parallelism by Ebcioglu
+(MICRO in Haifa) deserves mention as well.
+
+Also, in typesetting English, punctuation is merged with the preceding word. 
+In Reference [2], the . (dot) should not be in a line on its own, which it
+would not be without the preceding spave
+[3] misspells partitioning.  RAW should be written {RAW} in your bibtex so it
+keeps capitalization.  Either write out the conference title as
+in [5] or [6], or abbreviate as in [2], but please be consistent.
+
+In summary, I would be extremely interested to see this paper appear, since it
+contains several interesting ideas.  You should add more analysis of the
+results, with additional data points giving you a chance to describe the dieas
+and avantagees more.  You also need to work on making statements more explicit
+rather than be presented by allusion and implication.  I hope this review does
+not discourage you from resubmitting an updated version to a future conference,
+such as HPCA or PACT, or next year's ICCD.
+
+============================================================================
+                            REVIEWER #2
+============================================================================ 
+
+
+                           Reviewer's Scores
+                  -----------------------------------
+
+                            Paper length: 8 pages  or less
+                 Topic relevance to ICCD: 8
+              Originality and innovation: 6
+                  Technical contribution: 6
+                      Quality of writing: 5
+                          Overall rating: 6
+               Reviewer's recommendation: Reject
+              Best paper award candidate: No
+
+
+---------------------------------------------------------------------------
+                          Detailed Comments
+---------------------------------------------------------------------------
+
+Overall Comments:
+
+I've recommended that this paper be rejected, but I'd consider my 
+rejection a weak rejection.  While I do not think the paper presents
+a stunningly new idea, I think it has merit.  With revisions and some
+clarifications, I think it could be a fine, if not ground-breaking,
+paper.
+
+My biggest concern about the paper is that there are portions that lack
+clarity, making it difficult for the reader to fully understand the
+approach.  With a little bit of effort, this can easily be rectified.
+At a high level, my other large comment is that the authors do not
+address the issue of power.  While I would not reject this paper because
+it does not address power, I think it's a reasonable expectation for
+that issue to be discussed in a paper that is resulting in 200% of the
+committed instructions to be executed.              Below you'll find my detailed
+comments which will hopefully help to improve the paper.
+
+Detailed Comments:
+
+You need to perform an editing pass on the paper. Most sections were
+well-written, but a few need some help.  The results section
+in particular needs some attention.  While I think Snarf was a good
+name for the cat in the Thundercats cartoon, it is a bit too informal
+for its use here.
+
+I thought your introduction was a nicely crafted motivation for your work.
+
+I have several comments about section 2.  First, it is unclear how
+simple instructions execute in the issue station.  A specific example
+might help clarify what you mean.  Second, I had trouble understanding
+the criteria for instruction commit.  What does the phrase "are not in
+the process of receiving updated inputs" mean?              Does it mean that all
+previous instructions that produce a given instruction's operands have
+already been committed?  If so, say that.  Similarly, I did not
+understand the statement "finished forwarding output operands to
+younger program-oriented instructions".  What does it mean to have
+finished forwarding output operands?  Does it mean that the result has
+been committed to the register file and all in-flight later
+instructions have been updated?  Please clarify.
+
+Continuing in section 2, Figure 1 should have been presented at the 
+beginning of the section.  Your description of Figure 1 left me 
+confused.  In particular, I do not know what a bus group is.  Are
+the FUs in a bus group identical?  Approximately how many bus
+groups would an execution window have?              How many issue stations?
+
+My last comment for section 2 has to do with the vertical buses.  You 
+comment that they are simple and scalable.  However, I think you 
+need to somehow quantify the amount (or lack thereof) of bus
+contention.  Buses often provoke knee jerk reactions of not being scalable.  
+Given the frequency of re-execution and hence the resending of
+operands, you need to address the impact of re-execution on bus
+contention.
+
+In section 3, there is some confusion over the use of the terms time
+ordering tag and time tag.  You appear to use them interchangeably at
+times.              Please choose one and stick to it.  The difference between the
+instruction and operand time tags is unclear and you never discuss
+how time tags are assigned for operands.  With respect to the time
+ordering values for instructions, you say that instructions are 
+ordered with respect to all instructions currently in the execution
+window.  Does this mean that *all* instructions within the execution
+window complete before any new instructions are added into the
+execution window?  Otherwise, how do you not have wraparound issues
+with the tags?              As a final note, you might want to explicitly 
+discuss how this ordering based on tags prevents problems with 
+different types of dependencies.
+
+The relationship between figures 1 and 2 is a bit confusing because at
+least one bus (FU result-return bus group) is vertical in one of the
+figures and horizontal in the other figure.
+
+In your discussion of fast-forwarding, I did not see a number
+representing the number of instructions you fast-forwarded.  
+
+Finally, I looked at Table 2 and could not see where 1.46% speedup
+came from.  I believe it comes from dividing 1.61 by 1.1.  You really
+should clarify where the number is coming from; otherwise, the reader
+keeps looking in the table for the number 1.46.  Most readers don't
+keep a calculator handy when reading and thus will be annoyed when
+asked to actually perform calculations that the author could have
+simply mentioned.
+
+============================================================================
+                            REVIEWER #3
+============================================================================ 
+
+
+                           Reviewer's Scores
+                  -----------------------------------
+
+                            Paper length: 8 pages  or less
+                 Topic relevance to ICCD: 8
+              Originality and innovation: 6
+                  Technical contribution: 3
+                      Quality of writing: 5
+                          Overall rating: 3
+               Reviewer's recommendation: Reject
+              Best paper award candidate: No
+
+
+---------------------------------------------------------------------------
+                          Detailed Comments
+---------------------------------------------------------------------------
+
+This paper proposes a microarchitecture based on re-execution of
+dynamic instructions (without re-dispatch/re-fetch). The authors argue
+that this approach reduces interconnect complexity, possibly allowing
+more aggressive processor configurations. The results show a good
+improvement over the baseline.
+
+The biggest issue is that this paper does not do an adequate job
+describing the proposed architecture. I had to reread Section 3
+several times to understand what was going on. Examples would be
+helpful. 
+
+In addition, the complexity savings are not obvious, nor are they
+sufficiently explained in the text. Section 1 makes reference to
+the "complex associative searches of the ROB" being eliminated through
+the introduction of this architecture, but I am not sure that the
+seemingly huge buses (width includes instruction time, type, address,
+values) used in this approach are any better. You need to provide a
+better argument as to why the complexity is reduced. How would cycle
+time be impacted?
+
+Section 4 has to do a better job explaining where the performance
+benefits come from because they are not from a single, obvious
+cause. You should provide more detailed simulation data to give
+credence to the results. Under what specific circumstances is
+performance better than the baseline? How often do these situations
+arise?
+
+Finally, you should also address power. If you are executing around 2x
+the number of committed instructions, it seems hard to imagine any
+real energy-delay^2 improvement. Can you argue that your approach is
+not power-inefficient.
+
+============================================================================
+                            REVIEWER #4
+============================================================================ 
+
+
+                           Reviewer's Scores
+                  -----------------------------------
+
+                            Paper length: 8 pages  or less
+                 Topic relevance to ICCD: 7
+              Originality and innovation: 6
+                  Technical contribution: 2
+                      Quality of writing: 5
+                          Overall rating: 4
+               Reviewer's recommendation: Reject
+              Best paper award candidate: No
+
+
+---------------------------------------------------------------------------
+                          Detailed Comments
+---------------------------------------------------------------------------
+
+I think that the proposed idea is interesting and deserves further 
+exploration. Unfortunately, there are several issues that need to 
+be explained/resolved in detail before the paper can be accepted. 
+Some of those are itemized below:
+
+a) The authors should include a power/energy analysis. The
+results presented in Table 2 indicate that the applications incur  
+between 79% to 115% re-executions compared to the baseline case.
+I do not think that those numbers indicate a power-efficient architecture.
+
+b) 10 out of 12 Spec-int2000 benchmarks are shown, I would have liked 
+to see the complete results. Moreover, for one benchmark there is an
+IPC drop, the authors should discuss why this is the case.
+
+c) I would have appreciated a rudimentary area analysis. Although the
+ROB is eliminated, the area of the reservation stations are increased
+through the addition of extra storage and control logic. With this 
+analysis, the authors claim of decreased complexity would be 
+strengthened.
+
+d) All the instruction window is flushed on a branch misprediction in the
+baseline architecture. Most state of the art processors employ either
+checkpointing or ROB-walkback schemes to decrease this penalty; therefore
+this should have been the baseline. I would have also liked a section on 
+how to incorporate those schemes into the microarchitecture proposed
+by the authors.
+
+e) The authors should include a section on how exceptions are
+handled in the absence of a ROB.
+
+f) The authors should discuss additional relevant work. For example, 
+many "replay" mechanisms require instructions to remain the the
+issue slot after the instruction is speculatively issued to a 
+functional unit. In this regard, this is very similar to what is
+proposed in the paper. Another line of work that the authors may
+want to refer is the use of counters and/or timestamping in the
+issue queues; this is similar to the use of timestamps in the 
+snooping mechanism.    
+
+g) If my understanding is correct, some "simple" instructions, such 
+as the control-flow and load-store instructions are not sent to the 
+functional units but are instead executed in the issue stations. I do 
+not think those instructions can be classified as "simple". The 
+load-store instructions in particular require complex ALU's with 
+shifters and full-width adders. For a more realistic implementation,
+I would encourage the authors to include an experiment in which all 
+instructions sent to the functional units.
+
+h) Although there are no spelling mistakes, there are a number of
+grammatical errors in the text.
+
+============================================================================
+                            REVIEWER #5
+============================================================================ 
+
+
+                           Reviewer's Scores
+                  -----------------------------------
+
+                            Paper length: 8 pages  or less
+                 Topic relevance to ICCD: 1
+              Originality and innovation: 6
+                  Technical contribution: 2
+                      Quality of writing: 5
+                          Overall rating: 3
+               Reviewer's recommendation: Reject
+              Best paper award candidate: No
+
+
+---------------------------------------------------------------------------
+                          Detailed Comments
+---------------------------------------------------------------------------
+
+An alternative core microarchitecture is proposed in which control and data
+dependence resolution takes place in a distributed manner within augmented
+reservation stations (issue stations).        Issue stations capture input operands
+and broadcast output operands on several common result buses.  Instructions
+reside in issue stations until retirement where they may re-execute several
+times on different inputs before retirement.
+
+Although the idea presented is interesting, it suffers from several severe
+problems in its current implementation.  Among these:
+
+- It is assumed that each issue station can execute loads, stores, and
+control-flow instructions.  This implies the replication of a significant
+amount of hardware in each station including address computation and
+connections to the branch prediction hardware.
+
+- Each issue station must snoop eight operands at once, and due to the use of
+architectural register tags (address field), many may match an input operand
+with different time tags.  Thus, there is an implied (but not shown) cross
+comparison within each issue station of register tags using the broadcast time
+tags and the reservation station's own time tag.  This is equivalent to the
+problem of finding the youngest older store for store-load forwarding within an
+LSQ, and it is not cheap to do.  Here it must be done within each issue station
+across all possible buses from which an input operand may arrive.
+
+- The wiring and area overhead of the issue stations makes it hard to imagine
+that a 128+ drop multi-master bus will be operate in a single cycle as
+simulated.  A discussion of this specific issue is explicitly omitted at the
+end of section 2.  Given the massive amount of logic in each issue station
+(prior two points), these buses will be significantly longer than in an
+equivalently-sized standard issue window or reorder buffer.
+
+- The power implications of this uarch, even in the abstract qualitative sense
+is not addressed (this is also true of the area).  I have no reason to believe
+that this uarch will be power efficient, especially given that approximately 2x
+executions occur on average over a traditional core.
+
+It may be that further study shows this microarchitecture to have promise, but
+it is very premature as presented.
+

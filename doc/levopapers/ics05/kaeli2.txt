@@ -1,0 +1,46 @@
+> 5. Why is Table 1 necessary?
+
+This table lists the latencies for the FU (by FU type).
+
+6. Figure 3 is still weak.
+
+7. In Table 3 caption, change caption to CF and CFC.
+
+8. In Table 3 caption, be even more explicit what each of the columns
+means.
+
+9. I would expand on the REX in Table 4.
+
+10. Is there any way to put some of the data in Table 4 into a graph?
+Tables are not exciting.  Graphs are.
+
+Besides these comments, I will take a quick read for grammatical errors.
+The text looks pretty clean.
+
+Dave
+
+=====================================================================
+= Prof. David Kaeli   email: kaeli@ece.neu.edu phone: 617-373-5413  =
+=    ECE Dept.   318 Dana Research Center, NEU, Boston, MA 02115    =
+=               URL:  www.ece.neu.edu/faculty/kaeli.html            =
+=                                                                   =
+=       "I think there is a world market for maybe 5 computers."    =
+=                       Thomas Watson, 1943                         =
+=====================================================================
+
+On Tue, 22 Feb 2005, Dave Morano wrote:
+
+> > I will start on this around 8PM.  The new deadline is midnight now.
+>
+> OK.  Thanks for the update on the new deadline.
+>
+> > Your email has been bouncing.  Please send me your phone number.
+> > Mine is 508-533-9128.
+>
+> Yes, I've seen some mail bounces also.
+> My phone number is (781) 388-1799.
+>
+> Thanks very mcuh,
+> Dave
+>
+

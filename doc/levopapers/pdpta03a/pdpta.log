@@ -1,0 +1,113 @@
+This is TeX, Version 3.14159 (Web2C 7.3.1) (format=latex 2000.1.6)  12 MAR 2003 22:27
+**pdpta
+(pdpta.tex
+LaTeX2e <1998/12/01> patch level 1
+Babel <v3.6x> and hyphenation patterns for american, french, german, ngerman, n
+ohyphenation, loaded.
+(/usr/packages/tex/share/texmf/tex/latex/base/article.cls
+Document Class: article 1999/01/07 v1.4a Standard LaTeX document class
+(/usr/packages/tex/share/texmf/tex/latex/base/size10.clo
+File: size10.clo 1999/01/07 v1.4a Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@section=\count80
+\c@subsection=\count81
+\c@subsubsection=\count82
+\c@paragraph=\count83
+\c@subparagraph=\count84
+\c@figure=\count85
+\c@table=\count86
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+)
+(/usr/packages/tex/share/texmf/tex/generic/babel/babel.sty
+Package: babel 1999/05/05 v3.6x The Babel package
+
+(/usr/packages/tex/share/texmf/tex/generic/babel/english.ldf
+Language: english 1999/04/11 v3.3i English support from the babel system
+
+(/usr/packages/tex/share/texmf/tex/generic/babel/babel.def
+File: babel.def 1999/05/05 v3.6x Babel common definitions
+\babel@savecnt=\count87
+\U@D=\dimen103
+)))
+(/usr/packages/tex/share/texmf/tex/latex/graphics/epsfig.sty
+Package: epsfig 1999/02/16 v1.7a (e)psfig emulation (SPQR)
+
+(/usr/packages/tex/share/texmf/tex/latex/graphics/graphicx.sty
+Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/packages/tex/share/texmf/tex/latex/graphics/keyval.sty
+Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
+\KV@toks@=\toks14
+)
+(/usr/packages/tex/share/texmf/tex/latex/graphics/graphics.sty
+Package: graphics 1999/02/16 v1.0l Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/packages/tex/share/texmf/tex/latex/graphics/trig.sty
+Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+)
+(/usr/packages/tex/share/texmf/tex/latex/config/graphics.cfg)
+Package graphics Info: Driver file: dvips.def on input line 80.
+
+(/usr/packages/tex/share/texmf/tex/latex/graphics/dvips.def
+File: dvips.def 1999/02/16 v3.0i Driver-dependant file (DPC,SPQR)
+))
+\Gin@req@height=\dimen104
+\Gin@req@width=\dimen105
+)
+\epsfxsize=\dimen106
+\epsfysize=\dimen107
+) (pdpta.aux)
+\openout1 = `pdpta.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <12> on input line 44.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 44.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 44.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 144.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 144.
+
+[1
+
+]
+
+LaTeX Warning: Citation `xxx' on page 2 undefined on input line 166.
+
+File: brdomain.eps Graphic file (type eps)
+<brdomain.eps> [2]
+File: dynpred.eps Graphic file (type eps)
+ <dynpred.eps> [3]
+Missing character: There is no ^^92 in font cmr10!
+ (pdpta.bbl) [4] (pdpta.aux)
+
+LaTeX Warning: There were undefined references.
+
+ ) 
+Here is how much of TeX's memory you used:
+ 826 strings out of 10901
+ 9110 string characters out of 72154
+ 60765 words of memory out of 263001
+ 3788 multiletter control sequences out of 10000+0
+ 8886 words of font info for 31 fonts, out of 400000 for 1000
+ 14 hyphenation exceptions out of 1000
+ 32i,6n,24p,209b,276s stack positions out of 300i,100n,500p,50000b,4000s
+
+Output written on pdpta.dvi (4 pages, 19680 bytes).

@@ -1,0 +1,90 @@
+#!/bin/ksh
+# MKMERGE
+
+
+P=$( basename $0 )
+
+
+MAX=
+FILES=
+
+F_DEBUG=0
+
+
+S=files
+OS=
+for A in "${@}" ; do
+
+  case $A in
+
+  '-D' )
+    F_DEBUG=1
+    ;;
+
+  '-n' )
+    OS=${S}
+    S=max
+    ;;
+
+  '-' )
+    FILES="${FILES} -"
+    ;;
+
+  '-'[a-zA-Z]* )
+    echo "${P}: unknown option \"${A}\"" >&2
+    exit 1
+    ;;
+
+  * )
+    case $S in
+
+    files )
+      FILES="${FILES} ${A}"
+      ;;
+
+    max )
+      MAX="${A}"
+      ;;
+
+    esac
+    S=${OS}
+    ;;
+
+  esac
+
+done
+
+
+
+TF=/tmp/mkpdf${RANDOM}
+
+cleanup() {
+  rm -f $TF
+}
+
+trap 'cleanup ; exit 1' 1 2 3 15 16 17
+
+
+cat <<\EOF > $TF
+
+{
+
+
+	sum = $2 + $4 / 2 ;
+	printf "%12u %12u\n", $1 , sum
+}
+
+EOF
+
+
+OPTS=
+if [ -n "${MAX}" ] ; then
+  OPTS="${OPTS} max=${MAX}"
+fi
+
+nawk -f $TF $OPTS $FILES
+
+cleanup
+
+
+

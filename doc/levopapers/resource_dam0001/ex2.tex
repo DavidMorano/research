@@ -1,0 +1,113 @@
+paragraph{Examples : }
+
+Some simple examples of some code snippets will be 
+given in this section in order to illustrate the snooping/snarfing
+operation within an active station.
+
+A snippet of code that we will consider for an example
+follows.
+
+\begin{verbatim}
+
+00	r9 <- r0 op r1
+10	r3 <- r5 op r6
+20	r3 <- r7 op r8
+30	r2 <- r3 op r8
+
+\end{verbatim}
+
+In this example we will look at how instruction number 30 gets its
+correct value for one of its sources ; namely, register
+{\it r3}.
+Instruction number 00 does not produce
+any outputs used in the next few instructions that
+we will consider so there is no data dependency and its output 
+is never snooped by them.  The execution of instruction 00 therefor
+does not further impact the correct operation of instruction 30.
+We will assume that each of these
+instructions are loaded into active stations with the same row designation
+as the instruction number.  
+At load time, instruction 30 will
+load register
+{\it r3}
+from the ISA register file as an initial value guess.  
+This is, of course,
+probably not the correct value that instruction 30 should be using but 
+we use it anyway as a predicted value.
+In this example, instructions numbered 10 and 20 both generate
+an output to register 
+{\it r3}.
+so instruction 30 will snoop
+for this register output changing.  
+It will watch for the address
+of that register (the number {\it 3} in this example) to
+appear on one of the 32 data output forwarding buses.
+Initially when the instructions are loaded,
+they may all execute immediately.  Let's assume that this happens
+and all instructions execute in the same clock immediately upon being
+loaded.
+Instruction 3 will now have a result based on what register
+{\it r3}
+was at load time but a new output for this
+register has just been produced by instructions 1 and 2.
+Instructions 1 and 2 will both broadcast forward their new output
+values for
+{\it r3}
+on separate forwarding buses.
+Instruction
+30 is snooping for a new update
+to register
+{\it r3}
+on all forwarding buses.  Updates coming from both instructions
+1 and 2 will be considered for snarfing by instruction 3 since
+its forwarding bus time tag mask is initially set to all bit set.
+Instruction 3
+will see that the output from instruction 20 is later
+in time than that from instruction 10, so it will snarf the value
+and update its forwarding bus time tag mask by clearing all bits
+to the right (earlier in time) than the bit corresponding to
+instruction 20 above.  No register updates from instruction 10
+will ever again now be snarfed by instruction 30.  New updates
+from instruction 20 will still be considered though since its
+bit in the forwarding bus time tag mask is still set.
+Execution of this example is illustrated in
+Figure~\ref{ex1}
+where instruction executions are shown in time where
+there is an '{\it X}' at an intersection of an instruction
+and a time clock value.
+
+Another example, still referencing the code snippet above,
+is that upon the instructions all being loaded in the same
+clock period, only instruction 10 can execute immediately.
+Again, we focus of what instruction 30 does to get a correct
+value for register
+{\it r3}.
+After being executed, instruction 10 will broadcast 
+its updated value for register
+{\it r3}
+on a forwarding bus.
+This value will be snarfed by instruction 30 since all of its
+time tag mask bits are still clear.  Upon snarfing the updated
+value from instruction 10, all time tag bits to the right of
+it will be cleared to zero.  In our current example, there
+were no instructions earlier than instruction 10 within the instruction
+window which generated an output to register
+{\it r3}
+but the bits are cleared just the same.
+Instruction 30 will now
+use the updated register value the next time it gets to execute.
+Also, if it had already executed, the act of snarfing a value will
+enable it to be executed again.  Of course, the newly broadcast
+value would not have been snarfed it its value did not change.
+Finally, instruction 20 gets a chance to execute and afterwards it
+broadcasts its output value on a forwarding broadcast bus.
+Since it is a later in time instruction than instruction 10,
+the bit in the time tag mask of instruction 30 which corresponds
+to instruction 20 will still be set indicating that a snarf
+is still possible from that instruction.
+Execution of this example is illustrated in
+Figure~\ref{ex2}.
+
+
+
+

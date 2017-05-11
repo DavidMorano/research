@@ -1,0 +1,8 @@
+#!/bin/ksh
+
+D=toc1c
+T=tocomputer
+
+scp -qp uri:doc/${D}/${T}.ps .
+
+

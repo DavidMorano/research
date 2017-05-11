@@ -1,0 +1,31 @@
+nsgrows		2		# sharing groups per column (rows)
+nsgcols		2		# sharing group columns
+nasrpsg		2		# active station rows per SG
+
+nrfspan		1		# register forwarding span (in SGs)
+nrbspan		1		# register backwarding span (in SGs)
+npfspan		0		# predicate forwarding span in SGs
+nmfspan		0		# memory forwarding span (in groups)
+nmbspan		0		# memory backwarding span (in groups)
+
+ndeepaths	0		# number of DEE paths
+
+nprpas		15		# predicate register sets per AS
+ifetchwidth	2		# I-fetch bus width in 32-bit words
+
+#meminter	\x004		# default memory interleave schedule
+#meminter	\x01fc		# default memory interleave schedule
+#mfbinter	\x000c		# memory forwarding bus interleave
+#mbbinter	\x000c		# memory backwarding bus interleave
+#mwbinter	\x000c		# memory write bus interleave
+
+#iw:rftype	0		# relay forwarding
+iw:rftype	1		# NULLIFY forwarding
+
+iw:btrbsize	4096		# Levo Branch Tracking Buffer size
+#iw:sqsize	10		# Levo Store Queue depth size
+
+#iw:wmfinter	\x000c		# memory forward interleave schedule
+#iw:wmbinter	\x000c		# memory backward interleave schedule
+
+

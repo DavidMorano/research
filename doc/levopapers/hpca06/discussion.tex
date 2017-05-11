@@ -1,0 +1,43 @@
+%
+%\vspace{-0.25in}
+\section{Discussion}
+%\vspace{-0.15in}
+%
+Although the principal aim of this research has been to address
+the problem of achieving better execution performance through
+greater ILP extraction, it should be noted that the degree to which
+faster execution can be achieved can also represent the potential
+for an alternate design goal of achieving power savings for
+an equivalent execution performance.  Specifically, achieving
+a greater IPC can be used for power savings by simple lowing
+the clock frequency correspondingly.
+Further, we are exploring potential for avoiding
+or eliminating redundant re-executions and thereby saving the
+power consumption of those re-executions.
+
+With regard to physical scalability, 
+the expectation is that larger machines, capable of executing
+over a larger instruction window, can provide additional performance
+through ILP extraction than that currently possible.
+Although other silicon and microarchitecture design tradeoffs (SMT, CMP,
+et cetera for example) certainly address a substantial class of 
+applications, there will still be important and stubborn serial codes
+that cannot be sped up by anything other than more focussed
+microarchitectural resources on a single execution thread.
+The distributed nature of
+our operand management strategy (embodying both dependency determination
+and associated routing of actual dependent operand values)
+provides substantial potential for implementing much larger
+machines (both in terms of physical size and in its numbers of various 
+components) than is possible today with the operand management
+strategy of conventional superscalars.
+More specifically, our proposed microarchitecture allows for
+the electrical repetition of the various key buses introducing clock
+delays across the silicon that do not present any additional
+management or synchronization problems than already handled.
+Unfortunately, the possible richness of the idea of buffering 
+operands across
+electrical domains in the silicon is beyond what can be addressed
+presently in this space.
+All of this may provide motivation for furthering this line of research.
+%

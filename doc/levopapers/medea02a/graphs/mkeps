@@ -1,0 +1,16 @@
+#!/bin/ksh
+# MKEPS
+
+
+if [ ! -r "${1}" ] ; then
+  echo "${0}: could not find file \"${1}\"" >&2
+  exit 1
+fi
+
+
+BASE=$( echo ${1} | cut -d . -f 1 )
+
+grap $1 | pic | troff -Tpost | dpost > ${BASE}.eps
+
+
+

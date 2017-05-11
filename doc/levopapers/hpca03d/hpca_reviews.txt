@@ -1,0 +1,290 @@
+Dear David Morano ,
+
+Thank you for your submission to HPCA-9.  We regret to inform you 
+that your paper, titled
+
+"Using Timetags for Program Dependency Enforcement"
+
+has not been accepted for publication in the Proceedings. Papers went
+through a rigorous reviewing process. Each paper was reviewed by four 
+program committee members. Of 141 papers submitted, 31 were accepted.
+
+We look forward to seeing you at the conference.
+
+Sincerely,
+
+Rajiv Gupta
+HPCA-9 PC Chair
+
+*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=
+
+First reviewer's review:
+
+          >>> Summary of the paper <<<
+
+Using time stamps on instructions and operands to enforce dependencies
+
+
+
+          >>> Comments <<<
+
+This paper addresses implementation difficulties of out-of-order single
+stream processors; You say that the technique can eliminate routing
+congestion (area) and contention for machine structures (area and power);
+can you quantify this any better?
+
+The global decrement of all tags seems cumbersome and not easy to
+implement, can you wrap around without introducing other problems with the
+mechanism?
+
+The inefficiency of having to re-execute instructions, and subsequent
+chains of dependent instructions needs to be explored more carefully. How
+much hardware resouces are utilized for this?
+
+The filter unit for forwarding is a nice idea, it would be good to explore
+the potential cost reduction in global distribution more carefully.
+
+
+
+
+
+ =*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=
+
+Second reviewer's review:
+
+          >>> Summary of the paper <<<
+
+The paper takes a previously proposed dependency control mechanism called
+time tags and describes how this might be implemented. A machine using
+timetags is simulated and shown to give IPC numbers of 3.8-5.1 .
+
+
+
+          >>> Comments <<<
+
+Time tags is presented as a way to reduce the complexity of a large
+out-of-order scheduling window, but it is itself a hugely complex
+mechanism. Many of these complexities regarding commit procedures and
+memory ordering are not even discussed in the paper.
+
+Each active station (similar to reservation station) holds the time tag
+(8+bits) and path of the instruction in addition. For each value it also
+holds the timetag (8+ bits) and address (32/64 bits) and value (32/64
+bits). In addition it holds the same for the previous value of the output
+operand for recovering if the predictate of the instruction is changed. The
+active station also holds the decoded instruction, and presumably the
+result of the operation including the address if it is a memory operation
+(implied in text). For each of the operands there is a greater than or
+equal comparator (subractor) for the 8+ bit time tag, and 32/64 bit
+comparators for each of the value and address. For the path identifier and
+instruction time tag there are additional comparators. So assuming only 2
+sources and a 32 bit architecture there is about , the AS holds 200 + bits.
+The majority of these bits are compared for every result distribution
+(implying that the comparators are duplicated) to generate a signal saying
+whether the instruction is executable. I do not see how this is an
+improvement over renaming. It seems like a large step backwards.
+
+The amount of information that is distributed with each result is also very
+large, which doubles the size of the result buses.
+
+Couple the above with uncontrolled use of reexecution and I am afraid to
+think of what the power requirements would be for this microarchitecture.
+
+Do you model the latency of all of the comparisons that have to be done in
+order to determine that an instruction is ready to execute/reexecute? I
+certainly don't see back-to-back dependent instruction execution being
+possible with this setup.
+
+How would you keep legal memory ordering in a multiprocessor system?
+
+Some minor points:
+
+You mentioned that all of the timetags would be decremented when you commit
+an instruction. How is this done ?
+
+How many distribution buses did your configurations have ?
+
+Have you considered how you determine that instructions are commitable? You
+mentioned that you commit one column at a time. Obviously it is easy to
+detect that the oldest instruction is commitable. How about if that caused
+a reexecution on the next oldest instruction? I don't see any bits of state
+for realizing that an instruction is in flight. However, this can probably
+be fixed fairly easily.
+
+The microarchitecture is not described in detail. I think more detail would
+be called for.
+
+
+
+ =*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=
+
+Third reviewer's review:
+
+          >>> Summary of the paper <<<
+
+The paper describes the microarchitecture that enforces the data
+dependencies by using time tags instead of using traditional structures
+like rename tables, physical register files and reorder buffers. The new
+microarchitecture is said to be more scalable than usual superscalar
+datapaths.
+
+
+
+          >>> Comments <<<
+
+It is worthwhile to investigate the ways to replace traditional superscalar
+designs with more scalable solutions for large instruction windows and
+dispatch rates. Avoiding the need to maintain reorder buffers, rename
+tables and physical register files in the future generation of processors
+is certainly very attractive.
+
+The main problem is that all important new ideas have already been
+presented in your earlier paper (reference [28], Europar'02). Your Europar
+paper describes time tags, registerless datapath, active stations,
+forwarding mechanism etc. The submitted paper is just an extension of the
+work in [28] and as such, it is more suitable for publication in a journal,
+rather than in HPCA.
+
+The submitted paper describes forwarding in more detailed manner than [28],
+but all important concepts are introduced in [28]. Extension for the memory
+and predicate operand forwarding are fairly obvious once the basic design
+is in place.
+
+Why are you using so few forwarding buses in the baseline datapath? 5 buses
+(and only 2 of them for registers) is way too low for a 64-way machine.
+
+Another factor is that in the basic design the execution of dependent
+instructions in back-to-back cycles is possible, which is not the case with
+your machine, because forwarding takes a full cycle. I think that you
+account for this delay in the simulations (compared to the baseline, based
+on your description), but it is not very clear. You should be more explicit
+and maybe even show the performance dreop due to this delay. Also,
+instruction re-execution puts extra pressure on the execution units.
+
+If the baseline datapath has enough forwarding buses and physical
+registers, I don't see why the IPCs of the two machines may not be that
+different.
+
+In the beginning of the paper you talk about re-execution. It is not clear
+why the re-execution is needed until after you run through the example of
+Figure 2. Maybe a forward reference or more explanation is in order when
+you first introduce the concept of re-execution.
+
+
+
+          >>> Points in favour or against <<<
+
+In favour: Interesting design Against: Main ideas are known from the
+previous work.
+
+
+
+ =*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=
+
+Fourth reviewer's review:
+
+          >>> Summary of the paper <<<
+
+This paper uses "Time Tags" to enforce the program dependencies and the
+instruction ordering. It discusses the design, use and the management of
+time tags. The goal is to eliminate the contention around the reorder
+buffer and exploit control independence. A proposed microarchitecture using
+time tags is reported to achieve IPC's in the range of 3.8-5.1 using
+SpecInt2000 and SpecInt95.
+
+
+
+
+
+          >>> Comments <<<
+
+Using time tags for dependency enforcement originates from work originally
+performed to speed-up distributed/optimistic event based simulation using
+time-warp technique. This technique speedups the simulation since the
+time-warp technique allows events to be handled in any order and it
+provides the ability to back off when violations of ordering constraints
+are encountered. The paper does not cite this body of work but instead
+cites an earlier work [5] that was the first to carry the notion of
+time-tags into the processor arena. I believe the paper should provide a
+proper discussion of both the prior art and reference [5]. The discussion
+on page 2 is not convincing.
+
+ In my view, this paper is different from [5] in a number of aspects,
+notably application of the technique within the framework of a contemporary
+superscalar out-of-order processor, discussion of more recent speculative
+techniques such as value prediction, multi-path execution, predicated
+processor organization and control independence exploitation.
+
+The paper is certainly forward-looking, aiming at reducing or eliminating
+the bottlenecks that contemporary superscalar processors are facing.
+Unfortunately, doing so, it does not do a convincing job that time tags are
+the way to go.
+
+The main problem that I have with this paper is the presentation of the
+time-tags technique as part of a single micro-architecture organization
+where it is quite impossible to measure the contribution of each aspect
+clearly. I do not believe one needs to use this heavy weight architecture
+to take advantage of the time tags idea. The authors should separate the
+contribution of each subfield/section of the microarchitecture and compare
+it separately with the baseline architecture. Only then one can justify a
+significant IPC increase quantitatively:
+
+ - When instructions maintain a copy of the input or output   operands
+values will be duplicated. When we provide the   same number of registers
+to a conventional superscalar,   if that superscalar stalls for lack of
+registers so   will the proposed architecture (in fact, much earlier).  
+This policy does not need to use time tags. What is the   impact of this
+assumption?
+
+ - The proposed layout and the forwarding network is also orthogonal   to
+the time-tags technique. I find it quite novel in the sense   that the
+forwarding network does not need to forward to earlier   instructions. In a
+pipelined single issue machine this occurs   naturally. What is the impact
+of the forwarding network on the   performance?
+
+ - The proposed architecture does exploit control independence. How   much
+of the performance is attributable to this exploitation?
+
+ - As far as I can tell, the proposed architecture also exploit  
+multi-path execution, but I am not sure. How much of the performance
+gain is because of multi-path execution?
+
+  - Time-tags can be used only for register operands and only for memory  
+operands as well. How much of the performance is due to the   memory
+ordering?
+
+Experimental:
+
+  I think authors are comparing apples and oranges. By all means SGI  
+compiler is a much better compiler than SimpleScalar's version of gcc.
+
+  The 64 issue machine that authors are simulating is fetch starved,   so
+it is quite likely that most of the reported performance is   coming from
+exploitation of control independence and multi-path   execution. The
+authors do not report floating point benchmarks   which are less likely to
+be fetch starved when executed on a   conventional superscalar. I would be
+interested in seeing these   results.
+
+ Other points:
+
+The paper should definitely needs to communicate the motivation for this
+work better. In the introduction section, the motivation for using the time
+tags and why it should lead to better performance is not clearly
+communicated.
+
+In the section 3, it would be better to give a more complex example
+including the renaming and all forwarding types to illustrate the mechanism
+of time tags. The given example is just for the register operands, and it
+is only a simple case. For the complex cases, such as the predicate
+forwarding, it is hard to understand and definitely will be easier to
+understand if supported by some figures. An example or a graphics will help
+readers to understand the working process of the time tags in the complex
+cases more easily.
+
+The analysis of the simulation results is not adequate in the section 4.
+
+
+
+
+
+ =*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=--=*=

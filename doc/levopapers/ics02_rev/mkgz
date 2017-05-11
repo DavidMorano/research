@@ -1,0 +1,8 @@
+#!/bin/ksh
+
+
+rm -f multi.tar.gz
+tar -cf multi.tar multi.bib multi.tex *.eps latex8.bst
+gzip multi.tar
+
+

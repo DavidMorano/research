@@ -1,0 +1,114 @@
+\documentclass[11pt]{article}
+\usepackage[english]{babel}
+\input{epsf}
+\textwidth 163mm
+\textheight 225mm
+\topmargin -15mm
+\oddsidemargin 0mm
+\evensidemargin 0mm
+
+\pagestyle{empty}
+
+\begin{document}
+\parskip 3mm
+
+
+% TO ADD TO THE PAPER, PLEASE BEGIN COPYING AND PASTING BELOW THIS POINT
+
+
+\section{Theoretical reason for loop prediction}
+
+Large locality is present in loops due to their repetitive behavior. Loops locality benefits the prediction of the number of iterations per loop visit and the number of instructions executed per iteration. The theory behind these predictions is that unrolling {\it  ill-behaved loops}, known as {\it  execution-time loops} by compiler developers due to the high complexity to unroll them at compile time, at run-time will provide a larger window of instructions ready to be issued to the execution units. Hardware-based loop unrolling will provide larger basic blocks due to the reduction of the number of branches, those controlling loops, and will also produce a smaller number of branch misspredictions. 
+
+\section{Producing higher fetch unit throughput via hardware-based loop unrolling}       
+
+Implementing hardware-based loop unrolling on loops that the compiler does not unroll will allow a reduction of the number of instruction cache requests, accesses and misses. By this reason the fetch unit ability to issue instructions to processing units will be speeded up. The amount of improvement will be directly related to the saved number of requests, accesses and misses gained by dynamic loop unrolling. There is a limitation when a loop missprediction occurs. The penalty cost of such undesired situation depends on the number of unrolled times, thus for a loop that is unrolled {\it m} times and is misspredicted the penalty would be {\it m*traditional-miss-penalty-cost}. Fortunately, there are known compiler techniques to reduce equivalent situations that propose the conversion of backward to forward branches \cite{davidson95} to make the common case of the branch to fall-through, therefore in a missprediction the body of the loop will not be executed {\it m} erroneous times and the penalty will be not larger than that of a misspredicted branch. 
+
+\section{Implementation of hardware-based loop unrolling}
+
+To implement hardware-based loop unrolling the following components should be included in the architecture:
+
+\begin{itemize}
+\item{loop predictor,}
+\item{loop buffer,}    
+\end{itemize}
+in addition, the next entities should require udates:
+\begin{itemize}
+\item{register renaming hardware,}    
+\item{instruction rescheduling hardware.}    
+\end{itemize}
+Descriptions of these components and changes are provided below.
+
+\subsection{Loop predictor}
+To predict loops it is required to collect run-time information. The number of iterations per loop visit and the number of instructions per iteration during each loop iteration are two of the most important characteristics that describe loops behavior and they should be used to perform predictions. Before going further is important to give the definition of a {\it live} loop. A live loop is a loop whose instructions are being executed. For prediction purposes, live loops relevant information is stored in a 32-entry stack. A stack entry contains the fields:
+
+\begin{itemize}
+\item{{\it id}}
+\item{{\it iterations}}  
+\item{{\it instructions-per-iteration}}
+\end{itemize}
+
+The {\it id} holds the address of the loop head. The {\it iterations} holds the number of iterations being performed during a loop visit. The {\it instructions-per-iteration} holds the value of the number of instructions per iteration during the last iteration. 
+When a live loop terminates iterating, then a loop visit has completed and the information for that loop should be agregated to a {\it loop prediction table}. The loop prediction table contains loop information overall visits of it during a program's execution. An entry of the loop prediction table contains the fields:
+\begin{itemize}
+\item{{\it id}}
+\item{{\it totitns}}
+\item{{\it totiiter}}
+\item{{\it lastitns}}
+\item{{\it lastiiter}}
+\item{{\it visits}}
+\item{{\it conflvitns}}
+\item{{\it confavgitns}}
+\item{{\it conflviiter}}
+\item{{\it confavgiiter}}
+\end{itemize}
+The {\it totiiter} field holds the total number of instructions per iteration executed for this loop among all cumulative iterations and visits.
+{\it totitns} field holds the total number of iterations for this loop among all cumulative visits.
+{\it lastiiter} holds the value of the number of instructions per iteration executed during the last iteration of this loop.
+{\it lastitns} holds the value of the number of iterations for the last visit of this loop.
+{\it visits} holds the cumulative number of loop visits.
+{\it conflvitns} is a confidence prediction counter that is incremented every time an iteration prediction based on last value is correct.
+{\it confavgitns} is a confidence prediction counter that is incremented every time an iteration prediction based on average is correct.
+{\it conflvitns} is a confidence prediction counter that is incremented every time a prediction of instructions per iteration based on last value is correct.
+{\it confavgitns} is a confidence prediction counter that is incremented every time a prediction  of instructions per iteration based on average is correct.
+
+Next it is described in more detail the prediction algorithm.
+
+First, it is important to mention that there should be predicted number of iterations per loop visit and number of instructions per iteration. 
+The prediction of the number of iterations is implemented at the beginning of a loop visit. 
+The prediction of the number of instructions per iteration is performed at the beginning of a new iteration. 
+There are two ways to perform the predictions:
+\begin{enumerate}
+\item{Using the last value}
+\item{Using loop pattern information}
+\end{enumerate}
+
+The prediction using the last value, simply utilizes the respective last value of the number to be predicted. For the number of instructions per iteration, the value is read from the stack, since it holds the live loop information. For the number of iterations, the value is read from the loop prediction table if there is an entry for the respective loop. Otherwise, since it is the first time this loop has been seen, the value is initially predicted to one, since in average more than 95 percent of the loops will implement more than one iterations.
+
+The prediction using loop pattern information is more challenging and provides higher accuracy. However, to implement a precise predictor huge table sizes would be required to store all run-time information for each loop. For this reason, although we have reported results using all pattern information utilizing big tables, we suggest to implement an average-based predictor in hardware. The idea here is to add up all run-time information for each loop and to dynamically predict the average for both predicted numbers. The way to predict the averages consists on dividing the number of cumulative iterations by the number of cumulative visits to get an averaged number of iterations; and dividing the number of cumulative number of instructions per iteration by the averaged number of iterations. Implementing this predictor reduces the amount of hardware needed, although accuracy can be affected. Future work should evaluate and compare both approaches.
+
+\subsection{Loop buffer} 
+
+According to the results shown in section 5, it can be observed that utilizing a fixed size loop buffer will not equally benefit all of the benchmarks. The reason is that for most of the benchmarks the number of iterations is smaller than 50 90 percent of the time, but in one benchmark this number is larger than 1000. Also, respect to the number of instructions per iteration it is observed that 4 out of 6 benchmarks perform more than 1000 instructions per iteration during each iteration, but in the other two benchmarks this number has different patterns. With these observations it can be concluded that the best design of aloop buffer is to dynamically reserve areas of the instruction cache with the goal of unrolling loops in them. An advantage of doing this would be that the hardware cost would not be increased, but the complexity of handling these areas would increase. 
+In the other hand, the advantage of utilizing a fixed size loop buffer would be its relatively easy way to filling it in and handling it. However, a disadvantage would be to reloading it in case that the body of a loop may not fit in it. 
+From the two alternatives, the authors suggest implementing the second alternative, fixed size loop buffer, due to its small complexity and to the privacy of handling only loop related instructions in it. From the given results we conclude that a loop buffer sizes ranging from 1024 entries to 4096 entries will provide a significant improvement on any processor. 
+
+\subsection{Updates to register renaming and dynamic reordering of instructions}
+In order to provide basic hardware-based loop unrolling slight changes to well known register renaming techniques and dynamic reordering mechanisms should be made. 
+For more aggressive hardware-based loop unrolling higher complexity is required. Current techniques implemented on optimizing compilers may be applied to future processors for the purpose of implementing more effective hardware-based loop unrolling. It is the work of the authors to continue investigating in this path to find most cost effective alternatives and hybrid mechanisms to produce large ILP.   
+
+% THE CITED REFERENCE IS:
+%
+% @techreport{davidson95,
+%    author = "Jack W. Davidson and Sanjay Jinturkar",
+%    title = "An Aggressive Approach to Loop Unrolling",
+%    number = "CS-95-26"
+%}
+% STOP COPYING AND PASTING HERE
+
+\end{document}
+
+
+
+
+

@@ -1,0 +1,8 @@
+#!/bin/ksh
+
+D=tr_nucar020708
+T=preserving
+
+scp -qp uri:doc/${D}/${T}.pdf . &
+
+

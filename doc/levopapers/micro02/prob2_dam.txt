@@ -1,0 +1,29 @@
+> 
+> > at column 1 is closer to commitment and there is less chance of changing
+> > its direction.  But if we release it, we cannot make a good use of it as
+> > you mentioned.  
+> 
+> Why not? The column labels for the D-paths can be completely independent of
+> the column numbers for the ML or regular paths.
+> 
+> > If you try and run the
+> > iterations a couple times by hand, you will see that the contents of
+> > D-path columns no longer mach the column number (in the sense that older
+> > paths are closer to column 0).
+> 
+> Yes, of course, but it doesn't make any difference; nothing says you have
+> to reset the D-path state in ML column 0 when the ML column commits.
+> 
+
+Professor Uht does not understand the problem with the DEE column
+being in an earlier ML SG-column than its associated conditional
+branch.  He wants DEE columns to be completely independent of the ML
+SG-column that they are in.  I think that we can :
+
+1) explain this to him more if we can
+
+2) pretend that we have it
+
+What do you think is the best course of action ?
+
+Dave M.

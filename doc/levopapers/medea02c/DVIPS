@@ -1,0 +1,10 @@
+DVIPS
+
+
+Synopsis :
+
+$ dvips -P pdf -t letter <docname>
+
+
+
+

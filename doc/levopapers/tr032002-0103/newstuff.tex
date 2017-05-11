@@ -1,0 +1,39 @@
+%
+\subsection{Multipath Results and Discussion}
+%
+In this section we present data corresponding to varying the
+maximum number of alternative speculative paths that are allowed.
+Figure \ref{fig:figall} shows the speedup results
+when multipath execution is enabled.  Results for
+each benchmark program is presented.  The results for each benchmark
+consists of six groups where each group represents the results
+for one of six machine configurations.
+
+Speedups with each group of results is relative to the
+single-path case with no alternative speculative paths spawned
+for any conditional branches.  For each benchmark program and
+for each of the six machine configurations explored, speedups
+for cases with a maximum
+of zero (leftmost) to seven (rightmost) additional alternative
+paths are allowed.
+
+The most speedup gained occurs for the {\tt go} benchmark.  
+To explain this, we need
+to note that this benchmark has the lowest branch prediction rate
+of those that we executed.
+Spawning disjoint alternative paths has the effect of reducing the
+branch misprediction penalty.
+
+The {\tt bzip2} benchmark has the lowest speedup of the group.  
+If we look at Figure \ref{fig:numbranches} we 
+see that branches for the {\tt bzip2} program have the
+largest branch domain size with respect to other benchmarks and as a
+result there is less opportunity for spawning disjoint paths.
+
+We also observed a significant speedup for the 8-8-16 machine configuration
+of for the {\tt gap} program.  
+Our preliminary investigations suggest
+that we might have captured
+a loop in our execution window that makes for a substantial speedup 
+through the elimination
+of the misprediction penalties of its branches.

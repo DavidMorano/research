@@ -1,0 +1,19 @@
+
+BPMAX=40
+BTMAX=200
+HTMAX=200
+
+for P in bzip2r parser gzip gap go ; do
+
+  mkden ${P}.bplen -n $BPMAX > ${P}.bpden
+  mkdis ${P}.bplen -n $BPMAX > ${P}.bpdis
+
+  mkden ${P}.btlen -n $BTMAX > ${P}.btden
+  mkdis ${P}.btlen -n $BTMAX > ${P}.btdis
+
+  mkden ${P}.htlen -n $HTMAX > ${P}.htden
+  mkdis ${P}.htlen -n $HTMAX > ${P}.htdis
+
+done
+
+

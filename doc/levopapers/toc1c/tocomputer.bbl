@@ -1,0 +1,264 @@
+\begin{thebibliography}{10}\setlength{\itemsep}{0ex}\small
+
+\bibitem{Ahuja98}
+{Ahuja P.S., Skadron K., Martonosi M. and Clark D.W.}
+\newblock {Multipath Execution: Opportunities and Limits}.
+\newblock In {\em {Proceedings of the 12th International Conference on
+  Supercomputing}}, New York, NY, July 1998. ACM Press.
+
+\bibitem{Bannon95}
+{Bannon P., et al}.
+\newblock Internal architecture of alpha 21164 microprocessor.
+\newblock In {\em {COMPCON'95}}, pages 79--87, Mar 1995.
+
+\bibitem{Chen94a}
+{Chen T. and Baer J.}
+\newblock A performance study of software and hardware data prefetching
+  schemes.
+\newblock In {\em Proceedings of the 21st International Symposium on Computer
+  Architecture}, pages 223--232, New York, NY, April 1994. ACM Press.
+
+\bibitem{Cher01}
+{Cher C. and Vijaykumar T.N.}
+\newblock {Skipper: A Microarchitecture for Exploiting Control-Flow
+  Independence}.
+\newblock In {\em {Proceedings of the 34nd International Symposium on
+  Microarchitecture}}, New York, NY, Nov 2001. ACM Press.
+
+\bibitem{Cleary95}
+{Cleary J.G, Pearson M.W and Kinawi H.}
+\newblock {The Architecture of an Optimistic CPU: The Warp Engine}.
+\newblock In {\em {Proc. of the HICSS}}, pages 163--172, Jan. 1995.
+
+\bibitem{Conte95}
+{Conte T., Menezes K., Mills P., Pater B.}
+\newblock Optimization of instruction fetch mechanisms for high issue rates.
+\newblock In {\em Proceedings of the 22nd International Symposium on Computer
+  Architecture}, pages 333--343, New York, NY, June 1995. ACM Press.
+
+\bibitem{Franklin96}
+{Franklin M. and Sohi G.S.}
+\newblock {ARB:} a hardware mechanism for dynamic memory disambiguation.
+\newblock {\em IEEE Transactions on Computers}, 45(5):552--571, May 1996.
+
+\bibitem{Friendly97}
+{Friendly D., Pater S. and Patt Y.}
+\newblock Alternative fetch and issue policies for the trace cache fectch
+  mechanism.
+\newblock In {\em Proceedings of the 30th International Symposium on
+  Microarchitecture}, New York, NY, December 1997. ACM Press.
+
+\bibitem{Fu92}
+{Fu J., Patel J. H., Janssens B.L.}
+\newblock Stride directed prefetching in scalar processors.
+\newblock In {\em Proceedings of the 25th International Symposium on
+  Microarchitecture}, pages 102--110, New York, NY, December 1992. ACM Press.
+
+\bibitem{Gon97}
+{Gonzalez J. and Gonzalez A.}
+\newblock Limits on instruction-level parallelism with data speculation.
+\newblock Technical Report {UPC-DAC-1997-34}, {UPC, Barcelona Spain}, 1997.
+
+\bibitem{gonzalez98limits}
+{Gonzlez J. and Gonzlez A.}
+\newblock Limits of instruction level parallelism with data speculation.
+\newblock In {\em Proceedings of the VECPAR Conference}, pages 585--598, 1998.
+
+\bibitem{Heil96}
+{Heil T.H. and Smith J.E.}
+\newblock {Selective Dual Path Execution}.
+\newblock Technical report, {University of Wisconsin - Madison}, Madison, WI,
+  1996.
+
+\bibitem{Jacobsen96}
+{Jacobsen E., Rotenberg E., Smith J.}
+\newblock Assigning confidence to conditional branch predictions.
+\newblock In {\em Proceedings of the 29th Annual International Symposium on
+  Microarchitecture}, pages 142--152, New York, NY, 1996. ACM Press.
+
+\bibitem{Jacobson97}
+{Jacobson Q., Rotenberg E. and Smith J.E.}
+\newblock Path based next trace prediction.
+\newblock In {\em Proceedings of the 30th International Symposium on
+  Microarchitecture}, New York, NY, December 1997. ACM Press.
+
+\bibitem{Kessler98}
+{Kessler R.E., McLellan E.J. and Webb D.A.}
+\newblock The alpha 21264 microprocessor architecture.
+\newblock In {\em International Conference on Computer Design}, Oct 1998.
+
+\bibitem{Klauser98b}
+{Klauser A., Auston T., Grunwald D., Calder B.}
+\newblock Dynamic hammock predication for non-predicated instruction set
+  architectures.
+\newblock In {\em Proceedings of the International Conference on Parallel
+  Architectures and Compilation Techniques (PACT)}, pages 278--285, New York,
+  NY, Oct 1998. IEEE Press.
+
+\bibitem{Klauser98a}
+{Klauser A.S., Pathankar A. and Grunwald D.}
+\newblock Selective eager execution on the polypath architecture.
+\newblock In {\em Proceedings of the 25th International Symposium on Computer
+  Architecture}, pages 250--259, New York, NY, June 1998. ACM Press.
+
+\bibitem{Kroft81}
+{Kroft D.}
+\newblock Lockup-free instruction fetch/prefetch cache organization.
+\newblock In {\em Proceedings of the 8th Annual Symposium on Computer
+  Architecture}, pages 81--87, May 1981.
+
+\bibitem{Lam92}
+{Lam M.S. and Wilson R.P.}
+\newblock {Limits of Control Flow on Parallelism}.
+\newblock In {\em {Proc. of ISCA-19}}, pages 46--57. {ACM}, May 1992.
+
+\bibitem{lipasti96exceeding}
+{Lipasti M.H. and Shen J.P.}
+\newblock Exceeding the dataflow limit via value prediction.
+\newblock In {\em International Symposium on Microarchitecture}, pages
+  226--237, 1996.
+
+\bibitem{lipasti97superspeculative}
+{Lipasti M.H and Shen J.P.}
+\newblock Superspeculative microarchitecture for beyond {AD 2000}.
+\newblock {\em IEEE Computer}, 30(9):59--66, Sep 1997.
+
+\bibitem{lipasti97performance}
+{Lipasti M.H. and Shen J.P.}
+\newblock {The Performance Potential of Value and Dependence Prediction}.
+\newblock In {\em European Conference on Parallel Processing}, pages
+  1043--1052, 1997.
+
+\bibitem{lipasti98exploiting}
+{Lipasti M.H. and Shen J.P.}
+\newblock Exploiting value locality to exceed the dataflow limit.
+\newblock {\em International Journal of Parallel Programming}, 26(4):505--538,
+  1998.
+
+\bibitem{lipasti96value}
+{Lipasti M.H., Wilkerson C.B., Shen J.P.}
+\newblock Value locality and load value prediction.
+\newblock In {\em Architectural Support for Programming Languages and Operating
+  Systems}, pages 138--147, 1996.
+
+\bibitem{Mahlke92}
+{Mahlke S., Lin D., Chen W., Hank R., Bringmann R.}
+\newblock Effective compiler support for predicated execution using the
+  hyperblock.
+\newblock In {\em Proceedings of the 25th Annual International Symposium on
+  Microarchitecture}, 1992.
+
+\bibitem{Nag01}
+{Nagarajan R., Sankaralingam K., Burger D. and Keckler S.W.}
+\newblock A design space evaluation of grid processor architectures.
+\newblock In {\em Proceedings of the 34th International Symposium on
+  Microarchitecture}, New York, NY, Nov 2001. ACM Press.
+
+\bibitem{Palacharla94}
+{Palacharla S. and Kessler R. E.}
+\newblock Evaluating stream buffers as a secondary cache replacement.
+\newblock In {\em Proceedings of the 21st International Symposium on Computer
+  Architecture}, pages 24--33, New York, NY, April 1994. ACM Press.
+
+\bibitem{Palacharla97}
+{Palacharla S., Jouppi N.P. and Smith J.E.}
+\newblock Complexity-effective superscalar processors.
+\newblock In {\em Proceedings of the 24th International Symposium on Computer
+  Architecture ({ISCA})}, pages 206--218, 1997.
+
+\bibitem{Preston02}
+{Preston R.P., Badeau R.W., Bailey D.W., Bell S.L., Biro L.L., Bowhill W.J.,
+  Dever D.E., Felix S., Gammack R., Germini V., Gowan M.K., Gronowski P.,
+  Jackson D.B., Mehta S., Morton S.V., Pickholtz J.D., Reilly N.H., Smith M.J.}
+\newblock Design of an {8-wide} superscalar {RISC} microprocessor with
+  simultaneous multithreading.
+\newblock In {\em Proceedings of the International Solid State Circuits
+  Conference}, Jan 2002.
+
+\bibitem{Rotenberg96}
+{Rotenberg E. Bennett S. and Smith J.E.}
+\newblock Trace cache: A low latency approach to high bandwidth instruction
+  fetching.
+\newblock In {\em Proceedings of the 29th International Symposium on
+  Microarchitecture}, pages 24--34, New York, NY, December 1996. ACM Press.
+
+\bibitem{Sank01a}
+{Sankaranarayanan K. and Skadron K.}
+\newblock A scheme for selective squash and re-issue for single-sided branch
+  hammocks.
+\newblock Technical Report {CS-2001-14}, {University of Virginia},
+  Charlottesville, VA, Jul 2001.
+
+\bibitem{Sank01b}
+{Sankaranarayanan K. and Skadron K.}
+\newblock A scheme for selective squash and re-issue for single-sided branch
+  hammocks.
+\newblock IEEE Press, Oct 2001.
+
+\bibitem{Seznec96}
+{Seznec A., Jourdan D., Sainrat P., and Michaud P.}
+\newblock Multiple block ahead branch predictors.
+\newblock In {\em Proceedings of the 7th International Conference on
+  Architectural Support for Programming Languages and Operating Systems}, pages
+  116--127, New York, NY, October 1996. ACM Press.
+
+\bibitem{Skadron01}
+{Skadron K. and Ahuja P.S.}
+\newblock {HydraScalar: A Multipath-Capable Simulator}.
+\newblock {\em IEEE Technical Committee on Computer Architecture Newsletter},
+  2001.
+
+\bibitem{Smith95}
+{Smith J.E. and Sohi G.S.}
+\newblock The microarchitecture of superscalar processors.
+\newblock {\em Proceedings of the IEEE}, 83:1609--1624, Dec 1995.
+
+\bibitem{Sohi95}
+{Sohi G.S., Breach S. and Vijaykumar T.N.}
+\newblock {Multiscalar Processors}.
+\newblock In {\em {Proceedings of the 22th International Symposium on Computer
+  Architecture}}, New York, NY, June 1995. ACM Press.
+
+\bibitem{Uht95}
+{Uht A. K. and Sindagi V.}
+\newblock {Disjoint Eager Execution: An Optimal Form of Speculative Execution}.
+\newblock In {\em {Proc. MICRO-28}}, pages 313--325. {ACM}, Nov 1995.
+
+\bibitem{Uht91}
+{Uht A.K.}
+\newblock A theory of reduced and minimal procedural dependencies.
+\newblock In {\em IEEE Transactions on Computers}, pages 681--692, June 1991.
+
+\bibitem{Uht01}
+{Uht A.K., Morano D.A., Khalafi A., de Alba M., Wenisch T., Ashouei M., and
+  Kaeli D.}
+\newblock {IPC in the 10's via Resource Flow Computing with Levo}.
+\newblock Technical Report {TR 092001-001}, {Dept. of ECE, URI}, {Sept} 2001.
+
+\bibitem{Wallace97}
+{Wallace S. and Bagherzadeh N.}
+\newblock Multiple branch and block prediction.
+\newblock In {\em Proceedings of the 3rd International Symposium on High
+  Performance Computer Architecture}, February 1997.
+
+\bibitem{Wallace98}
+{Wallace S., Calder B. and Tullsen D.M.}
+\newblock {Threaded Multiple Path Execution}.
+\newblock In {\em {Proceedings of the 25th International Symposium on Computer
+  Architecture}}, New York, NY, June 1998. ACM Press.
+
+\bibitem{Wang90}
+{Wang S.S.H and Uht A.K.}
+\newblock {Ideograph/Ideogram: Framework/Architecture for Eager Execution}.
+\newblock In {\em Proceedings of the 23rd Symposium and Workshop on
+  Microprogramming and Microarchitecture}, pages 125--134, New York, NY, Nov
+  1990. ACM Press.
+
+\bibitem{Yeh93b}
+{Yeh T-Y., Marr D., Patt Y.}
+\newblock Increasing the instruciton fetch rate via multiple branch prediction
+  and a branch address cache.
+\newblock In {\em {Proceedings of the 7th International Conference on
+  Supercomputing}}, pages 67--76, New York, NY, July 1993. ACM Press.
+
+\end{thebibliography}

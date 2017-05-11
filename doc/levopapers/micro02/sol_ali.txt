@@ -1,0 +1,204 @@
+From akhalafi@gateway.ece.neu.edu Mon Jun 10 10:44:59 EDT 2002 
+received:
+	by rca.rightcore.com
+	; 10 Jun 2002 10:51:58 -0400 (EDT)
+Return-Path: <akhalafi@gateway.ece.neu.edu>
+Received: from Flemming.computer.org (flemming.computer.org [206.99.235.24])
+	by leviathan.ele.uri.edu (8.12.2/8.12.2) with ESMTP id g5AEiuvi001692
+	for <morano@ele.uri.edu>; Mon, 10 Jun 2002 10:44:57 -0400 (EDT)
+Received: from SMTP.ECE.NEU.EDU (markov.ece.neu.edu [129.10.60.83])
+	by Flemming.computer.org (Switch-2.1.1/Switch-2.1.1) with ESMTP id U5AE29XB08995
+	for <morano@computer.org>; Mon, 10 Jun 2002 10:45:34 -0400
+Received: from dharma.ece.neu.edu (dharma.ece.neu.edu [129.10.60.101])
+	by SMTP.ECE.NEU.EDU (8.11.3/8.11.3) with SMTP id g5AEiii02351
+	for <morano@computer.org>; Mon, 10 Jun 2002 10:44:44 -0400 (EDT)
+Received: from lespaul.ece.neu.edu ([129.10.60.240])
+ by dharma.ece.neu.edu (NAVGW 2.5.2.9) with SMTP id M2002061010444432342
+ ; Mon, 10 Jun 2002 10:44:44 -0400
+Received: from localhost by lespaul.ece.neu.edu (8.9.3/8.9.3) with ESMTP id KAA18110;
+	Mon, 10 Jun 2002 10:44:44 -0400 (EDT)
+X-Authentication-Warning: lespaul.ece.neu.edu: akhalafi owned process doing -bs
+Date: Mon, 10 Jun 2002 10:44:44 -0400 (EDT)
+From: Alireza Khalafi <akhalafi@ECE.NEU.EDU>
+X-Sender: akhalafi@lespaul
+To: "Augustus (Gus) K. Uht" <uht@ele.uri.edu>
+cc: David Morano <morano@computer.org>
+Subject: Re: DEE and Levo, with current floorplan
+In-Reply-To: <3D03E3FD.A6E16E61@ele.uri.edu>
+Message-ID: <Pine.GSO.4.21.0206100925120.17542-100000@lespaul>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Length: 7629
+
+Gus
+
+I describe what I have modeled in FastLevo for each of the following
+cases.  Please see below.
+
+> Hi Ali and Dave,
+> 	First, please don't respond to this email with "I think...", I need
+> "I know..."'s. And if you don't know, please find out. Time is short, as
+> you know.
+> 
+> 	I have been thinking about DEE operation and Levo, particularly
+> in view of the current floorplan, which does not have "long line" 
+> broadcast buses. I know we discussed some of this at an in-person meeting
+> a while ago, but I do not feel satisfied issues have been adequately
+> addressed.
+> 	In the following, unless stated otherwise, all columns are logical,
+> it is assumed that column
+> m-1 wraps around to 0 with one cycle delay. D-paths
+> are 1-column long.
+> 
+> 	First, you've been telling us that the M-path state 
+> logically after a D-path is retained upon the D-path being taken, with the
+> D-path results being re-broadcast from its forwarding units. That sounds
+> fine, performance-wise, but I have no idea how to realize it, given the
+> current floorplan, without a penalty > 1 cycle. Specifically:
+
+The penalty is normally > 1 cycle.  The D-path data has to be
+re-broadcasted for the ML.  Note that a switch to D-path can occur before
+the whole ML column is committed.
+
+> 1. If M-path column 2 has a spawned D-path in column 5, does it take
+> 5-1 = 4 cycles (one cycle per column) for results from M-path 1 to get to
+> the D-path? Is this modeled in FastLevo? Is it an issue?
+
+The delay depends on how many forwarding units are in the way. (a function
+of spanning bus).  But this doesn't seem to be an issue.  The switch to
+D-path doesn't happen untill the ML path is in column 0 which will give
+the D path enough time to get the data.
+
+
+> 2. With the same assumptions as in 1., say the D-path branch is
+> mispredicted, so the D-path is used. Then the D-path in column 5 becomes
+> M-path 2; how do results get from the new M-path column 2 to M-path columns
+> 3 and 4? 
+
+In FastLevo I have used the horizontal buses at the bottom of the column
+to send the results to column 3 and 4.  Note that it is critical to get
+the data to ML-paths as soon as possible.  The other solution is to
+forward them along the buses and use the wrapping feature of the
+window.  But this turned out to be a poor solution for short spanning
+buses.
+
+The horizontal buses at the bottom of a column is not a bad idea.  They
+are probably needed in a real machine where we want to switch to another
+process and need to collect the committed register and memory values from
+a column.  I don't know if they can fit into your floorplan or not.
+
+
+> 3. What about the converse? M-path in column 5, D-path in column 2,
+> misprediction, M-path column 5 is now in column 2, with M-paths 3 and 4 
+> after it; M-path column 6 is 3 columns from column 5; does this imply
+> a 3-cycle delay? Is this modelled in FastLevo? Is it an issue?
+> 
+This case doesn't happen.  How do you load the D-path before you load in
+the ML-path?  Also note that even if we allow for this to happen, there
+would be only very rare occasions that a M-path in column 5 could have
+a D-path in column 2.  The other ML in column 0 or 1 has a higher chance
+of havind a D-path in column 2.
+
+> 4. In the current version of FastLevo, what is the M-path to D-path
+> switch penalty? Is this overlapped with execution, or does the whole
+> E-window stall? Is it overlapped with the re-broadcast of D-path results?
+
+The execution is overlapped with the switch to D-path.  The switch to
+D-path means re-braodcasting the D-path results for the Main line
+paths.  Almost all the time, the D-path is ahead of the main line and
+therefore the results have to be broadcasted on the earlier columns.  A
+horizontal bus seems the best solution to me and it can be pipelined.
+
+I don't see a need to stall the E-window.
+
+
+> 5. Not to mention commit issues....
+> 
+> 
+> With the above, I can see how the time tags can keep everything functionally
+> correct, but the performance effects of switching from one path to another
+> appear messy, at best.
+
+We just have to make sure that is happens rather fast. I don't think it is
+messy but it might not be very straight forward.  
+
+> Have we ever run experiments assuming the much simpler model of throwing
+> all M-path state logically after the D-path state out? But even this seems
+> problematic, given case 3. above.
+
+I don't think this is a good idea.  It is the same as flushing the
+window. 
+
+> It seems to me we still have to move the D-path contents to the 
+> mispredicting branch's M-path, in order for everything to work out and be
+> clean. Now, we don't have to move the instructions, they're the same.
+> We don't really need to move the source operands. We do need to move the
+> actual predicate state and instruction operation results, if any exist.
+> We need to move the state (executed or not, etc.) of the instructions.
+> We can add logic so that if the result is recomputed, but doesn't change,
+> nothing is broadcast.
+
+The D-path is going to replace teh ML-path. We just have to send the
+values back to the next ML.  Think of it as a feedback path (but not the
+same purpose).  We take the data from D-path and feed it back to
+ML-1.  There is some details here as how teh other D-paths are going to
+change but I don't think this would matter for the paper.  
+
+
+> So the questions are, how best to do this in a real Levo with the 
+> current floorplan, first, and second, can this be simply modelled in
+> FastLevo (maybe with just a conservative DEE penalty) in time for 
+> MICRO?
+
+Let me know if you still need a modification to FastLevo.  If you don't
+want to use the horizontal buses at the bottom of the column (or somewher
+else, maybe the buses that go to L1-D cache), then I need to make changes
+to FastLevo.  
+
+> I would suggest that (part of) a solution may be to use the re-broadcast
+> of the D-path results to get these results over to their new locations,
+> as well as causing subsequent M-path instructions to snarf, appropriately.
+> One way of cutting down the overall delay for this is to use both
+> forwarding AND backwarding buses from the D-path Forwarding Units. If the
+> D-path is relabelled as the corresponding M-path before the broadcast,
+> the time tags should make everything come out right. Paths would also have
+> to be able to snoop and snarf from backwarding buses.
+
+Backwarding buses might be a solution but we still have to deal with their
+delay in addition to forwarding unit dealys. 
+
+> If the bus traffic can be modeled, then we're OK. The DEE penalty could 
+> actually be negative, since results could arrive earlier than before.
+> 
+> We may have to have a conference call on this tomorrow sometime.
+
+That sounds good.  My number at home is 781-393-6991.  Plase send me an
+email beforehand so I can free the line.
+
+> Note that what we need at a minimum here is a) to have an actual Levo
+> solution for the problem, but b) to contain it, conservatively, 
+> (but at least close to the real value so we don't penalize ourselves 
+> too much) from
+> a performance modelling point of view in FastLevo, at least for the
+> purposes of the MICRO paper.
+> 
+> ----Gus
+> 
+> -- 
+> ______________________________________________________________
+> 
+>   Augustus (Gus) K. Uht, Ph.D., P.E.
+>   Research Professor of Electrical and Computer Engineering
+>   University of Rhode Island
+>   A-219 Kelley Hall
+>   4 East Alumni Ave.
+>   Kingston, RI 02881-0805
+>   Email: mailto:uht@ele.uri.edu
+>   Phone: 401-874-5431
+>   Fax: 401-782-6422
+>   Web: http://www.ele.uri.edu/~uht
+> ______________________________________________________________
+> 
+
+
+

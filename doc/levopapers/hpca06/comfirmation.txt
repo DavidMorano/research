@@ -1,0 +1,31 @@
+
+Confirmation Number: 	219
+Submission Passcode: 	219X-B1E0F1J0G7
+
+We successfully received your submission to ICCD 2005.
+
+If you need to make a revision, you can revisit the Electronic Submission
+Page, and enter the passcode above. Alternatively, you can click on
+the URL below, which will take you directly to a revision form for
+your submission.
+
+Revise Your Submission
+
+For future reference, you should save this confirmation to a local file
+on your computer.
+
+If you have any questions or problems, please contact
+ashar@realintent.com. Please be sure to include your confirmation number
+in all correspondence.
+
+Thanks again for your submission. We look forward to having a great ICCD 2005!
+
+    Reference Information for Submission #219
+
+    Title: 	Re-execution: An Approach to Simplify the 
+		Datapath in Aggressive Out-of-Order Processors
+    Authors: 	David A. Morano, David Kaeli
+    Passcode: 	219X-B1E0F1J0G7
+    Confirmation Number:	219
+
+

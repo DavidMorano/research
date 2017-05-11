@@ -1,0 +1,116 @@
+This is TeX, Version 3.14159 (Web2C 7.3.1) (format=latex 2000.1.6)  13 DEC 2001 19:12
+**IEEEsample2wa
+(IEEEsample2e.tex
+LaTeX2e <1998/12/01> patch level 1
+Babel <v3.6x> and hyphenation patterns for american, french, german, ngerman, n
+ohyphenation, loaded.
+(IEEEtran.cls
+Document Style `IEEEtran' <30-August-1993>.
+Upgraded to `IEEEtran.cls' <10-Jan.-1996> !PN
+Rev. <15-May.-1996> !PN
+(/usr/packages/tex/share/texmf/tex/latex/tools/rawfonts.sty
+Package: rawfonts 1994/05/08 Low-level LaTeX 2.09 font compatibility
+
+(/usr/packages/tex/share/texmf/tex/latex/tools/somedefs.sty
+Package: somedefs 1994/06/01 Toolkit for optional definitions
+)
+LaTeX Font Info:    Try loading font information for U+lasy on input line 34.
+
+(/usr/packages/tex/share/texmf/tex/latex/base/ulasy.fd
+File: ulasy.fd 1998/08/17 v2.2eLaTeX symbol font definitions
+))
+(/usr/packages/tex/share/texmf/tex/latex/base/oldlfont.sty
+Package: oldlfont 1994/11/29 v2.2k Standard LaTeX package
+
+(/usr/packages/tex/share/texmf/tex/latex/base/tracefnt.sty
+Package: tracefnt 1997/05/29 v3.0j Standard LaTeX package (font tracing)
+\tracingfonts=\count79
+LaTeX Info: Redefining \selectfont on input line 83.
+)
+\symbold=\mathgroup4
+\symsans=\mathgroup5
+\symtypewriter=\mathgroup6
+\symitalic=\mathgroup7
+\symsmallcaps=\mathgroup8
+\symslanted=\mathgroup9
+LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 53.
+LaTeX Font Info:    Redeclaring math alphabet \mathsf on input line 54.
+LaTeX Font Info:    Redeclaring math alphabet \mathtt on input line 55.
+LaTeX Font Info:    Redeclaring math alphabet \mathit on input line 61.
+LaTeX Info: Redefining \em on input line 71.
+
+(/usr/packages/tex/share/texmf/tex/latex/base/latexsym.sty
+Package: latexsym 1998/08/17 v2.2e Standard LaTeX package (lasy symbols)
+\symlasy=\mathgroup10
+LaTeX Font Info:    Overwriting symbol font `lasy' in version `bold'
+(Font)                  U/lasy/m/n --> U/lasy/b/n on input line 29.
+))
+-- This is a 10 point document
+\tmpitemindent=\dimen102
+\c@section=\count80
+\c@subsection=\count81
+\c@subsubsection=\count82
+\c@paragraph=\count83
+\captionindent=\skip41
+\c@figure=\count84
+\c@table=\count85
+)
+\c@theorem=\count86
+
+No file IEEEsample2e.aux.
+\openout1 = `IEEEsample2e.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <12> on input line 39.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 39.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 39.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 39.
+\tmpht=\dimen103
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 60.
+
+LaTeX Warning: Reference `fig-example' on page 100 undefined on input line 136.
+
+
+
+LaTeX Warning: Citation `LaTeX' on page 100 undefined on input line 233.
+
+
+LaTeX Warning: Citation `LaTeXD' on page 100 undefined on input line 233.
+
+[100
+
+
+] [101] [102] (IEEEsample2e.aux)
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+ ) 
+Here is how much of TeX's memory you used:
+ 453 strings out of 10901
+ 4830 string characters out of 72154
+ 56239 words of memory out of 263001
+ 3405 multiletter control sequences out of 10000+0
+ 26611 words of font info for 98 fonts, out of 400000 for 1000
+ 14 hyphenation exceptions out of 1000
+ 30i,8n,24p,359b,339s stack positions out of 300i,100n,500p,50000b,4000s
+
+Output written on IEEEsample2e.dvi (3 pages, 18920 bytes).

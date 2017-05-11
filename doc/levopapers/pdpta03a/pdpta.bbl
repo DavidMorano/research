@@ -1,0 +1,14 @@
+\begin{thebibliography}{1}\setlength{\itemsep}{-1ex}\small
+
+\bibitem{Uht91}
+{Uht A.K.}
+\newblock A theory of reduced and minimal procedural dependencies.
+\newblock In {\em {IEEE} Transactions on Computers}, pages 681--692, June 1991.
+
+\bibitem{Uht01}
+{Uht A.K., Morano D.A., Khalafi A., de Alba M., Wenisch T., Ashouei M., and
+  Kaeli D.}
+\newblock {IPC in the 10's via Resource Flow Computing with Levo}.
+\newblock Technical Report {TR 092001-001}, {Dept. of ECE, URI}, {Sept} 2001.
+
+\end{thebibliography}

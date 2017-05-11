@@ -1,0 +1,162 @@
+
+Speaking of which, we know that the "compress" results in Fig. 9
+have problems, and we are working to fix them.
+If at all possible, please get back to us by this Friday, June 7. The
+MICRO deadline is June 17th.
+
+
+Gus: Are you sure you want to be in Istanbul this year? :-)
+
+abstract: after stumbling over this, I think I'd prefer "The...buses
+are segmented; their lengths are constant, that is, do not increase
+with machine size." But I think it's a matter of taste, unless one has
+a PhD in English.
+
+section 1: "We have a great opportunity: in a few years, billion
+transistor chips will be available." Implying what? That Levo is
+unrealizable in fewer transistors than that?  Or that its performance
+advantages only show up beyond a certain transistor count?  Judging
+from the next paragraph, you mean Levo needs lots of transistors or it
+isn't worth doing. Ok, as far as it goes. But blowing off the power
+constraint issue doesn't feel all that compelling to me. Chips are
+already power constrained at the 100M transistor level; you're planning
+to grow that by an order of magnitude without grappling with its
+implications? Hmmm... Well, as a technical reader, I would still want
+to read your paper to see if I think the structures and evidence you
+present lead to promising performance results, but you sure have stuck
+a big caveat in my mind at the outset. Instead of "Power and energy
+consumption are also issues, but...  are not covered in depth herein"
+I'd suggest something more like "Modern microprocessors such as Intel's
+Itanium Processor Family are already power-constrained at the 100M
+transistor level, so extrapolating into a 1B transistor design realm
+clearly implies serious power challenges. But before we consider what
+any given microarchitecture can or should do about its power
+dissipation, we believe its performance potential should be clearly
+established. That is the focus of this paper."
+
+Gotta tell you, I smiled when I saw this phrase: "In typical
+microprocessors, such as the Pentium P6 microarchitecture and the Alpha
+EV8..." Let's see, one of those has sold over 1B chips, and the
+other...zero, design never completed. It also tickles me to see P6
+referred to as "typical". A lot has changed in 10 years.  :-)
+
+More seriously, I think you're right about scalability of Reorder
+buffers, RS's, and so on. But you don't mention pipeline depth?
+Surprising, because that depth sets the direction of a lot of the rest
+of the uArch. Some good, some bad.  Deeper pipes, to a point, will get
+you around a lot of the objections you raise here, but come with their
+own baggage of course. On the other hand, deeper pipes also can give
+you higher clocks, which the buying public currently seems to like.
+
+"In Levo any instruction set can be used, and no compiler modifications
+are necessary..." Well, either you're saying you can implement a Turing
+machine, in which case this sentence is vacuous, or you're making a
+claim that is so bold as to border on magic. For example, a statically
+scheduled ISA like IA-64 would seem to prefer a microarchitecture that
+would differ substantially from the OOO behemoths of the IA32 side. Are
+you saying Levo can support any ISA *equally well*, or are you making a
+smaller claim that Levo is unusually good at supporting varying ISAs,
+but not all to the same degree? Tell you what -- I think your paper
+would be stronger if you make only the bold claims you must, but no
+others. Instead of "In Levo any ISA...", why not something more like
+"Our intention is to develop Levo as a general purpose uArch, capable
+of high performance under any ISA. To date our experience has been very
+encouraging, and we will return to this aspect of Levo in future work,
+including prospects for Levo-specific compiler optimizations."
+
+I wish Figure 1 had a paragraph devoted to a simple description of
+basically how this thing works. I suspect the 1st paragraph in section
+3 was intended as that, but for me, at least, it's extremely difficult
+to remember all the new jargon you had to invent for Levo, and then
+intuit how these new things all work together.  I want a paragraph that
+describes Figure 1, not in Levo jargon, but in words that a Micro
+attendee would understand even if he or she had never heard of Levo or
+DEE in their lives. Alternatively, you might add a sequence of figures
+to walk a single instr through the various stages. The problem overall
+is that if you lose the reader here, they will quit reading.
+
+I'm slow. I have now read and reread the paragraph on how the
+time-tagging works, and I just don't get it. In Figure 2, I assume that
+an OOO machine can have instrs 1, 5, and 9 execute in any order
+whatsoever. So all three are sitting in some temp structure with
+Levo-invented names (:-)) and instr 1 executes. Does instr 9 grab instr
+1's results or not? How does instr 9 know whether there are any
+intervening instrs that also write register 4? The text in the
+paragraph seem to imply that "the snarfing instruction will execute";
+this tells me that instr 9 must NOT have snarfed instr 1's result. But
+darned if I can see how the time-tagging accomplished that.
+
+By the way, we used time-tagging all over the place in both P6 and
+Pentium 4. Each instr is assigned a time tag at decode time; these tags
+are what determine things like which stores must execute before which
+loads, the instr retirement order, and so on. But there may be subtle
+differences between tags that are truly related to absolute time, and
+those which merely serve to indicate relative time, such as instruction
+ordering. Does Levo use the absolute or relative flavor of "time-tag"?
+
+section 3.2: I can't quite picture what it means for RFU's to be
+"globally inconsistent but locally accurate." Does the traffic across
+these RFU's get time-tagged, and that info is what is used to reimpose
+global consistency later?
+
+Figure 4 raises a question. I can see why you claim the "from previous
+column" and "to next column" interconnects are reasonably scalable. But
+do the first and last columns have to connect, to make a circular
+structure overall? How long do THOSE buses get? I claim it's those
+lengths that will restrict you, not the column i to column i+1
+interconnects.
+
+I liked figure 5. HAd to study it for about 20 minutes but I think I
+see where you're going with the HW pred.
+
+Table 1...main memory latency 100 cycles? Seems awfully short, it's 100
+cycles right now in Pentium 4 systems. Why not something more like the
+800 cycles you mentioned earlier in the paper?
+
+section 7: I don't recognize the reference to a "PISA" machine model.
+Need a ref.
+
+section 7.2: usually if an incremental change to a machine design
+decision yields a big perf delta, it means the machine is currently
+hamstrung per that design decision.  If you then change some OTHER
+design decision, and it ALSO yields a big perf delta, that's kinda
+weird. Why didn't the first bottleneck choke the 2nd design decision,
+before AND after? Makes me somewhat suspicious of the performance
+analysis or methodology...
+
+Figure 8 is too small to read, as is. Can't you combine these somehow
+into one or two much larger graphs?
+
+The summary in section 8 is, er, uh, uninspiring. Here you have one of
+the most interesting, original designs aimed at profitably using 1B
+transistors, and you have a bunch of interesting performance data from
+simulations of same, and it all still looks very promising. I think you
+can make a stronger claim here, and remind the reader of the bigger
+context. Something like "1B-transistor CPU designs must satisfy
+multiple hard constraints, including very long memory latency, need for
+fast clock rates, and execution of legacy von Neumann-style code, while
+carefully observing the requirements of the VLSI implementation
+technology, such as scalable structures and short buses. This paper has
+proposed Levo, a microarch specifically aimed at satisfying all of
+those constraints. We have presented very encouraging performance
+simulation results, and we are actively pursuing follow-on work
+in...blah blah blah."
+
+My main message back to you is this. I hope Micro accepts your paper,
+mostly because a) most of Micro is devoted to squeezing N% out of
+existing microarchitectures, where N is a small number, and b) the rest
+are scattered among many other topics, almost never including "what the
+heck are we going to do with 1B transistors".  Especially not when the
+answer includes concessions to issues of chip layout, bus design, clock
+ramifications, and so on, as your paper does. I think you want to make
+sure the reader understands that useful research on machine design for
+the 1B transistor realm absolutely requires that ALL constraints be
+observed; the usual Micro conf trick of ignoring anything that's
+awkward or hard must not be encouraged this far out in time. The paper
+does a decent job of setting that context up in the beginning, but it
+doesn't return to that theme at the end, and I really think that's one
+of the strongest parts of what you're doing.  Everyone else is tweaking
+furiously; you are rethinking whole areas of machine design. Make sure
+they see that.
+
+

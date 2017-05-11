@@ -1,0 +1,29 @@
+From dam Wed Dec 04 08:31:04 EST 2002
+received:
+	by rca.rightcore.com
+	;  4 Dec 2002 08:31:15 -0500 (EST)
+Date: Wed, 4 Dec 2002 10:55:17 +0100 (CET)
+From: leeckhou@elis.rug.ac.be
+To: kaeli@gateway.ece.neu.edu
+Subject: paper ref
+content-length: 958
+
+Dear D. Kaeli,
+
+How are you? With me, everything is fine. I'm currently finishing my PhD.
+I had my first defense here last week with Jim Smith and Pradip Bose in my
+committee. Within two weeks I will have my final defense. Afterwards I
+will send you my PhD dissertation book, because I know you are interested
+in my work, and I always enjoyed meeting you at conferences. I will send
+the PhD book through regular mail. So, please give me your address.
+
+I have seen a paper you are working on on your website: `` Implications of
+Register and Memory Temporal Locality for Distributed
+Microarchitectures''. I can make the following suggestions. First, I have
+measured these distributions too, see the paper I published in PACT-2001.
+And I observed a power law distribution. Second, Butts and Sohi published
+a paper in the last MICRO that deals with the degree-of-use of register
+instances. So, maybe this is useful for your work too.
+
+greetings,
+Lieven Eeckhout

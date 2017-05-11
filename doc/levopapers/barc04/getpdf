@@ -1,0 +1,9 @@
+#!/bin/ksh
+
+D=barc04
+T=ooo
+S=pdf
+
+scp -qp uri:doc/${D}/${T}.${S} . 
+
+

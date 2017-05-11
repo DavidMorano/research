@@ -1,0 +1,16 @@
+\author{David A. Morano}{Northeastern University}
+\chapcontentsline{chapsection}{\raggedright \makebox[21pt][l]{1.1}Introduction}{9}
+\chapcontentsline{chapsection}{\raggedright \makebox[21pt][l]{1.2}Motivation for More Parallelism}{11}
+\chapcontentsline{chapsection}{\raggedright \makebox[21pt][l]{1.3}Resource Flow Basic Concepts}{12}
+\chapcontentsline{chapsubsection}{\raggedright \makebox[30pt][l]{1.3.1}The Operand as a First Class Entity}{12}
+\chapcontentsline{chapsubsection}{\raggedright \makebox[30pt][l]{1.3.2}Dynamic Dependency Ordering}{13}
+\chapcontentsline{chapsubsection}{\raggedright \makebox[30pt][l]{1.3.3}Handling Multipath Execution}{14}
+\chapcontentsline{chapsubsection}{\raggedright \makebox[30pt][l]{1.3.4}Names and Renaming}{15}
+\chapcontentsline{chapsubsection}{\raggedright \makebox[30pt][l]{1.3.5}The Active Station Idea}{15}
+\chapcontentsline{chapsubsection}{\raggedright \makebox[30pt][l]{1.3.6}Register and Memory Operand Storage}{18}
+\chapcontentsline{chapsubsection}{\raggedright \makebox[30pt][l]{1.3.7}Operand Forwarding and Snooping}{19}
+\chapcontentsline{chapsubsection}{\raggedright \makebox[30pt][l]{1.3.8}Result Forwarding Buses and Operand Filtering}{20}
+\chapcontentsline{chapsection}{\raggedright \makebox[21pt][l]{1.4}Representative Microarchitectures}{22}
+\chapcontentsline{chapsubsection}{\raggedright \makebox[30pt][l]{1.4.1}A Small Resource-Flow Microarchitecture}{24}
+\chapcontentsline{chapsubsection}{\raggedright \makebox[30pt][l]{1.4.2}A Distributed Scalable Resource-Flow Microarchitecture}{26}
+\chapcontentsline{chapsection}{\raggedright \makebox[21pt][l]{1.5}Summary}{32}

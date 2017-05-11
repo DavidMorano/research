@@ -1,0 +1,99 @@
+
+We presented some performance result data that was not entirely
+flattering for our microarchitecture.  We felt that it was important to
+present data that showed decreased performance for certain machine
+resource configurations even though we did not fully understand the
+mechanisms involved.  We did have data showing a very high rate of
+Issue Station contention (IS stalls for FUs) that indicated a possible
+area to focus our investigation on.  We therefore presented that data
+in Table 4.
+
+The primary features that yield the general observed performance are
+the numbers of issue stations and FU resources provided and the ability
+of the machine to flexibly use those resources.  The target design
+point was about 128 issue stations and 8 integer ALU FUs.  This was
+meant to represent a next-generation superscalar (like the EV-8 for
+example).  
+
+We can certainly remove any discussion of those features of the general
+microarchitecture that were not used in the current experimental data.
+
+Our present work is largely differentiated from the previous work cited
+(references 22 and 23) by the nature and granularity of major machine
+resources.  The previous microarchitectures used general purpose
+execution resources throughout its execution window while the present
+microarchitecture uses a mix of functionally differentiated execution
+resources.  Further, the previous work organized the in-flight
+instructions into "columns" that could only be retired in unison.  The
+present work allows for instructions to be retired at the granularity
+of one.
+
+Although our Issue Station structures use more logic than a
+conventional reservation station-like structure, this added logic
+allows for the complete elimination of dependency tracking and
+enforcing logic at or before instruction dispatch and also eliminates
+the need for an ROB entry and ROB entry lookup logic (or similar
+tentative commitment structures).  
+
+We did not cluster the FUs in the present work as our intent was to
+first characterize and understand the implications of the very dynamic
+instruction dispatch and execution features of the microarchitecture.
+The other microarchitectures referenced for comparison purposes,
+likewise did not use FU clustering.
+
+Our intent was not to claim that we could scale to larger numbers of
+resources over conventional machines, but rather was only to show the
+potential performance of our machine at both small (conventional sizes)
+as well as possible future larger sizes (although we don't attempt to
+answer all questions about how such larger sizes might be physically
+realized).  However, we do feel that there are some fundamental
+differences between our microarchitecture and existing ones, largely
+in our dynamic dependency determination and flexibility in instruction
+execution and re-execution.
+
+With regard to the further pipelining of the buses (beyond one clock),
+our expectation is that it will have a relatively small effect similar
+to when other pipelines in the machine (like the IS logic, bus
+arbitration, and FU depths) are increased.
+
+The number of re-executions decreases when FU latencies (pipeline
+stages) are increased from 1 to 4.  For a machine configuration of 128
+issue stations with 16 integer ALU FUs, the mean percent of executions
+that were re-executions decreased by about 60% (to a little over one
+third of what it was) when varying the FU pipeline stages from 1 to 4.
+This is due to not initiating a new execution of the same instruction
+until a previous execution of the same instruction (if there was one)
+has completed.
+
+With regard to issue width, for our machine it was set to 16 (the
+number of integer FUs configured).  For the representative superscalar,
+it was set to 17 (the number of FUs + 1 to be conservative).
+
+All three machines compared were modeled with ideal fetch and caches.
+
+The Alpha EV-8 (cited in the paper) was cancelled but it would have had
+8 ALU pipelines and would have represented the state of the art if it
+came out.  Further, the PowerPC 970 from IBM conservatively represents
+(not counting AltiVec) a 5-instruction wide superscalar back in late
+2002.
+
+We can add data for the SpecFloat benchmark suite to the paper.
+
+Instructions currently executed within the IS include:  load-stores,
+conditional control-flow, and various non-computation instructions 
+such as NOOP, TRAPs and the like.
+
+For all experiments on OpTiFlow (and the other machines compared) we
+set the fetch width to the number of instructions in the instruction
+window of the respective machine.  It was not our intention to address
+the issue of how to effectively achieve large fetch bandwidths but
+rather to show the potential performance effect of larger fetch widths
+within the context of our microarchitecture.
+
+The decrement operation for time tags is not very complicated.  Once
+the number of instructions to commit is determined, the count is setup
+to be decremented from the time tags.  Time tags are fairly small
+registers (log base 2 of ISs) and the resulting decrement can be done
+quickly.
+
+

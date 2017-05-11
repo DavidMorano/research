@@ -1,0 +1,8 @@
+#!/bin/ksh
+
+
+cp -p pred.pdf tr032002-0100.pdf
+cp -p pred.pdf ~/msg/tr032002-0100.pdf
+cp -p pred.pdf ~/rje/tr032002-0100.pdf
+
+

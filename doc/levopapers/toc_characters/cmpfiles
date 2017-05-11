@@ -1,0 +1,55 @@
+#!/bin/ksh
+
+
+PROGS=$( < PROGS )
+#PROGS="bzip2 compress ijpeg vortex gzip gcc"
+
+for P in $PROGS ; do 
+
+echo
+echo
+echo $P
+echo
+
+
+echo data0
+fgrep def-use ${P}_rs.etstats
+echo data1
+fgrep def-use data1/${P}_rs.etstats
+#echo data2
+#fgrep def-use data2/${P}_rs.etstats
+#echo data3
+#fgrep def-use data3/${P}_rs.etstats
+
+echo sumcol0
+sumcol -D ${P}_rs.ruse 2>&1 > /dev/null 
+echo sumcol1
+sumcol -D data1/${P}_rs.ruse 2>&1 > /dev/null 
+#echo sumcol2
+#sumcol -D data2/${P}_rs.ruse 2>&1 > /dev/null 
+#echo sumcol3
+#sumcol -D data3/${P}_rs.ruse 2>&1 > /dev/null 
+
+
+echo data0
+fgrep lifetime ${P}_rs.etstats
+echo data1
+fgrep lifetime data1/${P}_rs.etstats
+#echo data2
+#fgrep lifetime data2/${P}_rs.etstats
+#echo data3
+#fgrep lifetime data3/${P}_rs.etstats
+
+echo sumcol0
+sumcol -D ${P}_rs.rlife 2>&1 > /dev/null 
+echo sumcol1
+sumcol -D data1/${P}_rs.rlife 2>&1 > /dev/null 
+#echo sumcol2
+#sumcol -D data2/${P}_rs.rlife 2>&1 > /dev/null 
+#echo sumcol3
+#sumcol -D data3/${P}_rs.rlife 2>&1 > /dev/null 
+
+
+done
+
+

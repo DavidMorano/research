@@ -1,0 +1,1092 @@
+%!PS-Adobe-2.0
+%%Copyright: Copyright (c) 1993 AT&T, All Rights Reserved
+%%Version: 3.4.1
+%%DocumentFonts: (atend)
+%%Pages: (atend)
+%%BoundingBox: (atend)
+%%EndComments
+/DpostDict 200 dict def
+DpostDict begin
+%
+% Copyright (c) 1993 AT&T, All Rights Reserved
+%
+% Version 3.4 prologue for troff files.
+%
+
+/#copies 1 store
+/Prologue (dpost.ps) def
+/aspectratio 1 def
+/formsperpage 1 def
+/landscape false def
+/linewidth .3 def
+/magnification 1 def
+/margin 0 def
+/orientation 0 def
+/resolution 720 def
+/rotation 1 def
+/xoffset 0 def
+/yoffset 0 def
+
+/roundpage true def
+/useclippath true def
+/pagebbox [0 0 612 792] def
+
+/R  /Times-Roman def
+/I  /Times-Italic def
+/B  /Times-Bold def
+/BI /Times-BoldItalic def
+/H  /Helvetica def
+/HI /Helvetica-Oblique def
+/HB /Helvetica-Bold def
+/HX /Helvetica-BoldOblique def
+/CW /Courier def
+/CO /Courier def
+/CI /Courier-Oblique def
+/CB /Courier-Bold def
+/CX /Courier-BoldOblique def
+/PA /Palatino-Roman def
+/PI /Palatino-Italic def
+/PB /Palatino-Bold def
+/PX /Palatino-BoldItalic def
+/Hr /Helvetica-Narrow def
+/Hi /Helvetica-Narrow-Oblique def
+/Hb /Helvetica-Narrow-Bold def
+/Hx /Helvetica-Narrow-BoldOblique def
+/KR /Bookman-Light def
+/KI /Bookman-LightItalic def
+/KB /Bookman-Demi def
+/KX /Bookman-DemiItalic def
+/AR /AvantGarde-Book def
+/AI /AvantGarde-BookOblique def
+/AB /AvantGarde-Demi def
+/AX /AvantGarde-DemiOblique def
+/NR /NewCenturySchlbk-Roman def
+/NI /NewCenturySchlbk-Italic def
+/NB /NewCenturySchlbk-Bold def
+/NX /NewCenturySchlbk-BoldItalic def
+/ZD /ZapfDingbats def
+/ZI /ZapfChancery-MediumItalic def
+/S  /S def
+/S1 /S1 def
+/GR /Symbol def
+
+/inch {72 mul} bind def
+/min {2 copy gt {exch} if pop} bind def
+
+/setup {
+	counttomark 2 idiv {def} repeat pop
+
+	landscape {/orientation 90 orientation add def} if
+	/scaling 72 resolution div def
+	linewidth setlinewidth
+	1 setlinecap
+
+	pagedimensions
+	xcenter ycenter translate
+	orientation rotation mul rotate
+	width 2 div neg height 2 div translate
+	xoffset inch yoffset inch neg translate
+	margin 2 div dup neg translate
+	magnification dup aspectratio mul scale
+	scaling scaling scale
+
+	addmetrics
+	0 0 moveto
+} def
+
+/pagedimensions {
+	useclippath userdict /gotpagebbox known not and {
+		/pagebbox [clippath pathbbox newpath] def
+		roundpage currentdict /roundpagebbox known and {roundpagebbox} if
+	} if
+	pagebbox aload pop
+	4 -1 roll exch 4 1 roll 4 copy
+	landscape {4 2 roll} if
+	sub /width exch def
+	sub /height exch def
+	add 2 div /xcenter exch def
+	add 2 div /ycenter exch def
+	userdict /gotpagebbox true put
+} def
+
+/landscapepage {
+	landscape not {
+		0 height scaling div neg translate	% not quite
+		90 rotate
+	} if
+} bind def
+
+/portraitpage {
+	landscape {
+		width scaling div 0 translate	% not quite
+		-90 rotate
+	} if
+} bind def
+
+/addmetrics {
+	/Symbol /S null Sdefs cf
+	/Times-Roman /S1 StandardEncoding dup length array copy S1defs cf
+} def
+
+/pagesetup {
+	/page exch def
+	currentdict /pagedict known currentdict page known and {
+		page load pagedict exch get cvx exec
+	} if
+} def
+
+/decodingdefs [
+	{counttomark 2 idiv {y moveto show} repeat}
+	{neg /y exch def counttomark 2 idiv {y moveto show} repeat}
+	{neg moveto {2 index stringwidth pop sub exch div 0 32 4 -1 roll widthshow} repeat}
+	{neg moveto {spacewidth sub 0.0 32 4 -1 roll widthshow} repeat}
+	{counttomark 2 idiv {y moveto show} repeat}
+	{neg setfunnytext}
+] def
+
+/setdecoding {/t decodingdefs 3 -1 roll get bind def} bind def
+
+/w {neg moveto show} bind def
+/m {neg dup /y exch def moveto} bind def
+/done {/lastpage where {pop lastpage} if} def
+
+/f {
+	dup /font exch def findfont exch
+	dup /ptsize exch def scaling div dup /size exch def scalefont setfont
+	linewidth ptsize mul scaling 10 mul div setlinewidth
+	/spacewidth ( ) stringwidth pop def
+} bind def
+
+/changefont {
+	/fontheight exch def
+	/fontslant exch def
+	currentfont [
+		1 0
+		fontheight ptsize div fontslant sin mul fontslant cos div
+		fontheight ptsize div
+		0 0
+	] makefont setfont
+} bind def
+
+/sf {f} bind def
+
+/cf {
+	dup length 2 idiv
+	/entries exch def
+	/chtab exch def
+	/newencoding exch def
+	/newfont exch def
+
+	findfont dup length 1 add dict
+	/newdict exch def
+	{1 index /FID ne {newdict 3 1 roll put}{pop pop} ifelse} forall
+
+	newencoding type /arraytype eq {newdict /Encoding newencoding put} if
+
+	newdict /Metrics entries dict put
+	newdict /Metrics get
+	begin
+		chtab aload pop
+		1 1 entries {pop def} for
+		newfont newdict definefont pop
+	end
+} bind def
+
+%
+% A few arrays used to adjust reference points and character widths in some
+% of the printer resident fonts. If square roots are too high try changing
+% the lines describing /radical and /radicalex to,
+%
+%	/radical	[0 -75 550 0]
+%	/radicalex	[-50 -75 500 0]
+%
+% Move braceleftbt a bit - default PostScript character is off a bit.
+%
+
+/Sdefs [
+	/bracketlefttp		[201 500]
+	/bracketleftbt		[201 500]
+	/bracketrighttp		[-81 380]
+	/bracketrightbt		[-83 380]
+	/braceleftbt		[203 490]
+	/bracketrightex		[220 -125 500 0]
+	/radical		[0 0 550 0]
+	/radicalex		[-50 0 500 0]
+	/parenleftex		[-20 -170 0 0]
+	/integral		[100 -50 500 0]
+	/infinity		[10 -75 730 0]
+] def
+
+/S1defs [
+	/underscore		[0 80 500 0]
+	/endash			[7 90 650 0]
+] def
+%
+% Copyright (c) 1993 AT&T, All Rights Reserved
+%
+% A first cut at a company wide version of postcommon.ps.
+% Includes Matthijs Melchior's version of roundpagebbox,
+% but disables adjustments for postprint. This is just an
+% example - it should not be considered final or official.
+%
+
+/roundpagebbox {
+	Prologue (postprint.ps) ne {
+		pagebbox dup 0 get pagebbox 2 get add 2 exch put
+		pagebbox dup 1 get pagebbox 3 get add 3 exch put
+		pagebbox 0 0 put
+		pagebbox 1 0 put
+		userdict /origin-at-paper-edge true put
+	} if
+} bind def
+
+end
+%%EndProlog
+%%BeginSetup
+DpostDict begin
+mark
+/rotation 1 def
+userdict /gotpagebbox true put
+/resolution 720 def
+setup
+2 setdecoding
+%
+% Copyright (c) 1993 AT&T, All Rights Reserved
+%
+% Version 3.4 drawing procedures for dpost. Automatically pulled in when
+% needed.
+%
+
+/inpath false def
+/savematrix matrix def
+
+/Dl {
+	inpath
+		{pop pop neg lineto}
+		{newpath neg moveto neg lineto stroke}
+	ifelse
+} bind def
+
+/De {
+	/y1 exch 2 div def
+	/x1 exch 2 div def
+	/savematrix savematrix currentmatrix def
+	neg exch x1 add exch translate
+	x1 y1 scale
+	0 0 1 0 360
+	inpath
+		{1 0 moveto arc savematrix setmatrix}
+		{newpath arc savematrix setmatrix stroke}
+	ifelse
+} bind def
+
+/Da {
+	/dy2 exch def
+	/dx2 exch def
+	/dy1 exch def
+	/dx1 exch def
+	dy1 add neg exch dx1 add exch
+	dx1 dx1 mul dy1 dy1 mul add sqrt
+	dy1 dx1 neg atan
+	dy2 neg dx2 atan
+	inpath
+		{arc}
+		{newpath arc stroke}
+	ifelse
+} bind def
+
+/DA {
+	/dy2 exch def
+	/dx2 exch def
+	/dy1 exch def
+	/dx1 exch def
+	dy1 add neg exch dx1 add exch
+	dx1 dx1 mul dy1 dy1 mul add sqrt
+	dy1 dx1 neg atan
+	dy2 neg dx2 atan
+	inpath
+		{arcn}
+		{newpath arcn stroke}
+	ifelse
+} bind def
+
+/Ds {
+	/y2 exch def
+	/x2 exch def
+	/y1 exch def
+	/x1 exch def
+	/y0 exch def
+	/x0 exch def
+	x0 5 x1 mul add 6 div
+	y0 5 y1 mul add -6 div
+	x2 5 x1 mul add 6 div
+	y2 5 y1 mul add -6 div
+	x1 x2 add 2 div
+	y1 y2 add -2 div
+	inpath
+		{curveto}
+		{newpath x0 x1 add 2 div y0 y1 add -2 div moveto curveto stroke}
+	ifelse
+} bind def
+end
+%%EndSetup
+%%Page: 1 1
+%%PageBoundingBox: (atend)
+DpostDict begin
+/saveobj save def
+mark
+1 pagesetup
+10 R f
+1607 228 1607 804 Dl
+3047 228 1607 228 Dl
+3047 804 3047 228 Dl
+1607 804 3047 804 Dl
+(read density)1 485 1 2085 199 t
+10 B f
+(bzip2)1011 356 w
+10 R f
+(percent)982 476 w
+(register)979 596 w
+(accesses)960 716 w
+(register address)1 623 1 2016 1088 t
+1535 804 1607 804 Dl
+(0)1460 824 w
+1535 611 1607 611 Dl
+(10)1410 631 w
+1535 420 1607 420 Dl
+(20)1410 440 w
+1535 228 1607 228 Dl
+(30)1410 248 w
+1607 876 1607 804 Dl
+(0)1582 986 w
+1787 876 1787 804 Dl
+(5)1762 986 w
+1967 876 1967 804 Dl
+(10)1917 986 w
+2147 876 2147 804 Dl
+(15)2097 986 w
+2327 876 2327 804 Dl
+(20)2277 986 w
+2507 876 2507 804 Dl
+(25)2457 986 w
+2687 876 2687 804 Dl
+(30)2637 986 w
+2867 876 2867 804 Dl
+(35)2817 986 w
+3047 876 3047 804 Dl
+(40)2997 986 w
+1643 750 1607 594 Dl
+1679 548 1643 751 Dl
+1715 682 1679 548 Dl
+1751 645 1715 683 Dl
+1787 702 1751 643 Dl
+1823 749 1787 703 Dl
+1859 706 1823 750 Dl
+1895 753 1859 705 Dl
+1931 782 1895 753 Dl
+1967 778 1931 783 Dl
+2003 787 1967 777 Dl
+2039 779 2003 788 Dl
+2075 779 2039 778 Dl
+2111 737 2075 780 Dl
+2147 734 2111 737 Dl
+2183 734 2147 734 Dl
+2219 752 2183 734 Dl
+2255 783 2219 752 Dl
+2291 764 2255 784 Dl
+2327 783 2291 763 Dl
+2363 792 2327 783 Dl
+2399 794 2363 793 Dl
+2435 784 2399 794 Dl
+2471 729 2435 784 Dl
+2507 736 2471 729 Dl
+2543 803 2507 736 Dl
+2579 804 2543 804 Dl
+2615 739 2579 804 Dl
+2651 706 2615 738 Dl
+2687 799 2651 706 Dl
+2723 784 2687 799 Dl
+2759 803 2723 785 Dl
+2795 804 2759 804 Dl
+2831 804 2795 804 Dl
+2867 804 2831 804 Dl
+2903 804 2867 804 Dl
+2939 804 2903 804 Dl
+2975 804 2939 804 Dl
+3011 804 2975 804 Dl
+3407 228 3407 804 Dl
+4847 228 3407 228 Dl
+4847 804 4847 228 Dl
+3407 804 4847 804 Dl
+(write density)1 519 1 3868 199 t
+(register address)1 623 1 3816 1088 t
+3335 804 3407 804 Dl
+(0)3260 824 w
+3335 611 3407 611 Dl
+(10)3210 631 w
+3335 420 3407 420 Dl
+(20)3210 440 w
+3335 228 3407 228 Dl
+(30)3210 248 w
+3407 876 3407 804 Dl
+(0)3382 986 w
+3587 876 3587 804 Dl
+(5)3562 986 w
+3767 876 3767 804 Dl
+(10)3717 986 w
+3947 876 3947 804 Dl
+(15)3897 986 w
+4127 876 4127 804 Dl
+(20)4077 986 w
+4307 876 4307 804 Dl
+(25)4257 986 w
+4487 876 4487 804 Dl
+(30)4437 986 w
+4667 876 4667 804 Dl
+(35)4617 986 w
+4847 876 4847 804 Dl
+(40)4797 986 w
+3443 697 3407 804 Dl
+3479 603 3443 696 Dl
+3515 637 3479 603 Dl
+3551 619 3515 637 Dl
+3587 737 3551 619 Dl
+3623 738 3587 738 Dl
+3659 654 3623 739 Dl
+3695 738 3659 653 Dl
+3731 767 3695 739 Dl
+3767 762 3731 767 Dl
+3803 764 3767 762 Dl
+3839 767 3803 763 Dl
+3875 766 3839 768 Dl
+3911 678 3875 766 Dl
+3947 675 3911 678 Dl
+3983 738 3947 673 Dl
+4019 775 3983 739 Dl
+4055 787 4019 775 Dl
+4091 785 4055 788 Dl
+4127 799 4091 784 Dl
+4163 801 4127 799 Dl
+4199 802 4163 802 Dl
+4235 798 4199 802 Dl
+4271 669 4235 798 Dl
+4307 683 4271 668 Dl
+4343 803 4307 684 Dl
+4379 804 4343 804 Dl
+4415 804 4379 804 Dl
+4451 776 4415 804 Dl
+4487 798 4451 775 Dl
+4523 765 4487 799 Dl
+4559 803 4523 764 Dl
+4595 804 4559 804 Dl
+4631 804 4595 804 Dl
+4667 804 4631 804 Dl
+4703 804 4667 804 Dl
+4739 804 4703 804 Dl
+4775 804 4739 804 Dl
+4811 804 4775 804 Dl
+1607 1308 1607 1884 Dl
+3047 1308 1607 1308 Dl
+3047 1884 3047 1308 Dl
+1607 1884 3047 1884 Dl
+(access-use density)1 734 1 1960 1279 t
+10 B f
+(compress)857 1436 w
+10 R f
+(percent)910 1556 w
+(register)907 1676 w
+(accesses)888 1796 w
+(register address)1 623 1 2016 2168 t
+1535 1884 1607 1884 Dl
+(0)1460 1904 w
+1535 1691 1607 1691 Dl
+(10)1410 1711 w
+1535 1500 1607 1500 Dl
+(20)1410 1520 w
+1535 1308 1607 1308 Dl
+(30)1410 1328 w
+1607 1956 1607 1884 Dl
+(0)1582 2066 w
+1787 1956 1787 1884 Dl
+(5)1762 2066 w
+1967 1956 1967 1884 Dl
+(10)1917 2066 w
+2147 1956 2147 1884 Dl
+(15)2097 2066 w
+2327 1956 2327 1884 Dl
+(20)2277 2066 w
+2507 1956 2507 1884 Dl
+(25)2457 2066 w
+2687 1956 2687 1884 Dl
+(30)2637 2066 w
+2867 1956 2867 1884 Dl
+(35)2817 2066 w
+3047 1956 3047 1884 Dl
+(40)2997 2066 w
+1643 1833 1607 1571 Dl
+1679 1789 1643 1834 Dl
+1715 1770 1679 1788 Dl
+1751 1758 1715 1770 Dl
+1787 1768 1751 1758 Dl
+1823 1811 1787 1768 Dl
+1859 1860 1823 1812 Dl
+1895 1860 1859 1860 Dl
+1931 1848 1895 1861 Dl
+1967 1861 1931 1848 Dl
+2003 1859 1967 1861 Dl
+2039 1851 2003 1859 Dl
+2075 1856 2039 1850 Dl
+2111 1825 2075 1857 Dl
+2147 1815 2111 1824 Dl
+2183 1796 2147 1816 Dl
+2219 1843 2183 1794 Dl
+2255 1860 2219 1844 Dl
+2291 1860 2255 1860 Dl
+2327 1867 2291 1860 Dl
+2363 1878 2327 1868 Dl
+2399 1881 2363 1879 Dl
+2435 1881 2399 1881 Dl
+2471 1812 2435 1881 Dl
+2507 1852 2471 1812 Dl
+2543 1883 2507 1853 Dl
+2579 1884 2543 1884 Dl
+2615 1707 2579 1884 Dl
+2651 1826 2615 1706 Dl
+2687 1881 2651 1827 Dl
+2723 1851 2687 1881 Dl
+2759 1883 2723 1850 Dl
+2795 1884 2759 1884 Dl
+2831 1884 2795 1884 Dl
+2867 1884 2831 1884 Dl
+2903 1884 2867 1884 Dl
+2939 1884 2903 1884 Dl
+2975 1884 2939 1884 Dl
+3011 1731 2975 1884 Dl
+3407 1308 3407 1884 Dl
+4847 1308 3407 1308 Dl
+4847 1884 4847 1308 Dl
+3407 1884 4847 1884 Dl
+(write density)1 519 1 3868 1279 t
+(register address)1 623 1 3816 2168 t
+3335 1884 3407 1884 Dl
+(0)3260 1904 w
+3335 1691 3407 1691 Dl
+(10)3210 1711 w
+3335 1500 3407 1500 Dl
+(20)3210 1520 w
+3335 1308 3407 1308 Dl
+(30)3210 1328 w
+3407 1956 3407 1884 Dl
+(0)3382 2066 w
+3587 1956 3587 1884 Dl
+(5)3562 2066 w
+3767 1956 3767 1884 Dl
+(10)3717 2066 w
+3947 1956 3947 1884 Dl
+(15)3897 2066 w
+4127 1956 4127 1884 Dl
+(20)4077 2066 w
+4307 1956 4307 1884 Dl
+(25)4257 2066 w
+4487 1956 4487 1884 Dl
+(30)4437 2066 w
+4667 1956 4667 1884 Dl
+(35)4617 2066 w
+4847 1956 4847 1884 Dl
+(40)4797 2066 w
+3443 1778 3407 1884 Dl
+3479 1779 3443 1777 Dl
+3515 1770 3479 1780 Dl
+3551 1732 3515 1770 Dl
+3587 1765 3551 1732 Dl
+3623 1841 3587 1764 Dl
+3659 1829 3623 1842 Dl
+3695 1828 3659 1827 Dl
+3731 1820 3695 1829 Dl
+3767 1840 3731 1820 Dl
+3803 1827 3767 1840 Dl
+3839 1818 3803 1827 Dl
+3875 1829 3839 1817 Dl
+3911 1782 3875 1830 Dl
+3947 1722 3911 1781 Dl
+3983 1812 3947 1722 Dl
+4019 1853 3983 1812 Dl
+4055 1862 4019 1855 Dl
+4091 1879 4055 1863 Dl
+4127 1883 4091 1879 Dl
+4163 1879 4127 1884 Dl
+4199 1878 4163 1878 Dl
+4235 1878 4199 1878 Dl
+4271 1752 4235 1878 Dl
+4307 1791 4271 1752 Dl
+4343 1883 4307 1792 Dl
+4379 1884 4343 1884 Dl
+4415 1884 4379 1884 Dl
+4451 1865 4415 1884 Dl
+4487 1883 4451 1864 Dl
+4523 1813 4487 1884 Dl
+4559 1883 4523 1812 Dl
+4595 1884 4559 1884 Dl
+4631 1884 4595 1884 Dl
+4667 1884 4631 1884 Dl
+4703 1884 4667 1884 Dl
+4739 1884 4703 1884 Dl
+4775 1884 4739 1884 Dl
+4811 1715 4775 1884 Dl
+1607 2388 1607 2964 Dl
+3047 2388 1607 2388 Dl
+3047 2964 3047 2388 Dl
+1607 2964 3047 2964 Dl
+(read density)1 485 1 2085 2359 t
+10 B f
+(crafty)976 2516 w
+10 R f
+(percent)957 2636 w
+(register)954 2756 w
+(reads)998 2876 w
+(register address)1 623 1 2016 3248 t
+1535 2964 1607 2964 Dl
+(0)1460 2984 w
+1535 2771 1607 2771 Dl
+(10)1410 2791 w
+1535 2580 1607 2580 Dl
+(20)1410 2600 w
+1535 2388 1607 2388 Dl
+(30)1410 2408 w
+1607 3036 1607 2964 Dl
+(0)1582 3146 w
+1787 3036 1787 2964 Dl
+(5)1762 3146 w
+1967 3036 1967 2964 Dl
+(10)1917 3146 w
+2147 3036 2147 2964 Dl
+(15)2097 3146 w
+2327 3036 2327 2964 Dl
+(20)2277 3146 w
+2507 3036 2507 2964 Dl
+(25)2457 3146 w
+2687 3036 2687 2964 Dl
+(30)2637 3146 w
+2867 3036 2867 2964 Dl
+(35)2817 3146 w
+3047 3036 3047 2964 Dl
+(40)2997 3146 w
+1643 2923 1607 2653 Dl
+1679 2878 1643 2924 Dl
+1715 2921 1679 2878 Dl
+1751 2904 1715 2922 Dl
+1787 2922 1751 2904 Dl
+1823 2938 1787 2922 Dl
+1859 2925 1823 2938 Dl
+1895 2925 1859 2925 Dl
+1931 2906 1895 2924 Dl
+1967 2905 1931 2905 Dl
+2003 2908 1967 2905 Dl
+2039 2886 2003 2909 Dl
+2075 2904 2039 2886 Dl
+2111 2893 2075 2904 Dl
+2147 2897 2111 2892 Dl
+2183 2874 2147 2897 Dl
+2219 2933 2183 2874 Dl
+2255 2935 2219 2933 Dl
+2291 2947 2255 2935 Dl
+2327 2948 2291 2948 Dl
+2363 2939 2327 2948 Dl
+2399 2933 2363 2938 Dl
+2435 2957 2399 2934 Dl
+2471 2895 2435 2957 Dl
+2507 2898 2471 2894 Dl
+2543 2963 2507 2898 Dl
+2579 2964 2543 2964 Dl
+2615 2944 2579 2964 Dl
+2651 2608 2615 2943 Dl
+2687 2957 2651 2607 Dl
+2723 2936 2687 2958 Dl
+2759 2963 2723 2935 Dl
+2795 2964 2759 2964 Dl
+2831 2964 2795 2964 Dl
+2867 2964 2831 2964 Dl
+2903 2964 2867 2964 Dl
+2939 2964 2903 2964 Dl
+2975 2964 2939 2964 Dl
+3011 2962 2975 2964 Dl
+3407 2388 3407 2964 Dl
+4847 2388 3407 2388 Dl
+4847 2964 4847 2388 Dl
+3407 2964 4847 2964 Dl
+(write density)1 519 1 3868 2359 t
+(register address)1 623 1 3816 3248 t
+3335 2964 3407 2964 Dl
+(0)3260 2984 w
+3335 2771 3407 2771 Dl
+(10)3210 2791 w
+3335 2580 3407 2580 Dl
+(20)3210 2600 w
+3335 2388 3407 2388 Dl
+(30)3210 2408 w
+3407 3036 3407 2964 Dl
+(0)3382 3146 w
+3587 3036 3587 2964 Dl
+(5)3562 3146 w
+3767 3036 3767 2964 Dl
+(10)3717 3146 w
+3947 3036 3947 2964 Dl
+(15)3897 3146 w
+4127 3036 4127 2964 Dl
+(20)4077 3146 w
+4307 3036 4307 2964 Dl
+(25)4257 3146 w
+4487 3036 4487 2964 Dl
+(30)4437 3146 w
+4667 3036 4667 2964 Dl
+(35)4617 3146 w
+4847 3036 4847 2964 Dl
+(40)4797 3146 w
+3443 2877 3407 2964 Dl
+3479 2826 3443 2876 Dl
+3515 2897 3479 2825 Dl
+3551 2900 3515 2898 Dl
+3587 2913 3551 2900 Dl
+3623 2930 3587 2914 Dl
+3659 2935 3623 2931 Dl
+3695 2900 3659 2935 Dl
+3731 2876 3695 2900 Dl
+3767 2854 3731 2876 Dl
+3803 2854 3767 2853 Dl
+3839 2839 3803 2854 Dl
+3875 2846 3839 2839 Dl
+3911 2826 3875 2846 Dl
+3947 2838 3911 2826 Dl
+3983 2928 3947 2839 Dl
+4019 2932 3983 2928 Dl
+4055 2943 4019 2933 Dl
+4091 2945 4055 2943 Dl
+4127 2947 4091 2945 Dl
+4163 2936 4127 2948 Dl
+4199 2953 4163 2935 Dl
+4235 2953 4199 2953 Dl
+4271 2829 4235 2953 Dl
+4307 2836 4271 2830 Dl
+4343 2963 4307 2836 Dl
+4379 2964 4343 2964 Dl
+4415 2964 4379 2964 Dl
+4451 2893 4415 2964 Dl
+4487 2955 4451 2892 Dl
+4523 2905 4487 2956 Dl
+4559 2963 4523 2904 Dl
+4595 2964 4559 2964 Dl
+4631 2964 4595 2964 Dl
+4667 2964 4631 2964 Dl
+4703 2964 4667 2964 Dl
+4739 2964 4703 2964 Dl
+4775 2964 4739 2964 Dl
+4811 2954 4775 2964 Dl
+1607 3468 1607 4044 Dl
+3047 3468 1607 3468 Dl
+3047 4044 3047 3468 Dl
+1607 4044 3047 4044 Dl
+(read density)1 485 1 2085 3439 t
+10 B f
+(gcc)1106 3596 w
+10 R f
+(percent)1029 3716 w
+(register)1026 3836 w
+(reads)1070 3956 w
+(register address)1 623 1 2016 4328 t
+1535 4044 1607 4044 Dl
+(0)1460 4064 w
+1535 3851 1607 3851 Dl
+(10)1410 3871 w
+1535 3660 1607 3660 Dl
+(20)1410 3680 w
+1535 3468 1607 3468 Dl
+(30)1410 3488 w
+1607 4116 1607 4044 Dl
+(0)1582 4226 w
+1787 4116 1787 4044 Dl
+(5)1762 4226 w
+1967 4116 1967 4044 Dl
+(10)1917 4226 w
+2147 4116 2147 4044 Dl
+(15)2097 4226 w
+2327 4116 2327 4044 Dl
+(20)2277 4226 w
+2507 4116 2507 4044 Dl
+(25)2457 4226 w
+2687 4116 2687 4044 Dl
+(30)2637 4226 w
+2867 4116 2867 4044 Dl
+(35)2817 4226 w
+3047 4116 3047 4044 Dl
+(40)2997 4226 w
+1643 3968 1607 3637 Dl
+1679 3929 1643 3969 Dl
+1715 3977 1679 3928 Dl
+1751 3854 1715 3978 Dl
+1787 3925 1751 3853 Dl
+1823 4006 1787 3926 Dl
+1859 3998 1823 4007 Dl
+1895 4020 1859 3997 Dl
+1931 4022 1895 4020 Dl
+1967 4011 1931 4023 Dl
+2003 4018 1967 4011 Dl
+2039 4018 2003 4019 Dl
+2075 4019 2039 4018 Dl
+2111 3997 2075 4019 Dl
+2147 4004 2111 3997 Dl
+2183 3999 2147 4005 Dl
+2219 4000 2183 3998 Dl
+2255 4013 2219 4001 Dl
+2291 4018 2255 4014 Dl
+2327 4014 2291 4018 Dl
+2363 4016 2327 4014 Dl
+2399 4017 2363 4017 Dl
+2435 4024 2399 4017 Dl
+2471 4004 2435 4025 Dl
+2507 4010 2471 4003 Dl
+2543 4043 2507 4011 Dl
+2579 4044 2543 4044 Dl
+2615 3998 2579 4044 Dl
+2651 3825 2615 3997 Dl
+2687 4020 2651 3825 Dl
+2723 4017 2687 4021 Dl
+2759 4043 2723 4017 Dl
+2795 4044 2759 4044 Dl
+2831 4044 2795 4044 Dl
+2867 4044 2831 4044 Dl
+2903 4044 2867 4044 Dl
+2939 4044 2903 4044 Dl
+2975 4044 2939 4044 Dl
+3011 4042 2975 4044 Dl
+3407 3468 3407 4044 Dl
+4847 3468 3407 3468 Dl
+4847 4044 4847 3468 Dl
+3407 4044 4847 4044 Dl
+(write density)1 519 1 3868 3439 t
+(register address)1 623 1 3816 4328 t
+3335 4044 3407 4044 Dl
+(0)3260 4064 w
+3335 3851 3407 3851 Dl
+(10)3210 3871 w
+3335 3660 3407 3660 Dl
+(20)3210 3680 w
+3335 3468 3407 3468 Dl
+(30)3210 3488 w
+3407 4116 3407 4044 Dl
+(0)3382 4226 w
+3587 4116 3587 4044 Dl
+(5)3562 4226 w
+3767 4116 3767 4044 Dl
+(10)3717 4226 w
+3947 4116 3947 4044 Dl
+(15)3897 4226 w
+4127 4116 4127 4044 Dl
+(20)4077 4226 w
+4307 4116 4307 4044 Dl
+(25)4257 4226 w
+4487 4116 4487 4044 Dl
+(30)4437 4226 w
+4667 4116 4667 4044 Dl
+(35)4617 4226 w
+4847 4116 4847 4044 Dl
+(40)4797 4226 w
+3443 3844 3407 4044 Dl
+3479 3888 3443 3843 Dl
+3515 3954 3479 3888 Dl
+3551 3890 3515 3954 Dl
+3587 3980 3551 3889 Dl
+3623 3995 3587 3980 Dl
+3659 4006 3623 3996 Dl
+3695 4001 3659 4006 Dl
+3731 4005 3695 4001 Dl
+3767 3974 3731 4005 Dl
+3803 3973 3767 3973 Dl
+3839 3986 3803 3974 Dl
+3875 3986 3839 3987 Dl
+3911 3939 3875 3985 Dl
+3947 3952 3911 3939 Dl
+3983 3988 3947 3953 Dl
+4019 3986 3983 3988 Dl
+4055 3997 4019 3985 Dl
+4091 4008 4055 3997 Dl
+4127 4005 4091 4008 Dl
+4163 4005 4127 4005 Dl
+4199 4013 4163 4004 Dl
+4235 4018 4199 4013 Dl
+4271 3951 4235 4018 Dl
+4307 3969 4271 3951 Dl
+4343 4043 4307 3969 Dl
+4379 4044 4343 4044 Dl
+4415 4044 4379 4044 Dl
+4451 3987 4415 4044 Dl
+4487 4034 4451 3986 Dl
+4523 3977 4487 4034 Dl
+4559 4043 4523 3977 Dl
+4595 4044 4559 4044 Dl
+4631 4044 4595 4044 Dl
+4667 4044 4631 4044 Dl
+4703 4044 4667 4044 Dl
+4739 4044 4703 4044 Dl
+4775 4044 4739 4044 Dl
+4811 4035 4775 4044 Dl
+1607 4548 1607 5124 Dl
+3047 4548 1607 4548 Dl
+3047 5124 3047 4548 Dl
+1607 5124 3047 5124 Dl
+(read density)1 485 1 2085 4519 t
+10 B f
+(go)1150 4676 w
+10 R f
+(percent)1054 4796 w
+(register)1051 4916 w
+(reads)1095 5036 w
+(register address)1 623 1 2016 5408 t
+1535 5124 1607 5124 Dl
+(0)1460 5144 w
+1535 4931 1607 4931 Dl
+(10)1410 4951 w
+1535 4740 1607 4740 Dl
+(20)1410 4760 w
+1535 4548 1607 4548 Dl
+(30)1410 4568 w
+1607 5196 1607 5124 Dl
+(0)1582 5306 w
+1787 5196 1787 5124 Dl
+(5)1762 5306 w
+1967 5196 1967 5124 Dl
+(10)1917 5306 w
+2147 5196 2147 5124 Dl
+(15)2097 5306 w
+2327 5196 2327 5124 Dl
+(20)2277 5306 w
+2507 5196 2507 5124 Dl
+(25)2457 5306 w
+2687 5196 2687 5124 Dl
+(30)2637 5306 w
+2867 5196 2867 5124 Dl
+(35)2817 5306 w
+3047 5196 3047 5124 Dl
+(40)2997 5306 w
+1643 5048 1607 4836 Dl
+1679 5016 1643 5048 Dl
+1715 5021 1679 5016 Dl
+1751 5040 1715 5021 Dl
+1787 5054 1751 5040 Dl
+1823 5057 1787 5055 Dl
+1859 5069 1823 5058 Dl
+1895 5054 1859 5069 Dl
+1931 5064 1895 5054 Dl
+1967 5081 1931 5065 Dl
+2003 5075 1967 5082 Dl
+2039 5076 2003 5075 Dl
+2075 5086 2039 5076 Dl
+2111 5052 2075 5086 Dl
+2147 5046 2111 5052 Dl
+2183 5081 2147 5045 Dl
+2219 5087 2183 5082 Dl
+2255 5094 2219 5087 Dl
+2291 5100 2255 5095 Dl
+2327 5105 2291 5100 Dl
+2363 5104 2327 5106 Dl
+2399 5104 2363 5103 Dl
+2435 5103 2399 5105 Dl
+2471 5055 2435 5102 Dl
+2507 5057 2471 5055 Dl
+2543 5123 2507 5057 Dl
+2579 5124 2543 5124 Dl
+2615 5088 2579 5124 Dl
+2651 4943 2615 5088 Dl
+2687 5107 2651 4942 Dl
+2723 5083 2687 5108 Dl
+2759 5123 2723 5082 Dl
+2795 5124 2759 5124 Dl
+2831 5124 2795 5124 Dl
+2867 5124 2831 5124 Dl
+2903 5124 2867 5124 Dl
+2939 5124 2903 5124 Dl
+2975 5124 2939 5124 Dl
+3011 5123 2975 5124 Dl
+3407 4548 3407 5124 Dl
+4847 4548 3407 4548 Dl
+4847 5124 4847 4548 Dl
+3407 5124 4847 5124 Dl
+(write density)1 519 1 3868 4519 t
+(register address)1 623 1 3816 5408 t
+3335 5124 3407 5124 Dl
+(0)3260 5144 w
+3335 4931 3407 4931 Dl
+(10)3210 4951 w
+3335 4740 3407 4740 Dl
+(20)3210 4760 w
+3335 4548 3407 4548 Dl
+(30)3210 4568 w
+3407 5196 3407 5124 Dl
+(0)3382 5306 w
+3587 5196 3587 5124 Dl
+(5)3562 5306 w
+3767 5196 3767 5124 Dl
+(10)3717 5306 w
+3947 5196 3947 5124 Dl
+(15)3897 5306 w
+4127 5196 4127 5124 Dl
+(20)4077 5306 w
+4307 5196 4307 5124 Dl
+(25)4257 5306 w
+4487 5196 4487 5124 Dl
+(30)4437 5306 w
+4667 5196 4667 5124 Dl
+(35)4617 5306 w
+4847 5196 4847 5124 Dl
+(40)4797 5306 w
+3443 4978 3407 5124 Dl
+3479 4979 3443 4977 Dl
+3515 5008 3479 4980 Dl
+3551 5044 3515 5008 Dl
+3587 5050 3551 5045 Dl
+3623 5058 3587 5050 Dl
+3659 5083 3623 5059 Dl
+3695 5042 3659 5083 Dl
+3731 5053 3695 5041 Dl
+3767 5062 3731 5054 Dl
+3803 5052 3767 5062 Dl
+3839 5062 3803 5052 Dl
+3875 5066 3839 5064 Dl
+3911 4985 3875 5066 Dl
+3947 4959 3911 4985 Dl
+3983 5083 3947 4959 Dl
+4019 5085 3983 5083 Dl
+4055 5095 4019 5085 Dl
+4091 5102 4055 5096 Dl
+4127 5103 4091 5103 Dl
+4163 5104 4127 5104 Dl
+4199 5105 4163 5103 Dl
+4235 5105 4199 5105 Dl
+4271 4990 4235 5106 Dl
+4307 4997 4271 4990 Dl
+4343 5124 4307 4998 Dl
+4379 5124 4343 5124 Dl
+4415 5124 4379 5124 Dl
+4451 5106 4415 5124 Dl
+4487 5107 4451 5105 Dl
+4523 5075 4487 5107 Dl
+4559 5123 4523 5075 Dl
+4595 5124 4559 5124 Dl
+4631 5124 4595 5124 Dl
+4667 5124 4631 5124 Dl
+4703 5124 4667 5124 Dl
+4739 5124 4703 5124 Dl
+4775 5124 4739 5124 Dl
+4811 5120 4775 5124 Dl
+cleartomark
+showpage
+saveobj restore
+end
+%%PageBoundingBox: 75 235 500 792
+%%EndPage: 1 1
+%%Trailer
+DpostDict begin
+done
+end
+%%Pages: 1
+%%DocumentFonts: Times-Bold Times-Roman
+%%BoundingBox: 75 235 500 792

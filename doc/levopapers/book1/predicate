@@ -1,0 +1,1463 @@
+% Resource Flow Microarchitectures
+% "Speculative Execution in High Performance Computer Architectures"
+% chapter 16
+%
+%
+\documentclass{book}
+\usepackage[cip,ChapterTOCs]{kaeliyew}
+%\usepackage{floatflt}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{latexsym}
+\usepackage{theorem}
+\usepackage{graphicx}
+%\usepackage{srcltx}
+\usepackage{subfigure}
+\usepackage{graphics}
+\usepackage{epsfig}
+%\usepackage{url}
+\usepackage{makeidx}
+\usepackage{showidx}
+%
+\usepackage{multicol}
+%
+\makeatletter
+\newbox\tempbox
+\newdimen\nomenwidth
+\newenvironment{symbollist}[1]{%
+\addvspace{12pt}
+			\setbox\tempbox\hbox{#1\hskip1em}%
+   \global\nomenwidth\wd\tempbox
+   %\section*{Symbol Description}
+\noindent{\SectionHeadFont Symbol Description}\vskip6pt
+\begin{multicols}{2}}{%
+		\end{multicols}\par\addvspace{12pt}}
+\def\symbolentry#1#2{\par\noindent\@hangfrom{\hbox to \nomenwidth{#1\hss}}#2\par}
+\makeatother
+%
+%
+%
+%
+%
+%
+\begin{document}
+\tableofcontents
+\listoftables
+\listoffigures
+\part{This is a Part}
+%
+\title{Speculative Execution in High Performance Computer Architectures}
+%
+%
+%
+%
+%
+\chapterauthor{David A. Morano}{Northeastern University}
+\chapter{Resource Flow Microarchitectures}
+%
+%
+%
+%
+\section{Introduction}
+%
+Speculative execution has proven to be enormously valuable for
+increasing execution-time performance in recent and current
+processors.  The use of speculative execution provides a powerful
+latency-hiding mechanism for those microarchitectural operations that
+would otherwise cause unacceptable stalls within the processor, such as
+waiting for conditional branches to resolve or for memory reads to be
+fulfilled from the memory hierarchy.  
+Further, in order to extract ever larger amounts of instruction
+level parallelism from existing programs (generally quite sequential
+in nature) over many basic blocks, much more speculative 
+execution is usually required.
+However, the complexity of
+implementing speculative execution is substantial and has been a
+limiting factor in its evolution to more aggressive forms beyond
+control-flow speculation.
+
+Most existing implementations of speculative execution focus on
+conditional branch prediction and the subsequent speculative execution
+of the instructions following those branches.  Generally, only one path
+following a branch is followed although multiple successive branches
+can be predicted.  Speculative instruction results are stored in
+microarchitectural structures that hold those results as being
+tentative until they can be determined to constitute the committed
+state of the program being executed.  If a predicted branch is
+determined (resolved) to have been mis-predicted, any speculatively
+executed instructions need to be squashed.  This generally entails the
+abandonment of any speculatively generated results as well as the
+purging of all currently executing speculative instructions from the
+machine.  The management and sequencing of existing speculative
+execution is already moderately complicated.  This complexity has
+limited or discouraged the use of more advanced speculation techniques
+such as value prediction, multipath execution, and the retention of
+speculative instructions that may still be correct after a
+misprediction.  Further, as clock speeds get higher and pipeline depths
+get larger the performance penalty of squashing speculative
+instructions and any associated correct results gets undesirably larger
+also.
+
+We present a microarchitectural approach towards handling
+speculative execution in a more general and uniform way.  Our approach
+attempts to generalize the management and operational issues associated
+with control-flow prediction, value prediction, and the possible
+re-execution of those instructions that have already been fetched and
+dispatched.  Moreover, in order to accommodate the much larger number
+of speculatively executed instructions needed in order to extract more
+instruction level parallelism from the program, a strategy for scaling a
+microarchitecture in terms of its component resources needs to also be
+formulated.  Our microarchitectural approach also lends itself towards
+resource scalability through manageable spatial distribution of machine
+components.  This last goal is likewise realized through the rather
+general and uniform way in which instructions and operands are
+handled.
+
+Our microarchitectural approach is termed \textit{Resouce Flow
+Computing} and centralizes around the idea that speculative execution
+is not constrained by either the control flow graph or the data flow
+graph of the program, but rather by the available resources within a
+representative microarchitecture.  Further, we elevate the importance
+of instruction operands (whether they be control or data) to almost the
+level of an instruction itself.  Operands are enhanced with additional
+state that allows for a more unform management of their flow through
+the machine.  This philosophy of execution allows for a large number of
+simultaneous instruction executions and re-executions as can be
+sustained on the available machine resources since executions are
+allowed to proceed with any available feasible source operands whether
+predicted or not.  The idea is to first speculatively execute any
+pending instruction whenever any suitable machine resource is available
+and then to perform successive re-executions as needed as control and
+data dependency relationships are determined dynamically during
+execution.
+
+We present the basic concepts employed in existing Resource
+Flow microarchitectures as well as the
+various structures needed to manage this aggressive form
+of speculative execution in a generalized way.  
+We also describe how a
+variety of aggressive speculative schemes and ideas fit into this new
+microarchitectural approach more easily than if they were considered
+and implemented without our generalized instruction and operand
+management.
+Finally, we briefly present two representative sample microarchitectures
+based on the Resource Flow concepts.
+The first of these is oriented towards processors that are
+roughly the size of present or near-term processors,
+such as the Pentium-4. ~\cite{hinton01pentium}
+The second microarchitecture presented illustrates
+where the Resource Flow ideas could lead with much larger
+machine sizes and component resources.
+As will be seen, the physical scalability of this microarchitecture
+is entirely facilitated by the basic Resource Flow design concepts.
+%
+%
+\section{Motivation for More Parallelism}
+%
+Although many high performance applications today
+can be parallelized at the source code level 
+and executed on symetric multiprocessor or clustered systems,
+there are and will continue
+to be requirements for achieving the highest performance
+on single threaded program codes.
+We attempt to target this application problem space
+through the extraction of instruction level parallelism (ILP).
+However, 
+high execution performance through ILP
+extraction has not generally been achieved even though
+large amounts of ILP are present in integer sequential programs
+codes.
+Several studies into the limits of instruction level 
+parallelism have shown that there is 
+a significant amount of parallelism within
+typical sequentially oriented single-threaded programs
+(e.g., SpecInt-2000).  
+The work of researchers including 
+Lam and Wilson~\cite{Lam92},
+Uht and Sindagi~\cite{Uht95},
+Gonzalez and Gonzalez~\cite{Gon97}
+have shown that there exists a great amount of instruction level
+parallelism that is not being exploited by any existing
+computer designs.
+
+A basic challenge 
+is to find program parallelism and then allow execution to occur
+speculatively, in parallel, and out of order over 
+a large number of instructions.
+Generally, this is achieved by introducing multiple
+execution units into the microarchitecture where each unit
+can operate as independently as possible and in parallel, thus
+achieving increased execution instructions per clock (IPC).
+It is also usually very desirable to support legacy instruction
+set architectures (ISAs) when pursuing high IPC. 
+For this reason, we want to explore a
+microarchitecture that is suitable for implementing any ISA.
+
+Microarchitectures that have employed the
+use of multiple execution units are the Multiscalar-like
+processors~\cite{Sohi95,sundararaman97multiscalar},
+the SuperThreaded processor model~\cite{tsai96superthread},
+and
+the Parallel Execution Window processor model~\cite{kemp96pew}.
+Other microarchitecture proposals such as the MultiCluster machine
+model by 
+Farkas et al.~\cite{farkas97multicluster} are also in this category.
+In particular, the Multiscalar processors have
+realized substantial IPC speedups over conventional superscalar
+processors, but they rely on compiler participation in their
+approach.
+
+Another attempt at realizing high IPC was done by
+Lipasti and Shen on their Superspeculative
+architecture~\cite{Lip97}.  They achieved an IPC of
+about 7 with conventional hardware assumptions but
+also by using value prediction.
+Nagarajan proposed a {\em Grid Architecture} of ALUs
+connected by an operand network~\cite{Nag01}.  
+This has some similarities to our work.
+However, unlike our work, their microarchitecture
+relies on the coordinated use of the compiler along with
+a new ISA to obtain higher IPCs.
+Also, Morano and Uht~\cite{morano02high,uht02realizing}
+have introduced a microarchitecture for extraction of
+high ILP that features both
+a large number of parallel execution units and a more flexible
+mechanism for managing concurrent control and data dependencies.
+Their microarchitecture can also be applied to any existing ISA.
+
+Our goal is to combine many of the design features of
+proposed speculative microarchitectures into a more 
+generalized form.
+These include: control-flow prediction, value prediction,
+dynamic microarchitectural instruction predication, dynamic
+operand dependency determination, and
+multipath execution.
+Another goal it to try to facilitate a substantially
+increased sized processer along with many more 
+resources for large-scale simultaneous speculative
+instruction execution.
+This second goal is illustrated with our discussion of
+the second representative microarchitecture below, which
+shows how large physical scalability or a processor can
+possibly be achieved.
+%
+%
+\section{Resource Flow Basic Concepts}
+%
+In the following sections we present several of the
+basic concepts embodied in the Resource Flow execution model.
+One primary element of the execution process is the
+dynamic determination of the control and data dependencies
+among the instructions.
+The means and implications of our dynamic dependency 
+scheme is presented.
+Another key idea is the establishment of a machine component
+used 
+to hold an instruction during its entire life-cycle after it
+has been dispatched for possible execution.
+This compoent will generalize how instructions are handled
+during both initial execution and subsequent executions as well
+as eliminate the need for any additional re-order components.
+We term this compoent an \textit{active station}.
+Additionally, some details about how operands are passed 
+from one instruction to
+another is discussed.
+%
+
+
+For predicate operands, two types need to be distinguished.
+One type is a part of the ISA of the machine and
+is therefore visible to programmers.
+A predicate operand of this type would be
+used in an ISA such as the iA-64, for example~\cite{iA64}.
+For our purposes, this sort of explicit predicate operand
+is identical to a register operand (discussed above) and
+is simply treated as such.
+Not as clear is the use of predicate operands
+that are not a part of the ISA and are therefore not visible
+to the programmer.
+This type of predication in entirely maintained by the microarchitecture
+itself, but still essentially forms an additional input operand
+for each instruction.
+This single bit operand is what is used to
+predicate the instruction's committed execution, the same as
+if it was explicit in the ISA.
+This input predicate thus enables or disables its associated
+instruction from producing its own new output operand.
+It should be noted that, at any time, any instruction can
+always still be allowed to execute.  The only issue is
+whether the output result can be consumed.
+For microarchitectures that support these microarchitecture-only
+predicate operands, they too can be time tagged, thus allowing
+them the same degree of out-of-order flexibility similar
+to register or memory operands.
+Finally, note that even ISAs that define predicate registers
+can also independently employ predication of instructions within the
+microarchitecture.
+%
+
+
+%
+\subsubsection{Dynamic Dependency Ordering}
+%
+Rather then calculating instruction dependencies at instruction
+dispatch or issue time, we allow instructions to begin
+the process of executing (possibly with incorrect operands)
+while also providing for instructions to
+dynamically determine their own correct
+operand dependencies.
+The mechanism used for this dynamic determination of
+operand dependencies is to provide a special tag that
+conveys the program-ordered relative time of the origin of
+each operand.
+This time ordering tag is associated
+with the operational state of both instructions 
+and operands and is a small integer that will
+uniquely identify the relative position of an instruction
+or an operand in program ordered time.
+Typically, time tags take on small positive values with
+a range approximately equal to the 
+number of instructions that can be held in-flight within an
+implementation of a machine.  
+
+A time tag value of zero is associated with the
+in-flight instruction that is next ready
+to retire (the one that was dispatched the furthest in the past).
+Later dispatched instructions take on successively higher
+valued tags.
+As instructions retire, the time tag registers associated
+with all instructions and operands
+are decremented by the
+number of instructions being retired.
+Committed operands can thus be thought of as taking on
+negative valued time tags.  Negative valued tags can also have
+microarchitectural applications such as when
+when memory operands are committed but
+still need to be snooped in a store queue.
+Operands that are created by instructions that have executed
+(the outputs of the instruction) take on
+the same time tag value as its originating instruction.  
+By comparing time tag values with each other, the relative
+program-ordered time relationship is determined.
+Other variations for the assignment and management of the
+time tag values are also possible.
+%
+%
+\subsubsection{Handling Multipath Execution}
+%
+Multipath execution is a means to speculatively
+execute down more than one future path of a program simultaneously
+(see Chapter 6).
+In order to provide proper dependency ordering for
+multipath execution we introduce an additional register tag 
+(termed a \textit{path ID})
+that will be associated with both instructions and operands.
+
+Generally, a new speculative path may be formed
+after each conditional branch is encountered within
+in the instructions stream.  Execution is
+speculative for all instructions after
+the first unresolved conditional branch.
+At least two options are available for assigning time tags
+to the instructions following a conditional branch
+(on both the taken and not-taken paths). 
+%
+\begin{enumerate}
+\item 
+One option is to dynamically follow
+each output path and assign successively higher time tag values
+to succeeding instructions.
+%
+\item 
+The second option is to try to determine if the \textit{taken} outcome
+of the branch joins with the \textit{not-taken} output instruction
+stream.  If a join is determined, the instruction following
+the \textit{not-taken} output path can be assigned a time value
+one higher than the branch itself, while the first instruction
+on the \textit{taken} path would be assigned whatever value
+it would have gotten counting up from the first instruction
+on the \textit{not-taken} path.
+\end{enumerate}
+
+Note that both options may be employed simultaneously in a 
+microarchitecture.
+In either case, there may exist instructions in flight
+that possess the same value for their time tag.  
+Likewise,
+operands resulting from these instructions would also share
+the same time-tag value.
+This ambiguity is resolved through the
+introduction of the path ID.
+Through the introduction of the program-ordered time tag and the path ID tag,
+a fully unique time-ordered execution name space is now possible for
+all instructions and operands that may be in flight.
+%
+%
+\subsubsection{Names and Renaming}
+%
+For instructions, names for them can be uniquely created
+with the concatenation of the following elements:
+%
+\begin{itemize}
+\vspace{-0.10in}
+\item{a path ID}
+\vspace{-0.10in}
+\item{the time tag assigned to a dispatched instruction}
+\vspace{-0.10in}
+\end{itemize}   
+%
+For all operands, unique names consist of :
+%
+\begin{itemize}
+\vspace{-0.10in}
+\item{type of operand}
+\vspace{-0.10in}
+\item{a path ID}
+\vspace{-0.10in}
+\item{time tag}
+\vspace{-0.10in}
+\item{address}
+\vspace{-0.10in}
+\end{itemize}   
+%
+
+Generally, the type of the operand would be \textit{register},
+\textit{memory}, or \textit{predicate}.
+The address of the operand would differ
+depending on the type of the operand.
+For register operands, the address would be
+the name of the architected register.
+All ISA architected registers are typically provided a
+unique numerical address.  These would include the
+general purpose registers, any status or other non-general
+purpose registers, and any possible ISA predicate registers.
+For memory operands, the address is just the
+programmer visible architected memory address of the corresponding
+memory value.
+Finally, for predicate operands, the address
+may be absent entirely for some implementations, or
+might be some address that is used within the microarchitecture
+to further identify the particular predicate register in question.
+We have explored microarchitecture predication schemes that 
+have used both options.
+
+Through this naming scheme, all instances of an operand
+in the machine are now uniquely identified, effectively 
+providing full renaming.
+All false dependencies are now avoided.
+There is no need to limit instruction dispatch or to limit speculative
+instruction execution due to a limit on the number of non-architected
+registers available for holding temporary results.
+Since every operand has a unique name defined by a time tag, 
+all necessary ordering information is provided for.
+This information can be used 
+to eliminate the need for physical register renaming,
+register update units, or reorder buffers.
+%
+%
+\subsection{The Active Station Idea}
+%
+The Active Station provides the most significant distinction of this
+microarchitecture from most others.
+Still, our active station and its operational philosophy
+is very similar to that used by 
+Uht et al.~\cite{uht03levo}, which itself was very similar to
+their previous work~\cite{uht02realizing}.
+Our Active Stations can be thought of as being 
+reservation stations~\cite{Tom67} but
+with additional state and logic added to them that allows
+for dynamic operand dependency determination as well as
+for holding a dispatched instruction (its decoded form) 
+until it is ready to be
+retired.  This differs from conventional reservation stations
+or issue window slots in that the instruction does not free
+the station once it is dispatched to a function unit.
+Also, unlike reservation stations, but like an issue window slot,
+the instruction operand from an active station may be dispatched
+to different function units (not just one that is strictly
+associated with the reservation station).
+
+The state associated with an active station can be grouped into
+two main categories.  There is state that is relevant to
+the instruction itself, and secondly there is state that is
+related to the operands of that instruction (both source and
+destination operands).
+The state associated with the instruction itself has to do
+with the ordering of this instruction in relation to the other
+instructions that are currently in the execution window.
+The remainder of the state consists of one or more input
+source operands and one or more output destination operands.
+All operands regardless of type and whether source or destination
+occupy a similar structure within an active station, termed an
+\textit{operand block}.
+The operand blocks all have connectivity to both the
+operand request and forwarding buses as well as to the FU
+issue and result buses.
+More detail on these operand blocks and operand management
+is provided in the next section.
+
+The state that is primarily associated with the instruction itself
+consists of the following :
+%
+\begin{itemize}
+\vspace{-0.10in}
+\item{instruction address}
+\vspace{-0.10in}
+\item{instruction operation}
+\vspace{-0.10in}
+\item{execution state}
+\vspace{-0.10in}
+\item{path ID}
+\vspace{-0.10in}
+\item{time ordering tag}
+\vspace{-0.10in}
+\item{instruction predication information}
+\vspace{-0.10in}
+\end{itemize}   
+%
+The \textit{instruction operation} is derived from the decoded
+instruction and specifies the instruction class and other
+details needed for the execution of the instruction.
+This information may consist of subfields and is generally ISA
+specific.
+The \textit{instruction address} and \textit{predicate} state
+are only used when dynamic predication~\cite{morano02predication}
+is done within the
+microarchitecture.
+The \textit{path ID} value is used when dynamic multipath
+execution is done.
+The \textit{time tag} value is used to order this instruction
+with respect to all others that are currently within the execution
+window of the machine.
+The \textit{execution state} value consists of a set of
+bits that guide the execution of the instruction through
+various phases.  
+Some of this state includes :
+%
+\begin{itemize}
+\vspace{-0.10in}
+\item{in the process of acquiring source operands for first time}
+\vspace{-0.10in}
+\item{execution is needed}
+\vspace{-0.10in}
+\item{in the process of executing (waiting for result from FU)}
+\vspace{-0.10in}
+\item{at least one execution occurred}
+\vspace{-0.10in}
+\item{a result operand was requested by another active station}
+\vspace{-0.10in}
+\item{a result operand is being forwarded}
+\vspace{-0.10in}
+\end{itemize}   
+%
+In addition to guiding the operation of the active station,
+many of these state bits are used in the commitment determination
+for this active station.
+
+A simplified block diagram of our active station is shown in 
+Figure \ref{fig:issuestation}.
+%
+%
+\begin{figure}
+\centerline{\epsfig{figure=figure2.eps,width=4.0in}}
+\caption[High-level block diagram of our Issue Station.]
+{{High-level block diagram of our Issue Station.}
+The major state associated with an Issue Station is shown:
+four operand blocks (two source and two destination)
+and its four bus interfaces, grouped
+according to bus function into two major logic blocks.}
+\label{fig:issuestation}
+\end{figure}
+%
+%
+The state associated primarily with just the instruction is
+shown on the left of the block diagram while the operand blocks
+and their connectivity to the various buses is shown on the
+right.  
+In this example, a total of four operand blocks are shown, labeled:
+\textit{src1}, 
+\textit{src2}, 
+\textit{dst1}, 
+and \textit{dst2}.
+The number of source and destination operand blocks that are
+used for any given machine is ISA dependent.
+Some ISAs require up to five source operands and up to three destination
+operands (usually for handling double precision floating point 
+instructions).
+Generally, any operand in the ISA that can cause a separate
+and independent data dependency (a unique dependency name)
+requires a separate operand block for it.
+No additional operand block is needed when dynamic predication
+is performed since its state would be included as
+part of the general active station state mentioned previously.
+%
+%
+\subsection{Operand Storage}
+%
+Register and memory operands are similar enough that
+they share an identical operand block within the active station.
+As mentioned previously, the state for managing predicate
+operands is always just included with the general state within
+an active station.
+The state and the management of
+dynamic predicates is more complicated than that for
+just register or memory operands, and it is dependent
+on the dynamic predication scheme that might be employed.
+The specifics of predicate operands is not elaborated on
+further in this paper.
+
+The state within an operand block consists of :
+%
+\begin{itemize}
+\vspace{-0.10in}
+\item{type of operand}
+\vspace{-0.10in}
+\item{path ID}
+\vspace{-0.10in}
+\item{time ordering tag}
+\vspace{-0.10in}
+\item{address}
+\vspace{-0.10in}
+\item{size}
+\vspace{-0.10in}
+\item{previous value}
+\vspace{-0.10in}
+\item{value}
+\vspace{-0.10in}
+\end{itemize}   
+%
+The operand \textit{type}, \textit{path ID}, and \textit{time ordering tag}
+serve
+an analogous purpose as those fields do within an active station,
+except that these fields now apply specifically to this particular
+operand rather than to the instruction as a whole.
+
+The \textit{address} field differs
+depending on the type of the operand.
+For register operands, the address would be
+the name of the architected register.
+All ISA architected registers are typically provided a
+unique numerical address.  These would include the
+general purpose registers, any status or other non-general
+purpose registers, and any possible ISA (architected) predicate registers
+(like those in the iA-64 ISA~\cite{intel99ia,schlansker00epic}.
+For memory operands, the identifying address is just the
+programmer-visible architected memory address of the corresponding
+memory value.
+
+Although the time ordering tag uniquely identifies the active station
+that forwarded the operand, it does not indicate information about
+a particular instance of that operand being forwarded.
+The \textit{sequence number} is used to disambiguate different
+instances of an operand forwarded with the same time tag.
+This is only needed when more elaborate forwarding interconnection fabrics
+are used that allow an operand to either get duplicated in flight
+or to pass and overtake another operand in real time.
+The sequence number is not used in the present work.
+
+The \textit{size} is only used for memory operands and holds
+the size of the memory reference in bytes.
+The \textit{value} holds the present value of the operand,
+while the \textit{previous value} is only used for destination
+operands and holds the value that the operand
+had before it may have been changed by the present instruction.
+The previous value is used in two possible circumstances.
+First, it is used when dynamic predication is
+employed and the effects of the present instruction need to be
+squashed (if and when its enabling predicate becomes false.)
+It is also used when a forwarded operand with a specific
+address was incorrect 
+and there is no expectation that a later instance
+of that operand with the same address will be forwarded.
+This situation occurs when addresses for memory operands are
+calculated but are later determined to be incorrect.
+An operand with the old address is forwarded with the previous
+value to correct the situation.
+Figure \ref{fig:operand} shows a simplified block diagram of
+an operand block.
+%
+%
+\begin{figure}
+\centering
+\epsfig{file=figure3.eps,width=3.5in}
+\caption{{\em Block diagram of an Operand Block.} 
+Each Operand Block holds an effectively renamed 
+operand within the Active Stations.
+Several operand blocks are employed within each Issue Station
+depending on the needs of the ISA being implemented.
+The state information maintained for each operand
+is shown.}
+\label{fig:operand}
+\end{figure}
+%
+%
+
+
+For predicate operands, two types need to be distinguished.
+One type is a part of the ISA of the machine and
+is therefore visible to programmers.
+A predicate operand of this type would be
+used in an ISA such as the iA-64, for example~\cite{iA64}.
+For our purposes, this sort of explicit predicate operand
+is identical to a register operand (discussed above) and
+is simply treated as such.
+Not as clear is the use of predicate operands
+that are not a part of the ISA and are therefore not visible
+to the programmer.
+This type of predication in entirely maintained by the microarchitecture
+itself, but still essentially forms an additional input operand
+for each instruction.
+This single bit operand is what is used to
+predicate the instruction's committed execution, the same as
+if it was explicit in the ISA.
+This input predicate thus enables or disables its associated
+instruction from producing its own new output operand.
+It should be noted that, at any time, any instruction can
+always still be allowed to execute.  The only issue is
+whether the output result can be consumed.
+For microarchitectures that support these microarchitecture-only
+predicate operands, they too can be time tagged, thus allowing
+them the same degree of out-of-order flexibility similar
+to register or memory operands.
+Finally, note that even ISAs that define predicate registers
+can also independently employ predication of instructions within the
+microarchitecture.
+%
+%
+\subsection{Operand Forwarding and Snooping}
+%
+As with microarchitectures not using time tags,
+operands resulting from the execution of instructions
+are broadcast forward for use by waiting instructions.
+As expected, when operands are forwarded, not only is the 
+identifying address of the operand
+and its value sent, but also the time tag and path ID 
+(for
+those microarchitectures using multipath execution).
+This tag will be used by subsequent 
+instructions 
+(later in program order time)
+already dispatched
+to determine if
+the operand should be {\em snarfed}~\footnote{snarfing entails snooping
+address/data buses, and when the desired address value is detected, 
+the associated data value is read} 
+as an input that will trigger
+its execution or re-execution.
+
+The information associated with each operand that is
+broadcast from one instruction to subsequent ones
+is referred
+to as a {\em transaction}, and generally consists of :
+%
+\begin{itemize}
+\vspace{-0.10in}
+\item{transaction type}
+\vspace{-0.10in}
+\item{operand type}
+\vspace{-0.10in}
+\item{path ID}
+\vspace{-0.10in}
+\item{time tag of the originating instruction}
+\vspace{-0.10in}
+\item{identifying address}
+\vspace{-0.10in}
+\item{data value for this operand}
+\vspace{-0.10in}
+\end{itemize}   
+%
+This above information is typical of all operand transactions.
+True flow dependencies are enforced through the continuous snooping of
+these transactions by each dispatched instruction residing in an issue
+slot that receives the transaction.
+Each instruction
+will snoop all operands that are broadcast to it but
+an operand forwarding interconnect fabric may be devised so that
+transactions are only sent to those instructions that primarily
+lie in future program-ordered time from the originating instruction.  
+More information on operand forwarding interconnection networks
+is presented in a later section.
+More details on transactions for register, memory, and
+predicate forward operations are also presented later.
+
+Figure \ref{fig:source} shows the registers inside an 
+issue slot used for the snooping and snarfing of 
+one of its input operands.  
+The 
+{\em time-tag},
+{\em address}, and
+{\em value} registers are reloaded with new values on each snarf,
+while the
+{\em path} and
+{\em instr. time-tag} are only loaded when an instruction is
+dispatched.
+The operand shown is typical for source registers, a source memory
+operand, or an instruction execution predicate register.
+%
+\begin{figure*}
+\centering
+\epsfig{file=source.eps,width=3.8in}
+\caption{{\em Instruction Source Operand.} The registers and snooping
+operation of one of several possible source operands is shown.
+Just one operand forwarding bus is shown being snooped but
+typically several operand forwarding buses are snooped simultaneously.}
+\label{fig:source}
+\end{figure*}
+%
+
+If the
+path ID and the identifying address of the operand matches any of
+its current input operands, the instruction then checks
+if the time tag value is less than its own assigned time tag,
+and greater than or equal to the time tag value of the last
+operand that it snarfed, if any.  
+If the snooped data value is
+different than the input operand data value that the instruction 
+already has, a re-execution of the instruction is initiated.
+This simple rule will allow for the dynamic discovery of
+all program dependencies during instruction execution while 
+also allowing for maximum concurrency to occur.
+%
+%
+\subsection{Result Forwarding Buses and Operand Filtering}
+%
+The basic requirement of the interconnection fabric is that it must be able
+to transport operand results from any instruction to those
+instructions with higher valued time tags.  This corresponds
+to the forwarding of operands into future program ordered time.
+There are several choices for a suitable interconnection fabric.
+A simple interconnection fabric could consist of one or more shared
+buses that simply interconnect all issue slots.
+Although appropriate for smaller sized microarchitectures,
+this arrangement does not scale as well as some other alternatives.
+A more appropriate interconnection fabric that would allow
+for the physical scaling of the microarchitecture may be one in which
+forwarding buses are segmented with active repeaters between
+the stages.
+This arrangement exploits the fact that register lifetimes
+are fairly short~\cite{Franklin92,Sohi95}.
+Registers being forwarded to instructions lying close
+in future program-ordered time will get their operands quickly
+while those instructions lying beyond the repeater units
+will incur additional delays.
+In addition to allowing for physical scaling, it also offers
+the opportunity for filtering out some operands that do
+not need to be forwarded beyond a certain point.
+Another possibility for the operand forwarding fabric is
+to have separate buses for each type of operand.
+This sort of arrangement could be used to tailor the available
+bandwidth provided for each type of operand.  It could also
+allow for a different interconnection network to be used
+for each type of operand also.  We have explored several of
+these possible variations already.
+
+The opportunity to provide active repeaters between forwarding bus
+segments also opens up a range of new microarchitectural
+ideas not easily accomplished without the use of time tagging.
+Different types of active repeaters can be optionally used.
+Further, different types of repeaters can be used for
+the different types of operands.
+Some can just provide a store-and-forward function while
+another variation could also store recently forwarded operands
+and filter out (not forward) newly snooped operands that
+have already been forwarded previously. 
+The latter type of forwarding repeater unit is termed a
+\textit{filter unit}.
+This feature can be used to reduce the operand traffic
+on the forwarding fabric and thus reduce implementation costs.
+For example, for memory operands, a cache (call it a \textit{L0 cache})
+can be situated inside a \textit{memory filter unit} (MFU)
+and can hold recently requested memory operands.
+This can reduce the demand on the L1 data cache and the rest
+of the memory hierarchy by satisfying some percent of memory
+operand loads from these caches alone.
+Register filter units (RFUs) are also possible and can reduce
+register transfer traffic similarly to the MFUs.
+%
+%
+\subsection{Operand Forwarding Strategies and Bus Transactions}
+%
+Although we have so far described the operand forwarding mechanism
+in simple terms as being the broadcasting of operands
+to those instructions with higher valued 
+time tags, there are some additional details that need to be
+addressed for a correctly working forwarding solution.
+These details also differ depending on type of operand.
+There are many possible strategies for forwarding of operands
+(and of operands of differing types). 
+We now briefly outline three such strategies.
+One of these is suitable for registers.
+Another is suitable for registers or memory operands.
+The third is oriented for the forwarding of predicates.
+These three strategies are termed \textit{relay forwarding},
+\textit{nullify forwarding}, and \textit{predicate forwarding}
+respectively.
+In general, each forwarding strategy employs bus transactions
+of one or more types to implement its complete forwarding solution.
+%
+%
+\subsubsection{Relay Forwarding}
+%
+This forwarding strategy is quite simple but is also entirely
+adequate for the forwarding of register operands.
+In this strategy, when a new register operand needs to be forwarded
+from an instruction, the standard operand information, as 
+previously described
+in general, is packaged up into what is termed
+a \textit{register store} transaction.
+This transaction type consists of :
+%
+\begin{itemize}
+\vspace{-0.10in}
+\item{transaction ID of \textit{register-store}}
+\vspace{-0.10in}
+\item{path ID}
+\vspace{-0.10in}
+\item{time tag of the originating instruction}
+\vspace{-0.10in}
+\item{register address}
+\vspace{-0.10in}
+\item{value of the register}
+\vspace{-0.10in}
+\end{itemize}   
+%
+A request is made to arbitrate for an outgoing forwarding bus
+and this transaction is placed on the bus when it becomes available.
+
+When an instruction obtains 
+a new input operand, it will re-execute, producing a new
+output operand.  In this forwarding strategy, the new output
+operand is both stored locally 
+and is sent out on the outgoing forwarding buses
+to subsequent (higher time-tag valued) instructions.
+Previous values of the instruction's output operand are also
+snooped as if they were input operands and are also stored locally.
+It should also be noted that if the enabling execution predicate
+for the current instruction changes, either from being enabled
+to disabled or visa versa, a new output operand is forwarded.
+If the instruction predicate changes from disabled to enabled,
+the output operand that was computed by the instruction is
+forwarded.  If the instruction predicate changes from enabled
+to disabled, the previous value of the output operand (before being
+changed due to the instruction execution) is forwarded.
+That previous value is available to the instruction because
+it gets snooped as if it was an additional input.
+Newly forwarded operands will always supersede any previously
+forwarded operands.
+With this strategy, instructions that are located in the program
+ordered future will eventually always get the correct
+value that will end up being the committed value if the
+current instruction ends up being committed itself (ends
+up being predicated to execute).
+This is an elegant forwarding strategy and
+the simplest of the forwarding strategies investigated so far, and
+is a reasonable choice for the handling of register operands.
+The inclusion of the time tag in the transaction is the
+key element that allows for the correct ordering of
+dependencies in the committed program.
+%
+%
+\subsubsection{Nullify Forwarding}
+%
+There are limitations to the applicability of the previously
+discussed forwarding strategy (relay forwarding).
+That strategy depends upon the fact that the address of the
+architected operand does not change during the life time of
+the instruction while it is executing.
+For example, the architected addresses for register operands
+do not change for instructions.  If the instruction takes
+as an input operand a register \textit{r6}, for example,
+the address of the operand never changes for this particular
+instruction (it stays \textit{6}).
+This property is not generally true of memory operands.
+The difficulty with memory operands is that many memory
+related instructions determine the address of a memory operand
+value from an input register operand of the same instruction.
+Since we allow for instructions to execute and re-execute
+on entirely speculative operand values, the values of
+input register operands can be of essentially any value
+(including a wildly incorrect value) and thus the
+address of a memory operand can also change while 
+the instruction is in flight.
+This presents a problem for the correct enforcement of
+memory operand values and the dependencies among them.
+If we examine the case of a memory store instruction,
+when it
+re-executes acquiring a new memory store value, the address of that
+memory store may also have changed !  
+We cannot simply forward that new memory operand (address and value)
+as with the relay forwarding strategy above.  The reason is
+that we would not be superseding the previous memory operand
+that we forwarded previously because it quite likely had a different
+architected address.  Rather, we need some way to cancel the effect of
+any previously forwarded memory operands.
+This present forwarding strategy does just that.
+
+In this strategy, memory operands that need to be forwarded
+employ a similar transaction as above for registers (described
+in the context of relay forwarding) but would instead have
+a transaction ID of \textit{memory-store} and would
+include the memory operand address and its value (along with the
+path and time-tag information).
+However, when an instruction either re-executes or
+its enabling predicate changes to being disabled, a different
+type of forwarding transaction is sent out.
+This new type of transaction is termed a \textit{nullify transaction}
+and has the property of nullifying the effect of a previous
+store transaction to the same architected operand address.
+This transaction type consists of :
+%
+\begin{itemize}
+\vspace{-0.10in}
+\item{transaction ID of \textit{memory-nullify}}
+\vspace{-0.10in}
+\item{path ID}
+\vspace{-0.10in}
+\item{time tag of the originating instruction}
+\vspace{-0.10in}
+\item{memory operand address}
+\vspace{-0.10in}
+\item{value of the memory operand}
+\vspace{-0.10in}
+\end{itemize}   
+%
+When this transaction is snooped by subsequent instructions,
+for those instructions that have a memory operand as an input
+(that would be for instructions that load memory values in
+one way or another),
+a search is made for a match of an existing memory
+operand.  If a match is detected,
+the time-tag of that particular memory operand is set to
+a state such that any future \textit{memory store} transaction,
+regardless of its time-tag value, will be accepted.
+Further, on reception of this \textit{memory nullify} transaction,
+a request is sent backwards in program order for a memory
+operand with the desired memory address.
+The transaction that represents a request for a memory
+operand would consist of :
+%
+\begin{itemize}
+\vspace{-0.10in}
+\item{transaction ID of \textit{memory-request}}
+\vspace{-0.10in}
+\item{path ID}
+\vspace{-0.10in}
+\item{time tag of the originating instruction}
+\vspace{-0.10in}
+\item{memory operand address}
+\vspace{-0.10in}
+\end{itemize}   
+%
+Of course, the memory address for the operand desired
+needs to be in the transaction, but it is not as obvious why
+the originating instruction's time tag is also included.  In some
+interconnection fabrics, the time tag is included in backwarding
+requests to limit the scope of the travel of the transaction
+through the execution window.  This same scope-limiting function
+is usually performed for forward going transactions as well.
+When the request is sent backwards in program order, previous
+instructions or the memory system itself will eventually snoop
+the request and respond with another \textit{memory store}
+transaction.
+As discussed, this forwarding strategy is very useful for memory
+operands but it can also be used for register operands with
+appropriate changes to the applicable transaction elements.
+Again, the inclusion of a time tag value is what allows
+for proper operand dependency enforcement
+in the committed program.
+%
+%
+\subsubsection{Predicate Forwarding}
+%
+There are several ways in which instructions can be predicated
+in the microarchitecture.  
+These predication mechanisms are not discussed in
+this paper but two such mechanisms can be found in
+documents by Uht et al ~\cite{Uht01} and Morano ~\cite{Morano02}.
+For microarchitectures that predicate all program instructions
+within the microarchitecture itself (not visible at the ISA
+level of abstraction), predicate register values are essentially
+operands that need to be computed, evaluated, and forwarded
+much like register or memory operands.
+Each instruction computes its own enabling predicate by
+snooping for and snarfing predicate operands that are forwarded
+to it from previous instructions from the program-ordered past.
+Depending on the particular predication mechanism used,
+relay forwarding (described above) may be a suitable (if not a good) choice 
+for handling the forwarding of predicate operands.
+However, some predication mechanisms need additional transaction
+types (besides a base store transaction) to communicate.
+The predication mechanism described by Morano ~\cite{Morano02}
+requires three transaction to be fully implemented.
+That mechanism was employed for the data presented in this paper 
+and the transactions for that mechanism
+are briefly described next.
+
+This predication strategy requires two store-type transactions
+rather than just one.  These two transactions are similar
+to other operand store transactions (like for register or memory
+operands)
+but one of these holds two values rather than just one.
+The first of these is the \textit{region predicate store}
+transaction and consists of :
+%
+\begin{itemize}
+\vspace{-0.10in}
+\item{transaction ID of the \textit{region-predicate-store}}
+\vspace{-0.10in}
+\item{path ID}
+\vspace{-0.10in}
+\item{time tag of the originating instruction}
+\vspace{-0.10in}
+\item{region predicate value}
+\vspace{-0.10in}
+\end{itemize}   
+%
+This transaction is analogous to a register or memory
+store, but instead is used to forward a single bit value (the
+current \textit{region predicate} for instructions following the
+instruction that forwarded the transaction).  A region predicate
+is a single bit that determines the execution status
+(enabled or disabled) for instructions that lie beyond the
+not-taken output path of a conditional branch.
+This particular transaction could be forwarded by either
+a conditional branch or by a non-branch instruction.
+In the
+case of a non-branch instruction, the only
+predicate value that makes sense is the same as its
+own enabling predicate, and so only one value needs
+to be forwarded.
+
+In the case of a conditional branch instruction,
+there are two possible output predicates that need to be considered: 
+1) for the taken output path and
+and 2) for the not-taken path.
+In order, to forward both values for these instructions,
+to program-ordered future, the second store transaction
+type (mentioned previously) is used.
+This transaction, termed a \textit{branch target predicate store},
+consists of :
+%
+\begin{itemize}
+\vspace{-0.10in}
+\item{transaction ID of \textit{branch-target-predicate-store}}
+\vspace{-0.10in}
+\item{path ID}
+\vspace{-0.10in}
+\item{time tag of the originating instruction}
+\vspace{-0.10in}
+\item{branch target instruction address}
+\vspace{-0.10in}
+\item{region predicate value}
+\vspace{-0.10in}
+\item{branch target predicate value}
+\vspace{-0.10in}
+\end{itemize}   
+%
+This is identical to the previous \textit{region predicate store}
+transaction but also includes the instruction address
+for the target of the conditional branch (the \textit{taken} address)
+and the single bit predicate
+governing the execution status for instructions
+following the target of the conditional branch in program-ordered
+future.
+
+Finally, a third transaction is used to invalidate a previously
+forwarded branch target predicate.  This transaction is
+a \textit{branch target invalidation} and consists of :
+%
+\begin{itemize}
+\vspace{-0.10in}
+\item{transaction ID of \textit{branch-target-invalidation}}
+\vspace{-0.10in}
+\item{path ID}
+\vspace{-0.10in}
+\item{time tag of the originating instruction}
+\vspace{-0.10in}
+\item{branch target instruction address}
+\vspace{-0.10in}
+\item{time tag of target predicate to be invalidated}
+\vspace{-0.10in}
+\end{itemize}   
+%
+This is similar to other such invalidation transactions in
+that when it is snooped by instructions in the program-ordered future,
+a search is made for some state (in this case some predicate
+register state) that matches the given transaction criteria.
+The inclusion of the second time tag in this transaction allows
+for certain efficiencies that are particular to the predication
+mechanism described.
+
+For predicate forwarding, as we have seen for register and
+memory forwarding, time tags play the vital role in
+identifying and preserving the ordering of all operands.
+In many ways, all operands (whether they be registers, memory,
+or execution predicates) require the use of time tags to
+determine the relative ordering of events in a microarchitecture
+that otherwise lets all instructions execute and re-execute
+wildly out of order, in real time, with respect to each other.
+A simple execution example using time tags 
+is shown in Figure \ref{fig:example1}.
+%
+\begin{figure*}
+\centering
+\begin{tabular}{|l|l|l|l|l|l|}
+\hline
+TT&instruction&t1&t2&t3&t4\\
+\hline 
+\hline 
+0&r3 := 1&&&~~~~&\\
+&&r3=1&&&\\
+\hline 
+1&r4 := r3 + 1&&r3=1&&~~~~\\
+&&&r4=2&&\\
+\hline 
+2&r3 := 2&&&&~~~~\\
+&&&&r3=2&\\
+\hline 
+3&r5 := r3 + 2&&r3=1&&r3=2\\
+&&&r5=3&&r5=4\\
+\hline 
+\end{tabular}
+\caption{{\em Example Instruction Execution.} The time tags for sequential
+program instructions are on the left.  Real time is shown advancing
+along the top.  For each real time interval, input operands are shown
+above any output operands.}
+\label{fig:example1}
+\end{figure*}
+%
+In this example we show how register operands are created and
+snarfed in real time.
+Four instructions are listed along with the time tag (TT) assigned to them
+on the left.  Real time progresses to the right and time four periods
+are identified.  In time period \textit{t1}, the instruction with 
+TT=0 executes and creates its output operand \textit{r3}.
+This operand is forwarded to succeeding instructions in program
+ordered future time.  In time period \textit{t2}, instructions
+at TT=1 and TT=3 have snarfed this operand since it was one of
+their inputs and met the snarfing criteria.  
+These two instructions execute in parallel and
+create their output operands.  Of course, the output for
+instruction at TT=3 is incorrect but that can not be determined
+at this point in real time.  In time period \textit{t3},
+instruction at TT=2 executes creating its output operand.
+That operand gets forwarded and is snarfed by the instruction at
+TT=3 because it met the snarfing criteria.  That instruction
+re-executes as a result in time period \textit{t4}, thus
+creating its correct output.  All instructions are now ready
+for commitment with their correct outputs.
+%
+%
+\section{Representative  Microarchitectures}
+%
+%
+
+%
+\subsection{A Small Resource-Flow Microarchitecture}
+%
+At a high-level, our microarchitecture resembles many existing
+and past microarchitectures that employ reservation stations
+or issue windows along with multiple execution function units.
+The handling of main memory, and the cache hierarchy 
+through the L1 instruction and L1 data caches are all
+conventional and similar to existing microarchitectures.
+Some of the additional major components of our
+microarchitecture are a
+load-store-queue (LSQ) component, an architected register file,
+structures that closely resemble reservation stations or issue
+window slots, and rather conventional execution function units.
+The most novel aspect of our microarchitecture is how we
+handle instruction issue for execution and re-execution.
+In order to efficiently handle instruction issue and re-issue,
+we have redefined the function of a machine structure
+resembling a reservation station with additional state and control
+logic.  
+Our new structure is called 
+an \textit{active station} (IS).
+Like other machines with reservation stations, we dispatch 
+decoded instructions from the fetch unit to these Active Stations
+when one or more of them are empty (available for dispatch) or 
+becoming empty on the next clock cycle.  
+Instructions are dispatched in-order.
+As expected, the number of instructions dispatched in any 
+given clock cycle is
+the lesser of the number of ISs available and the
+dispatch width (as counted in numbers of instructions).
+In our microarchitecture, instructions can be dispatched to
+ISs with or without initial input source operands.
+Operand dependency determination is not done before
+either instruction dispatch (to an active station) nor
+before instruction operation issue to a function unit for
+execution.
+All operand dependencies are determined dynamically through
+snooping after instruction dispatch.
+This is explained more later.
+
+Figure \ref{fig:overview} shows a high-level block diagram
+of our microarchitecture showing the major instruction execution components.
+The memory hierarchy, as well as details of the instruction fetch
+unit, are not shown as they are similar to those of existing
+machines.
+%
+%
+\begin{figure}
+\centerline{\epsfig{figure=figure1.eps,width=4.0in}}
+\caption[High-level block diagram of a representative microarchitecture]
+{{ High-level block diagram of a representative microarchitecture.}
+ Issues stations are shown on the left and various function
+units on the right.  An architected register file and a
+load-store-queue is shown at the top.
+Bidirectional operand request and forwarding buses are shown
+vertically oriented (to the right of the Active Stations).
+Buses to transport an instruction operation and its source operands
+to the function units are also shown. 
+Likewise buses to return result operands are present.}
+\label{fig:overview}
+\end{figure}
+%
+%
+In the top left of the figure is the architected register file.
+Since all operand renaming is done within the Active Stations,
+only architected registers are stored here.
+In the top right is the load-store-queue.
+The lower right shows (laid out horizontally) a set of function units.
+Each function unit (three are shown in this example)
+is responsible for executing a class of
+instructions and generally has independent pipeline depths.
+The function unit pipelining allows for new operations to arrive
+on each successive clock cycle while generating new results on
+each cycle.
+Table \ref{tab:futypes} shows the types of function units
+currently implemented and the default number of pipeline stages
+present in each unit.
+Note that instructions not associated with a function unit
+are executed within the active station itself.  This currently
+includes all control-flow change instructions as well as load-store
+instructions.  
+The lower left shows (laid out vertically) the set of
+Active Stations (four are shown in this example)
+that may be configured into an implementation of
+the machine.
+The ISs are all identical without regard to 
+instruction type.  This allows for all instructions to be
+dispatched in-order to the next available ISs 
+without further resource restrictions or management.
+%
+%
+\begin{table}[p]
+\begin{center}
+\caption{{\em Default execution function unit types and pipeline stages.}
+Both the number of function units of each type and the pipeline depths 
+of each
+can be configured within our microarchitectural simulation framework.
+The far right column shows some numbers of function unit
+types that might be implemented in a typical machine.}
+\label{tab:futypes}
+\vspace{+0.1in}
+\begin{tabular}{|l|c|c|}
+\hline 
+FU type&pipeline depth&typical number\\
+\hline
+IALU&1&8\\
+\hline
+IMULT&7&2\\
+\hline
+IDIV&12&2\\
+\hline
+FADD&4&2\\
+\hline
+FCMP&4&2\\
+\hline
+FCVT&3&1\\
+\hline
+FMULT&4&2\\
+\hline
+FDIV&12&1\\
+\hline
+FSQRT&18&1\\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+%
+%
+
+In the center of Figure \ref{fig:overview},
+running vertically, are two buses shown.
+These bidirectional and multi-master buses 
+form the means to request and forward operands
+among the ISs, register file, and LSQ.
+Each of these buses is actually a parallel set of identical buses
+that are statistically multiplexed to increase operand transfer
+bandwidth.  
+Other bus arrangements are possible (some fairly complicated by
+comparison).  
+Further, separate bus fabrics for handling
+different types of operands is also possible.
+One of these buses is used by ISs
+for requesting source operands and
+has been termed a \textit{backwarding request} bus.
+The name is derived from the fact that requested operands should
+only be satisfied by those instructions that lie in the program-ordered
+past from the instruction requesting the operand.
+The other bus is used for forwarding operands to younger instructions
+and is often termed the \textit{forwarding} bus.
+Operands need to be forwarded from older dispatched
+instructions to younger dispatched instructions.
+The arrows on the buses show the direction of intended travel
+for operands (or operand requests) that are placed on each bus
+respectively.  Although the register file and LSQ only receive
+operand requests on the backwarding request bus, the ISs
+both receive and transmit requests from their connections to that
+bus.  Likewise, although the register file and LSQ only transmit
+operands on the operand forwarding bus, the ISs
+both receive and transmit on their connections to that bus.
+
+Finally, unidirectional buses are provided to interconnect
+the ISs with the function units.
+One bus serves to bring instruction
+operations along with their source operands from an issue
+station to a function unit.
+The other bus returns function unit results back to its
+originating active station.
+Again these buses are generally multiple identical buses in
+parallel to allow for increased transfer bandwidth.
+It is assumed that all buses carry out transfers at the same
+clock rate as the rest of the machine including the execution
+function units.
+
+Collectively, all of the components discussed in this section
+(and shown in 
+Figure \ref{fig:overview}) we term the \textit{execution window}.
+This term is adapted from a similar functional definition in prior
+work~\cite{uht02realizing}.
+The number of ISs in
+any given machine implementation roughly corresponds to the
+number of elements of a reorder buffer or a register update unit
+in a more conventional machine.
+The number of function units somewhat corresponds to the
+issue width of machines with multiple, and more general, execution pipelines.
+
+
+\section{Summary}
+%
+We have described a new microarchitecture that combines
+some of the features of conventional superscalar microarchitectures
+along with those of a value-predicting microarchitecture.
+We have enabled a new kind of
+{\em flexible} instruction execution parallelism
+and a specific dependency enforcement mechanism
+of more elaborate research microarchitectures while maintaining
+the approximate size and complexity constraints of current or near term
+machines.
+This has been achieved while still maintaining binary program
+compatibility with
+existing ISAs (and the Alpha ISA in particular).
+%
+%
+%
+\bibliographystyle{latex8}
+\bibliography{ch16}
+%
+\end{document}
+%

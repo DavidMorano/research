@@ -1,0 +1,39 @@
+#!/bin/ksh
+# MKALLEPS
+
+
+: ${DEBHOME:=/usr/add-on/dwb}
+
+PATH=${DWBHOME}/bin:${PATH}
+export PATH
+
+
+
+SUF="bftden bftdis bbtden bbtdis htden htdis bpden bpdis"
+
+for S in $SUF ; do 
+  if [ -r ${S}.dwb -a -r mean.${S} ] ; then
+    grap ${S}.dwb | pic | troff -Tpost | dpost -B > ${S}.eps 
+  fi
+done
+
+
+SUF="rrintden rlifeden ruseden rrintdis rlifedis rusedis "
+
+for S in $SUF ; do 
+  if [ -r ${S}.dwb -a -r mean.${S} ] ; then
+    grap ${S}.dwb | pic | troff -Tpost | dpost -B > ${S}.eps 
+  fi
+done
+
+
+SUF="rreadden rwriteden"
+
+for S in $SUF ; do 
+  if [ -r ${S}.dwb -a -r mean.${S} ] ; then
+    grap ${S}.dwb | pic | troff -Tpost | dpost -B > ${S}.eps 
+  fi
+done
+
+
+

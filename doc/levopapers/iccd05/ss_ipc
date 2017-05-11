@@ -1,0 +1,20 @@
+bzip2
+sim_IPC                      3.1529 # instructions per cycle
+crafty
+sim_IPC                      3.4216 # instructions per cycle
+eon
+sim_IPC                      1.9397 # instructions per cycle
+gcc
+sim_IPC                      3.1964 # instructions per cycle
+gzip
+sim_IPC                      2.5476 # instructions per cycle
+parser
+sim_IPC                      2.4234 # instructions per cycle
+perlbmk
+sim_IPC                      2.8779 # instructions per cycle
+twolf
+
+vortex
+sim_IPC                      2.9370 # instructions per cycle
+vpr
+sim_IPC                      2.0396 # instructions per cycle

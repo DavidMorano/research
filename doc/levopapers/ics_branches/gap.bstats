@@ -1,0 +1,16 @@
+SimpleSim statistics 020315_0049:27
+statistics for job=gap logid=piranha25524
+
+total instructions       600000000
+included instructions            0:   600000000
+branch paths              59087829
+instructions per BP           10.1544
+branch path statistics
+IPBP mean                     10.1544
+IPBP variance                233.9126
+IPBP stddev                   15.2942
+branch target-distance statistics
+IPBT mean                     27.6369
+IPBT variance               4443.7588
+IPBT stddev                   66.6615
+SS hammocks               10291414 (17.42 percent)

@@ -1,0 +1,105 @@
+From uht@ele.uri.edu Tue Jun 11 19:59:11 EDT 2002 
+received:
+	by rca.rightcore.com
+	; 11 Jun 2002 20:01:49 -0400 (EDT)
+Return-Path: <uht@ele.uri.edu>
+Received: from stibitz.computer.org (stibitz.computer.org [206.99.235.25])
+	by leviathan.ele.uri.edu (8.12.2/8.12.2) with ESMTP id g5BNx9vi017930
+	for <morano@ele.uri.edu>; Tue, 11 Jun 2002 19:59:09 -0400 (EDT)
+Received: from leviathan.ele.uri.edu (leviathan.ele.uri.edu [131.128.51.64])
+	by stibitz.computer.org (Switch-2.1.1/Switch-2.1.1) with ESMTP id U5BN2NQ327144
+	for <morano@computer.org>; Tue, 11 Jun 2002 19:59:27 -0400
+Received: from ele.uri.edu (ip68-9-178-223.ri.ri.cox.net [68.9.178.223])
+	by leviathan.ele.uri.edu (8.12.2/8.12.2) with ESMTP id g5BNwavk017910;
+	Tue, 11 Jun 2002 19:58:38 -0400 (EDT)
+Message-ID: <3D068EAA.1B98AB58@ele.uri.edu>
+Date: Tue, 11 Jun 2002 19:58:34 -0400
+From: "Augustus (Gus) K. Uht" <uht@ele.uri.edu>
+Reply-To: uht@ele.uri.edu
+Organization: University of Rhode Island
+X-Mailer: Mozilla 4.79 [en] (Windows NT 5.0; U)
+X-Accept-Language: en,pdf
+MIME-Version: 1.0
+To: Augustus Uht <uht@ele.uri.edu>, David Kaeli <kaeli@ece.neu.edu>,
+   David Morano <morano@computer.org>, Alireza Khalafi <akhalafi@ece.neu.edu>,
+   Peter Zeno <pzeno@ece.neu.edu>
+Subject: [Fwd: Experiments]
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Content-Length: 3248
+
+Hi again. I thought of two others, listed below at the end (11 and 12), 
+although you would probably want to do them earlier.
+
+-----Gus
+
+
+-------- Original Message --------
+Subject: Experiments
+Date: Tue, 11 Jun 2002 14:34:55 -0400
+From: "Augustus (Gus) K. Uht" <uht@ele.uri.edu>
+Reply-To: uht@ele.uri.edu
+Organization: University of Rhode Island
+To: Alireza Khalafi <akhalafi@ece.neu.edu>, David Morano <morano@computer.org>
+
+Hi. Pursuant to our conversation of yesterday, these are the experiments
+I think we need to run. Please check thoroughly and let us all know if
+I've missed any. Good luck. 
+							----Gus
+
+-----------------------------------------------------------------
+
+For all experiments, unless noted otherwise:
+- use spanning bus length of 8 SGs (might want to do exp. 8. first)
+- use geometry, etc., that does not constrain performance; parameters maxed.
+
+Give to me, in Excel spreadsheet, for each experiment:
+- assumptions
+- data
+- quantitative conclusions
+- qualitative conclusions
+
+
+1. Performance as function of static/dynamic I-Fetch domain size threshold.
+
+2. Performance as function of L0 size, latency. (BTB, what is L0 latency?)
+
+3. Performance with/w/out L0.
+
+4. Performance with smaller branch predictors for per row predictors. Want
+to get the size down by factor of 10 or more, if possible. May need tuning
+here. Find knee in curve.
+
+5. Once data value prediction works with counter solution, reduce predictor
+size as much as possible; find knee in curve.
+
+6. Performance effect of assuming main memory latency of 800 cycles. This was
+suggested by Bob Colwell, and seconded by yours truly. In this case use
+typical geometry and assumptions.
+
+7. Performance effect of much better branch predictor in I-Fetch. Redo 1.
+
+8. Performance as function of spanning bus length.
+
+9. Performance of 2-2-1 bus geometry with the four ideal/real assumptions,
+and with all of the results of the prior experiments incorporated, for high
+IPC with realistic assumptions. Use current geometries, plus 8-8-8. If time
+is running short, get rid of the high-end geometry (64-16-16?)
+
+10. Other bulk data: performance as function of SG/col, AS/SG, columns;
+with constant spanning bus length (8 SGs; for 4-x-x, use 4 SGs, unless you
+can currently model a spanning bus two columns long).
+
+11. Performance as function of forwarding unit delay.
+
+12. Implement D-path switch (switch to D-path from M-path upon misprediction)
+with simpler algorithm, i.e., through away all of the column 1+ M-path state.
+Determine performance effect relative to current model.
+(I'd like to see this one done early on; it greatly affects the write-up in
+the MICRO paper.)
+
+
+
+Get back to me with estimate of how long it will take, wall clock time, to do 
+one complete run of 9 and 10; don't include error time, I'll include it.
+

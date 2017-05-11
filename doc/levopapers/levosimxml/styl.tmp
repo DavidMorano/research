@@ -1,0 +1,25 @@
+readability grades:
+	(Kincaid)  8.0  (auto)  8.3  (Coleman-Liau) 10.9  (Flesch)  8.9 (61.3)
+sentence info:
+	no. sent 110 no. wds 1465
+	av sent leng 13.3 av word leng 4.91
+	no. questions 0 no. imperatives 0
+	no. content wds 910  62.1%   av leng 6.17
+	short sent (<8) 19% (21) long sent (>23)  11% (12)
+	longest sent 39 wds at sent 24; shortest sent 3 wds at sent 45
+sentence types:
+	simple  75% (82) complex  19% (21)
+	compound   4% (4) compound-complex   3% (3)
+word usage:
+	verb types as % of total verbs
+	tobe  54% (84) aux  12% (19) inf   7% (11)
+	passives as % of non-inf verbs  19% (28)
+	types as % of total
+	prep 10.8% (158) conj 1.8% (26) adv 5.7% (84)
+	noun 24.5% (359) adj 24.9% (365) pron 5.1% (75)
+	nominalizations   1 % (21)
+sentence beginnings:
+	subject opener: noun (7) pron (19) pos (1) adj (37) art (30) tot  85%
+	prep   4% (4) adv   7% (8) 
+	verb   0% (0)  sub_conj   1% (1) conj   0% (0)
+	expletives   3% (3)

@@ -1,0 +1,12 @@
+# DVIPS
+
+
+DOC=intsup
+
+
+# Synopsis:
+
+dvips -P pdf -G0 -t letter ${DOC}
+
+
+

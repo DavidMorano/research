@@ -1,0 +1,20 @@
+bzip2	bzip2
+& 2.45	& 3.68
+crafty	crafty
+& 2.13	& 3.99
+eon	eon
+& 2.25	& 3.79
+gcc	gcc
+& 1.67	& 2.91
+gzip	gzip
+& 2.06	& 3.27
+parser	parser
+& 1.68	& 2.35
+perlbmk	perlbmk
+& 1.46	& 1.64
+twolf	twolf
+& 1.78	& 2.18
+vortex	vortex
+& 2.02	& 3.79
+vpr	vpr
+& 2.20	& 2.50

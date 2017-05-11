@@ -1,0 +1,197 @@
+   Rise of Internet 'Borders' Prompts Fears for Web's Future
+   
+   by Ariana Eunjung Cha
+
+   Friday January 4, 2002
+
+   Washington Post
+
+   
+   It is the modern-day equivalent of a border sentry. When visitors try
+   to enter UKBetting.com, a computer program checks their identification
+   to determine where they're dialing in from. Most people are waved on
+   through. Those from the United States, China, Italy and other
+   countries where gambling laws are muddy, however, are flashed a sign
+   in red letters that says "ACCESS DENIED" and are locked out of the Web
+   site.
+   
+   For much of its life, the Internet has been seen as a great
+   democratizing force, a place where nobody needs know who or where you
+   are. But that notion has begun to shift in recent months, as
+   governments and private businesses increasingly try to draw boundaries
+   around what used to be a borderless Internet to deal with legal,
+   commercial and terrorism concerns.
+   
+   "It used to be that a person sitting in one place could get or send
+   information anywhere in the world," said Jack Goldsmith, a professor
+   of international law at the University of Chicago. "But now the
+   Internet is starting to act more like real space with all its
+   limitations."
+   
+   These new barriers take many forms. One method is to simply restrict
+   who has access to computers and gateways to the Internet. Another is
+   to make all communications pass through filters that seek to weed out
+   objectionable content, such as pornography or information deemed to
+   endanger national security. Growing in popularity is software that
+   attempts to match a computer's unique Internet address with a general
+   geographic location, a technology that is becoming more precise every
+   day.
+   
+   The debate is no longer about if we can create these barriers, but
+   rather whether we should. Even those who support the idea in theory
+   disagree on who should erect and maintain the electronic fences,
+   whether it should be done by nation-states or by the Web site
+   operators.
+   
+   The new borders provide what some call a neat solution to the vexing
+   problem of how to resolve the often-conflicting policies of the
+   roughly 200 independent states of the world on matters such as
+   gambling, commerce, copyright and speech.
+   
+   But critics fear that the barriers will create an Internet that's
+   balkanized. And civil rights groups warn that freedom of speech will
+   suffer, that the technology will make it easier for oppressive
+   governments to stifle nonconformist viewpoints, and that people's
+   privacy will be eroded, especially because some technologies can
+   pinpoint one's location.
+   
+   "It's likely that the Internet of tomorrow will look radically
+   different from different parts of the world," said Lee Tien, a lawyer
+   with the Electronic Frontier Foundation in San Francisco.
+   
+   Already legislatures and court systems around the world have been
+   attempting to assert their country's authority over the World Wide
+   Web. Hong Kong's government, for instance, has been debating whether
+   to pass a law that would make it a crime for any overseas gambling
+   site to offer services to its residents. A court in Genoa, Italy,
+   recently found the operator of a Web site in another country guilty of
+   libel. A French judge has ordered Yahoo to stop selling Nazi
+   paraphernalia because a law there bans such practices.
+   
+   Without an international treaty or mediation organization, such
+   rulings have so far been largely unenforceable on parties residing
+   outside a country's borders. But that has not stopped countries from
+   drafting rules for what is and is not permissible online.
+   
+   At least 59 nations limit freedom of expression, according to Leonard
+   R. Sussman, author of "Censor.gov." Singapore, for instance, works
+   with Internet access providers to block any material that undermines
+   public security, national defense, racial and religious harmony, and
+   morals. That includes pornography and hate speech.
+   
+   Some analysts say the barriers could grow with the development of
+   "geolocation" technology, which attempts to match a person's location
+   based on a computer's Internet address.
+   
+   Silicon Valley's Quova Inc., one of the leading providers of this
+   technology, claims it can correctly identify a computer user's home
+   country 98 percent of the time and the city about 85 percent of the
+   time, but only if it's a large city. Independent studies have pegged
+   the accuracy rate of such programs, which also are sold by companies
+   such as InfoSplit, Digital Envoy, Netgeo and Akami, at 70 to 90
+   percent.
+   
+   The system is not foolproof; people can easily get past by using
+   special software programs to cloak their identities. But experts such
+   as Goldsmith, the Chicago law professor, say the technology need not
+   work perfectly to have an impact. These barriers act like checkpoints
+   on a nation's physical border: They can be evaded, but most people
+   probably won't want to go to all the trouble.
+   
+   Gambling sites were among the first to roll out the technology, last
+   year. When users from countries where online gambling is not allowed
+   try to get on, they are either not given the option to place bets or
+   they are kicked out when they try to register for an account.
+   
+   "There are a number of sites out there that just don't care about the
+   laws. They are perfectly happy to let U.S. gamblers in even though
+   they know it's illegal," said Jeremy Thompson-Hill, an account manager
+   for OrbisUK, which provides the sentry technology used by Sports.com,
+   Ladbrokes.com and other betting sites. "But most reputable companies
+   want to be able to say to the United States, 'We're taking every
+   reasonable precaution to prevent the use of our gambling software in
+   your country.' "
+   
+   The technology also is being embraced by Web broadcasters, whose
+   nascent industry had been growing slowly because of concerns about
+   copyright. JumpTV is betting its future on this technology. The
+   Montreal-based venture retransmits television broadcasts from around
+   the world and is trying to avoid being sued by broadcasters who claim
+   it violates their broadcasting licenses. In early 2000, a U.S. judge
+   effectively shut down another Canadian company called iCraveTV by
+   prohibiting it from broadcasting its signals into the United States
+   for 90 days.
+   
+   Farrel Miller, JumpTV's chief executive, said the company hopes to
+   begin retransmitting ABC, CBS and NBC only to Canadian viewers early
+   next year but was much more modest about his company's aspirations
+   than some heads of other webcasting companies during the dot-com boom.
+   
+   "We don't see the Internet as a revolutionary medium that will change
+   the TV business," Miller said. "It'll be just another alternative
+   vehicle for disseminating channels."
+   
+   The difficulty in recognizing nation-state borders on the Internet
+   became such a concern during the 2000 Sydney Games that the
+   International Olympic Committee effectively banned most Web video of
+   the events.
+   
+   Television stations had paid enormous fees for the rights to broadcast
+   the games on a country-by-country basis -- NBC, for instance, shelled
+   out $3.5 billion for the United States -- and they were worried that
+   piracy or even legitimate online transmissions that were accessible to
+   anyone, anywhere might devalue the worth of those contracts. The IOC
+   and many of the owners of broadcast rights say the accuracy rate for
+   geolocation technology is still not good enough and they won't allow
+   any webcasts for the Salt Lake City games this February.
+   
+   "The technology just doesn't pass muster yet. There's no way to
+   guarantee that your broadcast would be confined to your territory and
+   would not run in to someone else's," said Kevin Monaghan, a vice
+   president for NBC Sports.
+   
+   Even if geolocation technology worked perfectly, some legal experts
+   said it would not be feasible because it would require Web site
+   operators to know the applicable laws in every country.
+   
+   "Geographical location technology is a red herring," said Alan
+   Davidson, a lawyer with the Center for Technology and Democracy, a
+   Washington think tank. "It would be incredibly burdensome to tailor
+   content to meet all of the different laws in all of the different
+   countries everywhere the world."
+   
+   That's the heart of the question being addressed by a court case that
+   pits Yahoo Inc. against France.
+   
+   Last year, two French groups -- League Against Racism and
+   Anti-Semitism and the Union of Jewish Students -- sued Yahoo for
+   allowing Nazi collectibles to be sold on its auction pages. The sale
+   of such hate material is illegal in France. Almost 1,000 such items
+   were on the block at the time, including Adolf Hitler's "Mein Kampf,"
+   stamps and coins, as well as hate paraphernalia.
+   
+   Jean-Jacques Gomez, a judge in Paris, ordered Yahoo to prevent French
+   users from seeing the material by using the geolocation technology.
+   
+   Yahoo declined on principle and sued in U.S. District Court in San
+   Jose to make the order unenforceable because a foreign judge could not
+   impose such conditions on a U.S.-based company. U.S. Judge Jeremy
+   Fogel ruled Nov. 7 that the First Amendment trumps overseas laws when
+   they pertain to content produced by U.S. companies. An appeals court
+   upheld the decision but the French groups have appealed again and have
+   vowed to take the case to the U.S. Supreme Court if necessary.
+   
+   The attorney for the French groups, Ronald Katz, argues that the issue
+   is not about free speech but about national sovereignty.
+   
+   "Yahoo wants to use the court decision as a sort of megaphone to say
+   the U.S. controls the Internet," he said.
+   
+   Indeed, the U.S. dominance of the Internet is one major thing that
+   observers say will change with the new electronic borders, slowing the
+   dissemination of ideologies and culture across countries.
+   
+   "Is geographical tracking a panacea that solves international
+   jurisdiction issues? Probably not. But is it a technology that's
+   significantly changing the social, economic and political aspects of
+   how we communicate on the Internet?" Davidson said. "Absolutely."

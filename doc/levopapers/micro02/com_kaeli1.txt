@@ -1,0 +1,158 @@
+Date: Mon, 17 Jun 2002 16:20:52 +0200
+From: David Kaeli <dkaeli@ac.upc.es>
+To: uht@ele.uri.edu, dmorano@ECE.NEU.EDU, akhalafi@ECE.NEU.EDU
+Subject: Levo comments
+
+Gus,
+
+I gave the paper a good read.  Overall, you have done
+a nice job.   My major concern is that there are a lot
+of details presented without a lot of reason for the reader
+to get into these details.  A teaser would help.  
+
+The only other major concern is the presentation of the
+results.  I don't like some of the figures.  I again think
+you need to sell the better.  I suspect this will change
+in the final version.
+
+I love Table 2.  I wish more papers provided this kind
+of detail.
+
+Dave
+
+
+Notes on manuscript:
+
+Note to reviewers: I would instead say - 
+"Note to reviewers:  Every effort has been made to comply
+with the blind-reviewing process. Because of the complexity
+of this microarchitecture, it is quite difficult to write a
+self-contained paper.  We have written many tech reports which
+describe the details of many of the features of Levo.  We will
+include these citations in the final version of the paper."
+
+The non-italics in the abstract look funky. I am not sure to fix 
+this if you want to use italics for the abstract.
+
+In the abstract, segmented buses by themselves do not make Levo 
+scalable.  Segmented buses provide for a scalable hardware implementation.
+They do not "make" Levo scalable.  
+
+Introduction:
+
+I don't know what you man by "little cycle-time increase".  This means
+nothing to me.
+
+What does intransigent mean??  I doubts others will know its meaning either.
+
+4 paragraph, replace "problems impending high" with "impediments to high"
+
+2.2  You refer to ports.  Make it clear these are register ports.
+
+Footnote, page 2: In traditional systems, <the> k**2 term(s) dominate<s>.
+
+3.0 
+
+2nd paragraph "a block <which is> one E-window..."
+
+3rd paragraph, you say there are two key novel features, and then
+number 2 things.  This is confusing.  Get rid of the numbers and it
+will read fine.
+
+3rd paragraph, you use the word "typically" .  I have never seen hardware
+that is typically something.  It is either a column long or not.
+
+3rd paragraph, by the word "bottom" do you mean the end of one segment??
+
+3rd paragraph, change "as many columns as desired" to "additional columns".
+The current phrase will incite an argument.
+
+3rd paragraph, change "increasing" to "impacting"
+
+4th paragraph, why are times tags associated with scalable hardware.  I 
+think this is confusing.  
+
+4th paragraph, add a sentence to emphasize how time tags are used with all 
+dependency checking mechanisms.
+
+5th paragraph, you site Figure 4, which is shown much later.
+
+5th paragraph, you mention "nominal".  I think you can delete this 
+qualification.
+
+3.1
+
+You use the term Low Cost, but never define what is the figure of
+merit for cost.  I would just delete the arrow and the text it is
+pointing at.
+
+2nd paragraph, your figure citing (e.g., (a), (b), etc.) can be 
+distracting.  I would repeat the figure number or say, (the following
+discussion involves columns (a., b. and c.) in Figure 2.
+
+3rd paragraph, you use the term "closest".  I would also add the
+term "most recent".
+
+4th paragraph, what grows linearly?  Performance, space, time, power?
+
+
+6th paragraph, first use of DEE (which you define later).  Spell it out.
+
+Figure 4. Resize to get the text look like you did not non-uniformly 
+scale.  The headings over the columns just look funny.
+
+Figure 4 and many figures, it is difficult to make out that this is a 
+caption.  A different font or size would help here.
+
+3.3.1
+
+2nd paragraph, the first sentence is a run-on sentence.
+
+7th paragraph, you say predication only takes a few more bits.  What
+is this relative to??
+
+7th paragraph, "they are mainly narrow."  This is vague.
+
+3.3.2
+
+2nd paragraph, "Conditional branches are assigned to a free..."  
+Did you means non-predicted conditional branch paths are assigned..."
+
+3rd paragraph, "D-paths can be in arbitrary order..." This is confusing.
+
+4.1 spell out 2/3rds
+
+5
+
+6th paragraph, "to be added to either end..." While this is possible, it
+sounds hokey....
+
+Figure 7. I would get the 8.7 GHz line out of this figure.  This will
+upset any circuit person.
+
+Table 1. Can you get rid of the whitespace in Table 1?
+
+Figures 8 and 9......  Where is the baseline??  I really don't
+get anything out of these figures.  At least clean up the figure to
+get rid of the 110%....  These figures are hard to read and really
+don't get me excited.
+
+Figure 11. Why do you label it "absolute IPC"?  This gives the 
+reader some discomfort...
+
+I think you forgot to delete the Levo website reference.  This
+has to be deleted since the papers will give away our identify
+bigtime.
+
+Summary comment:
+
+If I was a reader, I would have stopped reading around page 7 or 8.  There
+is a lot of detail (which is necessary), but no teasers to keep me reading.
+I think they are needed.
+
+
+Again, I hope these help.  I am planning to stay late to help with the
+final.
+
+Dave
+

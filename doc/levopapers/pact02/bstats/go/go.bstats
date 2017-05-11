@@ -1,0 +1,16 @@
+SimpleSim statistics 020321_0848:21
+statistics for job=go logid=frodo8713
+
+total instructions       600000000
+included instructions    100000000:   500000000
+branch paths              60525024
+instructions per BP            8.2610
+branch path statistics
+IPBP mean                      8.2610
+IPBP variance                 54.9426
+IPBP stddev                    7.4123
+branch target-distance statistics
+IPBT mean                     39.5681
+IPBT variance               5597.9021
+IPBT stddev                   74.8191
+SS hammocks               21607188 (35.70 percent)

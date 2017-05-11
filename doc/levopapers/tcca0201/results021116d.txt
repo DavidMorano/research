@@ -1,0 +1,122 @@
+From akhalafi@gateway.ece.neu.edu Fri Nov 16 13:48:57 EST 2001 
+Return-Path: <akhalafi@gateway.ece.neu.edu>
+Received: from sendmail1.computer.org (sendmail1.computer.org [206.99.235.24])
+	by leviathan.ele.uri.edu (8.11.2/8.11.2) with ESMTP id fAGImr221199
+	for <morano@ele.uri.edu>; Fri, 16 Nov 2001 13:48:56 -0500 (EST)
+Received: from mail2.ECE.NEU.EDU (markov.ece.neu.edu [129.10.60.83])
+	by sendmail1.computer.org (Build 101 8.9.3/NT-8.9.3) with ESMTP id NAA14206
+	for <morano@computer.org>; Fri, 16 Nov 2001 13:51:22 -0500
+Received: from lespaul.ece.neu.edu (lespaul.ece.neu.edu [129.10.60.240])
+	by mail2.ECE.NEU.EDU (8.11.3/8.11.3) with ESMTP id fAGImkU15214;
+	Fri, 16 Nov 2001 13:48:46 -0500 (EST)
+Received: from localhost by lespaul.ece.neu.edu (8.9.3/8.9.3) with ESMTP id NAA04766;
+	Fri, 16 Nov 2001 13:48:46 -0500 (EST)
+X-Authentication-Warning: lespaul.ece.neu.edu: akhalafi owned process doing -bs
+Date: Fri, 16 Nov 2001 13:48:46 -0500 (EST)
+From: Alireza Khalafi <akhalafi@ECE.NEU.EDU>
+X-Sender: akhalafi@lespaul
+To: "Augustus (Gus) K. Uht" <uht@ele.uri.edu>,
+   "Kaeli, Prof. David -- David Kaeli" <dkaeli@ac.upc.es>,
+   David Morano <morano@computer.org>
+Subject: statistics on benchmarks
+Message-ID: <Pine.GSO.4.21.0111161340370.4653-100000@lespaul>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Length: 2004
+
+Here are some data on predictability of load and stores.  This might come
+helpful.  Especially if you have other sources that you can verify the
+numbers with, it can make us more confident about our value prediction
+results.
+
+Bzip2
+
+Load Address Predictors:
+        Last value = %45.560
+        Stride     = %65.769
+Load Data Predictors:
+        Last value = %38.037
+
+Store Address Predictors:
+        Last value = %71.170
+        Stride     = %79.115
+Store Data Predictors:
+        Last value = %30.285
+Ratio of loads = %20.983
+Ratio of Stores = %6.515
+--------------------
+
+Go
+
+Load Address Predictors:
+        Last value = %45.363
+        Stride     = %44.546
+Load Data Predictors:
+        Last value = %38.331
+
+Store Address Predictors:
+        Last value = %62.178
+        Stride     = %59.956
+Store Data Predictors:
+        Last value = %43.246
+Ratio of loads = %21.035
+Ratio of Stores = %8.621
+--------------------
+
+Parser
+
+Load Address Predictors:
+        Last value = %60.390
+        Stride     = %67.140
+Load Data Predictors:
+        Last value = %43.344
+
+Store Address Predictors:
+        Last value = %63.109
+        Stride     = %74.327
+Store Data Predictors:
+        Last value = %42.064
+Ratio of loads = %29.110
+Ratio of Stores = %11.729
+--------------------
+
+Gzip
+
+Load Address Predictors:
+        Last value = %41.165
+        Stride     = %69.637
+Load Data Predictors:
+        Last value = %27.712
+
+Store Address Predictors:
+        Last value = %57.539
+        Stride     = %99.505
+Store Data Predictors:
+        Last value = %13.898
+Ratio of loads = %20.313
+Ratio of Stores = %6.040
+--------------------
+
+Gap
+
+
+Load Address Predictors:
+        Last value = %41.003
+        Stride     = %66.182
+Load Data Predictors:
+        Last value = %32.930
+       Stride     = %44.623
+
+Store Address Predictors:
+        Last value = %21.294
+        Stride     = %91.992
+Store Data Predictors:
+        Last value = %72.292
+Ratio of loads = %19.657
+Ratio of Stores = %11.113
+--------------------
+
+
+
+
+

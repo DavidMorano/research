@@ -1,0 +1,12 @@
+#!/bin/ksh
+
+H=ece
+D=ics05
+T=$1
+if [[ -z "${T}" ]] ; then
+  T=ilp
+fi
+
+scp -qp ${H}:doc/${D}/${T}.ps .
+
+

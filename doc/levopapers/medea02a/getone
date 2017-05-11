@@ -1,0 +1,3 @@
+
+scp -qp piranha:pact/high.ps .
+

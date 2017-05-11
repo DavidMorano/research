@@ -1,0 +1,18 @@
+PACT'00
+
+   Proceedings of the 
+   2000 International Conference on Parallel Architectures and 
+   Compilation Techniques
+
+IEEE
+
+PACT'00
+
+Register Queues: A New Hardware/Software Approach to 
+Efficient Software Pipelining
+
+Mikhail Smelyanskiy
+
+Gary S. Tyson
+
+Edward S. Davidson

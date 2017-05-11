@@ -1,0 +1,20 @@
+bzip2
+&              816865 (   9.2% A/FUISS,    5.1% A/T)
+crafty
+&              518314 (   5.9% A/FUISS,    2.9% A/T)
+eon
+&              445853 (   4.6% A/FUISS,    2.2% A/T)
+gcc
+&              868726 (   9.4% A/FUISS,    3.3% A/T)
+gzip
+&              604193 (   6.1% A/FUISS,    3.2% A/T)
+parser
+&              702651 (   7.5% A/FUISS,    3.0% A/T)
+perlbmk
+&              432034 (   6.2% A/FUISS,    2.6% A/T)
+twolf
+&              752298 (   7.9% A/FUISS,    3.3% A/T)
+vortex
+&              387814 (   5.2% A/FUISS,    1.9% A/T)
+vpr
+&              492084 (   4.4% A/FUISS,    2.4% A/T)

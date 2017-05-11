@@ -1,0 +1,93 @@
+From akhalafi@gateway.ece.neu.edu Fri Nov 16 09:26:23 EST 2001 
+Return-Path: <akhalafi@gateway.ece.neu.edu>
+Received: from sendmail1.computer.org (sendmail1.computer.org [206.99.235.24])
+	by leviathan.ele.uri.edu (8.11.2/8.11.2) with ESMTP id fAGEQL207849
+	for <morano@ele.uri.edu>; Fri, 16 Nov 2001 09:26:21 -0500 (EST)
+Received: from mail2.ECE.NEU.EDU (markov.ece.neu.edu [129.10.60.83])
+	by sendmail1.computer.org (Build 101 8.9.3/NT-8.9.3) with ESMTP id JAA02454
+	for <morano@computer.org>; Fri, 16 Nov 2001 09:28:50 -0500
+Received: from lespaul.ece.neu.edu (lespaul.ece.neu.edu [129.10.60.240])
+	by mail2.ECE.NEU.EDU (8.11.3/8.11.3) with ESMTP id fAGEQEU10507;
+	Fri, 16 Nov 2001 09:26:14 -0500 (EST)
+Received: from localhost by lespaul.ece.neu.edu (8.9.3/8.9.3) with ESMTP id JAA04677;
+	Fri, 16 Nov 2001 09:26:14 -0500 (EST)
+X-Authentication-Warning: lespaul.ece.neu.edu: akhalafi owned process doing -bs
+Date: Fri, 16 Nov 2001 09:26:14 -0500 (EST)
+From: Alireza Khalafi <akhalafi@ECE.NEU.EDU>
+X-Sender: akhalafi@lespaul
+To: "Augustus (Gus) K. Uht" <uht@ele.uri.edu>,
+   "Kaeli, Prof. David -- David Kaeli" <dkaeli@ac.upc.es>,
+   David Morano <morano@computer.org>
+Subject: Simulation of model A
+Message-ID: <Pine.GSO.4.21.0111160918430.4653-100000@lespaul>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Length: 1347
+
+Hi,
+
+This is an updated version of the data that I sent out yesterday.
+There were some missing numbers that I filled out.  There are some
+simulations that I haven't got numbers for.  I am not sure what is going
+wrong but I am hoping to get the numbers before deadline.
+
+Thanks
+Alireza
+
+Key
+ noD: no D path, D: D path, PM: no cache, RM: with memory cache,
+ noVP: no value prediction
+
+
+Go benchmark,
+
+		noD,PM,noVP	noD,RM,noVP	D,PM,noVP	D,RM,noVP	
+
+(4,4,4)		2.1		1.7		3.7		2.9
+(8,4,4)		3.1		2.4		5.7		4.2
+(8,4,8)		3.3		2.5		7.3		5.3
+(8,8,8)		3.7		2.8		8.8		6.1
+(16,8,4)	3.3		2.5		6.1		4.5
+(8,4,16)	3.3		2.5		7.5		5.5
+
+
+Bzip2 benchmark
+
+(4,4,4)		2.4		1.9		3.4		2.7
+(8,4,4)		3.3		2.5		5.3		3.8
+(8,4,8)		3.45		2.7		5.9		4.2
+(8,8,8)				2.9				4.9
+(16,8,4)			2.6				4.3
+(8,4,16)	3.3		2.5		5.3		4.8
+
+Gzip benchmark
+
+(4,4,4)		2.4		2.3		3.3		2.7
+(8,4,4)		3.4		2.8		4.9		3.9
+(8,4,8)		3.6		2.9		5.6		4.4
+(8,8,8)		4.1		4.1		6.9		5.4
+(16,8,4)	3.7		3.1		6.1		4.9
+(8,4,16)	3.6		3.1		5.6		5.5
+
+Parser Benchmark
+
+(4,4,4)		2.1		1.8		3.2		2.6
+(8,4,4)		3.1		2.4		4.9		3.7
+(8,4,8)		3.2		2.5		6.2		4.5
+(8,8,8)		3.5		2.7		7.2		5.3
+(16,8,4)	3.0		2.5		5.2		4.0
+(8,4,16)	3.3		2.5		6.5		5.1
+
+Gap benchmark
+
+(4,4,4)		2.6		2.4		3.6		3.3
+(8,4,4)		3.8		3.5		5.3		4.8
+(8,4,8)		4.4		3.9		6.6		5.7
+(8,8,8)				4.4		6.6		6.6
+(16,8,4)	4.5		3.9		6.6		5.5
+(8,4,16)	4.8		4.2		7.5		6.0
+
+
+
+
+

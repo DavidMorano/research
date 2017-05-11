@@ -1,0 +1,138 @@
+This is TeX, Version 3.14159 (Web2C 7.4.5) (format=latex 2004.5.15)  17 MAY 2005 09:10
+**ilp
+(./ilp.tex
+LaTeX2e <2001/06/01>
+Babel <v3.7h> and hyphenation patterns for american, french, german, ngerman, n
+ohyphenation, loaded.
+(/usr/add-on/tetex/share/texmf/tex/latex/base/article.cls
+Document Class: article 2001/04/21 v1.4e Standard LaTeX document class
+(/usr/add-on/tetex/share/texmf/tex/latex/base/size10.clo
+File: size10.clo 2001/04/21 v1.4e Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@section=\count80
+\c@subsection=\count81
+\c@subsubsection=\count82
+\c@paragraph=\count83
+\c@subparagraph=\count84
+\c@figure=\count85
+\c@table=\count86
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+)
+(/usr/add-on/tetex/share/texmf/tex/generic/babel/babel.sty
+Package: babel 2001/03/01 v3.7h The Babel package
+
+(/usr/add-on/tetex/share/texmf/tex/generic/babel/english.ldf
+Language: english 2001/04/15 v3.3l English support from the babel system
+
+(/usr/add-on/tetex/share/texmf/tex/generic/babel/babel.def
+File: babel.def 2001/03/01 v3.7h Babel common definitions
+\babel@savecnt=\count87
+\U@D=\dimen103
+)
+\l@canadian = a dialect from \language\l@english 
+))
+(/usr/add-on/tetex/share/texmf/tex/latex/graphics/epsfig.sty
+Package: epsfig 1999/02/16 v1.7a (e)psfig emulation (SPQR)
+
+(/usr/add-on/tetex/share/texmf/tex/latex/graphics/graphicx.sty
+Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/add-on/tetex/share/texmf/tex/latex/graphics/keyval.sty
+Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
+\KV@toks@=\toks14
+)
+(/usr/add-on/tetex/share/texmf/tex/latex/graphics/graphics.sty
+Package: graphics 2001/07/07 v1.0n Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/add-on/tetex/share/texmf/tex/latex/graphics/trig.sty
+Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+)
+(/usr/add-on/tetex/share/texmf/tex/latex/config/graphics.cfg
+File: graphics.cfg 2001/08/31 v1.1 graphics configuration of teTeX/TeXLive
+)
+Package graphics Info: Driver file: dvips.def on input line 80.
+
+(/usr/add-on/tetex/share/texmf/tex/latex/graphics/dvips.def
+File: dvips.def 1999/02/16 v3.0i Driver-dependant file (DPC,SPQR)
+))
+\Gin@req@height=\dimen104
+\Gin@req@width=\dimen105
+)
+\epsfxsize=\dimen106
+\epsfysize=\dimen107
+) (./ilp.aux)
+\openout1 = `ilp.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 46.
+LaTeX Font Info:    ... okay on input line 46.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 46.
+LaTeX Font Info:    ... okay on input line 46.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 46.
+LaTeX Font Info:    ... okay on input line 46.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 46.
+LaTeX Font Info:    ... okay on input line 46.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 46.
+LaTeX Font Info:    ... okay on input line 46.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 46.
+LaTeX Font Info:    ... okay on input line 46.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <12> on input line 61.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 61.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 61.
+
+Underfull \vbox (badness 1577) has occurred while \output is active []
+
+ [1
+
+
+]
+Underfull \vbox (badness 5050) has occurred while \output is active []
+
+ [2]
+File: figure1.eps Graphic file (type eps)
+
+<figure1.eps>
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 383.
+
+ (/usr/add-on/tetex/share/texmf/tex/latex/base/omscmr.fd
+File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 383.
+ [3]
+File: figure2.eps Graphic file (type eps)
+
+<figure2.eps>
+File: figure3.eps Graphic file (type eps)
+ <figure3.eps> [4]
+File: figure4.eps Graphic file (type eps)
+ <figure4.eps> [5]
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 697.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 697.
+
+Underfull \vbox (badness 1609) has occurred while \output is active []
+
+
+Underfull \vbox (badness 5050) has occurred while \output is active []
+
+ [6]
+(./ilp.bbl [7]) [8
+
+] (./ilp.aux) ) 
+Here is how much of TeX's memory you used:
+ 912 strings out of 95847
+ 10908 string characters out of 1195216
+ 71724 words of memory out of 1000001
+ 3869 multiletter control sequences out of 10000+50000
+ 8577 words of font info for 30 fonts, out of 500000 for 1000
+ 14 hyphenation exceptions out of 1000
+ 32i,9n,23p,1030b,350s stack positions out of 1500i,500n,5000p,200000b,5000s
+
+Output written on ilp.dvi (8 pages, 50860 bytes).

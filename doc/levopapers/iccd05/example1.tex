@@ -1,0 +1,52 @@
+A simple execution example using time tags 
+is shown in Figure \ref{fig:example1}.
+%
+\begin{figure*}
+\centering
+\begin{tabular}{|l|l|l|l|l|l|}
+\hline
+TT&instruction&t1&t2&t3&t4\\
+\hline 
+\hline 
+0&r3 := 1&&&~~~~&\\
+&&r3=1&&&\\
+\hline 
+1&r4 := r3 + 1&&r3=1&&~~~~\\
+&&&r4=2&&\\
+\hline 
+2&r3 := 2&&&&~~~~\\
+&&&&r3=2&\\
+\hline 
+3&r5 := r3 + 2&&r3=1&&r3=2\\
+&&&r5=3&&r5=4\\
+\hline 
+\end{tabular}
+\caption{{\em Example Instruction Execution.} The time tags for sequential
+program instructions are on the left.  Real time is shown advancing
+along the top.  For each real time interval, input operands are shown
+above any output operands.}
+\label{fig:example1}
+\end{figure*}
+%
+In this example we show how register operands are created and
+snarfed in real time.
+Four instructions are listed along with the time tag (TT) assigned to them
+on the left.  Real time progresses to the right and time four periods
+are identified.  In time period \textit{t1}, the instruction with 
+TT=0 executes and creates its output operand \textit{r3}.
+This operand is forwarded to succeeding instructions in program
+ordered future time.  In time period \textit{t2}, instructions
+at TT=1 and TT=3 have snarfed this operand since it was one of
+their inputs and met the snarfing criteria.  
+These two instructions execute in parallel and
+create their output operands.  Of course, the output for
+instruction at TT=3 is incorrect but that can not be determined
+at this point in real time.  In time period \textit{t3},
+instruction at TT=2 executes creating its output operand.
+That operand gets forwarded and is snarfed by the instruction at
+TT=3 because it met the snarfing criteria.  That instruction
+re-executes as a result in time period \textit{t4}, thus
+creating its correct output.  All instructions are now ready
+for commitment with their correct outputs.
+%
+

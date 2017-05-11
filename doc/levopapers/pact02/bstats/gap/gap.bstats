@@ -1,0 +1,20 @@
+SimpleSim statistics 020319_0201:58
+statistics for job=gap logid=leviathan2114
+
+total instructions       599996883
+included instructions    100000000:   499996883
+branch paths              32739218
+instructions per BP           15.2721
+branch path statistics
+IPBP mean                     15.2721
+IPBP variance                374.5002
+IPBP stddev                   19.3520
+branch target-distance statistics
+IPBT mean                     50.1607
+IPBT variance               6604.9343
+IPBT stddev                   81.2707
+hammock branch target-distance statistics
+IPHT mean                     53.4780
+IPHT variance              17767.3164
+IPHT stddev                  133.2941
+SS hammocks                8927893 (27.27 percent)

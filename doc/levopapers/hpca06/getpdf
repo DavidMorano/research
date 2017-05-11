@@ -1,0 +1,13 @@
+#!/bin/ksh
+
+H=vinson
+D=ics05
+T=$1
+if [[ -z "${T}" ]] ; then
+  T=ilp
+fi
+
+
+scp -qp ${H}:doc/${D}/${T}.pdf . 
+
+

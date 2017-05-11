@@ -1,0 +1,55 @@
+We describe a microarchitecture oriented towards the
+parallel execution and re-execution of many instructions
+simultaneously.  In addition to breaking control
+dependencies, we also allow for data dependencies to be
+broken through the speculative execution of instructions
+with predicted source operands.  We have redefined the
+function of the reservation station, or an issue window
+instruction slot, providing additional state and logic that
+allows for an instruction dispatched to the station to both
+issue for execution when suitable source operands are
+available but also to re-issue subsequently when further or
+later source operands become available.  We call our
+adaptation of this enhanced reservation station an
+Issue Station.  Instructions dispatched to these
+stations remain associated with the station for the
+duration of the instruction's lifetime within the execution
+window of the machine (until the instruction is retired
+being either committed or abandoned).  New instructions are
+only dispatched to an Issue Station when the previously
+dispatched instruction to the station is retired.
+
+Rather than determine instruction dependencies at
+instruction issue, we dynamically determine instruction
+data dependencies as the instructions are executing (or
+re-executing).  We employ time ordering tags with both
+Issue Stations and all operands for data dependency
+management within the machine.  By using these time
+ordering tags, dispatched instructions are ordered with
+respect to each other and all active operands being
+transferred among machine components.  All operands are
+also tagged as they are transferred among the various
+machine components.  All instructions are dispatched
+in-order but are allowed to repeatedly issue out-of-order
+as conditions that might signal the need for an execution
+or re-execution occur.  All instructions are retired
+in-order.
+
+We present simulation data for the microarchitecture that
+focuses on exploring the dynamics of the machine operation
+associated with instruction execution, re-execution, and
+operand forwarding and acquisition.  The data presented
+serves to characterize the machine with varying numbers of
+different machine components configured.  As expected, the
+performance of the machine, as measured with Instructions
+Per Cycle (IPC), generally increases with increasing
+machine resources but also shows where an increase in the
+number of components do not improve performance for a given
+configuration, or may even decrease performance due to
+excessive contention for a resource.  IPC results for the
+SpecInt-2000 benchmark suite ranged from about 5.8 to about
+9.0 for a machine with the approximate hardware resources
+as a current superscalar machine.  For similar machine
+resources, we performed about 15% better than a similar
+proposed microarchitecture that shares some of our
+instruction and operand handling techniques.

@@ -1,0 +1,73 @@
+\documentclass[10pt,dvips]{article}
+\usepackage{epsfig}
+\usepackage{fancyheadings}
+%\usepackage{twocolumn}
+\usepackage{verbatim,moreverb,doublespace}
+\usepackage{rotate,lscape,dcolumn,array,rotating,latexsym}
+
+\topmargin=-0.6in
+\setlength{\oddsidemargin}{0.0 in}
+\setlength{\textheight}{9.0in}
+\setlength{\textwidth}{6.5in}
+%\renewcommand{\thepage}{2}
+\renewcommand{\baselinestretch}{1.0}
+
+\begin{document}
+
+\begin{landscape}
+\begin{table}
+\begin{tabular}{lllllll}
+I Window & Iteration 1 & Iteration n & Instruction & Operands & \multicolumn{1}{l}{Inputs/Output Memory Address (if any)}
+	& Outputs (Iter. 1) \\
+position & exec. time  & exec. time  &             &          &
+        &     \\   
+\hline  
+65 & 3	   & 3 NC &	addiu	& sp,sp,-80	& $<$sp=0x7fff2d00$>$	&				sp=0x7fff2cb0\\
+66 & (4),5 & 4 NC &	sd	& gp,0(sp) 	& $<$0x7fff2cb0$>$	$<$gp=0x1001c3fc,sp=0x7fff2cb0$>$ &	gp=0x1001c3fc\\
+67 & 5,7   & 5 NC &	addiu	& at,at,-26388	& $<$at=0x20000$>$				&	at=0x198ec\\
+68 & 6,8   & 6 NC &	addu	& gp,t9,at	& $<$at=0x198ec,	t9=0x10002b10,gp=0x1001c3fc$>$ &	gp=0x1001c3fc\\
+69 & 9     & 7    &	lw	& v1,-32508(gp) & $<$0x10014500$>$	$<$v1=0x0,gp=0x1001c3fc$>$	&	v1=0x100143f0\\
+70 & 10	   & 8 NC &	li	& a2,8		& $<$a2=0x1001c628$>$				&	a2=0x8\\
+72 & (11),12 & 9  &	lw	& a5,-32368(gp) & $<$0x1001458c$>$	$<$a5=0x5020,gp=0x1001c3fc$>$ &	a5=0x9\\
+71 & 12    & 10 NC(pred) &	bltz	& a0,$<$far away$>$	& $<$a0=0x20$>$ & \\
+& & & & & & \\
+73 & (3),(4),5 & 4    &	sd	& s0,24(sp) 	& $<$0x7fff2cc8$>$	$<$s0=0x20,sp=0x7fff2cb0$>$	&	s0=0x20\\
+74 & 3         & 3 NC &	lui	& s0,0x6	& $<$s0=0x20$>$				&	s0=0x60000\\
+75 & 5,12      & 5,11 &	andi	& a7,a5,0x7	& $<$a5=0x9,a7=0xbd69$>$			&	a7=0x1\\
+76 & (6),(7),8,(9),10 & 6,[7] NC &	lw	& a6,-32740(gp) & $<$0x10014418$>$	$<$a6=0x500020,gp=0x1001c3fc$>$ &	a6=0x10010000\\
+77 & (9),11    & 7    &	sd	& s6,40(sp) 	& $<$0x7fff2cd8$>$	$<$s6=0x500020,sp=0x7fff2cb0$>$ &	s6=0x500020\\
+78 & 10        & 8 NC &	ori	& s0,s0,0x51e1	& $<$s0=0x60000$>$				&	s0=0x651e1\\
+79 & 13        & 9,12 &	sllv	& at,a0,a7	& $<$at=0x198ec,a0=0x20,a7=0x1$>$		&	at=0x40\\
+80 & (14),15   & 10 NC &	lw	& a1,-32504(gp) & $<$0x10014504$>$	$<$a1=0x1,gp=0x1001c3fc$>$	&	a1=0x10014400\\
+\end{tabular}
+
+\caption{\textit{Sample code execution in Levo, from SPECint92-compress.}
+Trace obtained via {\tt dbx}; execution times determined by hand. Two 8-instruction
+sharing groups shown from Instruction Window column 3, each group
+has one Processing Element. `Iteration n' times are
+relative. `NC' - no change in
+instruction output from first iteration. `NC(pred)' - branch input has changed, but
+output predicate has not. `(\#)' - address calculation time. `[\#]' - no change in
+output.}
+\label{levoex}
+\end{table}
+
+An example of code execution in Levo is given in Table~\ref{levoex}. The code is from
+column 3 of the instruction window, so code execution begins at cycle 3 (window loading
+started at cycle 0). During the first iteration extra time is taken for multiple
+executions of the same instruction. However, this does not happen in subsequent iterations
+of the code.
+
+Note that although the iterations take several cycles to execute, similar
+execution patterns happen concurrently in Levo's other 30 sharing groups, so much ILP
+is realized. This is an example of typically {\it locally serial} but {\it globally
+parallel} code execution.
+
+Also note that in later iterations (`n') much of the code results are unchanged (`NC').
+Such instructions still take a cycle in order to obtain input operands over the
+register bus. Clearly, if the data paths are increased to allow more input operands
+to be fetched concurrently, iteration `n's would execute in much less time.
+\end{landscape}
+\end{document}
+
+

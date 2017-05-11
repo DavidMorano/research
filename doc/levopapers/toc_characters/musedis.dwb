@@ -1,0 +1,12 @@
+.G1
+frame ht 4 wid 4.5
+label top "memory def-use distribution"
+label left "percent" "memory" "reads" left .1
+label bot "def-use interval (in instructions)"
+coord x 0,300 y 0,100
+ticks left out from 0 to 100 by 10
+ticks right out from 0 to 100 by 10
+ticks bot out from 0 to 300 by 25
+draw solid dot
+copy "${MEANFILE}" thru X next at $1,($2 * 100) X
+.G2

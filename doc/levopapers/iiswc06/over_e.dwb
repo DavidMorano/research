@@ -1,0 +1,263 @@
+.G1
+graph Density
+frame ht 1.0 wid 2.5
+label top "access-use density" down .3
+label left "percent" "register" "reads" left .1
+label bot "access-use interval (in instructions)" up 0.05
+xmax = 40
+ymax = 50
+coord x 0,xmax y 0,ymax
+ticks left out from 0 to ymax by 10
+ticks bot out from 0 to xmax by 10
+define maxout X 
+  ytop = $2 * 100
+  if (ytop >= ymax) then { 
+    ytop = ymax 
+    delta at $1,ytop
+  }
+  next at $1,ytop
+X
+draw solid
+copy "${RINTDEN0}" thru maxout
+new solid
+copy "${RINTDEN1}" thru maxout
+new solid
+copy "${RINTDEN2}" thru maxout
+new solid
+copy "${RINTDEN3}" thru maxout
+new solid
+copy "${RINTDEN4}" thru maxout
+new solid
+copy "${RINTDEN5}" thru maxout
+new solid
+copy "${RINTDEN6}" thru maxout
+new solid
+copy "${RINTDEN7}" thru maxout
+new solid
+copy "${RINTDEN8}" thru maxout
+new solid
+copy "${RINTDEN9}" thru maxout
+graph Distribution with .Frame.w at Density.Frame.e +(0.5,0.0)
+frame ht 1.0 wid 2.5
+label top "access-use distribution" down .3
+label bot "access-use interval (in instructions)" up 0.05
+xmax = 40
+lmax = 30
+lax = 16
+lbx = 28
+lay = 60
+lby = 60
+define lista X 
+  "$1" ljust at lax,lay
+  lay = lay - 12
+X
+define listb X 
+  "$1" ljust at lbx,lby
+  lby = lby - 12
+X
+define labeler X 
+  if ($2 < lmax) then {
+    "$1" size -2 at $2,($3 * 100)
+  }
+X
+coord x 0,xmax y 0,100
+ticks left out from 0 to 100 by 20
+ticks bot out from 0 to xmax by 10
+draw solid
+copy "${RINTDIS0}" thru X next at $1,($2 * 100) X
+new solid
+copy "${RINTDIS1}" thru X next at $1,($2 * 100) X
+new solid
+copy "${RINTDIS2}" thru X next at $1,($2 * 100) X
+new solid
+copy "${RINTDIS3}" thru X next at $1,($2 * 100) X
+new solid
+copy "${RINTDIS4}" thru X next at $1,($2 * 100) X
+new solid
+copy "${RINTDIS5}" thru X next at $1,($2 * 100) X
+new solid
+copy "${RINTDIS6}" thru X next at $1,($2 * 100) X
+new solid
+copy "${RINTDIS7}" thru X next at $1,($2 * 100) X
+new solid
+copy "${RINTDIS8}" thru X next at $1,($2 * 100) X
+new solid
+copy "${RINTDIS9}" thru X next at $1,($2 * 100) X
+copy "list-a" thru lista
+copy "list-b" thru listb
+copy "${RINTLABELS}" thru labeler
+graph Density with .Frame.n at Density.Frame.s -(0.0,0.7)
+frame ht 1.0 wid 2.5
+label top "useful-lifetime density" down .3
+label left "percent" "register" "writes" left .1
+label bot "useful-lifetime interval (in instructions)" up 0.05
+xmax = 40
+ymax = 50
+coord x 0,xmax y 0,ymax
+ticks left out from 0 to ymax by 10
+ticks bot out from 0 to xmax by 10
+define maxout X 
+  ytop = $2 * 100
+  if (ytop >= ymax) then { 
+    ytop = ymax 
+    delta at $1,ytop
+  }
+  next at $1,ytop
+X
+draw solid
+copy "${LIFEDEN0}" thru maxout
+new solid
+copy "${LIFEDEN1}" thru maxout
+new solid
+copy "${LIFEDEN2}" thru maxout
+new solid
+copy "${LIFEDEN3}" thru maxout
+new solid
+copy "${LIFEDEN4}" thru maxout
+new solid
+copy "${LIFEDEN5}" thru maxout
+new solid
+copy "${LIFEDEN6}" thru maxout
+new solid
+copy "${LIFEDEN7}" thru maxout
+new solid
+copy "${LIFEDEN8}" thru maxout
+new solid
+copy "${LIFEDEN9}" thru maxout
+graph Distribution with .Frame.w at Density.Frame.e +(0.5,0.0)
+frame ht 1.0 wid 2.5
+label top "useful-lifetime distribution" down .3
+label bot "useful-lifetime interval (in instructions)" up 0.05
+xmax = 40
+lmax = 30
+lax = 16
+lbx = 28
+lay = 60
+lby = 60
+define lista X 
+  "$1" ljust at lax,lay
+  lay = lay - 12
+X
+define listb X 
+  "$1" ljust at lbx,lby
+  lby = lby - 12
+X
+define labeler X 
+  if ($2 < lmax) then {
+    "$1" size -2 at $2,($3 * 100)
+  }
+X
+coord x 0,xmax y 0,100
+ticks left out from 0 to 100 by 20
+ticks bot out from 0 to xmax by 10
+draw solid
+copy "${LIFEDIS0}" thru X next at $1,($2 * 100) X
+new solid
+copy "${LIFEDIS1}" thru X next at $1,($2 * 100) X
+new solid
+copy "${LIFEDIS2}" thru X next at $1,($2 * 100) X
+new solid
+copy "${LIFEDIS3}" thru X next at $1,($2 * 100) X
+new solid
+copy "${LIFEDIS4}" thru X next at $1,($2 * 100) X
+new solid
+copy "${LIFEDIS5}" thru X next at $1,($2 * 100) X
+new solid
+copy "${LIFEDIS6}" thru X next at $1,($2 * 100) X
+new solid
+copy "${LIFEDIS7}" thru X next at $1,($2 * 100) X
+new solid
+copy "${LIFEDIS8}" thru X next at $1,($2 * 100) X
+new solid
+copy "${LIFEDIS9}" thru X next at $1,($2 * 100) X
+copy "list-a" thru lista
+copy "list-b" thru listb
+copy "${LIFELABELS}" thru labeler
+graph Density with .Frame.n at Density.Frame.s -(0.0,0.7)
+frame ht 1.0 wid 2.5
+label top "def-use density" down .3
+label left "percent" "register" "reads" left .1
+label bot "def-use interval (in instructions)" up 0.05
+xmax = 40
+ymax = 50
+coord x 0,xmax y 0,ymax
+ticks left out from 0 to ymax by 10
+ticks bot out from 0 to xmax by 10
+define maxout X 
+  ytop = $2 * 100
+  if (ytop >= ymax) then { 
+    ytop = ymax 
+    delta at $1,ytop
+  }
+  next at $1,ytop
+X
+draw solid
+copy "${USEDEN0}" thru maxout
+new solid
+copy "${USEDEN1}" thru maxout
+new solid
+copy "${USEDEN2}" thru maxout
+new solid
+copy "${USEDEN3}" thru maxout
+new solid
+copy "${USEDEN4}" thru maxout
+new solid
+copy "${USEDEN5}" thru maxout
+new solid
+copy "${USEDEN6}" thru maxout
+new solid
+copy "${USEDEN7}" thru maxout
+new solid
+copy "${USEDEN8}" thru maxout
+new solid
+copy "${USEDEN9}" thru maxout
+graph Distribution with .Frame.w at Density.Frame.e +(0.5,0.0)
+frame ht 1.0 wid 2.5
+label top "def-use distribution" down .3
+label bot "def-use interval (in instructions)" up 0.05
+xmax = 40
+lmax = 30
+lax = 16
+lbx = 28
+lay = 60
+lby = 60
+define lista X 
+  "$1" ljust at lax,lay
+  lay = lay - 12
+X
+define listb X 
+  "$1" ljust at lbx,lby
+  lby = lby - 12
+X
+define labeler X 
+  if ($2 < lmax) then {
+    "$1" size -2 at $2,($3 * 100)
+  }
+X
+coord x 0,xmax y 0,100
+ticks left out from 0 to 100 by 20
+ticks bot out from 0 to xmax by 10
+draw solid
+copy "${USEDIS0}" thru X next at $1,($2 * 100) X
+new solid
+copy "${USEDIS1}" thru X next at $1,($2 * 100) X
+new solid
+copy "${USEDIS2}" thru X next at $1,($2 * 100) X
+new solid
+copy "${USEDIS3}" thru X next at $1,($2 * 100) X
+new solid
+copy "${USEDIS4}" thru X next at $1,($2 * 100) X
+new solid
+copy "${USEDIS5}" thru X next at $1,($2 * 100) X
+new solid
+copy "${USEDIS6}" thru X next at $1,($2 * 100) X
+new solid
+copy "${USEDIS7}" thru X next at $1,($2 * 100) X
+new solid
+copy "${USEDIS8}" thru X next at $1,($2 * 100) X
+new solid
+copy "${USEDIS9}" thru X next at $1,($2 * 100) X
+copy "list-a" thru lista
+copy "list-b" thru listb
+copy "${USELABELS}" thru labeler
+.G2

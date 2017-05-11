@@ -1,0 +1,125 @@
+Comments on Dec 19 draft  "Levo -- A Scalable Processor With High IPC"
+
+
+The whole the paper still seemed very good.  Frankly, compared to all
+of the various other papers that have been published in the last year
+and a half or so on the topic of large-window-superscalars, it seems
+like this is at least as good a contribution as any of them.  Also, I
+think that all or most all of any related work has been cited,
+so at least those people can't complain that you didn't recognize their
+work.  (Although I lavishly recognized the prior similar work of
+Franklin and Sohi in the ISPASS submission, that seemed to backfire a
+bit ! -- who can figure).
+
+Anyway, here are my (very few) individual comments :
+
+= page 2, sec 1, last par, sen 2
+
+context:	Other issues are addressed in Section 2.
+suggestion:	Other implementation issues are ...
+
+
+= page 4 (top), sec 2.2, last sen
+
+context:	latter can increase the size ...
+
+As I read this, I first thought of size referring to the number of
+registers in the file.  Of course you mean the physical implementation
+size of the file.  You might rephrase to something like :
+
+		latter can increase the physical implementation size ...
+
+
+= page 4, sec 3, 2nd par, last sen on page
+
+context:	from earlier in the E-window ...
+suggestion:	from earlier store instructions in the E-window
+
+
+= page 5, sec 3, 1st on page, sen 2
+
+context:	each one typically a column long
+
+This is OK, and you also clarify later that the span is not fixed to
+a column height, but it might sound to the reader at this point in the
+paper that a column height is too long and therefor not scalable.
+Maybe I'm overly paranoid of reader's reactions here but you might consider :
+
+	each one typically a column or less long in length.
+
+
+= page 5, sec 3, par 3 on page, sen 1
+
+context:	holds nm Active Stations
+
+Although 'n' and 'm' were previously introduced, is this clear enough
+to the read that you mean multiplication here ?  Maybe something like
+'n*m' might be clearer at this point.  This is just my own hangup and
+may not be that of a reader ! :-)
+
+
+= page 5, sec 3, sen 1
+
+context:	Levo's microarchitecture should be alterable, ...
+suggestion:	Levo's microarchitecture is alterable, ...
+
+I am not aware of any ISA that could not be implemented in a Levo-style
+machine.  Even things like EPIC (which seem to be somewhat in conflict
+with its own ISA-visible predicates) is handled in a straightforward way.
+Even i86 with its implied register operands can be handled.  It's a
+judgment call as to what might appear to be arrogance or not on our
+part, but my first reaction is that the reader may assume that we 
+do not know if Levo can apply or not to some ISAs (a sign of weakness
+on our part).  Anyway, you can decide which way you want to focus the
+reader here.
+
+
+= page 7, last par, last sen on page
+
+context:	only tagged memory references, required the use of ...
+
+I think that you want to remove the comma here.  It didn't seem to
+read properly with that in there.  Maybe I just missed the cadence of
+the whole sentence though.
+
+
+= page 13, sec 3.3.2, par 1, sen 2
+
+context:	DEE requires the most ...
+
+I think that you mean :
+
+		DEE requires that most likely instructions to be ...
+
+Please read the whole sentence there to fix it up properly.
+
+
+= page 23, 2nd par on page, sen 2
+
+context:	We find it best to eliminate the issue ; ...
+
+:-) :-)  Oh, I liked it ! :-)  I say, keep this in !  I hope that
+someone too sensitive (whatever) is not offended at your directness here,
+but I say keep it in ! :-)
+
+In general, I think that you have done a good job of addressing the
+merits of some of the recent ideas and approaches to the register file
+problem and its access.  This sounds compelling to me but I know now
+(through some student experience) that reviewers will still find ways
+to try to hack the paper !
+
+
+= page 25, top sen on page
+
+context:	It gave an IPC of 1.96 ...
+
+As I remember, this was a harmonic mean across all benchmarks.
+To avoid confusion to the reader, you might want to say something like :
+
+	It gave a harmonic mean of 1.96 across all benchmarks, ...
+
+If you want to also include the arithmetic mean, it was 2.07.
+
+
+
+

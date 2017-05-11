@@ -1,0 +1,135 @@
+This is TeX, Version 3.14159 (C version 6.1) (format=lplain 98.6.15)  21 DEC 2001 16:39
+**tt1.tex
+(tt1.tex
+LaTeX2e <1996/12/01> patch level 1
+Babel <v3.6h> and hyphenation patterns for american, catalan, german, spanish, 
+loaded.
+(/usr/local/Soft/Latex/texmf/tex/latex/base/article.cls
+Document Class: article 1996/10/31 v1.3u Standard LaTeX document class
+(/usr/local/Soft/Latex/texmf/tex/latex/base/size10.clo
+File: size10.clo 1996/10/31 v1.3u Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@section=\count80
+\c@subsection=\count81
+\c@subsubsection=\count82
+\c@paragraph=\count83
+\c@subparagraph=\count84
+\c@figure=\count85
+\c@table=\count86
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+)
+(/usr/local/Soft/Latex/texmf/tex/generic/babel/babel.sty
+Package: babel 1997/01/23 v3.6h The Babel package
+
+(/usr/local/Soft/Latex/texmf/tex/generic/babel/english.ldf
+File: english.ldf 1996/12/23 v3.3h English support from the babel system
+
+(/usr/local/Soft/Latex/texmf/tex/generic/babel/babel.def
+File: babel.def 1997/01/23 v3.6h Babel common definitions
+\babel@savecnt=\count87
+\U@D=\dimen103
+)))
+(/usr/local/Soft/Latex/texmf/tex/latex/graphics/epsfig.sty
+Package: epsfig 1996/10/04 v1.7 (e)psfig emulation (SPQR)
+
+(/usr/local/Soft/Latex/texmf/tex/latex/graphics/graphicx.sty
+Package: graphicx 1996/10/31 v1.0c Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/Soft/Latex/texmf/tex/latex/graphics/keyval.sty
+Package: keyval 1995/09/21 v1.09 key=value parser (DPC)
+)
+(/usr/local/Soft/Latex/texmf/tex/latex/graphics/graphics.sty
+Package: graphics 1996/10/31 v1.0c Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/Soft/Latex/texmf/tex/latex/graphics/trig.sty
+Package: trig 1994/10/16 v1.08 sin cos tan (DPC)
+)
+(/usr/local/Soft/Latex/texmf/tex/latex/config/graphics.cfg)
+Package graphics Info: Driver file: dvips.def on input line 82.
+
+(/usr/local/Soft/Latex/texmf/tex/latex/graphics/dvips.def
+File: dvips.def 1996/12/12 v3.0d Driver-dependant file (DPC,SPQR)
+))
+\Gin@req@height=\dimen104
+\Gin@req@width=\dimen105
+)
+\epsfxsize=\dimen106
+\epsfysize=\dimen107
+) (tt1.aux)
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <12> on input line 47.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 47.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 47.
+
+Underfull \hbox (badness 10000) in paragraph at lines 124--124
+[]\OT1/cmr/bx/n/14.4 Distributed Mi-croar-chi-tec-
+ []
+
+
+Underfull \hbox (badness 3838) in paragraph at lines 137--137
+[]\OT1/cmr/bx/n/12 Active Sta-tions and Ex-e-cu-tion
+ []
+
+[1
+
+
+]
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 215.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 215.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 246.
+
+ (/usr/local/Soft/Latex/texmf/tex/latex/base/omscmr.fd
+File: omscmr.fd 1997/01/14 v2.5a Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 246.
+File: source.eps Graphic file (type eps)
+ <source.eps>
+[2]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [3]
+Underfull \hbox (badness 1038) in paragraph at lines 380--466
+\OT1/cmr/m/n/10 We re-port execution-driven sim-u-la-tion re-sults for
+ []
+
+(tt1.bbl
+Underfull \hbox (badness 8075) in paragraph at lines 24--27
+[]\OT1/cmr/m/n/9 Palacharla S., Jouppi N.P. and Smith J.E.
+ []
+
+
+Underfull \hbox (badness 2762) in paragraph at lines 24--27
+\OT1/cmr/m/n/9 Complexity-effective su-per-scalar pro-ces-sors.  In
+ []
+
+) [4] (tt1.aux) ) 
+Here is how much of TeX's memory you used:
+ 860 strings out of 10868
+ 9119 string characters out of 71591
+ 64446 words of memory out of 262141
+ 3737 multiletter control sequences out of 9500
+ 9097 words of font info for 32 fonts, out of 150000 for 255
+ 40 hyphenation exceptions out of 607
+ 32i,8n,23p,365b,292s stack positions out of 300i,40n,60p,3000b,4000s
+
+Output written on tt1.dvi (4 pages, 28580 bytes).

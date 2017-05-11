@@ -1,0 +1,36 @@
+Title: Realizing High IPC Through a Scalable Memory-Latency Tolerant
+Multipath Microarchitecture
+
+Authors:
+
+D. Morano, A. Khalafi, D.R. Kaeli
+Northeastern University
+akhalafi,dmorano,kaeli@ece.neu.edu
+   
+A.K. Uht 
+University of Rhode Island
+uht@ele.uri.edu
+
+Contact author: David Kaeli (kaeli@ece.neu.edu)
+
+Abstract:
+
+A microarchitecture is described that achieves high execution
+performance through high IPC on conventional single-threaded program
+codes without compiler assistance.  To obtain high IPC 
+for inherently sequential (e.g., SPECint2000 programs),
+a large number of instructions must be in flight simulateously.   
+However, several problems are associated with
+such microarchitectures, including scalability, issues related to
+control flow, and memory latency.
+
+Our design investigates how best to utilize a large mesh of processing
+elements in order to execute a single-threaded program.  
+We present a basic overview of our microarchitecture and discuss how it
+addresses scalability as we attempt to execute many instructions in
+parallel.  We also show how spawn disjoint execution 
+paths to limit the
+performance penalties associated with erratic control flow.  We provide
+simulation results for several geometries of our microarchitecture
+illustrating a range of design tradeoffs.  We particularly focus on 
+the tolerance of our microarchitecture to high memory latency.

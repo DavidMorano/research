@@ -1,0 +1,85 @@
+Here are the transistor estimates for the value predictor.
+
+This is a source operand predictor that predicts up to two source
+operands per instruction lookup.  Lookups occur at the time the
+instruction is dispatched into the e-window (loaded into a free AS).
+One predictor per row allows an entire column to be predicted and
+dispatched simultaneously.
+
+The MIPS-1 ISA requires up to five source operands to cover all types
+of instructions but in an integer program mix, usually only the first
+two operands are used.  I also experimented with a 5-source-operand
+predictor but it was not a good use of transistors (way too big) and
+did not produce significantly different accuracies for our program
+mix.
+
+This predictor size in transistors:
+
++ operands per lookup	2
++ stride state field	8-bits
++ operand size		32-bit
+
+			transistors	total transistors for a
+size in entries		per predictor	32-row machine
+
+8 			9536 		305152
+16 			17088 		546816
+32			32080 		1026560
+64			61824 		1978368
+128			120816 		3866112
+256			237792 		7609344
+512			469712 		15030784
+1024			929472 		29743104
+2048			1840816		58906112
+4096			3647136 	116708352
+8192			7227024 	231264768
+
+I assumed 8 transistors per storage bit.  The space for the value (and
+I think also the branch) predictor is mostly just the bits.  For these
+relatively small sized predictors (below approximately 256 or 512) the
+accuracies are fairly low.  Unfortunately, since a VP stores actual
+values, it has the size characteristics of a memory cache !
+
+As expected, different programs have significantly different amounts of
+predictable source operand values.  We need to try and balance the
+amount of transistors that we want to budget to the value predictor
+(multiplied by the number of rows) with a modest prediction accuracy.
+
+
+Prediction accuracies (in percent, rounded to one decimal place)
+
+machine size:	8-4-8 (32 rows)
+
+		predictor table entries
+program		16	32	64	128	256	512	1024	2048
+
+bzip2		6.2	11.4	16.0	20.9	27.0	31.6	34.4	38.5
+compress	0.1	0.3	1.0	2.9	8.9	18.3	28.5	28.5
+crafty		0.5	0.8	1.1	1.5	1.9	2.9	4.6	7.4
+gcc		13.1	16.1	18.4	21.5	22.9	24.5	26.5	29.1
+go		0.5	0.7	1.2	2.0	3.3	4.8	6.8	9.4
+gzip		2.1	4.4	7.4	10.9	15.3	22.9	27.3	33.8
+ijpeg		2.5	2.8	4.7	8.4	16.1	18.0	21.2	24.3
+mcf		2.0	3.6	8.6	11.2	15.7	22.4	31.5	40.5
+parser		1.2	8.3	17.3	24.3	28.6	22.4	28.5	42.8
+vortex		9.6	9.6	9.8	10.2	10.9	12.3	15.7	18.8
+
+
+		predictor table entries
+program		4096	8192
+
+bzip2		40.1	40.1
+compress	28.5	28.5
+crafty		12.0	18.7
+gcc		32.6	36.6
+go		12.8	16.6
+gzip		35.5	35.5
+ijpeg		25.9	27.2
+mcf		49.1	53.9
+parser		46.4	48.6
+vortex		22.6	27.1
+
+
+
+
+Dave M.

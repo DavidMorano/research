@@ -1,0 +1,14 @@
+Date: Wed, 12 Jun 2002 16:30:01 -0400
+From: "Augustus (Gus) K. Uht" <uht@ele.uri.edu>
+To: Alireza Khalafi <akhalafi@ece.neu.edu>
+CC: David Morano <morano@computer.org>
+Subject: Bus delay for cache access
+
+Hi Ali,
+	Please refresh my memory: did it make a big difference going from
+a bus delay of 1 cycle for L1D cache accesses (plus the 1 cycle cache
+access time) to 0 cycles (plus the 1 cycle L1D cache access time), 
+for the IDEAL F/M case? What delay are you 
+currently using for that bus delay?
+	Thanks.
+							----Gus

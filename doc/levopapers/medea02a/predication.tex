@@ -1,0 +1,42 @@
+
+Also employed within the execution window is a scheme to
+dynamically predicate, at execution time, 
+all instructions that have been loaded
+into active stations.  
+This predication scheme essentially provides for each loaded instruction
+an \textit{execution predicate}.  These execution predicates
+are just a single bit (like with explicit architectural predication)
+but are maintained and calculated within the microarchitecture
+itself and are thus not visible at the ISA level of abstraction.
+When the value of the execution predicate is \textit{TRUE}, the
+instruction is enabled to execute and possibly become a part
+of the final committed state of the executing program.
+When the execution predicate is \textit{FALSE}, the
+corresponding instruction is disabled (or not enabled) to
+become a part of the committed state of the program.
+Switches between being enabled and disabled can and do
+occur as the speculative outcomes of previous (in program order)
+conditional branches change.
+These predicates are handled very similarly (possibly as expected)
+to register operands that flow from previous program ordered
+instructions to later program ordered instructions.
+These predicate values and are rightfully control-flow operands
+just as the machine registers form data-flow operands.
+All instructions acquire input source predicate values (possibly
+more than just one) and calculate their execution predicate
+from the possible inputs.
+Conditional branches are the primary instructions that
+cause predicate value changes but our present scheme (and likely
+most any scheme -- we have explored to some extent three schemes so far) 
+is more complex than that just having conditional branch instructions
+manipulate the predicate operand value flow.
+In addition to conditional branches,
+the first control-independent instructions after their
+corresponding branches also participate in the calculation
+of predicate values.  
+Of course, any execution-time predication scheme needs to
+handle any combination of control-flow that may possibly occur
+and this is not an entirely trivial matter.
+A full discussion of the execution-time predication scheme
+is beyond the scope of this present paper.
+

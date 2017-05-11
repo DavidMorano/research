@@ -1,0 +1,770 @@
+Hi all,
+
+Here's the plan for MICRO. I have tried to take all of your comments
+into account. (Please note that one BIG hole left concerns the
+benchmarks; Dave M. and Ali are currently thrashing through this one.
+[Dave K., Dave M. informs me that the problem is not benchmarks per se
+but the homebrew tools used to generate the traces for them, for the
+MIPS machine. Thus, it's not SPECint or something else, it's MIPS vs.
+something else (say Alpha).] I strongly oppose moving to a new ISA at
+this point. I think it's opening a big can of worms. I believe Dave K.
+agrees with me on this. Thus, the thrust is to devise methods to get
+the bugs out of the tools real fast. Dave M. and Ali are coming (have
+come) up with a plan to address this.)
+
+First, the big picture. The paper will have the following
+topics/contents:
+
+- supremely clear, concise, illuminating description of Levo microarchitecture
+with example.
+
+- more benchmark results (see above)
+
+- basic characterization of Levo wrt geometry (w-x-y-z)
+
+1) concentrate on machine geometries realizable in, say, 5 years
+(that's
+likely to be something(s) around 8-8-8-8) for other
+characterization data
+
+2) perform profiling as needed to explain the results and
+generate directions
+for further IPC gains
+
+Summary: tell what Levo is, how well it works, and why it works that well.
+
+- We need to be able to completely justify our results. This
+requires both
+the explanatory simulations mentioned above, as well as
+real subsidiary components (like the memory system).
+WRT the latter, we must be able to argue and
+demonstrate that Levo can operate at high frequencies
+with large main memory and L2 latencies. Part of this
+comes from the regular simulations above, once the
+memory parameters are determined to model real
+application hit rates, etc., and part of it comes from
+a high-level layout with analysis.
+
+Deadlines:
+Paper due: Monday June 10, 2002
+W/extension: Monday June 17, 2002
+
+No info yet on paper length. Presumably the usual. PDF.
+
+Our general schedule: from today, 4/9/2002, that's about 10 weeks to get it all
+done. ALL data taking for the paper will CEASE 2.5 to 3 
+weeks before the due date. The paper will be ready for our own external 
+reviews 2 weeks before the due date. 
+
+Status reports: Tues. 2 PM and Fri. 2 PM, every week, starting with Fri.
+4/12/2002. No more than half a page. (Same as before.)
+
+>>>>>>>>>>>>>>>>
+Detailed schedule for MICRO; these are DUE dates unless specified otherwise:
+
+4/11 - Dave M. and Ali come up with strategy for debugging, quickly, benchmark
+tracing tools for MIPS ISA (our standard one).
+
+4/18 - Bar chart determination method completed or abandoned. - Ali and Dave K.
+
+4/25 - Five NEW SPECint 2000 benchmarks compiled and simulation debugged. 
+- Dave M. and Ali
+
+4/25 - D-path profiling completed, on existing 5 benchmarks. - Ali
+
+4/25 - High level layout completed (with long line problem addressed). - Gus.
+
+5/2  - D-path profiling completed, on remaining 5 benchmarks. - Ali
+
+5/2  - Improved data value speculation method designed. - Ali and Dave M.
+
+5/2  - Levo description and example sketched out. - Gus.
+
+5/9  - D-path and related I-fetch mods designed and implemented in
+FastLevo. - Ali
+
+5/9  - Other I-fetch mods (Marcos's) implemented in FastLevo. - Ali
+
+5/9  - Improved data value speculation method implemented. - Dave M.
+
+5/9  - Memory latency justification completed. - Dave M.
+
+5/9  - First pass simulations for final IPC determination begun. Ali and Dave M.
+
+5/13 - First draft of Levo description and example completed. - Gus.
+
+5/16 - First pass experiments for final IPC determination finished. Ali
+and Dave M.
+
+5/16 - Simplescalar baseline measurements finished. Ali and Dave M.
+
+5/21 - First draft of complete paper written, sans last pass experiments. - Gus
+
+5/27 - Last pass experiments completed, including analysis. - Ali and Dave M.
+
+5/27 - Internal reviews of first draft completed. - Ali, Dave M. and Dave K.
+
+6/3  - Second complete draft of paper written, incorporating last experiments; 
+sent out to our external reviewers today. - Gus
+
+6/7  - Our external reviews in. 
+
+6/11 - External comments addressed. - Gus, with guidance from rest of gang.
+
+6/14 - Ali, Dave M. and Dave K. final comments in.
+
+6/16 - FINAL version of paper completed by Gus.
+
+6/17 - Paper deadline. Final edits by Gus and Dave K.
+
+
+
+Subject: MICRO paper
+Date: Fri, 05 Apr 2002 10:59:44 -0500
+From: "Augustus (Gus) K. Uht" <uht@ele.uri.edu>
+Organization: University of Rhode Island
+To: Alireza Khalafi <akhalafi@ece.neu.edu>, 
+	David Morano <morano@computer.org>
+CC: David Kaeli <kaeli@ece.neu.edu>
+
+Hi all.
+
+First, I suggest you both take a couple of days off, if you haven't 
+already, to recharge your batteries and celebrate getting the PACT 
+paper off.
+
+Second, we've decided to bag the MASCOTS paper in order to concentrate on
+the MICRO paper.
+
+Third, we are soliciting your input on what you would like to see in the
+MICRO paper, and what you would like to work on for it.
+
+Fourth, Dave K. and I have slightly diverging views on what to do
+(as usual :-), but I think we are basically in agreement on the big
+picture.
+
+Fifth, some of the things Dave K. and I want to see in the MICRO paper
+are:
+
+- BIGGY:
+a better description of the Levo microarchitecture, with an extensive,
+clear example.
+
+- Dave would like to see his bar chart measured. Any suggestions on how
+to do it would be appreciated.
+
+- We need to address the Instuction loading long line issue.
+
+- We need more explanatory data, including what I have been asking for
+for months: characteristics of DEE taken branches
+
+- We need to more rigorously justify the memory latency data. Conventional
+wisdom says the SPEC benchmarks do not stress the memory as much as
+real applications. Is this true? Can we normalize Levo/SPEC to
+Levo/ real applications via something like smaller caches? We need 
+cache miss rate data for both real and SPEC apps (I know we have some of
+the latter); we also need the absolute values of the hits/misses to
+each level of the hierarchy.
+
+- BIGGY: we need more benchmarks. Five more SPECint2000's, at least.
+
+- BIGGY: we have to get the IPC up. I know Ali has some thoughts on this,
+as may you, Dave. This is an opportunity to be creative and solve real
+performance problems; potentially real good part of your theses.
+
+- I fetch enhancements in general, e.g., implementing some of Marcos's
+work. Possibly use DEE in I-fetch (Dave K., for one, mentioned this
+a long time ago). Figure out a way of reducing the ill effects of
+flushes.
+
+- Need to get a good baseline measurement.
+
+----------
+
+I have personally committed myself to the description, example, Instr. long
+line and rough layout issues. (The latter two go together.)
+
+And your thoughts are????? Please try to respond by the end of today
+(Friday).
+
+Once I have everyone's input, I will put together a rough schedule,
+and we will proceed roughly in the way we did for PACT. Although we 
+have more time for MICRO ('til mid-June), we have an aweful lot to
+do, so it's still full speed and effort ahead.
+
+Until I get the rough schedule together (Mon. or Tues., next week),
+I'm sure you know of lots that you were doing that needs more work.
+
+Let's keep the big MO(mentum) going!
+
+----Gus
+
+
+
+
+
+
+
+
+bject: 
+Re: MICRO paper
+Date: 
+Fri, 5 Apr 2002 17:11:02 -0500 (EST)
+From: 
+Alireza Khalafi <akhalafi@ECE.NEU.EDU>
+To: 
+"Augustus (Gus) K. Uht" <uht@ele.uri.edu>
+CC: 
+David Morano <morano@computer.org>, David Kaeli <kaeli@ECE.NEU.EDU>
+
+
+
+
+Prof. Uht,
+
+Some general comments on what path we could take for MACRO.
+
+- I like to get all the profile data for D-path analysis as the first
+step.  I am hoping this will also help us to come up with ways to improve 
+the performance of the D-scheme.
+
+- Regarding memory, we already have a relatively complex memory.  I don't
+know if we want to make any major modification to what we already have.  
+
+- Looking at the comments on earlier paper, I think we need to spend most
+of the paper on describing the microarchitectur and limit our presentation 
+to only the major data(IPC vs. Configs). Including sensitivity data for
+many parameters opens us into more criticism.  We need to show why Levo
+does so good.  I think the profiling data should show this and that is why
+I like to focus on those first.  The MICRO paper is probably going to be
+our first published paper and I suggest we spend more time on explaining 
+how it works rather than looking how its performance changes with varying
+different paramters.
+
+see other comments below,
+
+> - Dave would like to see his bar chart measured. Any suggestions on how
+> to do it would be appreciated.
+
+This is rather hard.  Basically because everything runs in parallel.  So
+memory latency of one instruction can be covered by the execution of the
+other one.  We can measure the individual delays but we cannot just add
+them up.   
+
+> - We need to address the Instuction loading long line issue.
+> 
+> - We need more explanatory data, including what I have been asking for
+> for months: characteristics of DEE taken branches
+
+Agreed and it is the first priority.
+
+> 
+> - We need to more rigorously justify the memory latency data. Conventional
+> wisdom says the SPEC benchmarks do not stress the memory as much as
+> real applications. Is this true? Can we normalize Levo/SPEC to
+> Levo/ real applications via something like smaller caches? We need 
+> cache miss rate data for both real and SPEC apps (I know we have some of
+> the latter); we also need the absolute values of the hits/misses to
+> each level of the hierarchy.
+> 
+> - BIGGY: we need more benchmarks. Five more SPECint2000's, at least.
+>
+> - BIGGY: we have to get the IPC up. I know Ali has some thoughts on this,
+> as may you, Dave. This is an opportunity to be creative and solve real
+> performance problems; potentially real good part of your theses.
+
+I have some ideas but I like to look at the profiles before I decide what
+is the best way.
+
+> - I fetch enhancements in general, e.g., implementing some of Marcos's
+> work. Possibly use DEE in I-fetch (Dave K., for one, mentioned this
+> a long time ago). Figure out a way of reducing the ill effects of
+> flushes.
+
+Does this mean using dynamic fetch?  The effect of flushes can be reduced
+by using the Dynamic-D (different instruction from ML) but I don't know if
+this is an option or not.  It certainly complicates the fetch but maybe we
+can use a limited amount of Dynamic-D for only handling the
+"far" branches.
+
+> - Need to get a good baseline measurement.
+
+SS is probably the best option.  We just need to define what is the
+baseline.
+
+Thank you 
+Alireza
+
+
+Thanks for your comments, Ali, they all sound good to me.
+
+----Gus
+
+
+
+Subject: Re: MICRO paper
+Date: Sat, 06 Apr 2002 10:08:14 -0500
+From: "Augustus (Gus) K. Uht" <uht@ele.uri.edu>
+Organization: University of Rhode Island
+To: dmorano@ece.neu.edu
+CC: "Professor D. Kaeli" <dkaeli@ac.upc.es>, 
+	Alireza Khalafi <akhalafi@ece.neu.edu>
+References: 1
+
+Hi Dave,
+
+David Morano wrote:
+> 
+> Hi all,
+> 
+> > And your thoughts are?????
+> 
+> > - We need to address the Instruction loading long line issue.
+> 
+> Maybe in an actual silicon layout, the i-fetch and instruction load
+> buffer can be placed in the center of the execution window (instead of
+> on one side) to cut the distance in half to the far edges.  Also, who
+> says that the current load buffer has to be over alongside the i-fetch
+> unit.  Maybe registers holding the next instructions to transfer to the
+> ASes can also be dispersed throughout the execution window.  These
+> registers can serve to pipeline some of the time needed for decoded
+> instructions to migrate from i-fetch to the ASes that might be the
+> farthest out from it.  I can provide more details if this isn't clear
+> enough already.
+
+Fine, I'll take it into account as needed as I work on the layout.
+
+> > - We need to more rigorously justify the memory latency data. Conventional
+> > wisdom says the SPEC benchmarks do not stress the memory as much as
+> > real applications. Is this true? Can we normalize Levo/SPEC to
+> > Levo/ real applications via something like smaller caches? We need
+> > cache miss rate data for both real and SPEC apps (I know we have some of
+> > the latter); we also need the absolute values of the hits/misses to
+> > each level of the hierarchy.
+> 
+> Maybe we should just try to use whatever benchmarks we see other
+> microarchitecture papers using.  If those benchmarks are good enough
+> for them, shouldn't they be good enough for us ? :-)  Further, the Spec
+> benchmarks (at least at one time) were designed to serve as the "real"
+> benchmarks for "real" computers.  Wasn't that the whole idea of them ? :-)
+> If the microarchitecture community thinks that some other programs are
+> now the "real" programs, then, yes, I agree, we should investigate how
+> we might try to migrate to those new "real" programs. :-) :-)
+
+I basically agree with you. I would rather use the SPECint's. I don't
+know Mediabench, personally, but from the name it is addressing an
+application area that is not currently of interest to us; we want to
+do well on hard-to-parallelize programs. If we do well there, we'll do
+well on the easy stuff.
+
+
+
+SS is unlikely for lots of reasons to get significant ILP regardless of
+its resources; I mean, it's not a Levo, and that's good.
+
+----Gus
+
+
+David Kaeli wrote:
+> 
+> Dave,
+> 
+> On the baseline measurement, we have to make sure we have
+> similar resources as Levo.  THis is what is really challenging
+> here.  I know that SS is grossly underdesigned for a very wide
+> machine.
+> 
+> Dave
+
+
+
+Subject: Re: MICRO paper
+Date: Mon, 08 Apr 2002 08:42:50 -0400
+From: "Augustus (Gus) K. Uht" <uht@ele.uri.edu>
+Organization: University of Rhode Island
+To: David Kaeli <dkaeli@ac.upc.es>
+CC: dmorano@ece.neu.edu, Alireza Khalafi <akhalafi@ece.neu.edu>
+References: 1 , 2 , 3
+
+Dave K.,        
+
+I agree, we need a good writeup of the microarchitecture with
+examples, no argument there. However:
+It is not a good use of manpower for four people to be working on 
+the writeup at the same time, and we really DO need the high IPC.
+Therefore, according to the original plan, Dave M. and Ali
+will be on the simulation end, I will be on the writeup end.
+-----Gus
+
+
+
+David Kaeli wrote:
+> 
+> Gus and all,
+> 
+> While we could use more IPC, we really need to focus on some
+> thorough examples of what would explain Levo to the reviewer.
+> This is by far the most consistent ding on our work.
+> 
+> I sat up in bed early this AM thinking about this (yeah, pretty boring
+> here in ESPANA)...  Anyway, here are some thoughts:
+> 
+> 1. We could show what we ifetch and contrast it to what we "dispatch".
+> This would help the reader see what we actually do in the I-Window.
+> I would also like to hear exactly how we do this.  2-3 simple basic
+> blocks that exercise all the features of the I-Window is all that is
+> needed.
+> 
+> 2. Show for the same set of basic blocks, how where they get "dispatched"
+> in the E-Window and
+> then executed, squashed, and re-executed.  I think Gus had this in one
+> of his early descriptions.  This would answer a lot of questions.
+> 
+> 3. Show for the same set of basic blocks, how we might do a d-path.  I
+> tried doing this in the hammock example I showed.  I suggest to look
+> at past papers on polypath/hammocks to get some good ideas on how to
+> make this come alive.
+> 
+> While this won't convince anyone that we get high IPC, they will know
+> how our design works.  We spend too much time justifying the IPC without
+> this low level of detail.  I know it is a tradeoff, but we haven't been
+> very successful with the IPC-justification approach.
+> 
+> Comments?  Doing this well is not trivial, but is critical.
+> 
+> Dave
+
+
+
+Subject: Re: MICRO paper
+Date: Mon, 08 Apr 2002 08:50:26 -0400
+From: "Augustus (Gus) K. Uht" <uht@ele.uri.edu>
+Organization: University of Rhode Island
+To: David Kaeli <dkaeli@ac.upc.es>
+References: 1 , 2 , 3 , 4 , 5
+
+Dave,
+
+Since I'm doing the writeup, I'm going to use what I am familiar
+with, and that's Coreldraw. Just because it's powerful doesn't mean the
+output has to be cluttered. I'm well aware of the danger of "clutter".
+But don't forget, we need enought detail to get across the operation of the
+machine, as you yourself pointed out.
+
+Dave M. says everything is problematic, usually after he starts
+working on it. I don't mind doing other benchmarks, but we've got to
+get SPECint covered 'cause it's a virtual standard. I'm trying to come
+up with different approaches to the way we've been trying to do this
+so far, so that we can make progress.
+
+"Embedded" is not the issue; code complexity is; we don't want
+programs with easy parallelism, unless they're in SPECint.
+
+-----Gus
+
+
+
+Subject: jumping the gun
+Date: Mon, 08 Apr 2002 09:39:50 -0400
+From: "Augustus (Gus) K. Uht" <uht@ele.uri.edu>
+Organization: University of Rhode Island
+To: David Kaeli <kaeli@ece.neu.edu>
+
+Dave,
+
+I appreciate your intense interest in getting things done for this
+effort, but let's approach this sanely, not piecemeal. Please try to avoid
+micro-managing; it doesn't help anyone. If you want Dave M. and Ali to
+"grow up" academically, you've got to let them take responsibility for
+things themselves and to a large degree be on their own. I think they
+want to do this, especially Ali. Dave M. tends to want to get into the
+details and hit brick walls, for reasons unknown. But he also has a 
+creative streak, which must be encouraged and nurtured, viz. his
+version of the predication algorithm.
+
+As I said, I will take everything everyone has said in the last
+few days and come up with a plan today or tomorrow (probably tomorrow).
+We can then throw rocks at it, refine it, and then get moving, probably
+by Thursday, if not sooner.
+
+We finally have time to do this right. Let's not rush it, but
+figure things out and make steady progress to the end.
+
+Thanks.
+
+
+----Gus
+
+
+
+Subject: Re: MICRO paper
+Date: Mon, 08 Apr 2002 10:05:44 -0400
+From: "Augustus (Gus) K. Uht" <uht@ele.uri.edu>
+Organization: University of Rhode Island
+To: David Kaeli <dkaeli@ac.upc.es>
+References: 1 , 2 , 3 , 4 , 5
+
+Dave,
+
+See below.
+
+David Kaeli wrote:
+> 
+> Gus,
+> 
+> Can I take a crack at these figures now?
+
+I would prefer you didn't. I'll just have to convert them to Coreldraw.
+I'd also like to start semi-fresh, and I think the explanatory section
+will work best if coming from one source.
+
+> 
+> I also am not sure we new better ILP.  We would like it,
+> but we are doing pretty well already.  We just need to explain
+> it, and provide additional benchmarks.
+
+Our current IPC, for what we are trying to do, and given the potential
+of the various techniques, stinks. With these numbers we are in the
+pack, but not leading it, and we want to lead it. Our efficiencies
+will also get blasted. I agree we have to explain it better and provide
+additional benchmarks.
+
+We have been claiming a method for IPC's in the 10's, let's get it, and
+not look like we failed (a secondary point).
+
+----Gus
+
+
+
+> I would also like all of SPECint.  But I remember the time it took
+> to get the current set of programs running.  And since Dave is going
+> to get them to run, and he says the rest of SPECint is problematic,
+> I have to take his word on this or else port them myself.
+
+I have to talk to Dave and Ali to get the latest scoop. I'm not convinced
+their whole approach is right. Everyone else can run SPECint, why can't we?
+
+> 
+> I am sure we could come up with additional benchmarks.  I am not happy
+> about this problem with SPECint either.
+
+I do not know of any other benchmarks that fit our needs, including high
+acceptance by the research community for what we are trying to do.
+
+-----Gus
+
+
+
+Subject: Re: MICRO paper
+Date: Fri, 5 Apr 2002 17:11:02 -0500 (EST)
+From: Alireza Khalafi <akhalafi@ECE.NEU.EDU>
+To: "Augustus (Gus) K. Uht" <uht@ele.uri.edu>
+CC: David Morano <morano@computer.org>, David Kaeli <kaeli@ECE.NEU.EDU>
+
+Prof. Uht,
+
+Some general comments on what path we could take for MACRO.
+
+- I like to get all the profile data for D-path analysis as the first
+step.  I am hoping this will also help us to come up with ways to improve 
+the performance of the D-scheme.
+
+- Regarding memory, we already have a relatively complex memory.  I don't
+know if we want to make any major modification to what we already have.  
+
+- Looking at the comments on earlier paper, I think we need to spend most
+of the paper on describing the microarchitectur and limit our presentation 
+to only the major data(IPC vs. Configs). Including sensitivity data for
+many parameters opens us into more criticism.  We need to show why Levo
+does so good.  I think the profiling data should show this and that is why
+I like to focus on those first.  The MICRO paper is probably going to be
+our first published paper and I suggest we spend more time on explaining 
+how it works rather than looking how its performance changes with varying
+different paramters.
+
+see other comments below,
+
+> - Dave would like to see his bar chart measured. Any suggestions on how
+> to do it would be appreciated.
+
+This is rather hard.  Basically because everything runs in parallel.  So
+memory latency of one instruction can be covered by the execution of the
+other one.  We can measure the individual delays but we cannot just add
+them up.   
+
+> - We need to address the Instuction loading long line issue.
+> 
+> - We need more explanatory data, including what I have been asking for
+> for months: characteristics of DEE taken branches
+
+Agreed and it is the first priority.
+
+> 
+> - We need to more rigorously justify the memory latency data. Conventional
+> wisdom says the SPEC benchmarks do not stress the memory as much as
+> real applications. Is this true? Can we normalize Levo/SPEC to
+> Levo/ real applications via something like smaller caches? We need 
+> cache miss rate data for both real and SPEC apps (I know we have some of
+> the latter); we also need the absolute values of the hits/misses to
+> each level of the hierarchy.
+> 
+> - BIGGY: we need more benchmarks. Five more SPECint2000's, at least.
+>
+> - BIGGY: we have to get the IPC up. I know Ali has some thoughts on this,
+> as may you, Dave. This is an opportunity to be creative and solve real
+> performance problems; potentially real good part of your theses.
+
+I have some ideas but I like to look at the profiles before I decide what
+is the best way.
+
+> - I fetch enhancements in general, e.g., implementing some of Marcos's
+> work. Possibly use DEE in I-fetch (Dave K., for one, mentioned this
+> a long time ago). Figure out a way of reducing the ill effects of
+> flushes.
+
+Does this mean using dynamic fetch?  The effect of flushes can be reduced
+by using the Dynamic-D (different instruction from ML) but I don't know if
+this is an option or not.  It certainly complicates the fetch but maybe we
+can use a limited amount of Dynamic-D for only handling the
+"far" branches.
+
+> - Need to get a good baseline measurement.
+
+SS is probably the best option.  We just need to define what is the
+baseline.
+
+Thank you 
+Alireza
+
+
+
+Some other thoughts on the paper, that I have, would be to narrow the
+scope of the paper to just describing our microarchitecture and
+presenting the largest IPC data that we can for programs running on
+it.  I think that there is more than enough to talk about (and take up
+the available paper space) in keeping our focus on the machine and its
+end performance.  I think that the main results could be IPC numbers
+over a set of benchmark programs, over a few (top performing)
+geometries of the machine.  We would also present a SimpleScalar
+baseline (using the same ISA ?) as a comparison.  Some (minor) supporting
+data could be something that shows how many c-branches we spawned DEE
+paths for and how many times we switched to a DEE path when a c-branch
+was mispredicted.  Maybe something else also but I do not know what it
+might be yet.  I think that all of this is more than enough to take up
+the available space.  If we try to include too much stuff, we spread
+ourselves thin and open ourselves up to possible criticism due to lack
+of one or more details with something.
+
+Anyway, these were some raw thoughts for Micro that I have at this
+point. 
+
+Dave M.
+
+
+
+Subject: Re: next steps
+Date: Fri, 5 Apr 2002 08:35:55 +0200
+From: David Kaeli <dkaeli@ac.upc.es>
+To: "Augustus (Gus) K. Uht" <uht@ele.uri.edu>
+References: 1 , 2
+
+Gus,
+
+Sorry, I did not mean to leave you hanging.  I just have a lot
+going on...
+
+For Micro I think we need the following:
+
+1. A killer example of the machine execution.  This should include 
+instructions being fetched from memory, decoded (with predicates generated),
+loaded into the E-window, executed with wrong values, squashed, re-executed,
+retired.  This is where we started with describing Levo.  We need a simple,
+yet illustrative, example.  This is what stands between us and a Micro paper.
+Not much else.
+
+2. If we are going to spend time on anything, we need to provide my stacked
+bar data.  Yes, and we need about 5 more benchmarks. No excuses.  It can
+be done.  Let's use the stacked bars to guide our work, and the discussion
+in the Micro paper.
+
+3. I-fetch seems to be our biggest gotcha.  I am not convinced that we can
+design a realistic i-fetch that is scalable.  I am worried about the i-load
+connections.  This may introduce some very long wires (as pointed out by the
+ICS reviews).  
+
+I think if we can solve/address the 3 items above, we will have a good chance
+of getting a Micro paper accepted.  If we fall short on any of them, then we
+will fail.
+
+
+Dave
+
+
+
+Subject: Re: MICRO paper
+Date: Sun, 7 Apr 2002 09:03:03 +0200
+From: David Kaeli <dkaeli@ac.upc.es>
+To: dmorano@ece.neu.edu
+CC: Professor Uht <uht@ele.uri.edu>, Alireza Khalafi <akhalafi@ece.neu.edu>
+References: 1
+
+Dave,
+
+On the baseline measurement, we have to make sure we have
+similar resources as Levo.  THis is what is really challenging
+here.  I know that SS is grossly underdesigned for a very wide
+machine.  
+
+Dave
+
+
+
+Subject: Re: MICRO paper
+Date: Mon, 8 Apr 2002 16:29:09 +0200
+From: David Kaeli <dkaeli@ac.upc.es>
+To: "Augustus (Gus) K. Uht" <uht@ele.uri.edu>
+References: 1 , 2 , 3 , 4 , 5 , 6
+
+Gus,
+
+I will let you handle the figures.  I suspect you are worried
+that I am approaching this from the wrong angle.  That could very
+well be true.
+
+I don't think we are in "any pack" yet. We first have to get in the 
+pack.  I feel you may be too focused on raw IPC here, and not on the real 
+beauty of the design.  I think we won't be successful unless we can 
+make readers come away with an appreciation for the architecture.  
+
+Okay, I will shut up for a while.  I will try to be supportive and
+give constructive input when called upon.  
+
+Dave  
+
+
+
+Subject: Re: MICRO paper
+Date: Mon, 8 Apr 2002 16:34:25 +0200
+From: David Kaeli <dkaeli@ac.upc.es>
+To: "Augustus (Gus) K. Uht" <uht@ele.uri.edu>
+References: 1 , 2 , 3 , 4 , 5 , 6 , 7 , 8
+
+Gus,
+
+Reality: We can't get more SPEC2Kint benchmarks.
+
+Reality: We have 5 (a good start)
+
+Reality: We could identify 5 more programs that are not accepted
+benchmarks, but have some interesting behavior we can talk about.
+One could even be embarassingly parallel (it is an interesting
+data point to discuss)....  I would be happy to try....
+
+We can argue about this, but I would prefer to move forward
+with an "unaccepted" set of 2nd benchmarks.  Everyone else does
+this (though they also usually include 2-3 SPECint's for good measure).
+Micro will be here shortly.
+
+I am also open to another plan that gets us 5 more programs :-)
+
+Dave

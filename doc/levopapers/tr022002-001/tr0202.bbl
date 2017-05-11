@@ -1,0 +1,55 @@
+\begin{thebibliography}{10}\setlength{\itemsep}{-1ex}\small
+
+\bibitem{Anderson67}
+{Anderson D., Sparacio F. and Tomasulo F.}
+\newblock {The IBM/360 Model 91: Machine Philosophy and Instruction Handling}.
+\newblock {\em {IBM Journal}}, (11):8--24, 1967.
+
+\bibitem{Cleary95}
+{Cleary J.G, Pearson M.W and Kinawi H.}
+\newblock {The Architecture of an Optimistic CPU: The Warp Engine}.
+\newblock In {\em {Proc. of the HICSS}}, pages {163--172}, {Jan} 1995.
+
+\bibitem{Gon97}
+{Gonzalez J. and Gonzalez A.}
+\newblock {Limits on Instruction-Level Parallelism with Data Speculation}.
+\newblock Technical Report {UPC-DAC-1997-34}, {UPC, Barcelona Spain}, 1997.
+
+\bibitem{Lam92}
+{Lam M.S. and Wilson R.P.}
+\newblock {Limits of Control Flow on Parallelism}.
+\newblock In {\em {Proc. of ISCA-19}}, pages {46--57}. {ACM}, {May} 1992.
+
+\bibitem{Palacharla}
+{Palacharla S., Jouppi N.P. and Smith J.E.}
+\newblock Complexity-effective superscalar processors.
+\newblock In {\em {ISCA-24}}, pages 206--218, 1997.
+
+\bibitem{Pop}
+{Popescu V., Schultz M., Spracklen J., Gibson G., Lightner B. and Isaman D.}
+\newblock The {Metaflow} architecture.
+\newblock {\em IEEE Micro}, 11(3):10--13, 63--73, 1991.
+
+\bibitem{Thornton64}
+{Thornton J.E.}
+\newblock {Parallel Operation in the Control Data 6600}.
+\newblock In {\em {Proc. of the AFIPS}}, volume~26, pages {33--40}, 1964.
+
+\bibitem{Tom67}
+{Tomasulo R.M.}
+\newblock {An Efficient Algorithm for Exploiting Multiple Arithmetic Units}.
+\newblock {\em {IBM Journal of Research and Development}}, {11}({1}):{25--33},
+  {Jan} 1967.
+
+\bibitem{Uht95}
+{Uht A. K. and Sindagi V.}
+\newblock {Disjoint Eager Execution: An Optimal Form of Speculative Execution}.
+\newblock In {\em {Proc. MICRO-28}}, pages 313--325. {ACM}, {Nov} 1995.
+
+\bibitem{Uht01}
+{Uht A.K., Morano D.A., Khalafi A., de Alba M., Wenisch T., Ashouei M., and
+  Kaeli D.}
+\newblock {IPC in the 10's via Resource Flow Computing with Levo}.
+\newblock Technical Report {092001-001}, {Dept. of ECE, URI}, {Sept} 2001.
+
+\end{thebibliography}

@@ -1,0 +1,141 @@
+From uht@ele.uri.edu Mon Jan 10 18:36:23 2000
+Received: from gateway.ece.neu.edu (gateway.ece.neu.edu [129.10.46.160]) by nueng.coe.neu.edu (8.9.3/) with ESMTP id SAA06168 for <morano@coe.neu.edu>; Mon, 10 Jan 2000 18:36:22 -0500 (EST)
+Received: from sendmail1.computer.org (sendmail1.computer.org [206.99.235.24])
+	by gateway.ece.neu.edu (8.9.3/8.9.3) with ESMTP id SAA10441
+	for <dmorano@ece.neu.edu>; Mon, 10 Jan 2000 18:30:37 -0500 (EST)
+Received: from leviathan.ele.uri.edu (leviathan.ele.uri.edu [131.128.51.64])
+          by sendmail1.computer.org (2.0 Build 2119 (Berkeley 8.8.4)/8.8.4) with ESMTP
+	  id SAA08146 for <morano@computer.org>; Mon, 10 Jan 2000 18:30:00 -0500
+Received: from ele.uri.edu (cx925368-a.lncln1.ri.home.com [24.4.186.168])
+	by leviathan.ele.uri.edu (8.9.3/8.9.3) with ESMTP id SAA17553;
+	Mon, 10 Jan 2000 18:30:03 -0500 (EST)
+Message-ID: <387A6B3F.E8937551@ele.uri.edu>
+Date: Mon, 10 Jan 2000 18:29:03 -0500
+From: "Augustus (Gus) K. Uht" <uht@ele.uri.edu>
+Reply-To: uht@ele.uri.edu
+Organization: University of Rhode Island
+X-Mailer: Mozilla 4.7 [en] (Win98; U)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: David Morano <morano@computer.org>
+Subject: Re: examples
+References: <rca15850947544667575@rightcore.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+content-length: 3354
+
+Hi Dave,
+	See below.
+
+David Morano wrote:
+> 
+> Gus,
+> 
+> I have written up two little examples using code snippets, executing in
+> different ways.  I didn't know the best way to illustrate some code
+> running and this may not be a desirable way to illustrate some
+> examples.  Also, check out the nature of the figures that I have
+> included (as referenced by the text).  We have not (to my knowledge)
+> used this sort of figure before.  Are these figures something that
+> seems appropriate to you ?
+
+This looks good, I like the grid, it lays things right out.
+
+> 
+> Also, I have somehow managed to misplace, the notes on the discussion
+> that we had on the types of examples that you wanted.  (This
+> instruction executes before the reference, or later than it, et
+> cetera.)  Can you again send me what sort of instruction execution
+> sequences you would like to be covered ?
+
+OK, let me try to recreate the scene of the crime:
+
+1)	i2
+
+	i4
+
+i4 writes to register input of i2: say why i4's value is ignored (it's later)
+
+2)	i0
+
+	i2
+
+	i4
+
+i0 writes to register input of i2: why it is grabbed (you've done this)
+
+3)	i0
+	i1
+	i2
+
+	i4
+
+i1 writes to "" " i2: why it is grabbed (you've done this)
+
+4)  hmmm. I think you've covered everything except 1), the trivial case.
+Take one last think about it.
+
+
+
+
+> 
+> Oh, included is text for two examples and their figures.
+> Let me know if you are online tonight also.  I can provide
+> some further updates tonight if you provide me feedback.
+> Please give me some feedback on what we want to do about
+> illustrating example code executions.
+
+Yes, I will most likely be online tonight.
+
+Examples: you've got a good start on this. Add a predicate example.
+Also include some kind of example with a forwarding register between the
+source and destination.
+
+
+> 
+> Thanks,
+> Dave Morano
+> morano@computer.org
+> 
+>   
+
+I'll include all of what you've sent me, polish it, and send back the
+document. It may take a couple of hours, I have to fit dinner in there
+somewhere, most likely.  :-)
+
+Also, you may have noticed my forwarding buses figure did not include 
+the right stuff for column renaming, because I forgot about that, but
+I will address this somehow.
+
+
+Thanks! We're getting there.
+
+-----Gus
+
+
+
+------------------------------------------------------------------------------
+>                Name: ex_a.tex
+>    ex_a.tex    Type: TeX Document (application/x-tex)
+>            Encoding: base64
+> 
+>              Name: e1.eps
+>    e1.eps    Type: Postscript Document (application/postscript)
+>          Encoding: base64
+> 
+>              Name: e2.eps
+>    e2.eps    Type: Postscript Document (application/postscript)
+>          Encoding: base64
+
+-- 
++-----------------------------------------------------------------------+
+|                     Augustus (Gus) K. Uht, P.E.                       |
+|     Associate Professor of Electrical and Computer Engineering        |
+|                                                                       |
+| University of Rhode Island         Email: mailto:uht@ele.uri.edu      |
+| Kelley Hall                        Phone: 401-874-5431                |
+| 4 East Alumni Ave.                   Fax: 401-782-6422                |
+| Kingston, RI 02881-0805              Web: http://www.ele.uri.edu/~uht |
++-----------------------------------------------------------------------+
+
+

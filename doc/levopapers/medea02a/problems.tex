@@ -1,0 +1,128 @@
+%
+\section{Problems Associated with a Large Out-of-Order-Execution 
+Microarchitecture}
+%
+A large, distributed, microarchitecture, capable of executing tens or
+hundreds of instructions speculatively and concurrently is 
+needed in order to exploit the
+fine-grained parallelism present in integer programs.
+However, many problems common to more conventional processor 
+microarchitectural designs
+are either at least as difficult to deal with on a large-scale
+microarchitecture or indeed become more difficult to deal with.
+In the following subsections, we will highlight just a few of the problems
+that are encountered with the design of a large microarchitecture.
+First we discuss the problem of interconnection complexity
+when large numbers of machine components need to access
+centralized machine resources.  Next we briefly discuss
+the problem of control-flow (conditional branch) prediction
+and how we intend to mitigate the effects of branch mispredictions.
+In the following sections, we briefly discuss the problem
+of efficiently using a large number of machine components
+when attempting to speculatively execute a single-threaded 
+program.
+%
+\subsection{Centralized Machine Resources and Scalability}
+%
+One barrier encountered when realizing a large-scale
+microarchitectures is the access contention for centralized machine
+resources.  These resources often include the physical register file
+(including both architectural as well as renaming registers), register
+renaming logic, and the reorder buffer.  Other resources that are often
+centralized in conventional microarchitectures are the execution units,
+though they do not present the same challenges for maintaining correct
+program order as those resources that are associated with the
+architected registers and the dependencies (control, register, and
+memory) that arise from the instructions themselves.  The use of
+centralized resources greatly hinders the scalability of any
+microarchitecture implementation.
+
+We present a microarchitecture that is able to scale to large sizes
+through the elimination of most conventional centralized
+microarchitectural components.  
+Our microarchitecture is a distributed one in that most
+all hardware execution resources are spatially distributed.
+Minimal point-to-point oriented connectivity is provided between
+the distributed hardware components.
+We use time tags associated
+with execution-time operands to
+maintain and enforce correct program order for all flow dependencies,
+whether they be registers, memory values, or instruction control-flow
+predicates.
+%
+\subsection{Conditional Branch Mispredictions}
+%
+Performance penalties due to mispredicted branches continue to
+present a challenge for achieving higher performance execution
+of single threaded programs.
+These penalties restrict the instruction level parallelism (ILP)
+that might be achieved unless they can be reduced.
+One approach towards reducing the negative effects of mispredicted
+branches, and a moderately successful one, has been the pursuit
+of better branch predictors.  However, many branches in typical
+programs remain difficult to predict accurately and these continue
+to limit performance in many codes.
+
+Another approach towards mitigating the effects of mispredicted branches
+has been that of attempting to address the problem of executing
+down both paths of a branch in some measure or another before the
+branch is able to resolve.  This approach is not new but presents
+complexity problems that have made it less than attractive for
+many practical processor designs.  However, with the advent of ever
+increasing amounts of speculative execution, the need to address
+the problems associated with mispredicted branches has only grown worse.
+When possibly hundreds of instructions are in flight, all speculatively
+executing simultaneously.
+the penalty associated with a mispredicted branch can now mean
+the possible squashing and associated opportunity lost of possibly
+hundreds of instructions that were in flight.  
+Just as a conditional branch misprediction usually means that
+speculatively executed operations within deep pipelines need
+to flushed, so too does the misprediction of a branch present
+a challenge when large numbers of instructions are being speculatively
+executed ahead of the branch.
+
+Our microarchitecture that we will present is designed to reduce
+the
+negative effects of mispredicted branches through multipath execution.
+Rather than flushing, squashing, or otherwise throwing away
+instructions and results that were speculatively executed ahead
+(in program order sequence) of the mispredicted branch, we will
+attempt to preserve some of these results through two related means.
+One way to preserve some speculatively executed instructions is
+achieved through out use of multipath execution.  When more than
+a single path is being speculatively executed, at least the instructions
+on the predicted path are still useful.  Another way
+to preserve the results of speculatively executed instructions
+on a branch misprediction is to not flush those instructions that
+are control independent of the branch.  This occurs not infrequently
+when hammock style conditional branches are present in the instructions
+stream.
+We attempt to achieve both of these goals on
+on an aggressive large-scale (able to speculatively execute
+possibly hundreds of instructions simultaneously)
+distributed microarchitecture.  
+%
+\subsection{Resource Utilization}
+%
+Another issue that arises in large-scale microarchitectures is the
+problem of efficient execution resource usage.
+As we may speculatively execute many branch paths ahead of execution
+commitment, the likelihood
+of the most recent (latest) speculatively executed instruction to
+be committed (part of the program's committed execution trace) tends
+towards zero.  This occurs because as each new speculative branch is
+encountered, speculative execution continues down one of its
+outgoing paths.  The probability of commitment for instructions on 
+that outgoing
+path is the product of the probability that
+the branch will be committed, times the probability of that branch's outcome.
+The product of the probabilities of all speculative branch outcomes
+eventually approaches zero after a certain
+number of speculative branches are visited. 
+At a certain point, the likelihood of the committed (correct)
+program execution to proceed down an alternative program path,
+besides the one defined by each sequential predicted branch outcome,
+becomes greater.  This would indicate that for very large speculative
+machines, multi-path execution is all but a necessity to most
+efficiently allocate and use the available execution resources.

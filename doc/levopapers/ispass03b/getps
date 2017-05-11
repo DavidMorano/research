@@ -1,0 +1,8 @@
+#!/bin/ksh
+
+D=ispass03
+T=intervals
+
+scp -qp uri:doc/${D}/${T}.ps .
+
+

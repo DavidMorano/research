@@ -1,0 +1,50 @@
+Enclosed is the transistor count estimates for the value predictor.
+Estimates are provided for the number of table entries the predictor
+has as well as for whether the machine is a 32-bit or 64-bit machine.
+The data for a 32-bit machine is just a repeat of the previous 
+transistor count estimates but the 64-bit data is newly provided.
+
+
++ operands per lookup	2 (2 operands per table entry)
++ stride state field	8-bits
+
+
+For a 32-bit address and data machine.
+
+			transistors	total transistors for a
+size in entries		per predictor	32-row machine
+
+8 			9536 		305152
+16 			17088 		546816
+32			32080 		1026560
+64			61824 		1978368
+128			120816 		3866112
+256			237792 		7609344
+512			469712 		15030784
+1024			929472 		29743104
+2048			1840816		58906112
+4096			3647136 	116708352
+8192			7227024 	231264768
+16384			14321280 	458280960
+
+
+For a 64-bit address and data machine.
+
+			transistors	total transistors for a
+size in entries		per predictor	32-row machine
+
+8			17600 		563200
+16			31296 		1001472
+32			58576 		1874432
+64			112896		3612672
+128			221040 		7073280
+256			436320 		13962240
+512			864848 		27675136
+1024			1717824 	54970368
+2048			3415600 	109299200
+4096			6794784 	217433088
+8192			13520400 	432652800
+16384			26906112 	860995584
+
+
+

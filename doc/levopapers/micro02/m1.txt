@@ -1,0 +1,55 @@
+Date: 14 Jun 2002 00:06:38 -0400 (EDT)
+From: (David Morano) morano@ele.uri.edu
+Subject: adding the Alpha predictor
+To: (Alireza Khalafi) akhalafi@ece.neu.edu
+
+Ali,
+
+One way to do it is to add the files under directory :
+	~morano/src/levomods/
+			/bpalpha.[ch]
+			/uc_malloc.c
+			/vsystem.h
+			/misc.h
+
+to FastLevo (C files get added to the existing C file, and the
+headers get put in the same directory for inclusion.
+
+An alternative way is to put the include file :
+	~morano/src/levomods/
+			/bpalpha.h
+
+in your directory and then to link the file ;
+	~morano/src/levomods/
+			/levomods.obj
+
+with your existing other objects (one or more).
+
+For an example of calling the subroutines, you can look at the C
+language file :
+	~morano/src/traceproc/
+			/stats.c
+to see how the various parameters are given to the subroutines.
+
+Of course, you can also look at the C code directly (file 'bpalpha.c').
+
+The initialization subroutine 'bpalpha_init()' takes three (3)
+configuration type arguments that give the size of the predictor
+tables.  Use the numbers (in order of the config. arguments to the 
+initialization subroutine) :
+	512
+	1024
+	4096
+
+This gives a predictitor with a reasonably close number of
+bits as with the existing PAg.  I may work out something closer
+tomorrow, but this is good enough for now.
+
+Don't hesitate to ask me anything about the subroutines or about
+calling them and giving the right arguments.  It is fairly simple
+(trivial) as compared with using the value predictor (for example).
+
+Thanks for everything,
+Dave M.
+
+

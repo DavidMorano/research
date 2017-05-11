@@ -1,0 +1,54 @@
+\begin{thebibliography}{1}\setlength{\itemsep}{-1ex}\small
+
+\bibitem{Austin97}
+{Austin T.M., Burger D.}
+\newblock { SimpleScalar Tutorial }.
+\newblock In {\em {Proc. of MICRO-30}}, {Nov} 1997.
+
+\bibitem{Gon97}
+{Gonzalez J. and Gonzalez A.}
+\newblock {Limits on Instruction-Level Parallelism with Data Speculation}.
+\newblock Technical Report {UPC-DAC-1997-34}, {UPC, Barcelona Spain}, 1997.
+
+\bibitem{Kaeli01}
+{Kaeli D., Morano D.A., Uht A.}
+\newblock {Preserving Dependencies in a Large-Scale Distributed
+  Microarchitecture}.
+\newblock Technical Report {022002-001}, {Dept. of ECE, URI}, {Dec} 2001.
+
+\bibitem{Lam92}
+{Lam M.S. and Wilson R.P.}
+\newblock {Limits of Control Flow on Parallelism}.
+\newblock In {\em {Proc. of ISCA-19}}, pages {46--57}. {ACM}, {May} 1992.
+
+\bibitem{Sam99}
+{Samsung Electronics}.
+\newblock Dram technology trend.
+\newblock http://www.via.com.tv/ pdf/ presentations/ 9904pc133/
+  9904samsung.pdf, Apr 1999.
+
+\bibitem{Tom67}
+{Tomasulo R.M.}
+\newblock {An Efficient Algorithm for Exploiting Multiple Arithmetic Units}.
+\newblock {\em {IBM Journal of Research and Development}}, {11}({1}):{25--33},
+  {Jan} 1967.
+
+\bibitem{Uht95}
+{Uht A. K. and Sindagi V.}
+\newblock {Disjoint Eager Execution: An Optimal Form of Speculative Execution}.
+\newblock In {\em {Proc. MICRO-28}}, pages 313--325. {ACM}, {Nov} 1995.
+
+\bibitem{Uht02b}
+{Uht A.K.}
+\newblock The partially time-tagged memory system for the levo high ilp
+  processor.
+\newblock Technical Report {022002-XXXX}, {Dept. of ECE, University of Rhode
+  Island}, {Feb} 2002.
+
+\bibitem{Uht01}
+{Uht A.K., Morano D.A., Khalafi A., de Alba M., Wenisch T., Ashouei M., and
+  Kaeli D.}
+\newblock {IPC in the 10's via Resource Flow Computing with Levo}.
+\newblock Technical Report {092001-001}, {Dept. of ECE, URI}, {Sept} 2001.
+
+\end{thebibliography}

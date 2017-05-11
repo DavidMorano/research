@@ -1,0 +1,88 @@
+%
+\subsubsection{Register Filtering Unit}
+%
+This machine component is primarily used to forward operands
+from one physical forwarding bus segment to another.
+This component is used to handle register operands only.
+Other types of operands (like predicate and memory) are 
+handled by components
+suited to their operand type.
+This unit can properly be termed a 
+a \textit{forwarding unit}
+but its function
+is slightly enhanced over just a basic forwarding function.
+In addition to just repeating a received operand onto an outbound
+bus segment, this unit also serves to reduce the number of outbound
+forwarding operations through a filtering process (hence its name).
+Although the details of the filtering process is not discussed
+in detail, basically the unit repeats received operands
+from program ordered past to bus segments that server the
+ASes in program ordered future.
+In Figure \ref{fig:window}, program ordered past is on the
+top side of the unit and program ordered future is on the bottom
+side.
+Essentially, copies of register operands are saved 
+within
+the unit itself and when a new operand is received, a search is
+made to see if the last register with the same address
+(the architected register name) that was forwarded has the same value
+as the current one.  If the values are different, the new operand
+is stored and forwarded.  If the values are the same, the present
+operand is not forwarded since it would not result in changing
+any data dependencies in the program.  
+This process effectively filters out unnecessary forwarding
+operations that do not impinge on proper program register-data
+dependencies.
+Thus, this mechanism serves to
+reduce the required forwarding bus bandwidth.
+%
+\subsubsection{Predicate Forwarding Unit}
+%
+This unit is very similar to the register filtering unit but
+is presently simpler in this design and function.
+This unit basically just consists of a FIFO to buffer up
+received operands until they can be repeated on the outbound bus segment.
+Like the register filtering unit, operands are received 
+from program ordered past and repeated on the outbound bus
+segment that serves ASes in program ordered future.
+The outbound bus generally has several bus masters, all contending
+for a time slot to writing operands, so generally operands
+may have to wait one or more clocks before they can be repeated.
+Future work may include enhancements to this unit but
+it is currently believed that the numbers of predicate operand
+forwarding operations that occur is not high enough to be
+a critical bottleneck to performance.
+%
+\subsubsection{Memory Filtering Unit}
+%
+This unit, like the other forwarding units, serves to repeat
+received operands from one bus segment to another.
+However, unlike the other forwarding units, this unit is somewhat
+more complicated due to the fact that the address space for
+memory is so large (at least $ 2 ^ { 32 } $).
+This unit is also frequently termed an \textit{L0 data cache}
+since it indeed effectively has a cache of speculative
+memory values stored within it.
+We will subsequently be using the terms \textit{L0 data cache}
+and \textit{Memory Filtering Unit} somewhat interchangeably
+depending on the context of its discussion.
+Like a register filtering unit, this unit attempts to
+filter out unnecessary forwarding operations in order to
+reduce the bandwidth requirements of the forwarding interconnection
+fabric.
+
+Due to topological differences in the memory forwarding interconnection
+fabric from either the register or predicate forwarding interconnection
+fabric, this unit has slightly differing responsibilities depending
+on where it is located in the fabric.  Further, unlike the other
+forwarding units, this unit repeats
+operands bidirectionally.
+It receives operands from all of its connecting buses
+and repeats them on the opposite bus ports.
+This is more like a flooding algorithm than the loop-around
+schemes current used for registers and predicates.
+Operands eventually reach the hub of the star topology of the
+interconnection fabric and then get forwarded out to the
+other leafs of the fabric.  In this way, all ASes get to
+snoop on any memory value that they may be operating on.
+%

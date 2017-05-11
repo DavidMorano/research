@@ -1,0 +1,132 @@
+This is TeX, Version 3.14159 (Web2C 7.4.5) (format=latex 2004.5.15)  9 JUL 2006 08:49
+**scale
+(./scale.tex
+LaTeX2e <2001/06/01>
+Babel <v3.7h> and hyphenation patterns for american, french, german, ngerman, n
+ohyphenation, loaded.
+(/usr/add-on/tetex/share/texmf/tex/latex/base/article.cls
+Document Class: article 2001/04/21 v1.4e Standard LaTeX document class
+(/usr/add-on/tetex/share/texmf/tex/latex/base/size10.clo
+File: size10.clo 2001/04/21 v1.4e Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@section=\count80
+\c@subsection=\count81
+\c@subsubsection=\count82
+\c@paragraph=\count83
+\c@subparagraph=\count84
+\c@figure=\count85
+\c@table=\count86
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+)
+(/usr/add-on/tetex/share/texmf/tex/generic/babel/babel.sty
+Package: babel 2001/03/01 v3.7h The Babel package
+
+(/usr/add-on/tetex/share/texmf/tex/generic/babel/english.ldf
+Language: english 2001/04/15 v3.3l English support from the babel system
+
+(/usr/add-on/tetex/share/texmf/tex/generic/babel/babel.def
+File: babel.def 2001/03/01 v3.7h Babel common definitions
+\babel@savecnt=\count87
+\U@D=\dimen103
+)
+\l@canadian = a dialect from \language\l@english 
+))
+(/usr/add-on/tetex/share/texmf/tex/latex/graphics/epsfig.sty
+Package: epsfig 1999/02/16 v1.7a (e)psfig emulation (SPQR)
+
+(/usr/add-on/tetex/share/texmf/tex/latex/graphics/graphicx.sty
+Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/add-on/tetex/share/texmf/tex/latex/graphics/keyval.sty
+Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
+\KV@toks@=\toks14
+)
+(/usr/add-on/tetex/share/texmf/tex/latex/graphics/graphics.sty
+Package: graphics 2001/07/07 v1.0n Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/add-on/tetex/share/texmf/tex/latex/graphics/trig.sty
+Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+)
+(/usr/add-on/tetex/share/texmf/tex/latex/config/graphics.cfg
+File: graphics.cfg 2001/08/31 v1.1 graphics configuration of teTeX/TeXLive
+)
+Package graphics Info: Driver file: dvips.def on input line 80.
+
+(/usr/add-on/tetex/share/texmf/tex/latex/graphics/dvips.def
+File: dvips.def 1999/02/16 v3.0i Driver-dependant file (DPC,SPQR)
+))
+\Gin@req@height=\dimen104
+\Gin@req@width=\dimen105
+)
+\epsfxsize=\dimen106
+\epsfysize=\dimen107
+) (./scale.aux)
+\openout1 = `scale.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 56.
+LaTeX Font Info:    ... okay on input line 56.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 56.
+LaTeX Font Info:    ... okay on input line 56.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 56.
+LaTeX Font Info:    ... okay on input line 56.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 56.
+LaTeX Font Info:    ... okay on input line 56.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 56.
+LaTeX Font Info:    ... okay on input line 56.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 56.
+LaTeX Font Info:    ... okay on input line 56.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <12> on input line 74.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 74.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 74.
+
+[1
+
+] [2]
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 332.
+
+ (/usr/add-on/tetex/share/texmf/tex/latex/base/omscmr.fd
+File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 332.
+ [3]
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 421.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 421.
+ [4]
+File: a_rover.eps Graphic file (type eps)
+
+<a_rover.eps> [5]
+File: aa_mrint.eps Graphic file (type eps)
+ <aa_mrint.eps>
+File: ab_mrint.eps Graphic file (type eps)
+ <ab_mrint.eps>
+File: aa_mlife.eps Graphic file (type eps)
+ <aa_mlife.eps>
+File: ab_mlife.eps Graphic file (type eps)
+ <ab_mlife.eps>
+File: aa_muse.eps Graphic file (type eps)
+
+<aa_muse.eps>
+File: ab_muse.eps Graphic file (type eps)
+ <ab_muse.eps>
+File: a_mcum.eps Graphic file (type eps)
+ <a_mcum.eps> [6] (./scale.bbl [7] [8] [9] [10]
+[11] [12] [13] [14]) [15] (./scale.aux) ) 
+Here is how much of TeX's memory you used:
+ 927 strings out of 95847
+ 11182 string characters out of 1195216
+ 63719 words of memory out of 1000001
+ 3878 multiletter control sequences out of 10000+50000
+ 9053 words of font info for 32 fonts, out of 500000 for 1000
+ 14 hyphenation exceptions out of 1000
+ 32i,9n,23p,928b,378s stack positions out of 1500i,500n,5000p,200000b,5000s
+
+Output written on scale.dvi (15 pages, 45844 bytes).

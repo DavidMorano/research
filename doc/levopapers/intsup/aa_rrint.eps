@@ -1,0 +1,1112 @@
+%!PS-Adobe-2.0
+%%Copyright: Copyright (c) 1993 AT&T, All Rights Reserved
+%%Version: 3.4.1
+%%DocumentFonts: (atend)
+%%Pages: (atend)
+%%BoundingBox: (atend)
+%%EndComments
+/DpostDict 200 dict def
+DpostDict begin
+%
+% Copyright (c) 1993 AT&T, All Rights Reserved
+%
+% Version 3.4 prologue for troff files.
+%
+
+/#copies 1 store
+/Prologue (dpost.ps) def
+/aspectratio 1 def
+/formsperpage 1 def
+/landscape false def
+/linewidth .3 def
+/magnification 1 def
+/margin 0 def
+/orientation 0 def
+/resolution 720 def
+/rotation 1 def
+/xoffset 0 def
+/yoffset 0 def
+
+/roundpage true def
+/useclippath true def
+/pagebbox [0 0 612 792] def
+
+/R  /Times-Roman def
+/I  /Times-Italic def
+/B  /Times-Bold def
+/BI /Times-BoldItalic def
+/H  /Helvetica def
+/HI /Helvetica-Oblique def
+/HB /Helvetica-Bold def
+/HX /Helvetica-BoldOblique def
+/CW /Courier def
+/CO /Courier def
+/CI /Courier-Oblique def
+/CB /Courier-Bold def
+/CX /Courier-BoldOblique def
+/PA /Palatino-Roman def
+/PI /Palatino-Italic def
+/PB /Palatino-Bold def
+/PX /Palatino-BoldItalic def
+/Hr /Helvetica-Narrow def
+/Hi /Helvetica-Narrow-Oblique def
+/Hb /Helvetica-Narrow-Bold def
+/Hx /Helvetica-Narrow-BoldOblique def
+/KR /Bookman-Light def
+/KI /Bookman-LightItalic def
+/KB /Bookman-Demi def
+/KX /Bookman-DemiItalic def
+/AR /AvantGarde-Book def
+/AI /AvantGarde-BookOblique def
+/AB /AvantGarde-Demi def
+/AX /AvantGarde-DemiOblique def
+/NR /NewCenturySchlbk-Roman def
+/NI /NewCenturySchlbk-Italic def
+/NB /NewCenturySchlbk-Bold def
+/NX /NewCenturySchlbk-BoldItalic def
+/ZD /ZapfDingbats def
+/ZI /ZapfChancery-MediumItalic def
+/S  /S def
+/S1 /S1 def
+/GR /Symbol def
+
+/inch {72 mul} bind def
+/min {2 copy gt {exch} if pop} bind def
+
+/setup {
+	counttomark 2 idiv {def} repeat pop
+
+	landscape {/orientation 90 orientation add def} if
+	/scaling 72 resolution div def
+	linewidth setlinewidth
+	1 setlinecap
+
+	pagedimensions
+	xcenter ycenter translate
+	orientation rotation mul rotate
+	width 2 div neg height 2 div translate
+	xoffset inch yoffset inch neg translate
+	margin 2 div dup neg translate
+	magnification dup aspectratio mul scale
+	scaling scaling scale
+
+	addmetrics
+	0 0 moveto
+} def
+
+/pagedimensions {
+	useclippath userdict /gotpagebbox known not and {
+		/pagebbox [clippath pathbbox newpath] def
+		roundpage currentdict /roundpagebbox known and {roundpagebbox} if
+	} if
+	pagebbox aload pop
+	4 -1 roll exch 4 1 roll 4 copy
+	landscape {4 2 roll} if
+	sub /width exch def
+	sub /height exch def
+	add 2 div /xcenter exch def
+	add 2 div /ycenter exch def
+	userdict /gotpagebbox true put
+} def
+
+/landscapepage {
+	landscape not {
+		0 height scaling div neg translate	% not quite
+		90 rotate
+	} if
+} bind def
+
+/portraitpage {
+	landscape {
+		width scaling div 0 translate	% not quite
+		-90 rotate
+	} if
+} bind def
+
+/addmetrics {
+	/Symbol /S null Sdefs cf
+	/Times-Roman /S1 StandardEncoding dup length array copy S1defs cf
+} def
+
+/pagesetup {
+	/page exch def
+	currentdict /pagedict known currentdict page known and {
+		page load pagedict exch get cvx exec
+	} if
+} def
+
+/decodingdefs [
+	{counttomark 2 idiv {y moveto show} repeat}
+	{neg /y exch def counttomark 2 idiv {y moveto show} repeat}
+	{neg moveto {2 index stringwidth pop sub exch div 0 32 4 -1 roll widthshow} repeat}
+	{neg moveto {spacewidth sub 0.0 32 4 -1 roll widthshow} repeat}
+	{counttomark 2 idiv {y moveto show} repeat}
+	{neg setfunnytext}
+] def
+
+/setdecoding {/t decodingdefs 3 -1 roll get bind def} bind def
+
+/w {neg moveto show} bind def
+/m {neg dup /y exch def moveto} bind def
+/done {/lastpage where {pop lastpage} if} def
+
+/f {
+	dup /font exch def findfont exch
+	dup /ptsize exch def scaling div dup /size exch def scalefont setfont
+	linewidth ptsize mul scaling 10 mul div setlinewidth
+	/spacewidth ( ) stringwidth pop def
+} bind def
+
+/changefont {
+	/fontheight exch def
+	/fontslant exch def
+	currentfont [
+		1 0
+		fontheight ptsize div fontslant sin mul fontslant cos div
+		fontheight ptsize div
+		0 0
+	] makefont setfont
+} bind def
+
+/sf {f} bind def
+
+/cf {
+	dup length 2 idiv
+	/entries exch def
+	/chtab exch def
+	/newencoding exch def
+	/newfont exch def
+
+	findfont dup length 1 add dict
+	/newdict exch def
+	{1 index /FID ne {newdict 3 1 roll put}{pop pop} ifelse} forall
+
+	newencoding type /arraytype eq {newdict /Encoding newencoding put} if
+
+	newdict /Metrics entries dict put
+	newdict /Metrics get
+	begin
+		chtab aload pop
+		1 1 entries {pop def} for
+		newfont newdict definefont pop
+	end
+} bind def
+
+%
+% A few arrays used to adjust reference points and character widths in some
+% of the printer resident fonts. If square roots are too high try changing
+% the lines describing /radical and /radicalex to,
+%
+%	/radical	[0 -75 550 0]
+%	/radicalex	[-50 -75 500 0]
+%
+% Move braceleftbt a bit - default PostScript character is off a bit.
+%
+
+/Sdefs [
+	/bracketlefttp		[201 500]
+	/bracketleftbt		[201 500]
+	/bracketrighttp		[-81 380]
+	/bracketrightbt		[-83 380]
+	/braceleftbt		[203 490]
+	/bracketrightex		[220 -125 500 0]
+	/radical		[0 0 550 0]
+	/radicalex		[-50 0 500 0]
+	/parenleftex		[-20 -170 0 0]
+	/integral		[100 -50 500 0]
+	/infinity		[10 -75 730 0]
+] def
+
+/S1defs [
+	/underscore		[0 80 500 0]
+	/endash			[7 90 650 0]
+] def
+%
+% Copyright (c) 1993 AT&T, All Rights Reserved
+%
+% A first cut at a company wide version of postcommon.ps.
+% Includes Matthijs Melchior's version of roundpagebbox,
+% but disables adjustments for postprint. This is just an
+% example - it should not be considered final or official.
+%
+
+/roundpagebbox {
+	Prologue (postprint.ps) ne {
+		pagebbox dup 0 get pagebbox 2 get add 2 exch put
+		pagebbox dup 1 get pagebbox 3 get add 3 exch put
+		pagebbox 0 0 put
+		pagebbox 1 0 put
+		userdict /origin-at-paper-edge true put
+	} if
+} bind def
+
+end
+%%EndProlog
+%%BeginSetup
+DpostDict begin
+mark
+/rotation 1 def
+userdict /gotpagebbox true put
+/resolution 720 def
+setup
+2 setdecoding
+%
+% Copyright (c) 1993 AT&T, All Rights Reserved
+%
+% Version 3.4 drawing procedures for dpost. Automatically pulled in when
+% needed.
+%
+
+/inpath false def
+/savematrix matrix def
+
+/Dl {
+	inpath
+		{pop pop neg lineto}
+		{newpath neg moveto neg lineto stroke}
+	ifelse
+} bind def
+
+/De {
+	/y1 exch 2 div def
+	/x1 exch 2 div def
+	/savematrix savematrix currentmatrix def
+	neg exch x1 add exch translate
+	x1 y1 scale
+	0 0 1 0 360
+	inpath
+		{1 0 moveto arc savematrix setmatrix}
+		{newpath arc savematrix setmatrix stroke}
+	ifelse
+} bind def
+
+/Da {
+	/dy2 exch def
+	/dx2 exch def
+	/dy1 exch def
+	/dx1 exch def
+	dy1 add neg exch dx1 add exch
+	dx1 dx1 mul dy1 dy1 mul add sqrt
+	dy1 dx1 neg atan
+	dy2 neg dx2 atan
+	inpath
+		{arc}
+		{newpath arc stroke}
+	ifelse
+} bind def
+
+/DA {
+	/dy2 exch def
+	/dx2 exch def
+	/dy1 exch def
+	/dx1 exch def
+	dy1 add neg exch dx1 add exch
+	dx1 dx1 mul dy1 dy1 mul add sqrt
+	dy1 dx1 neg atan
+	dy2 neg dx2 atan
+	inpath
+		{arcn}
+		{newpath arcn stroke}
+	ifelse
+} bind def
+
+/Ds {
+	/y2 exch def
+	/x2 exch def
+	/y1 exch def
+	/x1 exch def
+	/y0 exch def
+	/x0 exch def
+	x0 5 x1 mul add 6 div
+	y0 5 y1 mul add -6 div
+	x2 5 x1 mul add 6 div
+	y2 5 y1 mul add -6 div
+	x1 x2 add 2 div
+	y1 y2 add -2 div
+	inpath
+		{curveto}
+		{newpath x0 x1 add 2 div y0 y1 add -2 div moveto curveto stroke}
+	ifelse
+} bind def
+end
+%%EndSetup
+%%Page: 1 1
+%%PageBoundingBox: (atend)
+DpostDict begin
+/saveobj save def
+mark
+1 pagesetup
+10 R f
+1607 228 1607 804 Dl
+3047 228 1607 228 Dl
+3047 804 3047 228 Dl
+1607 804 3047 804 Dl
+(access-use density)1 734 1 1960 199 t
+10 B f
+(bzip2)1011 356 w
+10 R f
+(percent)982 476 w
+(register)979 596 w
+(reads)1023 716 w
+(access-use interval \(in instructions\))3 1411 1 1622 1088 t
+1535 804 1607 804 Dl
+(0)1460 824 w
+1535 660 1607 660 Dl
+(10)1410 680 w
+1535 516 1607 516 Dl
+(20)1410 536 w
+1535 372 1607 372 Dl
+(30)1410 392 w
+1535 228 1607 228 Dl
+(40)1410 248 w
+1607 876 1607 804 Dl
+(0)1582 986 w
+1787 876 1787 804 Dl
+(5)1762 986 w
+1967 876 1967 804 Dl
+(10)1917 986 w
+2147 876 2147 804 Dl
+(15)2097 986 w
+2327 876 2327 804 Dl
+(20)2277 986 w
+2507 876 2507 804 Dl
+(25)2457 986 w
+2687 876 2687 804 Dl
+(30)2637 986 w
+2867 876 2867 804 Dl
+(35)2817 986 w
+3047 876 3047 804 Dl
+(40)2997 986 w
+1643 511 1607 804 Dl
+1679 487 1643 510 Dl
+1715 639 1679 487 Dl
+1751 726 1715 639 Dl
+1787 703 1751 727 Dl
+1823 677 1787 703 Dl
+1859 769 1823 676 Dl
+1895 763 1859 770 Dl
+1931 776 1895 762 Dl
+1967 769 1931 776 Dl
+2003 783 1967 768 Dl
+2039 786 2003 784 Dl
+2075 789 2039 787 Dl
+2111 778 2075 789 Dl
+2147 790 2111 778 Dl
+2183 787 2147 791 Dl
+2219 795 2183 786 Dl
+2255 796 2219 796 Dl
+2291 789 2255 796 Dl
+2327 796 2291 789 Dl
+2363 799 2327 797 Dl
+2399 799 2363 801 Dl
+2435 797 2399 797 Dl
+2471 801 2435 796 Dl
+2507 798 2471 802 Dl
+2543 803 2507 798 Dl
+2579 801 2543 803 Dl
+2615 801 2579 801 Dl
+2651 802 2615 802 Dl
+2687 802 2651 803 Dl
+2723 802 2687 801 Dl
+2759 803 2723 803 Dl
+2795 803 2759 804 Dl
+2831 802 2795 802 Dl
+2867 802 2831 801 Dl
+2903 804 2867 804 Dl
+2939 802 2903 803 Dl
+2975 802 2939 801 Dl
+3407 228 3407 804 Dl
+4847 228 3407 228 Dl
+4847 804 4847 228 Dl
+3407 804 4847 804 Dl
+(access-use distribution)1 907 1 3674 199 t
+(access-use interval \(in instructions\))3 1411 1 3422 1088 t
+3335 804 3407 804 Dl
+(0)3260 824 w
+3335 688 3407 688 Dl
+(20)3210 708 w
+3335 573 3407 573 Dl
+(40)3210 593 w
+3335 458 3407 458 Dl
+(60)3210 478 w
+3335 343 3407 343 Dl
+(80)3210 363 w
+3335 228 3407 228 Dl
+(100)3160 248 w
+3407 876 3407 804 Dl
+(0)3382 986 w
+3587 876 3587 804 Dl
+(5)3562 986 w
+3767 876 3767 804 Dl
+(10)3717 986 w
+3947 876 3947 804 Dl
+(15)3897 986 w
+4127 876 4127 804 Dl
+(20)4077 986 w
+4307 876 4307 804 Dl
+(25)4257 986 w
+4487 876 4487 804 Dl
+(30)4437 986 w
+4667 876 4667 804 Dl
+(35)4617 986 w
+4847 876 4847 804 Dl
+(40)4797 986 w
+3443 687 3407 804 Dl
+3479 560 3443 686 Dl
+3515 494 3479 559 Dl
+3551 464 3515 494 Dl
+3587 423 3551 463 Dl
+3623 372 3587 423 Dl
+3659 359 3623 372 Dl
+3695 343 3659 359 Dl
+3731 331 3695 341 Dl
+3767 316 3731 330 Dl
+3803 310 3767 317 Dl
+3839 303 3803 309 Dl
+3875 297 3839 302 Dl
+3911 286 3875 296 Dl
+3947 281 3911 286 Dl
+3983 273 3947 280 Dl
+4019 272 3983 274 Dl
+4055 268 4019 270 Dl
+4091 263 4055 268 Dl
+4127 260 4091 262 Dl
+4163 258 4127 259 Dl
+4199 256 4163 258 Dl
+4235 254 4199 256 Dl
+4271 253 4235 253 Dl
+4307 250 4271 252 Dl
+4343 250 4307 250 Dl
+4379 249 4343 250 Dl
+4415 248 4379 248 Dl
+4451 248 4415 248 Dl
+4487 248 4451 248 Dl
+4523 247 4487 247 Dl
+4559 246 4523 246 Dl
+4595 246 4559 246 Dl
+4631 246 4595 246 Dl
+4667 245 4631 245 Dl
+4703 245 4667 245 Dl
+4739 245 4703 245 Dl
+4775 244 4739 244 Dl
+1607 1308 1607 1884 Dl
+3047 1308 1607 1308 Dl
+3047 1884 3047 1308 Dl
+1607 1884 3047 1884 Dl
+(access-use density)1 734 1 1960 1279 t
+10 B f
+(compress)857 1436 w
+10 R f
+(percent)910 1556 w
+(register)907 1676 w
+(reads)951 1796 w
+(access-use interval \(in instructions\))3 1411 1 1622 2168 t
+1535 1884 1607 1884 Dl
+(0)1460 1904 w
+1535 1740 1607 1740 Dl
+(10)1410 1760 w
+1535 1596 1607 1596 Dl
+(20)1410 1616 w
+1535 1452 1607 1452 Dl
+(30)1410 1472 w
+1535 1308 1607 1308 Dl
+(40)1410 1328 w
+1607 1956 1607 1884 Dl
+(0)1582 2066 w
+1787 1956 1787 1884 Dl
+(5)1762 2066 w
+1967 1956 1967 1884 Dl
+(10)1917 2066 w
+2147 1956 2147 1884 Dl
+(15)2097 2066 w
+2327 1956 2327 1884 Dl
+(20)2277 2066 w
+2507 1956 2507 1884 Dl
+(25)2457 2066 w
+2687 1956 2687 1884 Dl
+(30)2637 2066 w
+2867 1956 2867 1884 Dl
+(35)2817 2066 w
+3047 1956 3047 1884 Dl
+(40)2997 2066 w
+1643 1478 1607 1884 Dl
+1679 1572 1643 1477 Dl
+1715 1767 1679 1572 Dl
+1751 1763 1715 1768 Dl
+1787 1817 1751 1762 Dl
+1823 1852 1787 1817 Dl
+1859 1848 1823 1853 Dl
+1895 1829 1859 1847 Dl
+1931 1828 1895 1828 Dl
+1967 1857 1931 1828 Dl
+2003 1862 1967 1858 Dl
+2039 1854 2003 1862 Dl
+2075 1848 2039 1853 Dl
+2111 1867 2075 1848 Dl
+2147 1879 2111 1868 Dl
+2183 1880 2147 1879 Dl
+2219 1875 2183 1880 Dl
+2255 1882 2219 1875 Dl
+2291 1882 2255 1882 Dl
+2327 1875 2291 1882 Dl
+2363 1880 2327 1875 Dl
+2399 1879 2363 1879 Dl
+2435 1882 2399 1880 Dl
+2471 1883 2435 1883 Dl
+2507 1881 2471 1882 Dl
+2543 1883 2507 1881 Dl
+2579 1882 2543 1884 Dl
+2615 1881 2579 1881 Dl
+2651 1883 2615 1881 Dl
+2687 1884 2651 1884 Dl
+2723 1880 2687 1883 Dl
+2759 1882 2723 1880 Dl
+2795 1883 2759 1883 Dl
+2831 1874 2795 1884 Dl
+2867 1883 2831 1873 Dl
+2903 1884 2867 1884 Dl
+2939 1883 2903 1883 Dl
+2975 1882 2939 1883 Dl
+3407 1308 3407 1884 Dl
+4847 1308 3407 1308 Dl
+4847 1884 4847 1308 Dl
+3407 1884 4847 1884 Dl
+(access-use distribution)1 907 1 3674 1279 t
+(access-use interval \(in instructions\))3 1411 1 3422 2168 t
+3335 1884 3407 1884 Dl
+(0)3260 1904 w
+3335 1768 3407 1768 Dl
+(20)3210 1788 w
+3335 1653 3407 1653 Dl
+(40)3210 1673 w
+3335 1538 3407 1538 Dl
+(60)3210 1558 w
+3335 1423 3407 1423 Dl
+(80)3210 1443 w
+3335 1308 3407 1308 Dl
+(100)3160 1328 w
+3407 1956 3407 1884 Dl
+(0)3382 2066 w
+3587 1956 3587 1884 Dl
+(5)3562 2066 w
+3767 1956 3767 1884 Dl
+(10)3717 2066 w
+3947 1956 3947 1884 Dl
+(15)3897 2066 w
+4127 1956 4127 1884 Dl
+(20)4077 2066 w
+4307 1956 4307 1884 Dl
+(25)4257 2066 w
+4487 1956 4487 1884 Dl
+(30)4437 2066 w
+4667 1956 4667 1884 Dl
+(35)4617 2066 w
+4847 1956 4847 1884 Dl
+(40)4797 2066 w
+3443 1722 3407 1884 Dl
+3479 1598 3443 1722 Dl
+3515 1551 3479 1597 Dl
+3551 1502 3515 1550 Dl
+3587 1476 3551 1502 Dl
+3623 1463 3587 1475 Dl
+3659 1448 3623 1463 Dl
+3695 1426 3659 1448 Dl
+3731 1404 3695 1426 Dl
+3767 1394 3731 1404 Dl
+3803 1385 3767 1393 Dl
+3839 1373 3803 1385 Dl
+3875 1358 3839 1372 Dl
+3911 1353 3875 1359 Dl
+3947 1351 3911 1352 Dl
+3983 1350 3947 1351 Dl
+4019 1346 3983 1349 Dl
+4055 1346 4019 1346 Dl
+4091 1345 4055 1345 Dl
+4127 1341 4091 1344 Dl
+4163 1340 4127 1341 Dl
+4199 1338 4163 1339 Dl
+4235 1338 4199 1338 Dl
+4271 1337 4235 1337 Dl
+4307 1335 4271 1336 Dl
+4343 1336 4307 1336 Dl
+4379 1336 4343 1336 Dl
+4415 1334 4379 1335 Dl
+4451 1333 4415 1333 Dl
+4487 1333 4451 1333 Dl
+4523 1332 4487 1333 Dl
+4559 1332 4523 1332 Dl
+4595 1331 4559 1331 Dl
+4631 1327 4595 1331 Dl
+4667 1327 4631 1327 Dl
+4703 1327 4667 1327 Dl
+4739 1327 4703 1327 Dl
+4775 1327 4739 1327 Dl
+1607 2388 1607 2964 Dl
+3047 2388 1607 2388 Dl
+3047 2964 3047 2388 Dl
+1607 2964 3047 2964 Dl
+(access-use density)1 734 1 1960 2359 t
+10 B f
+(crafty)976 2516 w
+10 R f
+(percent)957 2636 w
+(register)954 2756 w
+(reads)998 2876 w
+(access-use interval \(in instructions\))3 1411 1 1622 3248 t
+1535 2964 1607 2964 Dl
+(0)1460 2984 w
+1535 2820 1607 2820 Dl
+(10)1410 2840 w
+1535 2676 1607 2676 Dl
+(20)1410 2696 w
+1535 2532 1607 2532 Dl
+(30)1410 2552 w
+1535 2388 1607 2388 Dl
+(40)1410 2408 w
+1607 3036 1607 2964 Dl
+(0)1582 3146 w
+1787 3036 1787 2964 Dl
+(5)1762 3146 w
+1967 3036 1967 2964 Dl
+(10)1917 3146 w
+2147 3036 2147 2964 Dl
+(15)2097 3146 w
+2327 3036 2327 2964 Dl
+(20)2277 3146 w
+2507 3036 2507 2964 Dl
+(25)2457 3146 w
+2687 3036 2687 2964 Dl
+(30)2637 3146 w
+2867 3036 2867 2964 Dl
+(35)2817 3146 w
+3047 3036 3047 2964 Dl
+(40)2997 3146 w
+1643 2499 1607 2964 Dl
+1679 2719 1643 2498 Dl
+1715 2782 1679 2719 Dl
+1751 2847 1715 2783 Dl
+1787 2881 1751 2847 Dl
+1823 2914 1787 2881 Dl
+1859 2920 1823 2915 Dl
+1895 2924 1859 2921 Dl
+1931 2944 1895 2924 Dl
+1967 2947 1931 2945 Dl
+2003 2944 1967 2946 Dl
+2039 2949 2003 2944 Dl
+2075 2952 2039 2950 Dl
+2111 2954 2075 2951 Dl
+2147 2956 2111 2955 Dl
+2183 2957 2147 2956 Dl
+2219 2956 2183 2958 Dl
+2255 2959 2219 2956 Dl
+2291 2958 2255 2958 Dl
+2327 2959 2291 2959 Dl
+2363 2960 2327 2960 Dl
+2399 2960 2363 2959 Dl
+2435 2956 2399 2961 Dl
+2471 2961 2435 2955 Dl
+2507 2959 2471 2961 Dl
+2543 2961 2507 2959 Dl
+2579 2962 2543 2962 Dl
+2615 2962 2579 2962 Dl
+2651 2959 2615 2961 Dl
+2687 2961 2651 2959 Dl
+2723 2962 2687 2962 Dl
+2759 2960 2723 2962 Dl
+2795 2960 2759 2958 Dl
+2831 2962 2795 2962 Dl
+2867 2960 2831 2962 Dl
+2903 2962 2867 2960 Dl
+2939 2962 2903 2962 Dl
+2975 2962 2939 2962 Dl
+3407 2388 3407 2964 Dl
+4847 2388 3407 2388 Dl
+4847 2964 4847 2388 Dl
+3407 2964 4847 2964 Dl
+(access-use distribution)1 907 1 3674 2359 t
+(access-use interval \(in instructions\))3 1411 1 3422 3248 t
+3335 2964 3407 2964 Dl
+(0)3260 2984 w
+3335 2848 3407 2848 Dl
+(20)3210 2868 w
+3335 2733 3407 2733 Dl
+(40)3210 2753 w
+3335 2618 3407 2618 Dl
+(60)3210 2638 w
+3335 2503 3407 2503 Dl
+(80)3210 2523 w
+3335 2388 3407 2388 Dl
+(100)3160 2408 w
+3407 3036 3407 2964 Dl
+(0)3382 3146 w
+3587 3036 3587 2964 Dl
+(5)3562 3146 w
+3767 3036 3767 2964 Dl
+(10)3717 3146 w
+3947 3036 3947 2964 Dl
+(15)3897 3146 w
+4127 3036 4127 2964 Dl
+(20)4077 3146 w
+4307 3036 4307 2964 Dl
+(25)4257 3146 w
+4487 3036 4487 2964 Dl
+(30)4437 3146 w
+4667 3036 4667 2964 Dl
+(35)4617 3146 w
+4847 3036 4847 2964 Dl
+(40)4797 3146 w
+3443 2778 3407 2964 Dl
+3479 2680 3443 2777 Dl
+3515 2608 3479 2680 Dl
+3551 2561 3515 2607 Dl
+3587 2527 3551 2560 Dl
+3623 2509 3587 2528 Dl
+3659 2491 3623 2508 Dl
+3695 2476 3659 2491 Dl
+3731 2468 3695 2475 Dl
+3767 2461 3731 2468 Dl
+3803 2454 3767 2461 Dl
+3839 2448 3803 2453 Dl
+3875 2442 3839 2447 Dl
+3911 2440 3875 2443 Dl
+3947 2437 3911 2439 Dl
+3983 2434 3947 2436 Dl
+4019 2431 3983 2434 Dl
+4055 2429 4019 2431 Dl
+4091 2428 4055 2429 Dl
+4127 2426 4091 2427 Dl
+4163 2425 4127 2426 Dl
+4199 2423 4163 2424 Dl
+4235 2420 4199 2423 Dl
+4271 2419 4235 2419 Dl
+4307 2417 4271 2418 Dl
+4343 2417 4307 2417 Dl
+4379 2416 4343 2416 Dl
+4415 2416 4379 2416 Dl
+4451 2413 4415 2415 Dl
+4487 2413 4451 2413 Dl
+4523 2412 4487 2412 Dl
+4559 2410 4523 2412 Dl
+4595 2410 4559 2410 Dl
+4631 2409 4595 2409 Dl
+4667 2407 4631 2408 Dl
+4703 2407 4667 2407 Dl
+4739 2406 4703 2406 Dl
+4775 2406 4739 2406 Dl
+1607 3468 1607 4044 Dl
+3047 3468 1607 3468 Dl
+3047 4044 3047 3468 Dl
+1607 4044 3047 4044 Dl
+(access-use density)1 734 1 1960 3439 t
+10 B f
+(gcc)1106 3596 w
+10 R f
+(percent)1029 3716 w
+(register)1026 3836 w
+(reads)1070 3956 w
+(access-use interval \(in instructions\))3 1411 1 1622 4328 t
+1535 4044 1607 4044 Dl
+(0)1460 4064 w
+1535 3900 1607 3900 Dl
+(10)1410 3920 w
+1535 3756 1607 3756 Dl
+(20)1410 3776 w
+1535 3612 1607 3612 Dl
+(30)1410 3632 w
+1535 3468 1607 3468 Dl
+(40)1410 3488 w
+1607 4116 1607 4044 Dl
+(0)1582 4226 w
+1787 4116 1787 4044 Dl
+(5)1762 4226 w
+1967 4116 1967 4044 Dl
+(10)1917 4226 w
+2147 4116 2147 4044 Dl
+(15)2097 4226 w
+2327 4116 2327 4044 Dl
+(20)2277 4226 w
+2507 4116 2507 4044 Dl
+(25)2457 4226 w
+2687 4116 2687 4044 Dl
+(30)2637 4226 w
+2867 4116 2867 4044 Dl
+(35)2817 4226 w
+3047 4116 3047 4044 Dl
+(40)2997 4226 w
+1643 3544 1607 4044 Dl
+1679 3691 1643 3543 Dl
+1715 3939 1679 3691 Dl
+1751 3969 1715 3940 Dl
+1787 3989 1751 3969 Dl
+1823 4004 1787 3990 Dl
+1859 4011 1823 4004 Dl
+1895 4011 1859 4011 Dl
+1931 4020 1895 4010 Dl
+1967 4020 1931 4020 Dl
+2003 3993 1967 4020 Dl
+2039 4028 2003 3992 Dl
+2075 4029 2039 4028 Dl
+2111 4032 2075 4030 Dl
+2147 4031 2111 4033 Dl
+2183 4037 2147 4031 Dl
+2219 4039 2183 4037 Dl
+2255 4040 2219 4040 Dl
+2291 4039 2255 4039 Dl
+2327 4033 2291 4040 Dl
+2363 4040 2327 4033 Dl
+2399 4040 2363 4040 Dl
+2435 4040 2399 4040 Dl
+2471 4041 2435 4041 Dl
+2507 4041 2471 4041 Dl
+2543 4041 2507 4041 Dl
+2579 4041 2543 4041 Dl
+2615 4041 2579 4041 Dl
+2651 4041 2615 4041 Dl
+2687 4042 2651 4042 Dl
+2723 4041 2687 4041 Dl
+2759 4042 2723 4042 Dl
+2795 4041 2759 4041 Dl
+2831 4041 2795 4042 Dl
+2867 4042 2831 4041 Dl
+2903 4042 2867 4042 Dl
+2939 4042 2903 4042 Dl
+2975 4042 2939 4042 Dl
+3407 3468 3407 4044 Dl
+4847 3468 3407 3468 Dl
+4847 4044 4847 3468 Dl
+3407 4044 4847 4044 Dl
+(access-use distribution)1 907 1 3674 3439 t
+(access-use interval \(in instructions\))3 1411 1 3422 4328 t
+3335 4044 3407 4044 Dl
+(0)3260 4064 w
+3335 3928 3407 3928 Dl
+(20)3210 3948 w
+3335 3813 3407 3813 Dl
+(40)3210 3833 w
+3335 3698 3407 3698 Dl
+(60)3210 3718 w
+3335 3583 3407 3583 Dl
+(80)3210 3603 w
+3335 3468 3407 3468 Dl
+(100)3160 3488 w
+3407 4116 3407 4044 Dl
+(0)3382 4226 w
+3587 4116 3587 4044 Dl
+(5)3562 4226 w
+3767 4116 3767 4044 Dl
+(10)3717 4226 w
+3947 4116 3947 4044 Dl
+(15)3897 4226 w
+4127 4116 4127 4044 Dl
+(20)4077 4226 w
+4307 4116 4307 4044 Dl
+(25)4257 4226 w
+4487 4116 4487 4044 Dl
+(30)4437 4226 w
+4667 4116 4667 4044 Dl
+(35)4617 4226 w
+4847 4116 4847 4044 Dl
+(40)4797 4226 w
+3443 3844 3407 4044 Dl
+3479 3703 3443 3843 Dl
+3515 3662 3479 3703 Dl
+3551 3632 3515 3661 Dl
+3587 3611 3551 3632 Dl
+3623 3595 3587 3610 Dl
+3659 3582 3623 3594 Dl
+3695 3569 3659 3581 Dl
+3731 3559 3695 3568 Dl
+3767 3550 3731 3559 Dl
+3803 3529 3767 3549 Dl
+3839 3523 3803 3529 Dl
+3875 3517 3839 3522 Dl
+3911 3512 3875 3516 Dl
+3947 3507 3911 3512 Dl
+3983 3506 3947 3508 Dl
+4019 3504 3983 3505 Dl
+4055 3503 4019 3504 Dl
+4091 3501 4055 3502 Dl
+4127 3497 4091 3501 Dl
+4163 3495 4127 3496 Dl
+4199 3494 4163 3495 Dl
+4235 3492 4199 3493 Dl
+4271 3492 4235 3492 Dl
+4307 3491 4271 3491 Dl
+4343 3491 4307 3491 Dl
+4379 3489 4343 3489 Dl
+4415 3488 4379 3488 Dl
+4451 3488 4415 3488 Dl
+4487 3487 4451 3487 Dl
+4523 3486 4487 3486 Dl
+4559 3486 4523 3486 Dl
+4595 3485 4559 3485 Dl
+4631 3483 4595 3484 Dl
+4667 3483 4631 3483 Dl
+4703 3483 4667 3483 Dl
+4739 3482 4703 3482 Dl
+4775 3481 4739 3481 Dl
+1607 4548 1607 5124 Dl
+3047 4548 1607 4548 Dl
+3047 5124 3047 4548 Dl
+1607 5124 3047 5124 Dl
+(access-use density)1 734 1 1960 4519 t
+10 B f
+(go)1150 4676 w
+10 R f
+(percent)1054 4796 w
+(register)1051 4916 w
+(reads)1095 5036 w
+(access-use interval \(in instructions\))3 1411 1 1622 5408 t
+1535 5124 1607 5124 Dl
+(0)1460 5144 w
+1535 4980 1607 4980 Dl
+(10)1410 5000 w
+1535 4836 1607 4836 Dl
+(20)1410 4856 w
+1535 4692 1607 4692 Dl
+(30)1410 4712 w
+1535 4548 1607 4548 Dl
+(40)1410 4568 w
+1607 5196 1607 5124 Dl
+(0)1582 5306 w
+1787 5196 1787 5124 Dl
+(5)1762 5306 w
+1967 5196 1967 5124 Dl
+(10)1917 5306 w
+2147 5196 2147 5124 Dl
+(15)2097 5306 w
+2327 5196 2327 5124 Dl
+(20)2277 5306 w
+2507 5196 2507 5124 Dl
+(25)2457 5306 w
+2687 5196 2687 5124 Dl
+(30)2637 5306 w
+2867 5196 2867 5124 Dl
+(35)2817 5306 w
+3047 5196 3047 5124 Dl
+(40)2997 5306 w
+1643 4693 1607 5124 Dl
+1679 4825 1643 4692 Dl
+1715 4985 1679 4826 Dl
+1751 5042 1715 4985 Dl
+1787 5058 1751 5043 Dl
+1823 5084 1787 5058 Dl
+1859 5088 1823 5085 Dl
+1895 5099 1859 5089 Dl
+1931 5100 1895 5100 Dl
+1967 5093 1931 5100 Dl
+2003 5105 1967 5093 Dl
+2039 5105 2003 5105 Dl
+2075 5100 2039 5105 Dl
+2111 5109 2075 5100 Dl
+2147 5111 2111 5109 Dl
+2183 5110 2147 5111 Dl
+2219 5116 2183 5111 Dl
+2255 5115 2219 5116 Dl
+2291 5115 2255 5115 Dl
+2327 5116 2291 5116 Dl
+2363 5116 2327 5115 Dl
+2399 5117 2363 5116 Dl
+2435 5117 2399 5117 Dl
+2471 5119 2435 5116 Dl
+2507 5119 2471 5119 Dl
+2543 5119 2507 5119 Dl
+2579 5119 2543 5119 Dl
+2615 5120 2579 5119 Dl
+2651 5120 2615 5121 Dl
+2687 5119 2651 5119 Dl
+2723 5117 2687 5119 Dl
+2759 5120 2723 5117 Dl
+2795 5120 2759 5121 Dl
+2831 5119 2795 5119 Dl
+2867 5121 2831 5119 Dl
+2903 5121 2867 5121 Dl
+2939 5121 2903 5121 Dl
+2975 5121 2939 5121 Dl
+3407 4548 3407 5124 Dl
+4847 4548 3407 4548 Dl
+4847 5124 4847 4548 Dl
+3407 5124 4847 5124 Dl
+(access-use distribution)1 907 1 3674 4519 t
+(access-use interval \(in instructions\))3 1411 1 3422 5408 t
+3335 5124 3407 5124 Dl
+(0)3260 5144 w
+3335 5008 3407 5008 Dl
+(20)3210 5028 w
+3335 4893 3407 4893 Dl
+(40)3210 4913 w
+3335 4778 3407 4778 Dl
+(60)3210 4798 w
+3335 4663 3407 4663 Dl
+(80)3210 4683 w
+3335 4548 3407 4548 Dl
+(100)3160 4568 w
+3407 5196 3407 5124 Dl
+(0)3382 5306 w
+3587 5196 3587 5124 Dl
+(5)3562 5306 w
+3767 5196 3767 5124 Dl
+(10)3717 5306 w
+3947 5196 3947 5124 Dl
+(15)3897 5306 w
+4127 5196 4127 5124 Dl
+(20)4077 5306 w
+4307 5196 4307 5124 Dl
+(25)4257 5306 w
+4487 5196 4487 5124 Dl
+(30)4437 5306 w
+4667 5196 4667 5124 Dl
+(35)4617 5306 w
+4847 5196 4847 5124 Dl
+(40)4797 5306 w
+3443 4952 3407 5124 Dl
+3479 4833 3443 4951 Dl
+3515 4777 3479 4832 Dl
+3551 4744 3515 4776 Dl
+3587 4719 3551 4744 Dl
+3623 4703 3587 4718 Dl
+3659 4690 3623 4703 Dl
+3695 4680 3659 4689 Dl
+3731 4670 3695 4679 Dl
+3767 4658 3731 4670 Dl
+3803 4651 3767 4658 Dl
+3839 4643 3803 4650 Dl
+3875 4634 3839 4643 Dl
+3911 4629 3875 4634 Dl
+3947 4623 3911 4628 Dl
+3983 4618 3947 4623 Dl
+4019 4615 3983 4617 Dl
+4055 4611 4019 4614 Dl
+4091 4609 4055 4611 Dl
+4127 4605 4091 4608 Dl
+4163 4602 4127 4604 Dl
+4199 4600 4163 4602 Dl
+4235 4597 4199 4599 Dl
+4271 4595 4235 4596 Dl
+4307 4593 4271 4594 Dl
+4343 4590 4307 4592 Dl
+4379 4590 4343 4591 Dl
+4415 4588 4379 4589 Dl
+4451 4587 4415 4588 Dl
+4487 4585 4451 4586 Dl
+4523 4582 4487 4584 Dl
+4559 4580 4523 4581 Dl
+4595 4580 4559 4581 Dl
+4631 4578 4595 4579 Dl
+4667 4577 4631 4577 Dl
+4703 4576 4667 4576 Dl
+4739 4576 4703 4576 Dl
+4775 4575 4739 4575 Dl
+cleartomark
+showpage
+saveobj restore
+end
+%%PageBoundingBox: 75 235 500 792
+%%EndPage: 1 1
+%%Trailer
+DpostDict begin
+done
+end
+%%Pages: 1
+%%DocumentFonts: Times-Bold Times-Roman
+%%BoundingBox: 75 235 500 792

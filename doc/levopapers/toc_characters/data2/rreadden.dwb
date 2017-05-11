@@ -1,0 +1,9 @@
+.G1
+frame ht 2 wid 4.5
+label left "percent" "reads" left .1
+label bot "register address"
+coord x 0,40 y 0,30
+ticks bot out at 0, 10, 20, 30, 40
+draw solid dot
+copy "mean.rreadden" thru X next at $1,($2 * 100) X
+.G2

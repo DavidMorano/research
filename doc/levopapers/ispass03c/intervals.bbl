@@ -1,0 +1,136 @@
+\begin{thebibliography}{10}\setlength{\itemsep}{-1ex}\small
+
+\bibitem{farkas97multicluster}
+{Farkas K.I., Chow P., Jouppi N.P., Vranesic Z.}
+\newblock The multicluster architecture: Reducing cycle time through
+  partiioning.
+\newblock In {\em {Proceedings of the 30th International Symposium on
+  Microarchitecture}}, pages 149--159, 1997.
+
+\bibitem{Franklin92}
+{Franklin M. and Sohi G.S.}
+\newblock {Register Traffic Analysis for Streamlining Inter-Operation
+  Communication in Fine-Grained Parallel Processors}.
+\newblock In {\em {Proceedings of the 25th International Symposium on
+  Microarchitecture}}, pages 236--245, New York, NY, Dec 1992. ACM Press.
+
+\bibitem{franklin96arb}
+{Franklin M., Sohi G.S.}
+\newblock {ARB:} a hardware mechanism for dynamic memory disambiguation.
+\newblock {\em {IEEE} Transactions on Computers}, 45(5):552--571, May 1996.
+
+\bibitem{hennpatt95}
+{Hennessy J.L. and Patterson D.A.}
+\newblock {\em Computer Architecture: A Quantitative Approach, 2nd ed.}
+\newblock Morgan Kaufmann, Palo Alto, CA, 1995.
+
+\bibitem{Jiser00}
+{Jiser J., Carr S. and Sweany P.}
+\newblock Global register partitioning.
+\newblock In {\em {Proceedings of the International Conference on Parallel
+  Architectures and Compilation Techniques}}, New York, NY, October 2000. IEEE
+  Press.
+
+\bibitem{kemp96pew}
+{Kemp G.A., Franklin M.}
+\newblock {PEWs: A} decentralized dynamic scheduler for {ILP} processing.
+\newblock In {\em {Proceedings of the 24th International Conference on Parallel
+  Computing}}, pages 239--246, 1996.
+
+\bibitem{Kessler98}
+{Kessler R.E., McLellan E.J. and Webb D.A.}
+\newblock The {Alpha 21264} microprocessor architecture.
+\newblock In {\em International Conference on Computer Design}, Oct 1998.
+
+\bibitem{leibholz97alpha}
+{Leibholz D., Razdan R.}
+\newblock The {Alpha 21264: A 500 MHz} out-of-order execution microprocessor.
+\newblock In {\em Proceedings of {COMPCON}}, pages 28--36, 1997.
+
+\bibitem{madison76characteristics}
+{Madison A., Bunt R.}
+\newblock Characteristics of program localities.
+\newblock {\em Communications of the {ACM}}, May 1976.
+
+\bibitem{morano02high}
+{Morano D.A., Khalafi A., Kaeli D.R., Uht A.K.}
+\newblock Realizing high {IPC} through a scalable memory-latency tolerant
+  multipath microarchitecture.
+\newblock In {\em Proceedings of MEDEA Workshop {(held in conjuction with
+  PACT'02)}}, 2002.
+
+\bibitem{Nag01}
+{Nagarajan R., Sankaralingam K., Burger D. and Keckler S.W.}
+\newblock A design space evaluation of grid processor architectures.
+\newblock In {\em {Proceedings of the 34th International Symposium on
+  Microarchitecture}}, New York, NY, Nov 2001. ACM Press.
+
+\bibitem{rotenberg97trace}
+{Rotenberg E., Jacobsom Q., Sazeides Y.}
+\newblock Trace processors.
+\newblock In {\em {Proceedings of the 30th International Symposium on
+  Microarchitecture}}, pages 138--148, 1997.
+
+\bibitem{rotenberg99control}
+{Rotenberg E., Smith J.}
+\newblock Control independence in trace processors.
+\newblock In {\em {Proceedings of the 32th International Symposium on
+  Microarchitecture}}, 1999.
+
+\bibitem{Sohi95}
+{Sohi G.S., Breach S. and Vijaykumar T.N.}
+\newblock {Multiscalar Processors}.
+\newblock In {\em {Proceedings of the 22th International Symposium on Computer
+  Architecture}}, New York, NY, Jun 1995. ACM Press.
+
+\bibitem{sundararaman97multiscalar}
+{Sundararaman K.K., Franklin M.}
+\newblock Multiscalar execution along a single flow of control.
+\newblock In {\em {Proceedings of the International Conference on Parallel
+  Computing}}, pages 106--113, 1997.
+
+\bibitem{Tom67}
+{Tomasulo R.M.}
+\newblock {An Efficient Algorithm for Exploiting Multiple Arithmetic Units}.
+\newblock {\em {IBM Journal of Research and Development}}, 11(1):25--33, Jan
+  1967.
+
+\bibitem{tsai96superthread}
+{Tsai J-Y., Yew P-C.}
+\newblock The superthreaded architecture: Thread pipelining with run-time data
+  dependence checking and control speculation.
+\newblock In {\em {Proceedings of the International Conference on Parallel
+  Architectures and Compilation Techniques}}, pages 35--46, 1996.
+
+\bibitem{uht02realizing}
+{Uht A.K., Morano D.A., Khalafi A., de Alba M., Kaeli D.}
+\newblock Realizing high {IPC} using time-tagged resource-flow computing.
+\newblock In {\em Proceedings of the the {EUROPAR} Conference}, Aug 2002.
+
+\bibitem{vajapeyam97sequences}
+{Vajapeyam S., Mitra T.}
+\newblock Improving superscalar intruction dispatch and issue by exploiting
+  dyanmic code sequences.
+\newblock In {\em {Proceedings of the 24th International Symposium on Computer
+  Architecture}}, 1997.
+
+\bibitem{verkamo85emperical}
+{Verkamo A.}
+\newblock Emperical results on locality in database referencing.
+\newblock In {\em Proceedings of {ACM SIGMETRICS} Conference on Measurement and
+  Modeling of Computer Systems}, Aug 1985.
+
+\bibitem{phalke95gap}
+{Vidyadhar P., Bhaskarpillia G.}
+\newblock An inter-reference gap model for temporal locaility in program
+  behavior.
+\newblock In {\em Proceedings of SIGMETRICS Joint International Conference on
+  Measurement and Modeling of Computer Systems}, pages 191--300. ACM Press,
+  1995.
+
+\bibitem{yeager96r10000}
+{Yeager K.C.}
+\newblock The {MIPS R10000} superscalar microprocessor.
+\newblock {\em {IEEE Micro}}, pages 28--40, Apr 1996.
+
+\end{thebibliography}

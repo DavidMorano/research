@@ -1,0 +1,57 @@
+\vspace{-0.25in}
+\subsection{Result Forwarding Buses and Operand Filtering}
+\vspace{-0.15in}
+%
+The basic requirement of the interconnection fabric is that it must be able
+to transport operand results from any instruction to those
+instructions with higher valued time tags.  This corresponds
+to the forwarding of operands into future program ordered time.
+There are several choices for a suitable interconnection fabric.
+A simple interconnection fabric could consist of one or more shared
+buses that simply interconnect all issue slots.
+Although appropriate for smaller sized microarchitectures,
+this arrangement does not scale as well as some other alternatives.
+A more appropriate interconnection fabric that would allow
+for the physical scaling of the microarchitecture may be one in which
+forwarding buses are segmented with active repeaters between
+the stages.
+This arrangement exploits the fact that register lifetimes
+are fairly short~\cite{Franklin92,Sohi95}.
+Registers being forwarded to instructions lying close
+in future program-ordered time will get their operands quickly
+while those instructions lying beyond the repeater units
+will incur additional delays.
+In addition to allowing for physical scaling, it also offers
+the opportunity for filtering out some operands that do
+not need to be forwarded beyond a certain point.
+Another possibility for the operand forwarding fabric is
+to have separate buses for each type of operand.
+This sort of arrangement could be used to tailor the available
+bandwidth provided for each type of operand.  It could also
+allow for a different interconnection network to be used
+for each type of operand also.  We have explored several of
+these possible variations already.
+
+The opportunity to provide active repeaters between forwarding bus
+segments also opens up a range of new microarchitectural
+ideas not easily accomplished without the use of time tagging.
+Different types of active repeaters can be optionally used.
+Further, different types of repeaters can be used for
+the different types of operands.
+Some can just provide a store-and-forward function while
+another variation could also store recently forwarded operands
+and filter out (not forward) newly snooped operands that
+have already been forwarded previously. 
+The latter type of forwarding repeater unit is termed a
+\textit{filter unit}.
+This feature can be used to reduce the operand traffic
+on the forwarding fabric and thus reduce implementation costs.
+For example, for memory operands, a cache (call it a \textit{L0 cache})
+can be situated inside a \textit{memory filter unit} (MFU)
+and can hold recently requested memory operands.
+This can reduce the demand on the L1 data cache and the rest
+of the memory hierarchy by satisfying some percent of memory
+operand loads from these caches alone.
+Register filter units (RFUs) are also possible and can reduce
+register transfer traffic similarly to the MFUs.
+%

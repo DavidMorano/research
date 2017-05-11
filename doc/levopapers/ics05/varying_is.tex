@@ -1,0 +1,100 @@
+%
+%\vspace{-0.25in}
+\subsection{Varying the number of issue stations}
+%\vspace{-0.15in}
+%
+One of the more obvious aspects of our microarchitecture
+that contributes to the amount of ILP
+that can be extracted from the programs is the number of Issue Stations
+implemented.
+Here we simulate five machines with
+varying numbers of Issue Stations.
+We present two data sets here.  
+We began by configuring a machine with  
+8 integer ALUs and then extended this to 16 ALUs.
+A machine  
+with 128 Issue Stations and eight integer ALU FUs resembles
+a typical machine in development today.
+The taget design point is centered around a next generation
+machine that has an issue width of 16 rather than 8.
+
+The IPC results for all 
+benchmarks along with the harmonic mean 
+is shown for this first data set (8 integer ALU function units)
+in Table \ref{tab:iwsize8ipc}.
+The average percent of instruction executions that are 
+actually re-executions ranged from about 1.2\% for the configuration
+with 16 Issue Stations to about 2.2\% for 256 Issue Stations.
+Although only 8 integer FUs are employed, IPCs for a program
+can be greater than 8 since other instructions are executed
+either within the issue station itself or by other FU types.
+Notice that the highest IPC performance is not achieved with
+the largest number of Issue Stations but rather with the configuration
+with 64 Issue Stations (having a harmonic mean of 8.0).  
+The IPC starts to decrease due to
+the destructive contention for function units (actually the integer
+ALU units).
+
+%
+\begin{table}[p]
+\begin{center}
+\caption{{\em IPC performance for varying numbers of
+Issue Stations.}
+All machines had 8 integer ALU FUs with varying ISs from 16 to 256.}
+\label{tab:iwsize8ipc}
+\vspace{+0.1in}
+\begin{tabular}{|l||r|r|r|r|r|}
+\hline 
+{ISs}& 16 & 32 & 64 & 128 & 256 \\
+\hline
+
+\hline
+bzip2&
+5.1 & 7.7 & 7.4 & 5.8 & 3.6 \\
+
+\hline
+crafty&
+4.9 & 7.7 & 8.1 & 7.3 & 6.1 \\
+
+\hline
+eon&
+4.2 & 6.6 & 8.3 & 8.0 & 6.0 \\
+
+\hline
+gcc&
+5.2 & 8.0 & 8.0 & 6.8 & 6.7 \\
+
+\hline
+gzip&
+5.2 & 8.0 & 8.1 & 7.6 & 5.6 \\
+
+\hline
+parser&
+5.1 & 7.6 & 8.0 & 7.3 & 7.6 \\
+
+\hline
+perlbmk&
+5.1 & 8.1 & 7.2 & 5.9 & 3.6 \\
+
+\hline
+twolf&
+4.8 & 7.5 & 7.7 & 7.3 & 5.2 \\
+
+\hline
+vortex&
+5.3 & 8.9 & 9.0 & 8.1 & 5.5 \\
+
+\hline
+vpr&
+4.7 & 7.5 & 8.7 & 8.4 & 6.5 \\
+
+\hline
+H-MEAN&
+4.9 & 7.7 & 8.0 & 7.1 & 5.3 \\
+
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+%
+%

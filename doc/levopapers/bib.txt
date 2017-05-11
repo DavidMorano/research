@@ -1,0 +1,287 @@
+@inproceedings{ calder99selective,
+    author = "Brad Calder and Glenn Reinman and Dean M. Tullsen",
+    title = "Selective Value Prediction",
+    booktitle = "{ISCA}",
+    pages = "64-74",
+    year = "1999",
+    url = "citeseer.nj.nec.com/calder98selective.html" }
+    
+@inproceedings{ lipasti96exceeding,
+    author = "Mikko H. Lipasti and John Paul Shen",
+    title = "Exceeding the Dataflow Limit via Value Prediction",
+    booktitle = "International Symposium on Microarchitecture",
+    pages = "226-237",
+    year = "1996",
+    url = "citeseer.nj.nec.com/lipasti96exceeding.html" }
+    
+    @article{ lipasti98exploiting,
+    author = "Mikko H. Lipasti and John P. Shen",
+    title = "Exploiting Value Locality to Exceed the Dataflow Limit",
+    journal = "International Journal of Parallel Programming",
+    volume = "26",
+    number = "4",
+    pages = "505-538",
+    year = "1998",
+    url = "citeseer.nj.nec.com/lipasti98exploiting.html" }
+    
+    
+    Riseman, Edward M., and Foster, Caxton C. The Inhibition 
+    of Potential Parallelism by Conditional Jumps. IEEE
+Transactions on Computers C-21(12):1405-1411, December, 1972.
+
+
+@misc{ lipasti97approaching,
+  author = "M. Lipasti and J. Shen",
+  title = "Approaching 10 IPC via superspeculation",
+  text = "Lipasti, M.H., Shen, J.P.: Approaching 10 IPC via superspeculation. 
+  Technical
+    Report CMU-MIG-1, Carnegie Mellon University, 1997.",
+  year = "1997",
+  url = "citeseer.nj.nec.com/lipasti97approaching.html" }
+  
+  
+  P. Bannon et al. Internal architecture of Alpha 21164 microprocessor. 
+  In Digest of Papers. COMPCON 95, pages
+ 79--87, March 1995.
+ 
+ @inproceedings{ lipasti96value,
+    author = "Mikko H. Lipasti and Christopher B. Wilkerson and John P. Shen",
+    title = "Value Locality and Load Value Prediction",
+    booktitle = "Architectural Support for Programming Languages and Operating Systems",
+    pages = "138-147",
+    year = "1996",
+    url = "citeseer.nj.nec.com/lipasti96value.html" }
+    
+    @misc{ lipasti97value,
+  author = "M. Lipasti",
+  title = "Value Locality and Speculative Execution",
+  text = "M. H. Lipasti, Value Locality and Speculative Execution, 
+	Ph.D. thesis, Carnegie Mellon University",
+  year = "1997",
+	month=april,
+  url = "citeseer.nj.nec.com/lipasti97value.html" }
+  
+  
+@article{ lipasti97superspeculative,
+    author = "Mikko H. Lipasti and John Paul Shen",
+    title = "Superspeculative Microarchitecture for Beyond {AD 2000}",
+    journal = "Computer",
+    volume = "30",
+    number = "9",
+    pages = "59-66",
+    year = "1997",
+    url = "citeseer.nj.nec.com/lipasti97superspeculative.html" }
+    
+    
+    @misc{ amt-emerging,
+  author = "Lfkdho Klhpv Amt",
+  title = "Emerging DRAM Technologies",
+  url = "citeseer.nj.nec.com/295859.html" }
+  
+  @inproceedings{ lipasti97performance,
+    author = "Mikko H. Lipasti and John P. Shen",
+    title = "The Performance Potential of Value and Dependence Prediction",
+    booktitle = "European Conference on Parallel Processing",
+    pages = "1043-1052",
+    year = "1997",
+    url = "citeseer.nj.nec.com/lipasti97performance.html" }
+    
+    
+    @techreport{ scott93combining,
+    author = "McFarling, Scott",
+    title = "{C}ombining {B}ranch {P}redictors",
+    number = "TN-36",
+    month = "June",
+    year = "1993",
+    url = "citeseer.nj.nec.com/mcfarling93combining.html" }
+    
+    @inproceedings{ mahlkecharacterizing,
+    author = "Scott A. Mahlke and Richard E. Hank and 
+	Roger A. Bringmann and John C. Gyllenhaal and 
+	David M. Gallagher and Wen-mei W. Hwu",
+    title = "Characterizing the Impact of Predicated Execution on 
+	Branch Prediction",
+    pages = "217-227",
+	year=1994,
+    url = "citeseer.nj.nec.com/article/mahlke94characterizing.html" }
+    
+@article{ uh99effectively,
+    author = "Gang-Ryung Uh and David B. Whalley",
+    title = "Effectively Exploiting Indirect Jumps",
+    journal = "Software - Practice and Experience",
+    volume = "29",
+    number = "12",
+    pages = "1061-1101",
+    year = "1999",
+    url = "citeseer.nj.nec.com/uh97effectively.html" }
+    
+    @inproceedings{ jacobsen96assigning,
+    author = "Erik Jacobsen and Eric Rotenberg and James E. Smith",
+    title = "Assigning Confidence to Conditional Branch Predictions",
+    booktitle = "International Symposium on Microarchitecture",
+    pages = "142-152",
+    year = "1996",
+    url = "citeseer.nj.nec.com/jacobsen96assigning.html" }
+    
+    @inproceedings{ wall91limits,
+    author = "D. W. Wall",
+    title = "Limits of Instruction-Level Parallelism",
+    booktitle = "Proceedings of the 4th International Conference on Architectural Support for Programming Languages and Operating System ({ASPLOS})",
+    journal = "SIGPLAN Notices",
+    volume = "26",
+    number = "4",
+    publisher = "ACM Press",
+    address = "New York, NY",
+    isbn = "0-89791-380-9",
+    pages = "176--189",
+    year = "1991",
+    url = "citeseer.nj.nec.com/wall93limits.html" }
+    
+    @misc{ gonzlez98limits,
+  author = "J. Gonzlez and A. Gonzlez",
+  title = "Limits of Instruction Level Parallelism with Data Speculation",
+  text = "J. Gonz‡lez and A. Gonz‡lez, Limits of Instruction Level Parallelism with
+    Data Speculation, in Proc. of the VECPAR Conf., pp. 585-598, 1998.",
+  year = "1998",
+  url = "citeseer.nj.nec.com/60519.html" }
+  
+  @misc{ gon97eva,
+  author = "Jos Gonz",
+  title = "Evaluation of Alternative Data Speculation Approaches for 
+  	Superscalar Processors",
+  url = "citeseer.nj.nec.com/48458.html",
+  	year= 1997
+  }
+  
+  
+@misc{ gonz'alez98data,
+  author = "J. Gonz'alez and A. Gonz'alez",
+  title = "Data Value Speculation in Superscalar Processors",
+  text = "J. Gonz'alez and A. Gonz'alez, Data Value Speculation in Superscalar Processors,
+    in Microprocessors and Microsystems, 22(6),November 1998.",
+  year = "1998",
+  url = "citeseer.nj.nec.com/107737.html" }
+  
+  @misc{ rychlik98efficient,
+  author = "B. Rychlik and J. Faistl and B. Krug and A. Kurland and J. Jung 
+  and M.
+    Velev and J. Shen",
+  title = "Efficient and Accurate Value Prediction Using Dynamic Classification",
+  text = "Efficient and Accurate Value Prediction Using Dynamic Classification,
+    Technical Report of Microarchitecture Research Team in Dept. of Electrical
+    and Computer Engineering, Carnegie Mellon Univ., 1998.",
+  year = "1998",
+  url = "citeseer.nj.nec.com/rychlik98efficient.html" }
+  
+  
+TR978
+@misc{ and-implementations,
+  author = "Yiannakis Sazeides And",
+  title = "Implementations of Context Based Value Predictors",
+  	year=1997,
+  		mon=dec,
+  url = "citeseer.nj.nec.com/497854.html" 
+  }
+  
+  @inproceedings{ sazeides97predictability,
+    author = "Yiannakis Sazeides and James E. Smith",
+    title = "The Predictability of Data Values",
+    booktitle = "International Symposium on Microarchitecture",
+    pages = "248-258",
+    year = "1997",
+    url = "citeseer.nj.nec.com/sazeides97predictability.html" }
+    
+    @misc{ manoj-using,
+  author = "Renju Thomas Manoj Franklin",
+  title = "Using Dataflow Based Context for Accurate Value Prediction",
+  year=2001,
+  url = "citeseer.nj.nec.com/444709.html" }
+  
+  
+  
+  
+  @techreport{ douglas95the,
+    author = "Burger, Douglas C. and Goodman, James R. and Kagi, Alain",
+    title = "{T}he {D}eclining {E}ffectiveness of {D}ynamic {C}aching for {G}eneral-{P}urpose {M}icroprocessors",
+    number = "UWMADISONCS CS-TR-95-1261",
+    month = "January",
+    year = "1995",
+    url = "citeseer.nj.nec.com/burger95declining.html" }
+    
+    @article{ burger97limited,
+    author = "Doug Burger and James R. Goodman and Alain K{\"a}gi",
+    title = "Limited Bandwidth to Affect Processor Design",
+    journal = "IEEE Micro",
+    volume = "17",
+    number = "6",
+    month = "Nov",
+    pages = "55--??",
+    year = "1997",
+    url = "citeseer.nj.nec.com/burger97limited.html" }
+    
+    
+  @inproceedings{ burger96memory,
+    author = "Doug Burger and James R. Goodman and Alain Kagi",
+    title = "Memory Bandwidth Limitations of Future Microprocessors",
+    booktitle = "{ISCA}",
+    pages = "78-89",
+    year = "1996",
+    url = "citeseer.nj.nec.com/burger96memory.html" }
+    
+    
+@inproceedings{ cuppu99performance,
+    author = "Vinodh Cuppu and Bruce L. Jacob and Brian Davis and Trevor N. Mudge",
+    title = "A Performance Comparison of Contemporary {DRAM} Architectures",
+    booktitle = "{ISCA}",
+    pages = "222-233",
+    year = "1999",
+    url = "citeseer.nj.nec.com/cuppu99performance.html" }
+    
+    
+@misc{ davis-ddr,
+  author = "Brian Davis and Trevor Mudge and Vinodh Cuppu and Bruce Jacob",
+  title = "DDR2 and Low Latency Variants",
+  url = "http://www.glue.umd.edu/%257Eramvinod/memwall.isca2k.pdf" }
+  
+ B. Davis, T. Mudge, and B. Jacob. 
+ DDR2 and low latency variants.
+ Proc. Memory Wall Workshop. 
+ In conjunction with the 26th Ann. Int. Symp. Computer Architecture, 
+ May 2000.
+ 
+ 
+ B. Davis, B. Jacob, and T. Mudge. 
+ The new DRAM interfaces: SDRAM, RDRAM and variants. 
+ 3rd Int. Symp. High Performance Computing, 
+ Lecture Notes in Computer Science, 
+ 1940, Publ: Springer,
+    Tokyo, Japan, Oct. 2000, pp. 26-31. 
+    
+ 
+  V. Cuppu, B. Jacob, B. Davis, and T. Mudge. 
+  High-performance DRAMs in workstation environments. 
+  IEEE Trans. Computers, 
+  vol. 50, no. 11, Nov. 2001, pp. 1133-1153. 
+  
+  
+  
+@inproceedings{ yeh92alternative,
+    author = "T. Y. Yeh and Y. N. Patt",
+    title = "Alternative implementations of two-level adaptive branch prediction",
+    booktitle = "Nineteenth International Symposium on Computer Architecture",
+    publisher = "ACM and IEEE Computer Society",
+    address = "Gold Coast, Australia",
+    pages = "124--134",
+    year = "1992",
+    url = "citeseer.nj.nec.com/yeh92alternative.html" }
+    
+    
+  @techreport{ scott93combining,
+    author = "McFarling, Scott",
+    title = "{C}ombining {B}ranch {P}redictors",
+    number = "TN-36",
+    month = "June",
+    year = "1993",
+    url = "citeseer.nj.nec.com/mcfarling93combining.html" }
+    
+    

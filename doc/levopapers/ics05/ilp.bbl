@@ -1,0 +1,158 @@
+\begin{thebibliography}{10}\setlength{\itemsep}{-1ex}\small
+
+\bibitem{Anderson67}
+{Anderson D., Sparacio F. and Tomasulo F.}
+\newblock {The IBM/360 Model 91: Machine Philosophy and Instruction Handling}.
+\newblock {\em {IBM Journal}}, 11(1):8--24, Jan. 1967.
+
+\bibitem{Austin97}
+{Austin T.M. and Burger D.}
+\newblock { SimpleScalar Tutorial }.
+\newblock In {\em {Proc. of MICRO-30}}, {Nov} 1997.
+
+\bibitem{Bannon95}
+{Bannon P. et al}.
+\newblock Internal architecture of {Alpha 21164} microprocessor.
+\newblock In {\em Proceedings of {COMPCON}}, pages 79--87, Mar 1995.
+
+\bibitem{eustace94c}
+{Eustace A. and Srivastava A.}
+\newblock {ATOM: A flexible interface for building high performance program
+  analysis tools}.
+\newblock Technical Report {WRL-TN-44}, {Digital Western Research Lab}, Palo
+  Alto, CA, Jul 1994.
+
+\bibitem{farkas97multicluster}
+{Farkas K.I., Chow P., Jouppi N.P., Vranesic Z.}
+\newblock The multicluster architecture: Reducing cycle time through
+  partiioning.
+\newblock In {\em {Proceedings of the 30th International Symposium on
+  Microarchitecture}}, pages 149--159, 1997.
+
+\bibitem{Gon97}
+{Gonzalez J. and Gonzalez A.}
+\newblock {Limits on Instruction-Level Parallelism with Data Speculation}.
+\newblock Technical Report {UPC-DAC-1997-34}, {UPC, Barcelona Spain}, 1997.
+
+\bibitem{hinton01pentium}
+{Hinton G., Sager D., Upton M., Boggs D. Carmean D., Kyker A. Roussel P.}
+\newblock The microarchitecture of the {Pentium-4} processor.
+\newblock {\em Intel Technical Journal - Q1}, 2001.
+
+\bibitem{ibrahim03}
+{Ibrahim K.Z., Byrd G.T., Rotenberg E.}
+\newblock Slipstream execution mode for {CMP-Based} multiprocessors.
+\newblock In {\em Proceedings of the 9th International Symposium on High
+  Performance Computer Architecture}. {IEEE}, Feb 2003.
+
+\bibitem{intel99ia}
+{Intel Corp.}
+\newblock {\em {iA-64 Application Developer's Architecture Guide}}, 1999.
+
+\bibitem{kemp96pew}
+{Kemp G.A., Franklin M.}
+\newblock {PEWs: A} decentralized dynamic scheduler for {ILP} processing.
+\newblock In {\em {Proceedings of the 24th International Conference on Parallel
+  Computing}}, pages 239--246, 1996.
+
+\bibitem{Lam92}
+{Lam M.S. and Wilson R.P.}
+\newblock {Limits of Control Flow on Parallelism}.
+\newblock In {\em {Proc. of ISCA-19}}, pages 46--57. {ACM}, May 1992.
+
+\bibitem{Lip97}
+{Lipasti M.H and Shen J.P.}
+\newblock {Superspeculative Microarchitecture for Beyond AD 2000}.
+\newblock {\em {IEEE Computer}}, {30}({9}), Sep 1997.
+
+\bibitem{morano02high}
+{Morano D.A., Khalafi A., Kaeli D.R., Uht A.K.}
+\newblock Realizing high {IPC} through a scalable memory-latency tolerant
+  multipath microarchitecture.
+\newblock In {\em Proceedings of MEDEA Workshop {(held in conjuction with
+  PACT'02)}}, 2002.
+
+\bibitem{Nag01}
+{Nagarajan R., Sankaralingam K., Burger D. and Keckler S.W.}
+\newblock A design space evaluation of grid processor architectures.
+\newblock In {\em {Proceedings of the 34th International Symposium on
+  Microarchitecture}}, New York, NY, Nov 2001. ACM Press.
+
+\bibitem{schlansker00epic}
+{Schlansker M.S. and Rau B.R.}
+\newblock {EPIC}: Explicitly parallel instruction computing.
+\newblock {\em Computer}, 33(2):37--45, Feb 2000.
+
+\bibitem{sherwood02}
+{Sherwood T., Hamerly G., Calder B.}
+\newblock Automatically characterizing large scale program behavior.
+\newblock In {\em Proceedings of the {10th} International Conference on
+  Architectural Support for Programming Languages and Operating System
+  ({ASPLOS})}, New York, NY, May 2002. ACM Press.
+
+\bibitem{Sohi95}
+{Sohi G.S., Breach S. and Vijaykumar T.N.}
+\newblock {Multiscalar Processors}.
+\newblock In {\em {Proceedings of the 22th International Symposium on Computer
+  Architecture}}, New York, NY, Jun 1995. ACM Press.
+
+\bibitem{srivastava94b}
+{Srivastava A and Eustace A.}
+\newblock {ATOM: A system for building customized program analysis tools}.
+\newblock Technical Report {WRL-TR-94.2}, {Digital Western Research Lab}, Palo
+  Alto, CA, Mar 1994.
+
+\bibitem{sundararaman97multiscalar}
+{Sundararaman K.K., Franklin M.}
+\newblock Multiscalar execution along a single flow of control.
+\newblock In {\em {Proceedings of the International Conference on Parallel
+  Computing}}, pages 106--113, 1997.
+
+\bibitem{taylor02}
+{Taylor M.B., Kim J., Miller J., Wentzlaff D., Ghodrat F., Greenwald B.,
+  Hoffmann H., Johnson J., Lee J., Lee W., Ma A., Saraf A., Seneski M.,
+  Shnidman N., Strumpen V., Frank M., Amarasinghe S. and Agarwal A.}
+\newblock The raw microprocessor: A computational fabric for software circuits
+  and general purpose programs.
+\newblock {\em IEEE Micro}, 2002.
+
+\bibitem{Tom67}
+{Tomasulo R.M.}
+\newblock {An Efficient Algorithm for Exploiting Multiple Arithmetic Units}.
+\newblock {\em {IBM Journal of Research and Development}}, 11(1):25--33, Jan
+  1967.
+
+\bibitem{tsai96superthread}
+{Tsai J-Y., Yew P-C.}
+\newblock The superthreaded architecture: Thread pipelining with run-time data
+  dependence checking and control speculation.
+\newblock In {\em {Proceedings of the International Conference on Parallel
+  Architectures and Compilation Techniques}}, pages 35--46, 1996.
+
+\bibitem{Uht95}
+{Uht A. K. and Sindagi V.}
+\newblock {Disjoint Eager Execution: An Optimal Form of Speculative Execution}.
+\newblock In {\em {Proc. MICRO-28}}, pages 313--325. {ACM}, Nov 1995.
+
+\bibitem{uht02realizing}
+{Uht A.K., Morano D.A., Khalafi A., de Alba M., Kaeli D.}
+\newblock Realizing high {IPC} using time-tagged resource-flow computing.
+\newblock In {\em Proceedings of the the {EUROPAR} Conference}, Aug 2002.
+
+\bibitem{undisclosed1}
+{undisclosed1}.
+\newblock undisclosed1.
+\newblock In {\em undisclosed}, Aug 2002.
+
+\bibitem{undisclosed2}
+{undisclosed2}.
+\newblock undisclosed2.
+\newblock In {\em undisclosed}, Mar 2002.
+
+\bibitem{waingold97}
+{Waingold E., Taylor M., Srikrishna D., Sarkar V., Lee W., Lee V., Kim J.,
+  Frank M., Finch P., Barua R., Babb J., Amarasinghe S., and Agarwal A.}
+\newblock Baring it all to software: Raw machines.
+\newblock {\em IEEE Computer}, 30(9):86--93, 1997.
+
+\end{thebibliography}

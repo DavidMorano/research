@@ -1,0 +1,55 @@
+\begin{thebibliography}{1}\setlength{\itemsep}{-1ex}\small
+
+\bibitem{Cher01}
+{Cher C. and Vijaykumar T.N.}
+\newblock {Skipper: A Microarchitecture for Exploiting Control-Flow
+  Independence}.
+\newblock In {\em {Proceedings of the 34nd International Symposium on
+  Microarchitecture}}, New York, NY, Nov 2001. ACM Press.
+
+\bibitem{ia64}
+Intel.
+\newblock {\em Intel Itanium2 Processor Reference Manual for Software
+  Development and Optimization}, June 2002.
+
+\bibitem{jacobsen96assigning}
+E.~Jacobsen, E.~Rotenberg, and J.~E. Smith.
+\newblock Assigning confidence to conditional branch predictions.
+\newblock In {\em Proceedings of the 29th Annual International Symposium on
+  Microarchitecture}, pages 142--152, New York, NY, 1996. ACM Press.
+
+\bibitem{Kaeli01}
+{Kaeli D., Morano D.A. and Uht A.}
+\newblock {Preserving Dependencies in a Large-Scale Distributed
+  Microarchitecture}.
+\newblock Technical Report {TR 022002-001}, {Dept. of ECE, URI}, {Dec} 2001.
+
+\bibitem{klauser98dynamic}
+{Klauser A., Austin T., Grunwald D., Calder B.}
+\newblock Dynamic hammock predication for non-predicated instruction set
+  architectures.
+\newblock In {\em {IEEE} {PACT}}, pages 278--285, 1998.
+
+\bibitem{Morano02}
+{Morano D.A.}
+\newblock {Execution-time Instruction Predication}.
+\newblock Technical Report {TR 032002-0100}, {Dept. of ECE, URI}, Mar 2002.
+
+\bibitem{Uht02}
+{Uht A., Morano D., Khalafi A., Alba M. and Kaeli D.}
+\newblock {Realizing High IPC Using Time-tagged Resource-Flow Computing}.
+\newblock In {\em Proceedings of the 7th International Euro-Par Conference},
+  Paderborn, Germany, August 2002.
+
+\bibitem{Uht91}
+{Uht A.K.}
+\newblock A theory of reduced and minimal procedural dependencies.
+\newblock In {\em {IEEE} Transactions on Computers}, pages 681--692, June 1991.
+
+\bibitem{uht02levo}
+{Uht A.K., Morano D., Khalafi A., Kaeli D.}
+\newblock Levo -- a scalable billion transistor {CPU} with high {IPC}.
+\newblock Technical Report URI-ELE-TR 082002-1000, University of Rhode Island,
+  Kingston, RI 02881-0805, Mar. 2002.
+
+\end{thebibliography}

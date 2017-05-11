@@ -1,0 +1,46 @@
+Date: Wed, 12 Jun 2002 16:23:05 -0400
+From: "Augustus (Gus) K. Uht" <uht@ele.uri.edu>
+To: Alireza Khalafi <akhalafi@ECE.NEU.EDU>
+CC: David Morano <dmorano@ECE.NEU.EDU>
+Subject: Re: Data on Spanning bus and FU and BUS delay
+
+Hi all,
+	Just wanted to share some real good news from some data Ali recently
+obtained; looks like we can conclude:
+
+WRT Spanning bus length:
+
+Conclusion: 1. Knee of spanning bus length is at 8; get most performance 
+	with 8 SG/bus, not much more with 16 or 32. Get isolated 
+	significant increases from 8 to 32, but on whole not much.
+
+Conclusion: 2. 1. Is true for large geometries, too. (Exception: "go")	
+
+Conclusion: 3. Rows 16-19: looks like number of columns is big factor for 
+	larger config., but too little data to be sure; see 64-16-16 vs 
+	32-8-8 and vs 16-8-8.
+
+>>>Ali and Dave: see if you can fit 64-16-16 back in the TBD geometries; but
+TBD last.
+
+WRT Forwarding unit and bus delay:
+
+Conclusion: for 8-8-8, not very sensitive to FU delay, but are sensitive 
+	to Bus delay. (Ali, why the latter but not the former? Are other
+	buses affected? Which ones?) Drop in perf. of about 16% for FU
+	delay from 1 cycle to 3 cycles. Drop in perf. of about 5%, 0 cycles
+	to 1 cycle.
+
+NOTE that the above data/conclusions confirm 2 of the basic Levo/resource
+flow hypotheses: Most data is consumed within a short distance from the
+point of generation. AND: small delays in the FU's/buses can be tolerated,
+presumably because the data sent across FU's/buses is only needed later
+in the computation, that is, the latency is hidden.
+
+And possibly: performance scales with number of columns. (but why not
+	SGs/column?)
+
+BINGO! I love data.....
+
+
+----Gus

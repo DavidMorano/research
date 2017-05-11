@@ -1,0 +1,19 @@
+PACT'00
+
+   Proceedings of the 
+   2000 International Conference on Parallel Architectures and 
+   Compilation Techniques
+
+IEEE
+
+PACT'00
+
+
+Global Register Partitioning
+
+Jason Jiser
+
+Steve Carr
+
+Philip Sweany
+

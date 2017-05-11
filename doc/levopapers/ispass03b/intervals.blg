@@ -1,0 +1,45 @@
+This is BibTeX, Version 0.99c (Web2C 7.3.1)
+The top-level auxiliary file: intervals.aux
+The style file: latex8.bst
+Database file #1: intervals.bib
+You've used 22 entries,
+            2118 wiz_defined-function locations,
+            628 strings with 7460 characters,
+and the built_in function-call counts, 6831 in all, are:
+= -- 689
+> -- 154
+< -- 9
++ -- 73
+- -- 44
+* -- 345
+:= -- 1040
+add.period$ -- 71
+call.type$ -- 22
+change.case$ -- 87
+chr.to.int$ -- 0
+cite$ -- 22
+duplicate$ -- 368
+empty$ -- 687
+format.name$ -- 44
+if$ -- 1548
+int.to.chr$ -- 0
+int.to.str$ -- 22
+missing$ -- 23
+newline$ -- 113
+num.names$ -- 44
+pop$ -- 142
+preamble$ -- 1
+purify$ -- 66
+quote$ -- 0
+skip$ -- 250
+stack$ -- 0
+substring$ -- 421
+swap$ -- 110
+text.length$ -- 9
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 86
+warning$ -- 0
+while$ -- 74
+width$ -- 24
+write$ -- 243

@@ -1,0 +1,107 @@
+Draft Paper Plan for MEDEA'02, HPCA'02, and beyond
+
+
+
+Dates :
+
+July 3		deadline for the MEDEA abstract
+July 10		deadline for the submission of the MEDEA paper
+July 12		deadline for the submission of the HPCA paper
+July 19		extended deadline (1 week extension) for the HPCA paper
+August 15	IEEE TOC deadline
+
+
+General plan guidelines :
+
+MEDEA is coming first so we'll try and address that first.
+Paper requirements for MEDEA are :
+
++ 10 pages maximum
++ format should be for IEEE (?)
++ abstract is due on July 3
++ submission is on July 10
+
+For MEDEA, we will take the submitted PACT paper and edit it down
+to 10 pages.  Dave M. will be primarily responsible for this.
+Dave will also write an initial abstract for MEDEA.  Additional
+contributions should be fed to Dave M. for incorporation into
+the final paper.  We need to be mindful that the abstract is due
+on July 3.  The current plan is to not produce any additional
+data for MEDEA but rather focus new-data energy on the HPCA paper.
+
+
+HPCA is next after MEDEA but is being worked concurrently.  The HPCA
+paper submission guidelines are ;
+
++ 6000 words maximum
++ submission deadline July 12
++ submission requirs PDF that can be viewed in Acroread 3.0 or higher
+
+The general idea for HPCA will be to do a paper introducing the Levo
+machine idea along with supporting IPC data.  Initially, the data will
+be the primary data associated with the varying geometries of the
+machine.  The main new trust for the paper will be quick and intense
+investigation into a better i-fetch and AS-load strategy.  The goal is
+to try and close the gap between the current "REALISTIC" fetch
+heuristic with the "IDEAL" fetch heuristic.  We will attempt to do this
+by :
+
++ include a better branch predictor than what we have now
+  (we currently have gshare-PAg and we will move to Tournament)
+
++ change to a different i-fetch heuristic (exact details yet to be
+  worked out) where more use of dynamic loading of ASes is used
+  ("IDEAL" is all dynamic)
+
+The hope is to get closer to the behavior and performance on IDEAL
+fetching.  We already know that (frankly) branch predictors do not
+perform as well as their introducing papers always seem to suggest and
+therefor D-path use will need to be used to make up the performance
+difference.  This will probably be a significant part of the overall
+performance story that will be presented in the paper.
+
+Dave M. will primarily create the new predictor (Tournament) and
+Ali will primarily work on the enhanced i-fetch heuristic.
+Dave M. will also be the lead author on the HPCA paper.
+
+
+TOC is after HPCA.  Ali and Dave M. are thinking up ways to better
+characterize the memory system performance as part of the story for
+TOC.  This is preliminary at this point and will be done on a lower
+priority until we get the MEDEA and the HPCA papers submitted.
+
+
+Tentative schedule :
+
+06/27	Dave supplies Tournament predictor code for use.
+
+07/01	New i-fetch strategy in place and sims started for
+	machine geometry comparison data.
+
+07/01	Dave has draft of MEDEA paper ready for review including
+        a draft abstract.
+
+07/02	Comments and suggestions for the MEDEA abstract are sent to Dave.
+
+07/03	Abstract (and title) for MEDEA is submitted.
+
+07/08	A full set of the data for the HPCA paper needs to be completed
+	for the HPCA paper (work backwards from here to schedule runs).
+
+07/09	Dave M. has draft of HPCA paper ready except for maybe some data.
+
+07/09	Final comments on the MEDEA paper are sent to Dave M.
+
+07/10	The MEDEA paper is submitted.
+
+07/11	Comments on the HPCA paper draft are due to Dave M.
+
+07/12	Submission-ready version of the HPCA paper is ready.
+
+07/19	The HPCA paper is submitted if not done so already.
+
+07/20	Additional plan details for the TOC paper are provided.
+
+08/15	TOC paper is completed.
+
+

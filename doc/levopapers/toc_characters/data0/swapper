@@ -1,0 +1,16 @@
+#!/bin/ksh
+
+
+PROGS="bzip2 compress crafty gcc go gzip vortex"
+
+
+for P in $PROGS ; do
+
+  mv ${P}_rs.ruse j
+  mv ${P}_rs.rlife ${P}_rs.ruse
+  mv j ${P}_rs.rlife
+
+done
+
+
+

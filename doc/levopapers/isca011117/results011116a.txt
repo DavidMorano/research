@@ -1,0 +1,100 @@
+From akhalafi@gateway.ece.neu.edu Fri Nov 16 09:18:49 EST 2001 
+Return-Path: <akhalafi@gateway.ece.neu.edu>
+Received: from sendmail1.computer.org (sendmail1.computer.org [206.99.235.24])
+	by leviathan.ele.uri.edu (8.11.2/8.11.2) with ESMTP id fAGEIl207483
+	for <morano@ele.uri.edu>; Fri, 16 Nov 2001 09:18:48 -0500 (EST)
+Received: from mail2.ECE.NEU.EDU (markov.ece.neu.edu [129.10.60.83])
+	by sendmail1.computer.org (Build 101 8.9.3/NT-8.9.3) with ESMTP id JAA02164
+	for <morano@computer.org>; Fri, 16 Nov 2001 09:21:15 -0500
+Received: from lespaul.ece.neu.edu (lespaul.ece.neu.edu [129.10.60.240])
+	by mail2.ECE.NEU.EDU (8.11.3/8.11.3) with ESMTP id fAGEIeU10418;
+	Fri, 16 Nov 2001 09:18:40 -0500 (EST)
+Received: from localhost by lespaul.ece.neu.edu (8.9.3/8.9.3) with ESMTP id JAA04673;
+	Fri, 16 Nov 2001 09:18:39 -0500 (EST)
+X-Authentication-Warning: lespaul.ece.neu.edu: akhalafi owned process doing -bs
+Date: Fri, 16 Nov 2001 09:18:39 -0500 (EST)
+From: Alireza Khalafi <akhalafi@ECE.NEU.EDU>
+X-Sender: akhalafi@lespaul
+To: "Kaeli, Prof. David -- David Kaeli" <dkaeli@ac.upc.es>,
+   "Augustus (Gus) K. Uht" <uht@ele.uri.edu>,
+   David Morano <morano@computer.org>
+Subject: Resulst for value prediction
+Message-ID: <Pine.GSO.4.21.0111160914090.4653-100000@lespaul>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Length: 1409
+
+
+Hi,
+
+I have the first set of data for speculation and value
+prediction.  I still have more simulations running for the missing 
+numbers (mainly the ones with cache). 
+
+I will also send the an updated version of the older results that I sent
+out (part a). 
+
+I going to send the cache hit rates and percentage of unconditional
+branches as well.
+
+Alireza
+
+
+
+Key
+ noD: no D path, D: D path, PM: no cache, RM: with memory cache,
+ noVP: no value prediction
+
+
+Go benchmark,
+
+		noD,PM,VP	noD,RM,VP	D,PM,VP		D,RM,VP	
+
+(4,4,4)		2.6		2.1		4.7		4.0
+(8,4,4)		3.7		3.0		7.2		5.8
+(8,4,8)		4.0		3.1		9.0		7.2
+(8,8,8)		4.3		3.3		10.5		8.1
+(16,8,4)	3.9		2.9		7.1		5.8
+(8,4,16)	3.9		3.1		8.9		7.1
+
+
+Bzip2 benchmark
+
+(4,4,4)		3.1		   		4.6		3.9
+(8,4,4)		4.2		   		7.2		5.5
+(8,4,8)		4.6		   		7.8		6.1
+(8,8,8)				   				6.8
+(16,8,4)			   				6.0
+(8,4,16)	4.2		   		6.7		6.9
+
+Gzip benchmark
+
+(4,4,4)		2.9		   		4.2		   
+(8,4,4)		4.0		   		6.0		   
+(8,4,8)		4.2		   		6.9		   
+(8,8,8)		4.7		   		8.3		   
+(16,8,4)	4.0		   		7.2		   
+(8,4,16)	4.1		   		6.5		   
+
+Parser Benchmark
+
+(4,4,4)		3.0		   		4.7		4.2
+(8,4,4)		4.5		   		7.2		5.8
+(8,4,8)		4.6		   		9.1		7.2
+(8,8,8)		5.0		   		10.6		8.3
+(16,8,4)	4.2		   		7.6		6.2
+(8,4,16)	4.7		   		9.3		7.9
+
+Gap benchmark
+
+(4,4,4)		3.6		   		4.9		   
+(8,4,4)		5.2		   		7.5		   
+(8,4,8)		6.0		   		8.9		   
+(8,8,8)				   				   
+(16,8,4)	6.0		   		8.6		   
+(8,4,16)	6.4		   		10.1		   
+
+
+
+
+

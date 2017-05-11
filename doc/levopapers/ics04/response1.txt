@@ -1,0 +1,516 @@
+> >> Review #355 For Paper #258
+> > 
+> > Questions specifically for the author to address in the rebuttal 
+> 
+> In Table 3, while the number of issue stations increased from 64 to
+> 256, the achieved IPC reduced significantly. In some cases, it dropped
+> by 2 times. In superscalar out-of-order processors, I have never seen
+> such behaviors with larger re-order buffer (or large issue windows).
+> With a larger issue window, the processor should be able to make more
+> effective use of the functional units. Table 3 shows a drastic slow
+> down. This should be well explained in the paper. The current
+> explanation of contention for functional unit is not convincing.
+
+We do not fully understand this phenomenon yet ourselves.  Table 4
+shows the percent of FU requests by issue stations that resulted in the
+issue stations (collectively) having to stall for a cycle.  With a
+fixed number of integer ALU FUs (fixed at 8 for this particular
+experiment), as the number of issue stations increases, the
+corresponding number of requests for an FU execution resource is also
+likely to increase, although not necessarily proportionally due to
+program dependencies and instruction FU requirements.  As can be seen
+from Table 4, the percent of stalls approached very high levels.  There
+appears to be a destruction side effect of issue-station contention and
+its resulting stall that leads to the overall IPC decrease.  For some
+reason this effect appears to be masked by other factors with 64 or
+less integer ALU FUs while having a pronounced effect after that.  We
+are in the process of trying to better understand this mechanism
+ourselves.  We felt it more important to present the full data rather
+than wait for a more detailed understanding of this effect.
+
+> The OpTiFlow achieves a much higher ILP (about 4x) than a conventional
+> superscalar out-of-order micro-architecture. What features make such a
+> big difference? 
+
+The primary features that yield the general observed performance are
+the numbers of issue stations and FU resources provided and the ability
+of the machine to flexibly use those resources.  The target design point
+was about 128 issue stations and 8 integer ALU FUs.  This was meant
+to represent a next-generation superscalar (like the EV-8 for example).
+We will clarify associated language in the paper on our intent.
+
+> How much is it due to operand value prediction? How much
+> is it due to dynamic tagging? How much is it due to the use of issue
+> stations? The purpose of micro-architecture simulation is trying to
+> answer such questions. Section 3 presents lots of numbers without
+> sufficient analysis and discussion.
+
+Our work is still preliminary and our goal was to explore a departure
+from present superscalar microarchitectures by allowing for a large
+amount of parallelism that is simultaneously not guided by the data
+dependency graph of the program.  We are still in the process of
+planning experiments that will further separate out contributions
+to overall IPC in this new microarchitecture.
+
+> > Provide detailed comments to the author.
+> > 
+> Section 3, page 10,
+> 
+> "A short sequence of instructions are then executed to warm up the
+> functional simulator. The next 400 million instructions are then
+> functionally executed on the machine."
+> 
+> The functional simulator in this sentence seems to refer to
+> micro-architecture simulation. Otherwise, this means a trace of 400M
+> instructions is generated, and used for later simulations.
+
+We did not describe this as carefully as we could have.  We are
+performing microarchitecture simulation.  For each benchmark within
+each experiment we first execute 300m instructions of the benchmark in
+a "fast forward" mode.  We then start the functional simulation and
+execute the next 400m instructions of the benchmark on the simulated
+machine.  No traces are generated or used during simulation.
+
+This can be further clarified in the paper.
+
+> It would be better if some simulation results can be provided with a
+> reasonable cache hierarchy and dynamic branch prediction scheme.
+
+The present work is very novel and preliminary, and the intent of
+exploration was rather a first look at the dynamics of the operation of
+the issue stations and the function units.  We wanted to separate out
+the effects of issue stations and FU availability from the more general
+memory hierarchy effects.  We have not yet fully accomplished this
+first goal.  Future experimental data with include other major
+components of typical machines.
+
+> Table 2, please explain why Levo has a much higher ILP than OpTiFlow for
+> benchmark bzip2.
+
+We took note of this also but we do not entirely understand this except
+to note that a there are major differences between our
+microarchitecture and that of Levo that may be at play.  Levo uses a
+general purpose processing element (PE) throughout their
+microarchitecture while we employ separate function units specialized
+by instruction class/type that can readily lead to resource exhaustion
+and FU request stalls by the issue stations.  The experimental setup for
+this data was 16 integer ALU FUs for both OpTiFlow and the MASE
+machine, while the Levo machine was able to use, in parallel, all of
+their 64 execution units towards their execution IPC.  Some characteristic
+of BIPZ2 (which we do not yet understand) allowed the Levo microarchitecture
+to perform very well on that benchmark.  We will be investigating this
+further.
+
+> Table 3, why increased issue stations would result in lower IPC. This is
+> counter intuition. The explanation in this section on contention for
+> functional units is not convincing. The difference in IPC is as high as
+> 2 times. This is really troublesome.
+
+We expect that some operation of our present machine is resulting in
+decreased overall performance under the condition of high issue
+station contention for FU requests (see response above also).  As the
+reviewer pointed out above, the effect manifests itself only on machine
+configurations with more than 64 issue stations.  The general trend is
+repeated in the data set for having a fixed 16 integer ALU FUs, but is
+less pronounced.  We are looking into this.
+
+> This could be a nice paper if you can use micro-architecture simulation
+> to provide insights on what features contribute to the significant
+> increase of IPC.
+
+This is our intent and we are working towards that at present.
+
+
+> >> Review #339 For Paper #258
+> 
+> What differentiates the proposal in the paper from the previous work
+> presented in [22] and [23]?
+> 
+> In table 1: I wouldn't call 8 integer ALU the typical number of ALUs.
+
+The EV-8 was to have 8 ALU pipelines.  That would have been the state
+of the art if the EV-8 was not cancelled.  It is likely that some
+next-generation superscalar machines will employ up to 8 execution
+pipelines.
+
+> The claim that the proposal uses the same amount of hardware than
+> current proposals is not completely true: The Issue Stations are heavier
+> than the reservation stations (or similar structure) used in any current
+> proposal. 
+
+This is true but the added complexity of an issue station has also
+allowed for the complete elimination of dependency tracking and
+enforcing logic at or before instruction dispatch and also eliminates
+the need for an ROB entry and ROB entry lookup logic (or similar
+tentative commitment structures).
+
+> Moreover, the total number of functional units can be the same
+> but not the number of functional units that can be used simultaneously
+> in a given cycle. The current designs group the functional units in
+> clusters and only one FU in each cluster can be used in a given cycle.
+> This is done to reduce the amount of wiring and the complexity of the
+> schedulers.
+
+We did not cluster the FUs in the present work as our intent was
+to first characterize for ourselves and to understand the implications
+of the very dynamic instruction dispatch and execution features of
+the microarchitecture.  Our comparison with a more conventional
+superscalar as well as with the other proposed microarchitecture
+referenced (Levo) took this into account also (no FU clustering).  We
+will be exploring the effects of clustering in the future.
+
+> why does it scale better than current microarchitectures? 
+
+
+
+
+> what is the fundamental thing that has changed?
+
+Our primary goal was to explore a machine where :
+
+1) instruction issue is not restricted by data dependencies
+2) instruction re-execution is made much simpler and cheaper than
+   would be in those superscalars not specifically designed for it
+
+To achieve the first goal above, we employ a more novel dynamic means
+to determine data dependencies at execution time rather than after
+fetch or at dispatch time.  The second goal above is achieved by
+enhancing the more traditional reservation station or issue window slot
+with some added logic that overlaps with the first goal that allows for
+simpler sequencing of instruction operations within the machine to
+effect a re-execution (instruction re-issue only rather than a more
+general instruction re-dispatch).
+
+> What is the impact of pipelining all the buses in the proposed design to
+> make it more realistic?
+
+We have not yet explored this but intend to do so.  Our expectation is
+that it will have a performance effect (relatively small) similar to
+when other pipelines in the machine (principally IS logic, bus
+arbitration, and FU depths) are increased.
+
+> Does the number of re-executions increase when the latencies of the FUs
+> are increased?
+
+No.  The number of re-executions decreases when FU latencies (pipeline
+stages) are increased from 1 to 4.  For a machine configuration of 128
+issue stations with 16 integer ALU FUs, the mean percent of executions
+that were re-executions decreased by about 60% (to a little over one
+third of what it was) when varying the FU pipeline stages from 1 to 4.
+This is due (in part) to our policy for these experiments of not
+initiating a new execution of the same instruction until a previous
+execution of the same instruction (if there was one) has completed.
+If new input operands arrive at an instruction while it is currently
+executing, it will re-execute when the current execution completes.
+In the future we will be exploring allowing unrestrained re-executions
+as new input operands arrive (assuming an FU is available).
+
+> What is the exact configuration of the superscalar microarchitecture
+> used for comparison? How many instructions can be issued per cycle? 
+
+For our machine the issue width was set to 16 (the number of integer
+FUs configured).  For the representative superscalar, issue width was
+set to 17 (the number of FUs + 1 to be conservative).
+
+> is it modeled with ideal fetch and caches? 
+
+Yes, all three machines compared were modeled with ideal fetch and caches.
+
+
+> >> Review #361 For Paper #258
+> 
+> > Questions specifically for the author to address in the rebuttal 
+> 
+> In the body of the paper, you keep comparing the amount of "hardware
+> resources" for your architecture to that of existing processors, or
+> next generation processors. You also make references to the EV6,
+> Pentium 4 and Itanium processors. However, when you talk about
+> performance numbers, you compare the performance of OpTiFlow to much
+> wider machines. This is very misleading, as the hardware required for
+> OpTiFlow is very far from those superscalar processors you are
+> referring to: "conventional superscalar" processors do not have 8 ALUs
+> today.
+
+We did not reference the EV-6 but rather the EV-8.  The EV-8 was
+cancelled but it would have had 8 ALU pipelines and would have
+represented the state of the art if it came out.  The authors feel that
+it is not unlikely that one or more next-generation superscalar processors
+may mimic what the EV-8 would have done and come out possibly up to 8
+ALU pipelines.  The PowerPC 970 from IBM conservatively represents a
+5-instruction wide superscalar today.  Our intent was to focus on
+the near term next-generation processors rather than future super-wide
+processors.
+
+> The choice of showing numbers for a perfect data cache is very
+> questionable when your study relies on the fact that a lot of ILP can be
+> found, and that instructions do not need to be re-executed often. Also,
+> this does not fit well with your choice of benchmarks (only SpecInt). Do
+> you have any interesting data on other benchmarks ?
+
+We intend to also experiment using SpecFloat and other benchmark
+suites as time permits.  
+
+> You mention that load-store instructions are executed in the IS. What
+> operation exactly is executed in the IS ?
+
+Currently load-stores, conditional control-flow, and other instructions
+that do perform data computations (such as NOOP, TRAPs and the like)
+are executed in the issue stations.  In the future, we intend to
+execute load-store address computations in their own FUs.  Executing
+load-stores in the issue station is somewhat overly optimistic at the
+present time, as it (generally) requires a simple arithmetic add
+operation.  Except for executing load-stores in the issue station, this
+arrangement is identical to the approach of many other
+microarchitectural simulators (specifically SimpleScalar MASE).
+
+> What is the fetch width of OpTiFlow ? 
+
+For all experiments on OpTiFlow (and the other machines compared) we
+set the fetch width to the number of instructions in the instruction
+window (either issue slots or issue stations as the case may be).  This
+was done purposefully so that we could expose the dynamics of
+instruction issue, execution, and possible re-execution.
+
+> I understand that the instruction cache is perfect and
+> that the branch predictions are always correct, but i could not
+> understand if the fetch width was actually 1 cache line per cycle or as
+> many instructions as ISs. 
+
+You are correct.  We set the fetch width (for all machines compared)
+to the number of instructions in the respective instruction windows
+(ISs for our microarchitecture).
+
+> Although it is not clearly stated in the
+> paper, i'm afraid the latter was assumed. This raises the interesting
+> question of how to fetch 16 to 256 instructions every cycle... You did
+> not address that issue at all.
+
+No, we did not intend to address that question at this stage of our
+work but rather to see the effect of trying to saturate the ISes
+with instructions, the effects of which are still being explored.
+
+> Also, what is the fetch bandwidth of the other models you are comparing
+> yours to in section 3 ? 
+
+All fetch bandwidths (in instructions) were set to at least the maximum
+number of instructions that could be in the machine's instruction window
+(ISs for our microarchitecture).
+
+> Is the MASE model fetching more than one cache
+> line per cycle ? 
+
+Yes.  See above.
+
+> It seems that the decrement of the time tags has to happen every cycle,
+> after instructions have retired and before the next instructions can be
+> issued. It looks like a complex computation to do in a very short amount
+> of time. You should detail that loop.
+
+Yes, decrement happens on all cycles where one or more instructions are
+committed.  When the number of instructions to commit are determined,
+the count is setup to be decremented from time tags.  Fortunately, time
+tags are fairly small registers (log base 2 of ISs) and the resulting
+decrement can therefor be done quickly, but it still comes near the end
+of each clock cycle (when a decrement occurs).
+
+> > Provide detailed comments to the author.
+> 
+> Several times in the paper, you make reference to predication
+> and multipath execution. This is terribly confusing as it is not clearly
+> stated until quite late in the paper that those features are NOT
+> supported by OpTiFlow. Either you support those features and you talk
+> about them, or you don't support them and there is no point mentioning
+> them over and over again. However, if you believe that your scheme could
+> benefit from those features, or that it is well suited for those
+> features, you may want to dedicate a paragraph to how to integrate them
+> in OpTiFlow.
+
+Yes, our scheme is adaptable to a number of other microarchitectural
+mechanisms (like dynamic predication) that we may want to explore in
+the future.  Our intent was to show that these features can be
+incorporated within the current basic machine design without any
+radical changes.  However, we are not yet prepared to explore all of
+these additional features at the present time.  We can remove
+references to these additional possible features from the paper and
+just state that the microarchitecture is amenable to accommodating them
+if they show promise for future microarchitectures.
+
+> It is not clearly explained that an IS can hold only one instruction.
+> You should clarify that as early as section 2.1, when you introduce the
+> concept of IS. Basically, each one of your ISs is a ROB entry.
+
+Yes, we can clarify this in the paper.
+
+> The connectivity issue is not discussed at all. Somewhere (late) in the
+> paper, you mention a one cycle latency to bypass results. However, it is
+> not clear if this latency would be the same with 16 or 256 issue
+> stations. The latency between ISs, especially if you have 256 of them,
+> is very likely to be a function of their distance... The connectivity
+> (16x16 to 256x256) is also likely to be very power hungry. These issues
+> are not discussed at all.
+
+These are all valid issues but our intent was to first explore the
+possible utility of larger numbers of machine resources.  Although not
+discussed in the paper, bus-repeating schemes similar to those employed
+in the pre-existing "Levo" microarchicture could possibly be applied to the
+present microarchitecture.
+
+> Is the cycle spent in the bypass network added to the latency of every
+> unit ? 
+
+Yes.  Note that operand bypass (as the term is usually applied) is done
+in two steps in our microarchitecture.  First results from the FUs are
+transfered back to the originating IS (incurring additional delay) and
+then within the IS, a decision is made to possibly transfer an operand
+"forward" (on the inter-IS bypass network) to other ISes.  Although
+having FU results "bypass" the originating IS entirely is what is
+probably expected and desired (from the operation of existing machines
+in this regard), this was felt to be too complicated to implement in
+the present machine.  FU result bypassing of the originating IS would
+not only require additional controlling logic for network arbitration
+than the simpler return-network currently used, it would require wider
+buses to and from the FUs which would resemble the buses used for the
+inter-IS bypass.  These considerations as well as a desire to study the
+inter-AS bypass network independently from the FU connectivity led to the
+present arrangement.  Note that the pre-existing Levo microarchitecture
+(from which we drew inspiration) make a similar choice about FU result
+bypassing.
+
+> Did you look at sending dependent instructions to the same FU and
+> avoid paying this latency ? 
+
+No, we did not consider that although that is a common consideration
+for current machines and next-gen machines.  Rather, we felt that
+handling data dependencies and any associated result bypassing to
+accommodate detected or tracked dependencies in this way (right at the
+FUs) did not represent the type of general dependency handling that we
+were striving for.  Rather, our inter-IS operand bypass network is
+where we wanted to place bypassing for data dependency management.
+Remember that in our microarchitecture, we are not determining data
+dependencies up front at instruction fetch or dispatch but rather
+dynamically at instruction execution time ("late binding" to borrow a
+software term).  We specifically wanted to avoid the complexity of
+dependency determination and tracking in the early instruction
+life-cycle stages so that it could be handled more generally and
+dynamically within the IS at (and around) instruction execution time.
+This is something of a philosophical design choice made to explore what
+might be accomplished with our general "late binding" approach to data
+dependency management.  Finally, our approach to using the inter-IS
+bypass network only, for all bypass, is nicely (beautifully) compatible
+with the possible introduction of one or more dynamic instruction
+predication schemes (control flow changed to additional data and
+managed similarly on the inter-IS bypass network as data
+dependencies).  In our bypass scheme, essentially all bypass logic and
+management is contained with the IS structure.  This frees almost the
+entire rest of the machine components from any dependency
+considerations (reducing logic burdens elsewhere as a result also).
+Finally, the current dependency handling choices are also suitable for
+a variety possible future distributed dependency handling approaches.
+More distributed dependency handling is thought to be something
+of critical importance as machine resource numbers increase (if they
+substantially ever do increase), so this was an additional consideration
+for the present choices.  The paper length restriction did not allow
+for all considerations, future trends, and the like to be discussed.
+
+> Not much detail is given on the scheduling
+> scheme. Maybe you should better explain the exact scheme.
+
+Some mention was made in the paper to the effect that any FU (of a
+certain instruction class) could execute any instruction of the same
+class in any succeeding clock.  We can clarify this in the paper.
+
+> The concept of IS and the way renaming is handled is interesting, but
+> nothing is said about recovery in case of misprediction. I understand
+> that you have assumed a perfect branch predictor in this study, but
+> eventually you'll need to recover from a misprediction. This will have a
+> strong impact on your hardware and should be discussed in details.
+
+Presently, we handle control flow mis-prediction recovery rather
+conventionally by abandoning the trailing stream of ISes (after the
+misprediction) and allowing instructions to be re-dispatched to them
+starting with the next (correct path) instruction.  A future
+possibility is to handle control-flow mispredictions with more exotic
+means (like a limited form of multipath execution) but much more
+research needs to be done on the efficacy of existing (perhaps rather
+exotic already) mechanisms first.
+
+> I could not understand the meaning of the last sentence of section 2.5:
+> " This simple rule ... maximum concurrency to occur".
+
+This sentence is confusing as you note and might better have been
+stated something like :  The operand snooping scheme presented allows
+for the dynamic discovery of of all program dependencies (committed) as
+well as the maximum number of feasible program dependencies
+(speculative dependencies).
+
+We can attempt to clarify this in the paper.
+
+> Section 3, you start by mentioning "the machine presented". There is no
+> clear definition of the configuration you are talking about. By then,
+> you should have made it clear what the width, length of your machine is,
+> and which features are supported.
+
+We will clarify this in the paper.
+
+> You may consider adding a H-MEAN line to table 2.
+> 
+> Section 3.2 would need a much deeper analysis, starting with explaining
+> the benefit of having 128 ISs and only 8 ALUs. 
+
+This appears to be the next generation configuration of superscalars.
+Currently an instruction window of 64 entries and an ROB of 64 is
+possible (Pentium-4 has 126 ops in flight, PowerPC 970 has 200 of all
+types in flight), along with an integer issue width of 4 or 5.
+Next-gen machines could likely double these figures to 128 and 8.  This
+ratio of speculative instructions to execution pipelines has been
+determined to be advantageous given past and current design choices for
+numbers of machine structures to use up available silicon.
+
+> Do we really use this
+> deep scheduling window ? Also, The behavior of eon should be explained
+> in this section. Is the latency of FP instructions the culprit ?
+
+Yes, FP instructions are the culprit.  We can bring this point up
+sooner in the paper (it is mentioned later, section 3.3).
+
+> FU stalls are never really explained. Before quoting the percentage of
+> cycles lost in FU stalls, you should explain what a FU stall is, and how
+> it happens.
+
+The stalls in question are IS stalls due to FU unavailability in any
+given clock period.  Requests by ISes contending for FUs (to execute
+the IS instruction) that do not result in a grant for an FU, result in
+a one clock stall or wait of the IS.  All other IS activity (snooping
+operands, et cetera) continues duing the wait for an FU.  We will
+clarify this in the paper.
+
+> The numbers of re-executions are quoted but we do not know where they
+> are coming from. You should consider adding a graph for those numbers.
+> Also, you should comment on these numbers, not just quote them. I would
+> make similar comments for section 3.3.
+
+The restriction on paper length prompted us to abbreviate this
+discussion.
+
+> The last sentence of section 3.4 is very confusing... Why would an IS
+> try and schedule an instruction that is already being executed ? 
+
+We will clarify that those ISes that need an FU pipeline do not
+execute the instruction itself but rather waits for results from
+the FU that it issued its instruction to.
+
+An IS may want to initiate a subsequent execution to an FU while it
+already has an execution occurring in an FU due to the arrival of a new
+input source operand.
+
+> You
+> have assumed so far that only one instance of an instruction can be in
+> flight at any time. Did you look at another scheme where an IS would
+> re-schedule its instruction (on a different FU) as soon as a source was
+> available ?
+
+Yes, our present work is to allow just such cases to occur ! :-)
+It will be interesting to find out if such massive possible parallelism is
+beneficial or not. :-)
+
+

@@ -1,0 +1,93 @@
+#!/bin/ksh
+# MKEM
+
+
+II=_bp
+if [ -n "${1}" ] ; then
+  II=${1}
+fi
+
+if [ ! -r PROGS ] ; then
+  echo "${0}: need PROGS file" >&2
+  exit 1
+fi
+
+TF=/tmp/mkem${$}
+
+cleanup() {
+  rm -f $TF
+}
+
+trap 'cleanup ; exit 1' 1 2 3 15 16 17
+
+
+# make the branch domain densities
+
+BPMAX=40
+BTMAX=100
+HTMAX=100
+MAXUSE=100
+MAXLIFE=100
+MAXREAD=40
+MAXWRITE=40
+MAXMEM=300
+
+
+# make the 'mean' ones
+
+SUF=
+#SUF="${SUF} etbplen etbftlen etbbtlen ethtlen "
+#SUF="${SUF} rrint rlife ruse rread rwrite "
+SUF="${SUF} mrint mlife muse"
+
+
+for S in $SUF ; do
+
+  for P in $( < PROGS ) ; do
+    if [ -s ${P}${II}.${S} ] ; then
+      echo ${P}${II}.${S}
+    fi
+  done > $TF
+
+  sumcol -af $TF > mean${II}.${S}
+
+done
+
+
+
+integer nprog=0
+
+for P in $( < PROGS ) mean ; do
+
+  echo "${0}: program=${P}" >&2
+
+  if [ -s ${P}${II}.mrint ] ; then
+    echo "${0}: mrint " >&2
+    mkden ${P}${II}.mrint -n $MAXMEM > ${P}.mrintden
+    mkdis ${P}${II}.mrint -n $MAXMEM > ${P}.mrintdis
+  fi
+
+  if [ -s ${P}${II}.mlife ] ; then
+    echo "${0}: mlife " >&2
+    mkden ${P}${II}.mlife -n $MAXMEM > ${P}.mlifeden
+    mkdis ${P}${II}.mlife -n $MAXMEM > ${P}.mlifedis
+  fi
+
+  if [ -s ${P}${II}.muse ] ; then
+    echo "${0}: muse " >&2
+    mkden ${P}${II}.muse -n $MAXMEM > ${P}.museden
+    mkdis ${P}${II}.muse -n $MAXMEM > ${P}.musedis
+  fi
+
+
+  (( nprog += 1 ))
+
+done
+
+
+
+cleanup
+
+
+
+

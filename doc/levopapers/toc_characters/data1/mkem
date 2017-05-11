@@ -1,0 +1,146 @@
+#!/bin/ksh
+# MKEM
+
+
+II=_bp
+if [ -n "${1}" ] ; then
+  II=${1}
+fi
+
+if [ ! -r PROGS ] ; then
+  echo "${0}: need PROGS file" >&2
+  exit 1
+fi
+
+TF=/tmp/mkem${$}
+
+cleanup() {
+  rm -f $TF
+}
+
+trap 'cleanup ; exit 1' 1 2 3 15 16 17
+
+
+# make the branch domain densities
+
+BPMAX=40
+BTMAX=100
+HTMAX=100
+MAXUSE=100
+MAXLIFE=100
+MAXREAD=40
+MAXWRITE=40
+
+
+# make the 'mean' ones
+
+SUF=
+SUF="${SUF} etbplen etbftlen etbbtlen ethtlen "
+SUF="${SUF} rrint rlife ruse rread rwrite "
+SUF="${SUF} mrint mlife muse"
+
+
+for S in $SUF ; do
+
+  for P in $( < PROGS ) ; do
+    if [ -s ${P}${II}.${S} ] ; then
+      echo ${P}${II}.${S}
+    fi
+  done > $TF
+
+  sumcol -af $TF > mean${II}.${S}
+
+done
+
+
+
+integer nprog=0
+
+for P in $( < PROGS ) mean ; do
+
+  echo "${0}: program=${P}" >&2
+
+  if [ -s ${P}${II}.etbplen ] ; then
+    echo "${0}: bplen" >&2
+    mkden ${P}${II}.etbplen -n $BPMAX > ${P}.bpden
+    mkdis ${P}${II}.etbplen -n $BPMAX > ${P}.bpdis
+  fi
+
+  if [ -s ${P}${II}.etbftlen ] ; then
+    echo "${0}: bftlen" >&2
+    mkden ${P}${II}.etbftlen -n $BTMAX > ${P}.bftden
+    mkdis ${P}${II}.etbftlen -n $BTMAX > ${P}.bftdis
+  fi
+
+  if [ -s ${P}${II}.etbbtlen ] ; then
+    echo "${0}: bbtlen" >&2
+    mkden ${P}${II}.etbbtlen -n $BTMAX > ${P}.bbtden
+    mkdis ${P}${II}.etbbtlen -n $BTMAX > ${P}.bbtdis
+  fi
+
+  if [ -s ${P}${II}.ethtlen ] ; then
+    echo "${0}: htlen" >&2
+    mkden ${P}${II}.ethtlen -n $HTMAX > ${P}.htden
+    mkdis ${P}${II}.ethtlen -n $HTMAX > ${P}.htdis
+  fi
+
+  if [ -s ${P}${II}.rrint ] ; then
+    echo "${0}: rrint" >&2
+    mkden ${P}${II}.rrint -n $MAXLIFE > ${P}.rrintden
+    mkdis ${P}${II}.rrint -n $MAXLIFE > ${P}.rrintdis
+  fi
+
+  if [ -s ${P}${II}.rlife ] ; then
+    echo "${0}: rlife" >&2
+    mkden ${P}${II}.rlife -n $MAXLIFE > ${P}.rlifeden
+    mkdis ${P}${II}.rlife -n $MAXLIFE > ${P}.rlifedis
+  fi
+
+  if [ -s ${P}${II}.ruse ] ; then
+    echo "${0}: ruse" >&2
+    mkden ${P}${II}.ruse -n $MAXUSE > ${P}.ruseden
+    mkdis ${P}${II}.ruse -n $MAXUSE > ${P}.rusedis
+  fi
+
+  if [ -s ${P}${II}.rread ] ; then
+    echo "${0}: rread" >&2
+    mkden ${P}${II}.rread -n $MAXREAD > ${P}.rreadden
+    mkdis ${P}${II}.rread -n $MAXREAD > ${P}.rreaddis
+  fi
+
+  if [ -s ${P}${II}.rwrite ] ; then
+    echo "${0}: rwrite" >&2
+    mkden ${P}${II}.rwrite -n $MAXWRITE > ${P}.rwriteden
+    mkdis ${P}${II}.rwrite -n $MAXWRITE > ${P}.rwritedis
+  fi
+
+  if [ -s ${P}${II}.mrint ] ; then
+    echo "${0}: mrint " >&2
+    mkden ${P}${II}.mrint -n $MAXWRITE > ${P}.mrintden
+    mkdis ${P}${II}.mrint -n $MAXWRITE > ${P}.mrintdis
+  fi
+
+  if [ -s ${P}${II}.mlife ] ; then
+    echo "${0}: mlife " >&2
+    mkden ${P}${II}.mlife -n $MAXWRITE > ${P}.mlifeden
+    mkdis ${P}${II}.mlife -n $MAXWRITE > ${P}.mlifedis
+  fi
+
+  if [ -s ${P}${II}.muse ] ; then
+    echo "${0}: muse " >&2
+    mkden ${P}${II}.muse -n $MAXWRITE > ${P}.museden
+    mkdis ${P}${II}.muse -n $MAXWRITE > ${P}.musedis
+  fi
+
+
+  (( nprog += 1 ))
+
+done
+
+
+
+cleanup
+
+
+
+

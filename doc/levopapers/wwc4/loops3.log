@@ -1,0 +1,134 @@
+This is TeX, Version 3.14159 (C version 6.1) (format=latex 98.3.19)  29 OCT 2001 19:26
+**loops3
+(loops3.tex
+LaTeX2e <1996/12/01> patch level 1
+Babel <v3.6h> and hyphenation patterns for american, german, loaded.
+(/CDSPnet/Freeware/TeX0.4/texmf/tex/latex/base/article.cls
+Document Class: article 1996/10/31 v1.3u Standard LaTeX document class
+(/CDSPnet/Freeware/TeX0.4/texmf/tex/latex/base/size10.clo
+File: size10.clo 1996/10/31 v1.3u Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@section=\count80
+\c@subsection=\count81
+\c@subsubsection=\count82
+\c@paragraph=\count83
+\c@subparagraph=\count84
+\c@figure=\count85
+\c@table=\count86
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+) (latex8.sty
+IEEE 8.5 x 11-Inch Proceedings Style `latex8.sty'.
+\@ctmp=\skip43
+\@figindent=\skip44
+) (/CDSPnet/Freeware/TeX0.4/texmf/tex/latex/psnfss/times.sty
+Package: times 1995/08/16 5.2 Times PSNFSS2e package
+)
+(/CDSPnet/Freeware/TeX0.4/texmf/tex/generic/dvips/epsf.tex
+\epsffilein=\read1
+\epsfxsize=\dimen103
+\epsfysize=\dimen104
+\epsftsize=\dimen105
+\epsfrsize=\dimen106
+\epsftmp=\dimen107
+\pspoints=\dimen108
+)
+\c@theorem=\count87
+
+
+LaTeX Warning: Unused global option(s):
+    [times].
+
+(loops3.aux)
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    Try loading font information for OT1+ptm on input line 19.
+ (/CDSPnet/Freeware/TeX0.4/texmf/tex/latex/psnfss/ot1ptm.fd
+File: OT1ptm.fd 1996/01/28 Fontinst v1.504 font definitions for OT1/ptm.
+)
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <14.4> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 27.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <12> on input line 27.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 27.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 27.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 30.
+
+[1
+
+
+]
+LaTeX Font Info:    Try loading font information for OT1+pcr on input line 210.
+
+ (/CDSPnet/Freeware/TeX0.4/texmf/tex/latex/psnfss/ot1pcr.fd
+File: OT1pcr.fd 1996/01/28 Fontinst v1.504 font definitions for OT1/pcr.
+) [2]
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 233.
+LaTeX Font Info:    Try loading font information for OMS+ptm on input line 266.
+
+
+(/CDSPnet/Freeware/TeX0.4/texmf/tex/latex/psnfss/omsptm.fd
+File: OMSptm.fd 
+)
+LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 266.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 266.
+
+Underfull \hbox (badness 1609) in paragraph at lines 291--296
+[]\OT1/ptm/m/n/10 The in-struc-tions of par-tic-u-lar in-ter-est in our study
+ []
+
+
+Underfull \hbox (badness 2020) in paragraph at lines 291--296
+\OT1/ptm/m/n/10 are back-ward con-di-tional and back-ward un-con-di-tional
+ []
+
+
+Underfull \hbox (badness 2351) in paragraph at lines 324--324
+[]\tenhv Figure 2. In-struc-tion mix of con-di-tional
+ []
+
+[3] [4] [5] [6]
+Underfull \hbox (badness 5105) in paragraph at lines 692--692
+[]\tenhv Figure 8. Hard-ware de-sign of a self-
+ []
+
+[7]
+Underfull \hbox (badness 2635) in paragraph at lines 724--729
+[]\OT1/ptm/m/n/10 Marcos de Alba is a Pro-fes-sor of the Elec-tronic
+ []
+
+
+Underfull \hbox (badness 1584) in paragraph at lines 724--729
+\OT1/ptm/m/n/10 En-gi-neer-ing De-part-ment at the \OT1/ptm/m/it/10 Uni-ver-si-
+dad Au-tonoma
+ []
+
+(loops3.bbl) [8] (loops3.aux) ) 
+Here is how much of TeX's memory you used:
+ 476 strings out of 10906
+ 4857 string characters out of 71977
+ 52961 words of memory out of 262141
+ 3368 multiletter control sequences out of 9500
+ 12459 words of font info for 35 fonts, out of 150000 for 255
+ 14 hyphenation exceptions out of 607
+ 23i,7n,21p,245b,341s stack positions out of 300i,40n,60p,3000b,4000s
+
+Output written on loops3.dvi (8 pages, 44384 bytes).

@@ -1,0 +1,8 @@
+#!/bin/ksh
+
+
+rsync -t *.tex *.txt *.bib *.eps vinson:ics05/
+
+rsync -t *.tex *.txt *.bib *.eps piranha:ics05/ &
+
+

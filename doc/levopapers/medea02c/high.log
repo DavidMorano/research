@@ -1,0 +1,170 @@
+This is TeX, Version 3.14159 (Web2C 7.3.1) (format=latex 2002.1.17)  1 SEP 2002 22:12
+**high.tex
+(high.tex
+LaTeX2e <1999/12/01> patch level 1
+Babel <v3.6Z> and hyphenation patterns for american, french, german, ngerman, n
+ohyphenation, loaded.
+(/usr/local/tetex/share/texmf/tex/latex/base/article.cls
+Document Class: article 1999/09/10 v1.4a Standard LaTeX document class
+(/usr/local/tetex/share/texmf/tex/latex/base/size10.clo
+File: size10.clo 1999/09/10 v1.4a Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@section=\count80
+\c@subsection=\count81
+\c@subsubsection=\count82
+\c@paragraph=\count83
+\c@subparagraph=\count84
+\c@figure=\count85
+\c@table=\count86
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+)
+(/usr/local/tetex/share/texmf/tex/generic/babel/babel.sty
+Package: babel 1999/09/09 v3.6Z The Babel package
+
+(/usr/local/tetex/share/texmf/tex/generic/babel/english.ldf
+Language: english 1999/04/11 v3.3i English support from the babel system
+
+(/usr/local/tetex/share/texmf/tex/generic/babel/babel.def
+File: babel.def 1999/09/09 v3.6Z Babel common definitions
+\babel@savecnt=\count87
+\U@D=\dimen103
+)))
+(/usr/local/tetex/share/texmf/tex/latex/graphics/epsfig.sty
+Package: epsfig 1999/02/16 v1.7a (e)psfig emulation (SPQR)
+
+(/usr/local/tetex/share/texmf/tex/latex/graphics/graphicx.sty
+Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/tetex/share/texmf/tex/latex/graphics/keyval.sty
+Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
+\KV@toks@=\toks14
+)
+(/usr/local/tetex/share/texmf/tex/latex/graphics/graphics.sty
+Package: graphics 1999/02/16 v1.0l Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/tetex/share/texmf/tex/latex/graphics/trig.sty
+Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+)
+(/usr/local/tetex/share/texmf/tex/latex/config/graphics.cfg)
+Package graphics Info: Driver file: dvips.def on input line 80.
+
+(/usr/local/tetex/share/texmf/tex/latex/graphics/dvips.def
+File: dvips.def 1999/02/16 v3.0i Driver-dependant file (DPC,SPQR)
+))
+\Gin@req@height=\dimen104
+\Gin@req@width=\dimen105
+)
+\epsfxsize=\dimen106
+\epsfysize=\dimen107
+) (high.aux)
+\openout1 = `high.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 18.
+LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 18.
+LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 18.
+LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 18.
+LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 18.
+LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 18.
+LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <12> on input line 35.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 35.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 35.
+
+[1
+
+
+]
+File: high.eps Graphic file (type eps)
+ <high.eps>
+Overfull \hbox (4.2777pt too wide) in paragraph at lines 221--226
+ [][] 
+ []
+
+[2]
+File: window.eps Graphic file (type eps)
+ <window.eps>
+Overfull \hbox (4.2777pt too wide) in paragraph at lines 287--292
+ [][] 
+ []
+
+[3]
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 378.
+
+ (/usr/local/tetex/share/texmf/tex/latex/base/omscmr.fd
+File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 378.
+ [4]
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 478.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 478.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [5]
+File: source.eps Graphic file (type eps)
+
+<source.eps>
+Overfull \hbox (5.0pt too wide) in paragraph at lines 598--600
+ [][] 
+ []
+
+
+Underfull \vbox (badness 1708) has occurred while \output is active []
+
+ [6]
+Underfull \vbox (badness 1939) has occurred while \output is active []
+
+ [7]
+File: l1dcache.eps Graphic file (type eps)
+
+<l1dcache.eps>
+Overfull \hbox (4.2777pt too wide) in paragraph at lines 949--951
+ [][] 
+ []
+
+File: l2cache.eps Graphic file (type eps)
+<l2cache.eps>
+Overfull \hbox (4.2777pt too wide) in paragraph at lines 959--961
+ [][] 
+ []
+
+File: dram.eps Graphic file (type eps)
+<dram.eps>
+Overfull \hbox (4.2777pt too wide) in paragraph at lines 969--971
+ [][] 
+ []
+
+
+Underfull \vbox (badness 1005) has occurred while \output is active []
+
+ [8]
+[9] (high.bbl
+Underfull \hbox (badness 2856) in paragraph at lines 54--57
+[]\OT1/cmr/m/n/9 Ludloff C.  IA-32 Im-ple-men-ta-tion, In-tel P4.
+ []
+
+) [10] (high.aux) ) 
+Here is how much of TeX's memory you used:
+ 871 strings out of 10901
+ 9604 string characters out of 72188
+ 71816 words of memory out of 263001
+ 3829 multiletter control sequences out of 10000+0
+ 8745 words of font info for 31 fonts, out of 400000 for 1000
+ 14 hyphenation exceptions out of 1000
+ 32i,8n,23p,371b,298s stack positions out of 300i,100n,500p,50000b,4000s
+
+Output written on high.dvi (10 pages, 62024 bytes).

@@ -1,0 +1,16 @@
+#!/bin/ksh
+
+
+integer flag
+
+(( flag = 0 ))
+
+for F in bphm bpyags bpalpha bpgspag ; do 
+  if (( flag != 0 )) ; then
+     echo ".SK"
+  fi
+  cat ${F}.dwb
+  (( flag += 1 ))
+done | grap | pic | troff -Tpost -mm | dpost > all.ps 
+
+

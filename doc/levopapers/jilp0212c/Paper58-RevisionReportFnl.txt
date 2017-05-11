@@ -1,0 +1,371 @@
+Revision Report for JILP paper No. 58: "Levo - A Scalable Processor With
+High IPC"
+-------------------------------------------------------------------------
+
+
+It is obvious that the reviewers spent a lot of time reading and 
+evaluating our paper, for which we are extremely grateful. Many reviewers
+would not have done that.
+
+The paper has been revised according to the reviewers' requirements,
+with the exceptions noted below.
+
+Per JILP instructions, each reviewer comment is listed, an explanation
+or answer is given (indented) and the 
+resulting action taken by the authors is given (also indented).
+
+We hope that our revisions do, in fact, satisfy the reviewers'
+concerns; we believe they do.
+
+---Gus Uht, for the authors
+
+-------------------------------------------------------------------
+
+
+Reviewer 1
+====================================================================
+Section 1. GENERAL EVALUATIONS
+
+Was the paper too long or did not adhere to submission guidelines?
+_No________ (YES/NO)
+
+  Your confidence in your review: __High______ (HIGH/MID/LOW)
+  The relevance of the paper to JILP: __High______ (HIGH/MID/LOW)
+  The technical merit of the paper: ____Mid_____ (HIGH/MID/LOW)
+  The organization of the paper: __Mid_______ (HIGH/MID/LOW)
+  The quality of the language in the paper: __High______ (HIGH/MID/LOW)
+
+Recommendation:
+  ____ definitely accept
+  _X__ accept if minor revisions are made
+  ____ prepare a major revision and resubmit to JILP at a later time
+  ____ unconditionally reject
+
+====================================================================
+Section 2. BRIEF SUMMARY OF PAPER
+Please provide a brief summary of the paper for the editors.
+Please avoid duplicating the abstract.
+
+The authors propose LEVO - a novel implementation of an out-of-order
+microarchitecture that's scalable to very large instruction windows.
+LEVO addresses the problem of how to build a very large instruction
+window in a manner that's physically realizable.
+
+====================================================================
+Section 3. COMMENTS TO AUTHORS
+Please provide constructive criticism to the authors to help them improve
+their paper. Please also point out any flaws to justify your recommendation
+in Section 1.
+
+
+The authors propose LEVO - a novel implementation of an out-of-order
+microarchitecture that's scalable to very large instruction windows.
+
+The LEVO "execution window" consists of a number of columns.  Each
+column is a scheduler/execution unit cluster that can be cascaded to
+create large scheduling windows.  A one-cycle latency is allocated for
+communicating results between columns.
+
+The authors propose the use of time tags which avoid the need for
+register renaming, and the use of segmented busses as a good way to
+address interconnect delays.
+
+The paper's main contribution is in the area of scheduler/execution unit
+design.  The LEVO execution window, columns, and active stations are
+very novel.  I like how the authors propose to satisfy the the physical
+constraints in building a large out-of-order machine.  LEVO is radically
+different from the conventional multiple, distributed reservation
+stations.
+
+I had a lot of questions after reading this paper.  
+Obtaining high IPC
+requires the solution to numerous problems which the authors do not
+explain in detail, but rather cite references.  
+	--Space is an issue, as is the possibility of overwhelming
+	the reader with details. We believe we have struck the right 
+	balance, especially with the revisions made to the paper.
+	--We have added more detail as requested via the reviewers'
+	questions and comments.
+
+The author's claim of
+>10 IPC on gcc is not likely realizable because of instruction fetch
+limitations.  
+	- We would have to say that in the current machine this is true;
+	we say this right up front, in the first paragraph of the
+	Introduction. The point of saying this was to give an indication of
+	the potential of the machine, as well as what it realizes 
+	today. We think it is a matter of opinion as to whether or not
+	gcc will ever realize IPC's of 10 or more; we remain optimistic.
+	After all, what we do realize with the current instruction
+	fetch unit was unthinkable just a little while ago.
+	--We have made no changes for this comment.
+
+How do the branch predictor and instruction fetch feed
+LEVO? 
+	--The discussion of this in Section 4.1 has been expanded.
+
+How does LEVO determine which branches to predicate? 
+	--All branches in the E-window are predicated. 
+	--This has been clarified in the text. Also see the revisions
+	for the previous question.
+
+The data side
+was also not addressed in detail: how do LEVO's speculative store
+buffers work? 
+	--We presume you mean the PCBs.
+	--Clarified in text.
+
+How does LEVO do store-load dependency checking?
+	--Essentially, the same way register dependencies are enforced.
+	--Discussion added in text.
+
+The authors do not mention the downside of using time tags: wakeup
+becomes slower since more bits need to be compared (time tag + logical
+register ID versus physical register ID), and greater than/less than
+compares are required (as opposed to equality comparisons).
+	--The time tags are quite small (~8 bits), so the impact
+	is slight.
+	--We have added a comment on this to the text.
+
+The paper doesn't talk about the processor's pipeline - can LEVO be
+described as a pipeline and how many pipeline stages does it have? 
+	--Levo cannot easily be described as a pipeline without
+	obscuring its logical operation. Also, such a description
+	could be misleading: each column could be thought of as a 
+	pipeline stage, but this is clearly not the operational
+	case or intention.
+	Never-the-less, we have made an attempt to compare a classic
+	pipelined processor with Levo elements; see the paragraph
+	before Section 3.1.
+	--Analogy added to text.
+
+How
+many clocks does it take to recover from a branch mispredict? 
+	--It is not a single number, due to the overlapping operations
+	in the E-window.
+	--Discussion has been added to the text. 
+
+The reader
+could benefit from a comparison of LEVO against a conventional
+out-of-order microarchitecture (with similar effective scheduler and ROB
+sizes).
+	--This is problematic, since estimating the cost of such a
+	conventional processor is difficult and is way beyond the scope
+	of this paper. We feel we have bounded whatever performance 
+	such a machine would get by simulating Simplescalar with, 
+	effectively, unlimited resources. Therefore, our comparison is
+	conservative.
+	--Some text has been added that expands on the Simplescalar
+	comparison.
+
+Because the paper covers a lot of ground, it tends to quickly go over
+each idea.  I think the authors can improve the paper by narrowing their
+scope and concentrating more on the key aspects of LEVO (scheduler and
+execution).
+	--While we certainly do see the reviewer's point, it is in
+	fact very hard to do this without compromising some aspect
+	of the discussion of the machine. E.g., if the floorplan and
+	other realization information is left out, then we do not
+	make our case for scalability of the architecture. We would
+	also run the risk of overwhelming the reader with detail; we
+	would prefer to give a "bigger picture" view of Levo in this
+	paper.
+	--No major changes have been made for this comment.
+
+
+
+Reviewer 2
+====================================================================
+Section 1. GENERAL EVALUATIONS
+
+Was the paper too long or did not adhere to submission guidelines? 
+No_________ (YES/NO)
+
+  Your confidence in your review: HIGH________ (HIGH/MID/LOW)
+  The relevance of the paper to JILP: HIGH________ (HIGH/MID/LOW)
+  The technical merit of the paper: HIGH________ (HIGH/MID/LOW)
+  The organization of the paper: HIGH________ (HIGH/MID/LOW)
+  The quality of the language in the paper: HIGH________ (HIGH/MID/LOW)
+
+Recommendation: 
+  ____ definitely accept
+  _X__ accept if minor revisions are made
+  ____ prepare a major revision and resubmit to JILP at a later time
+  ____ unconditionally reject
+
+====================================================================
+Section 2. BRIEF SUMMARY OF PAPER
+Please provide a brief summary of the paper for the editors. 
+Please avoid duplicating the abstract.
+
+Levo is a segmented architecture where most processing and accesses
+are performed locally within a unit called Sharing Group. Multiple
+sharing groups are connected via fixed-length communication buses
+to allow data-flow like computation. Data dependences are resolved using
+time tags, while control dependences are resolved using predicate (and
+cancellations). Disjoint Eager Execution (DEE) can be implemented
+in a relatively straightforward manner. IPC of Levo in a realistic
+implementation (realistic memory and I-fetch) is about 5 for most
+application. (IPC for ijpeg is about 10 -- presumably, unrolling
+transforms loop-level parallelism into ILP)
+
+====================================================================
+Section 3. COMMENTS TO AUTHORS
+Please provide constructive criticism to the authors to help them improve 
+their paper. Please also point out any flaws to justify your recommendation 
+in Section 1.
+
+Overall it's a very interesting idea. I have quite a few questions,
+in no particular order, that I'd like to see clarified in the final version.
+
+1. When committing a column and renaming existing ones, all the LSTT's
+have to be updated accordingly, right? 
+	--In the current scheme, yes. A revised scheme that does not
+	necessitate this is presented
+	in another paper under review elsewhere.
+	--This has been clarified in the text.
+
+Does that mean every AS has a 
+dedicated simplified ALU to do "<=" time tag test and this LSTT 
+recomputation?
+	--The two functions are likely kept separate. Since the
+	time tags are small, the hardware required for these functions
+	is also small and fast. The update due
+	to column shifting only requires decrementing about
+	a 3-bit number (the column part of the time tag, for an 8-column
+	machine). As mentioned above, this is eliminated with a new
+	approach discussed in another paper. The "<=" comparison is only
+	over about 8 bits. 
+	--These issues have been clarified in the paper.
+
+2. It seems that when an instruction is first fetched from the I-cache 
+into an AS, it has to start execution immediately reading operands from
+RFU. Is that so? 
+	--This is approximately true.
+	--Clarified in the text.
+
+If so, this sounds like it will generate a lot of false
+computation down stream. Comment? 
+	--For later columns, this is so, but it does not significantly
+	impact the performance of the machine.
+	--Discussion added in the paper.
+
+If not, what triggers an instruction
+to execute? Notice that the producer instruction might have already finished
+execution before the consumer is brought into the AS.
+	--Since results are always propagated forward to later RFU's,
+	and intervening instructions will re-execute as necessary,
+	then either the RFU for the new column has the correct data,
+	or the data is on its way.
+	--Clarified in the text.
+
+3. What is the size of PCB? 
+	--The column size (n entries, the worst case for no overflow).
+	--Clarified in the text.
+
+Do you copy it to the new column as you
+do the RFU? 
+	--Logically, yes, physically, no; as discussed in the chip
+	realization section, nothing is actually copied from column
+	to column, the column number is just decremented.
+	--Clarified in the text.
+
+How to handle an overflow? 
+	--An overflow is not possible, by construction (see above).
+	--Clarified in the text.
+
+What is the special provisions
+for Load instructions in the AS? 
+	--Clarified in the text.
+
+Now, loads should be re-executed if
+a there is a broadcast of address of prior store that matches or overlaps
+its address. So you need a full 32-bit address that keeps the effective
+address, not just the 5-bit register address for normal instruction
+re-execution. 
+	--Yes; clarified in the text.
+
+When propagating stores down stream, do you carry domain
+predicates? 
+	--Domain predicate propagation is separate from memory store
+	propagation, the two are not directly linked. We can't see 
+	your implication here.
+	--Partially clarified in the text.
+
+Related question, when you backward request a load, do you 
+just check MFU without trying to compare effective address with
+earlier store instructions' address? (you mentioned request with
+memory backwarding buses being satisfied by active stations.)
+I think it's easier to just check
+MFU, 
+	--The latter is true.
+	--Clarified in text.
+
+so the question is, how many re-load happens on average? 
+	--We don't follow your question. A load only re-requests
+	data if one of its inputs has changed (calculated
+	effective address), but we don't see how this relates to 
+	your prior discussion.
+	--No changes made to text.
+
+Do you
+actually plan to have Levo multiprocessor ready? 
+	--We have begun to devise a Levo multiprocessor,
+	and it may exhibit some neat characteristics, but its development
+	is incomplete, and is beyond the scope of this paper. We
+	are only concerned with Levo's uniprocessor aspects in this paper.
+	--No changes made to text. (But thanks for asking.)
+
+If so, any thoughts
+on LD-LD replay trap?
+	--To be honest, I'm not quite sure what you mean. However, the
+	goal for the Levo multiprocessor is to sidestep traditional
+	SMP issues, especially such nasties as cache coherence, and to
+	minimize data dependencies throughout the machine. We are part-
+	way, but not completely, there.
+	--No change to text.
+
+A Figure 3 for MFU is in order.
+	--We have added a figure for the MFU.
+
+4. In the DEE implementation, could you elaborate on the broadside loading
+especially, if this is not in the same column. What is the hardware
+requirement for this loading?
+	--Clarified in text.
+
+5. Minor questions:
+since you use trace, how do you get wrong path instructions?
+	--We were not complete in our description of the simulator.
+	The simulator actually combines trace- and execution- driven
+	features.
+	--Clarified in text.
+
+why would reorder buffer (not the simple scalar RUU) grow with O(k^2)?
+	--Clarified in text.
+
+why would a p-stage pipeline (not a p-wide one) grow with O(p^2)?
+	--Clarified in text.
+
+It's an interesting paper, I really want to see it published, but
+I'd like to see a more comprehensive explanation. I'd rather see DEE,
+the physical considerations and even some of the evaluation in a different
+paper, to make space for the detail of the operation.
+	--As discussed with the prior reviewer, we need all of the elements
+	you would have us move in order to make our case(s). And we
+	don't want to overwhelm the reader. Lastly, some kind of a 
+	self-contained paper for Levo is highly desirable, and this is
+	it.
+	--No changes made.
+
+
+====================================================================
+END OF REVIEW
+
+
+---------------------------------------------------------------------------
+
+Our thanks to the reviewers for all of their helpful comments. Clearly, we
+needed to clarify several things for Levo's operation to be more apparent.
+
+
+--Gus Uht, for all of the authors.

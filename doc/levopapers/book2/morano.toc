@@ -1,0 +1,23 @@
+\contentsline {part}{I\hspace {1em}This is a Part}{7}
+\author {David A. Morano}{Northeastern University}
+\contentsline {chapter}{\numberline {16}Resource Flow Microarchitectures}{9}
+\contentsline {section}{\numberline {16.1}Introduction}{9}
+\contentsline {section}{\numberline {16.2}Motivation for More Parallelism}{11}
+\contentsline {section}{\numberline {16.3}Resource Flow Basic Concepts}{12}
+\contentsline {subsection}{\numberline {16.3.1}The Operand as a First Class Entity}{12}
+\contentsline {subsection}{\numberline {16.3.2}Dynamic Dependency Ordering}{13}
+\contentsline {subsection}{\numberline {16.3.3}Handling Multipath Execution}{14}
+\contentsline {subsection}{\numberline {16.3.4}Names and Renaming}{15}
+\contentsline {subsection}{\numberline {16.3.5}The Active Station Idea}{15}
+\contentsline {subsection}{\numberline {16.3.6}Register and Memory Operand Storage}{18}
+\contentsline {subsection}{\numberline {16.3.7}Operand Forwarding and Snooping}{19}
+\contentsline {subsection}{\numberline {16.3.8}Result Forwarding Buses and Operand Filtering}{20}
+\contentsline {section}{\numberline {16.4}Representative Microarchitectures}{22}
+\contentsline {subsection}{\numberline {16.4.1}A Small Resource-Flow Microarchitecture}{24}
+\contentsline {subsection}{\numberline {16.4.2}A Distributed Scalable Resource-Flow Microarchitecture}{26}
+\contentsline {subsubsection}{\numberline {16.4.2.1}Bus Interconnect and Machine Scalability}{29}
+\contentsline {subsubsection}{\numberline {16.4.2.2}Fetch Heuristics}{31}
+\contentsline {subsubsection}{\numberline {16.4.2.3}Persistent Architected Register State}{31}
+\contentsline {subsubsection}{\numberline {16.4.2.4}Multipath Execution}{32}
+\contentsline {section}{\numberline {16.5}Summary}{32}
+\contentsline {chapter}{\numberline {References}}{33}

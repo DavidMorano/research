@@ -1,0 +1,7 @@
+Skipper: A Microarchitecture for Exploiting Control-Flow Independence. 
+
+Chen-Yong Cher, T. N. Vijaykumar. 
+
+Proceedings of Micro-34, December 2001 
+
+
