@@ -167,11 +167,11 @@ int	phlen ;
 
 /* we're out of here */
 bad1:
-	free(op->lbht) ;
-
+	uc_free(op->lbht) ;
 #ifdef	MALLOCLOG
 	malloclog_free(op->lbht,"gspag_init:lbht") ;
 #endif
+	op->lbht = NULL ;
 
 bad0:
 	return rs ;
@@ -185,31 +185,24 @@ GSPAG	*op ;
 {
 	int	rs = SR_BADFMT ;
 
+	if (op == NULL) return SR_FAULT ;
 
-	if (op == NULL)
-	    return SR_FAULT ;
-
-	if (op->magic != GSPAG_MAGIC)
-	    return SR_NOTOPEN ;
+	if (op->magic != GSPAG_MAGIC) return SR_NOTOPEN ;
 
 	if (op->gpht != NULL) {
-
-	    free(op->gpht) ;
-
+	    uc_free(op->gpht) ;
 #ifdef	MALLOCLOG
 	malloclog_free(op->gpht,"gspag_free:gpht") ;
 #endif
-
+	    op->gpht = NULL ;
 	}
 
 	if (op->lbht != NULL) {
-
-	    free(op->lbht) ;
-
+	    uc_free(op->lbht) ;
 #ifdef	MALLOCLOG
 	malloclog_free(op->lbht,"gspag_free:lbht") ;
 #endif
-
+	    op->kbht = NULL ;
 	}
 
 	op->magic = 0 ;

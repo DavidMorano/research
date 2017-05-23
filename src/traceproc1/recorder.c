@@ -477,19 +477,18 @@ ret0:
 int recorder_free(asp)
 RECORDER	*asp ;
 {
-	int	rs ;
-
+	int		rs = SR_OK ;
 
 #if	CF_SAFE
-	if (asp == NULL)
-		return SR_FAULT ;
+	if (asp == NULL) return SR_FAULT ;
 
-	if (asp->magic != RECORDER_MAGIC)
-		return SR_NOTOPEN ;
+	if (asp->magic != RECORDER_MAGIC) return SR_NOTOPEN ;
 #endif /* F_SAFE */
 
-	if (asp->rectab != NULL)
-	    free(asp->rectab) ;
+	if (asp->rectab != NULL) {
+	    uc_free(asp->rectab) ;
+	    asp->rectab = NULL ;
+	}
 
 	rs = asp->i ;
 	asp->e = 0 ;
@@ -500,20 +499,16 @@ RECORDER	*asp ;
 /* end subroutine (recorder_free) */
 
 
-
-/* PRIVATE SUBROUTINES */
-
+/* private subroutines */
 
 
 /* extend the object recorder */
 static int recorder_extend(asp)
 RECORDER	*asp ;
 {
-	int	rs ;
-	int	n, size ;
-
-	uint	*nrt ;
-
+	int		rs ;
+	int		n, size ;
+	uint		*nrt ;
 
 #if	CF_DEBUGS
 	debugprintf("recorder_extend: entered e=%d\n",asp->e) ;
@@ -530,13 +525,11 @@ RECORDER	*asp ;
 
 #if	CF_UCMALLOC
 	if ((rs = uc_realloc(asp->rectab,size,&nrt)) < 0) {
-
 	    asp->i = SR_NOMEM ;
 	    return rs ;
 	}
 #else
 	if ((nrt = (uint *) realloc(asp->rectab,size)) == NULL) {
-
 	    asp->i = SR_NOMEM ;
 	    return SR_NOMEM ;
 	}

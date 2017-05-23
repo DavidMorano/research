@@ -101,13 +101,11 @@ BPFIFO	*op ;
 		return SR_NOTOPEN ;
 
 	if (op->table != NULL) {
-
-	    free(op->table) ;
-
+	    uc_free(op->table) ;
 #ifdef	MALLOCLOG
-	malloclog_free(op->table,"bpfifo_free:table") ;
+	    malloclog_free(op->table,"bpfifo_free:table") ;
 #endif
-
+	    op->table = NULL ;
 	}
 
 	op->magic = 0 ;

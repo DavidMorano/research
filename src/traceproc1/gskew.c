@@ -212,24 +212,21 @@ bad0:
 int gskew_free(op)
 GSKEW	*op ;
 {
-	int	rs = SR_BADFMT ;
+	int		rs = SR_BADFMT ;
 
+	if (op == NULL) return SR_FAULT ;
 
-	if (op == NULL)
-	    return SR_FAULT ;
-
-	if (op->magic != GSKEW_MAGIC)
-	    return SR_NOTOPEN ;
-
+	if (op->magic != GSKEW_MAGIC) return SR_NOTOPEN ;
 
 #if	CF_DEBUGS2
 	debugprintf("gskew_free: lu=%u bim=%u eskew=%u\n",
 	    op->s.lu,op->s.use_bim,op->s.use_eskew) ;
 #endif
 
-	if (op->table != NULL)
-	    free(op->table) ;
-
+	if (op->table != NULL) {
+	    uc_free(op->table) ;
+	    op->table = NULL ;
+	}
 
 	op->magic = 0 ;
 	return rs ;

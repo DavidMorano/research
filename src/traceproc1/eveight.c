@@ -191,10 +191,10 @@ EVEIGHT	*op ;
 	if (op->magic != EVEIGHT_MAGIC)
 	    return SR_NOTOPEN ;
 
-
-	if (op->table != NULL)
-	    free(op->table) ;
-
+	if (op->table != NULL) {
+	    uc_free(op->table) ;
+	    op->table = NULL ;
+	}
 
 	op->magic = 0 ;
 	return rs ;

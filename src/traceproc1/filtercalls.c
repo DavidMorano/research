@@ -139,7 +139,6 @@ FILTERCALLS	*op ;
 	if (op->magic != FILTERCALLS_MAGIC)
 	    return SR_NOTOPEN ;
 
-
 	filtercalls_indexfree(op,op->mp) ;
 
 	op->magic = 0 ;
@@ -334,11 +333,8 @@ const char	fname[] ;
 	        rs = hdb_store(&op->index,key,value) ;
 
 	        if (rs < 0) {
-
-	            free(iep) ;
-
+	            uc_free(iep) ;
 	            break ;
-
 	        } /* end if */
 
 	    } /* end if (got one) */
@@ -371,14 +367,10 @@ static int filtercalls_indexfree(op,mp)
 FILTERCALLS	*op ;
 LMAPPROG	*mp ;
 {
-	HDB_CUR	cur ;
-
+	HDB_CUR		cur ;
 	HDB_DATUM	key, value ;
-
 	FILTERCALLS_ENTRY	*iep ;
-
-	int	rs = SR_OK ;
-
+	int		rs = SR_OK ;
 
 	hdb_curbegin(&op->index,&cur) ;
 
@@ -387,11 +379,11 @@ LMAPPROG	*mp ;
 	    iep = (FILTERCALLS_ENTRY *) value.buf ;
 
 	    if (iep != NULL) {
-
-			if (iep->name != NULL)
-				free(iep->name) ;
-
-	        free(iep) ;
+		if (iep->name != NULL) {
+		    uc_free(iep->name) ;
+		    iep->name = NULL ;
+		}
+	        uc_free(iep) ;
 	    }
 
 	} /* end while */

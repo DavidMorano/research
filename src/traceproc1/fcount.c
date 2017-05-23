@@ -325,12 +325,12 @@ const char	fname[] ;
 /* bad stuff */
 bad1:
 	for (i = 0 ; vecitem_get(&op->table,i,&ep) >= 0 ; i += 1) {
-
-		if (ep == NULL) continue ;
-
-		if (ep->name != NULL)
-			free(ep->name) ;
-
+	    if (ep != NULL) {
+		if (ep->name != NULL) {
+		    uc_free(ep->name) ;
+		    ep->name = NULL ;
+		}
+	    }
 	} /* end for */
 
 	vecitem_finish(&op->table) ;
@@ -346,34 +346,29 @@ int fcount_free(op)
 FCOUNT		*op ;
 {
 	FCOUNT_ENTRY	*ep ;
+	int		rs ;
+	int		i ;
 
-	int	rs, i ;
+	if (op == NULL) return SR_FAULT ;
 
-
-	if (op == NULL)
-	    return SR_FAULT ;
-
-	if (op->magic != FCOUNT_MAGIC)
-	    return SR_NOTOPEN ;
+	if (op->magic != FCOUNT_MAGIC) return SR_NOTOPEN ;
 
 #if	CF_DEBUGS
 	for (i = 0 ; vecitem_get(&op->table,i,&ep) >= 0 ; i += 1) {
-
-		if (ep == NULL) continue ;
-
+	    if (ep != NULL) {
 		debugprintf("fcount_free: name=%s ins=%d calls=%d\n",
 			ep->name,ep->ins,ep->calls) ;
-
+	    }
 	}
 #endif /* CF_DEBUGS */
 
 	for (i = 0 ; vecitem_get(&op->table,i,&ep) >= 0 ; i += 1) {
-
-		if (ep == NULL) continue ;
-
+	    if (ep != NULL) {
 		if (ep->name != NULL)
-			free(ep->name) ;
-
+		    uc_free(ep->name) ;
+		    ep->name = NULL ;
+		}
+	    }
 	} /* end for */
 
 	rs = vecitem_finish(&op->table) ;

@@ -1081,9 +1081,7 @@ char		*argv[], *envv[] ;
 #endif
 
 	        if (rs < 0) {
-
 	            uc_free((void *) value.buf) ;
-
 	            goto bad9 ;
 	        }
 
@@ -1131,29 +1129,23 @@ char		*argv[], *envv[] ;
 /* we're done, let's get out!! */
 ret2:
 	u_close(mpp->zfd) ;
-
 	mpp->zfd = -1 ;			/* mark as closed */
 
 /* free up the program headers */
 ret1:
 	uc_free(pheads) ;
-
 	pheads = NULL ;
 
 /* free up section strings */
 
 	if (shstrings != NULL) {
-
 	    uc_free(shstrings) ;
-
+	    shstrings = NULL ;
 	}
-
 
 ret0:
 	u_close(mpp->ofd) ;
-
 	mpp->ofd = -1 ;			/* mark as closed */
-
 
 /* let's index the symbols if we have any (by name) */
 
@@ -1164,19 +1156,13 @@ ret0:
 #endif
 
 	if ((rs >= 0) && mpp->f.symtab) {
-
 	    HDB_DATUM		key, value ;
-
 	    LMAPPROG_SYMTAB	*stp ;
-
 #ifdef	COMMENT
 	    LMAPPROG_SYMBOL	*sep ;
 #endif
-
 	    Elf32_Sym	*eep ;
-
-	    int	j ;
-
+	    int		j ;
 
 #if	CF_MASTERDEBUG && CF_DEBUG
 	    if (pip->debuglevel >= 4)
@@ -1188,7 +1174,6 @@ ret0:
 	        goto bad9 ;
 
 	    for (i = 0 ; vecitem_get(&mpp->symtabs,i,&stp) >= 0 ; i += 1) {
-
 	        if (stp == NULL) continue ;
 
 	        for (j = 0 ; j < stp->nsyms ; j += 1) {
@@ -1224,25 +1209,19 @@ ret0:
 	            rs = hdb_store(&mpp->symbols,key,value) ;
 
 	            if (rs < 0) {
-
 #ifdef	COMMENT
 	                uc_free(sep) ;
 #endif
-
 	                break ;
 	            }
 
 	        } /* end for */
 
-	        if (rs < 0)
-	            break ;
-
+	        if (rs < 0) break ;
 	    } /* end for (looping over symbol tables) */
 
 	    if (rs < 0) {
-
 	        lmapprog_freesymbols(mpp) ;
-
 	        goto bad9 ;
 	    }
 
@@ -1250,9 +1229,7 @@ ret0:
 
 	} /* end if (indexing symbols by name) */
 
-
 /* clean up some stuff before exiting */
-
 
 #if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel >= 4)
@@ -1265,11 +1242,8 @@ ret0:
 bad9:
 	{
 	    HDB_CUR	cur ;
-
 	    HDB_DATUM	key, value ;
-
 	    LMAPPROG_PTE	*ptep ;
-
 
 	    hdb_curbegin(&mpp->pagetable,&cur) ;
 
@@ -1306,54 +1280,46 @@ bad7:
 
 bad6:
 	if (pheads != NULL) {
-
 	    uc_free(pheads) ;
-
+	    pheads = NULL ;
 	}
 
 bad5:
 	if (mpp->filename != NULL) {
-
 	    uc_free(mpp->filename) ;
-
+	    mpp->filename = NULL ;
 	}
 
 bad4:
 	if (mpp->f.symtab) {
-
 	    LMAPPROG_SYMTAB	*stp ;
 
-
 	    for (i = 0 ; vecitem_get(&mpp->symtabs,i,&stp) >= 0 ; i += 1) {
-
 	        if (stp == NULL) continue ;
 
-	        if (stp->pa_symtab != NULL)
+	        if (stp->pa_symtab != NULL) {
 	            u_munmap(stp->pa_symtab,stp->maplen_symtab) ;
+		}
 
-	        if (stp->pa_strings != NULL)
+	        if (stp->pa_strings != NULL) {
 	            u_munmap(stp->pa_strings,stp->maplen_strings) ;
+		}
 
 	    } /* end for */
 
 	    vecitem_finish(&mpp->symtabs) ;
-
 	    mpp->f.symtab = FALSE ;
 
 	} /* end if */
 
 bad3:
 	if (shstrings != NULL) {
-
 	    uc_free(shstrings) ;
-
 	}
 
 bad2:
 	if (mpp->sheads != NULL) {
-
 	    uc_free(mpp->sheads) ;
-
 	}
 
 bad1:
@@ -1376,22 +1342,17 @@ int lmapprog_free(mpp)
 LMAPPROG	*mpp ;
 {
 	struct proginfo		*pip ;
-
 	LMAPPROG_SEGMENT	*psp ;
+	int		i ;
 
-	int	i ;
-
-
-	if (mpp == NULL)
-	    return SR_FAULT ;
+	if (mpp == NULL) return SR_FAULT ;
 
 #if	CF_SAFE
 	if ((mpp->magic != LMAPPROG_MAGIC) && (mpp->magic != 0))
 	    return SR_BADFMT ;
 #endif
 
-	if (mpp->magic != LMAPPROG_MAGIC)
-	    return SR_NOTOPEN ;
+	if (mpp->magic != LMAPPROG_MAGIC) return SR_NOTOPEN ;
 
 	pip = mpp->pip ;
 
@@ -1408,12 +1369,9 @@ LMAPPROG	*mpp ;
 /* free up the page table */
 
 	{
-	    HDB_CUR	cur ;
-
-	    HDB_DATUM	key, value ;
-
+	    HDB_CUR		cur ;
+	    HDB_DATUM		key, value ;
 	    LMAPPROG_PTE	*ptep ;
-
 
 	    hdb_curbegin(&mpp->pagetable,&cur) ;
 
@@ -1439,7 +1397,6 @@ LMAPPROG	*mpp ;
 #endif
 
 	for (i = 0 ; vecitem_get(&mpp->segments,i,&psp) >= 0 ; i += 1) {
-
 	    if (psp == NULL) continue ;
 
 #if	CF_MASTERDEBUG && CF_DEBUG
@@ -1448,8 +1405,9 @@ LMAPPROG	*mpp ;
 	            psp->pa,psp->vmsize) ;
 #endif
 
-	    if (psp->filesize > 0)
+	    if (psp->filesize > 0) {
 	        u_munmap(psp->pa,psp->vmsize) ;
+	    }
 
 	} /* end for */
 
@@ -1463,24 +1421,22 @@ LMAPPROG	*mpp ;
 /* free up any symbol tables (and their string tables) */
 
 	if (mpp->f.symtab) {
-
 	    LMAPPROG_SYMTAB	*stp ;
 
-
 	    for (i = 0 ; vecitem_get(&mpp->symtabs,i,&stp) >= 0 ; i += 1) {
-
 	        if (stp == NULL) continue ;
 
-	        if (stp->pa_symtab != NULL)
+	        if (stp->pa_symtab != NULL) {
 	            u_munmap(stp->pa_symtab,stp->maplen_symtab) ;
+		}
 
-	        if (stp->pa_strings != NULL)
+	        if (stp->pa_strings != NULL) {
 	            u_munmap(stp->pa_strings,stp->maplen_strings) ;
+		}
 
 	    } /* end for */
 
 	    vecitem_finish(&mpp->symtabs) ;
-
 	    mpp->f.symtab = FALSE ;
 
 	} /* end if (freeing up the symbol tables) */
@@ -1492,11 +1448,15 @@ LMAPPROG	*mpp ;
 	    debugprintf("lmapprog_free: closing files\n") ;
 #endif
 
-	if (mpp->ofd >= 0)
+	if (mpp->ofd >= 0) {
 	    u_close(mpp->ofd) ;
+	    mpp->ofd = -1 ;
+	}
 
-	if (mpp->zfd >= 0)
+	if (mpp->zfd >= 0) {
 	    u_close(mpp->zfd) ;
+	    mpp->zfd = -1 ;
+	}
 
 /* free up the data structures that were allocated */
 
@@ -1506,20 +1466,16 @@ LMAPPROG	*mpp ;
 #endif
 
 	if (mpp->filename != NULL) {
-
 	    uc_free(mpp->filename) ;
-
+	   mpp->filename = NULL ;
 	}
-
 
 /* free up sections headers */
 
 	if (mpp->sheads != NULL) {
-
 	    uc_free(mpp->sheads) ;
-
+	    mpp->sheads = NULL ;
 	}
-
 
 #if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel >= 4)
@@ -3023,11 +2979,9 @@ LMAPPROG	*mpp ;
 	            rs = hdb_store(&mpp->symbols,key,value) ;
 
 	            if (rs < 0) {
-
 #ifdef	COMMENT
 	                uc_free(sep) ;
 #endif
-
 	                break ;
 	            }
 
@@ -3035,15 +2989,11 @@ LMAPPROG	*mpp ;
 
 	        } /* end for */
 
-	        if (rs < 0)
-	            break ;
-
+	        if (rs < 0) break ;
 	    } /* end for (looping over symbol tables) */
 
 	    if (rs < 0) {
-
 	        lmapprog_freesymbols(mpp) ;
-
 	        goto bad9 ;
 	    }
 
@@ -3059,15 +3009,12 @@ bad9:
 static int lmapprog_freesymbols(mpp)
 LMAPPROG	*mpp ;
 {
-	HDB_CUR	cur ;
-
+	HDB_CUR		cur ;
 	HDB_DATUM	key, value ;
-
 #ifdef	COMMENT
 	LMAPPROG_SYMBOL	*sep ;
 #endif
-
-	int	rs = SR_OK ;
+	int		rs = SR_OK ;
 
 
 	if (! mpp->f.symbols)
@@ -3081,8 +3028,9 @@ LMAPPROG	*mpp ;
 
 	    sep = (LMAPPROG_SYMBOL *) value.buf ;
 
-	    if (sep != NULL)
+	    if (sep != NULL) {
 	        uc_free(sep) ;
+	    }
 
 	} /* end while */
 
@@ -3106,15 +3054,13 @@ Elf32_Shdr	*sheads ;
 int		n ;
 uint		mapalign ;
 {
-	caddr_t	pa ;
-
-	uint	vaddr, vextent ;
-	uint	vmbase ;
-
-	int	rs, i ;
-	int	c = 0 ;
-	int	wlen ;
-
+	caddr_t		pa ;
+	uint		vaddr, vextent ;
+	uint		vmbase ;
+	int		rs ;
+	int		i ;
+	int		c = 0 ;
+	int		wlen ;
 
 	for (i = 0 ; i < n ; i += 1) {
 

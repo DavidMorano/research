@@ -1900,36 +1900,41 @@ const char	*envv[] ;
 
 	} /* end if (trailing comments) */
 
-
-	if (rs < 0)
+	if (rs < 0) {
 	    bprintf(pip->efp,"%s: result rs=%d\n",
 	        pip->progname,rs) ;
-
+	}
 
 	bclose(&outfile) ;
 
-
 	ex = EX_OK ;
-	if (rs == SR_NOENT)
+	if (rs == SR_NOENT) {
 	    ex = EX_NOINPUT ;
-
-	else if (rs < 0)
+	} else if (rs < 0) {
 	    ex = EX_DATAERR ;
-
+	}
 
 done:
-	if (pip->f.filter)
+	if (pip->f.filter) {
+	    pip->f.filter = FALSE ;
 	    filtercalls_free(pip->callfilter) ;
+	}
 
-	if (pip->f.instrdis)
+	if (pip->f.instrdis) {
+	    pip->f.intrrdis = FALSE ;
 	    mipsdis_free(&dis) ;
+	}
 
-	if (pip->f.progmap)
+	if (pip->f.progmap) {
+	    pip->f.progmap = FALSE ;
 	    lmapprog_free(&pm) ;
+	}
 
 ret3:
-	if (pip->f.log)
+	if (pip->f.log) {
+	    pip->f.log = FALSE ;
 	    logfile_close(&pip->lh) ;
+	}
 
 	vecstr_finish(&args) ;
 

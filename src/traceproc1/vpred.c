@@ -176,23 +176,18 @@ bad0:
 int vpred_free(op)
 VPRED		*op ;
 {
-	int	rs = SR_BADFMT ;
+	int		rs = SR_BADFMT ;
 
+	if (op == NULL) return SR_FAULT ;
 
-	if (op == NULL)
-	    return SR_FAULT ;
-
-	if (op->magic != VPRED_MAGIC)
-	    return SR_NOTOPEN ;
+	if (op->magic != VPRED_MAGIC) return SR_NOTOPEN ;
 
 	if (op->table != NULL) {
-
-	    free(op->table) ;
-
+	    uc_free(op->table) ;
 #ifdef	MALLOCLOG
-	malloclog_free(op->table,rs,"vpred_free:table") ;
-#endif
-
+	    malloclog_free(op->table,rs,"vpred_free:table") ;
+#endif	
+	    op->table = NULL ;
 	}
 
 	op->magic = 0 ;

@@ -190,18 +190,18 @@ int		calen ;
 
 /* we're out of here */
 bad2:
-	free(op->taken) ;
-
+	uc_free(op->taken) ;
 #ifdef	MALLOCLOG
 	malloclog_free(op->taken,"yags_init:taken") ;
 #endif
+	op->taken = NULL ;
 
 bad1:
-	free(op->choice) ;
-
+	uc_free(op->choice) ;
 #ifdef	MALLOCLOG
 	malloclog_free(op->choice,"yags_init:choice") ;
 #endif
+	op->choice = NULL ;
 
 bad0:
 	return rs ;
@@ -213,43 +213,34 @@ bad0:
 int yags_free(op)
 YAGS		*op ;
 {
-	int	rs = SR_BADFMT ;
+	int		rs = SR_BADFMT ;
 
+	if (op == NULL) return SR_FAULT ;
 
-	if (op == NULL)
-	    return SR_FAULT ;
-
-	if (op->magic != YAGS_MAGIC)
-	    return SR_NOTOPEN ;
+	if (op->magic != YAGS_MAGIC) return SR_NOTOPEN ;
 
 	if (op->choice != NULL) {
-
-	    free(op->choice) ;
-
+	    uc_free(op->choice) ;
 #ifdef	MALLOCLOG
-	malloclog_free(op->choice,"yags_free:choice") ;
+	    malloclog_free(op->choice,"yags_free:choice") ;
 #endif
-
+	    op->choice = NULL ;
 	}
 
 	if (op->taken != NULL) {
-
-	    free(op->taken) ;
-
+	    uc_free(op->taken) ;
 #ifdef	MALLOCLOG
-	malloclog_free(op->taken,"yags_free:taken") ;
+	    malloclog_free(op->taken,"yags_free:taken") ;
 #endif
-
+	    op->taken = NULL ;
 	}
 
 	if (op->nottaken != NULL) {
-
-	    free(op->nottaken) ;
-
+	    uc_free(op->nottaken) ;
 #ifdef	MALLOCLOG
-	malloclog_free(op->nottaken,"yags_free:nottaken") ;
+	    malloclog_free(op->nottaken,"yags_free:nottaken") ;
 #endif
-
+	    op->nottaken = NULL ;
 	}
 
 	op->magic = 0 ;
@@ -275,11 +266,9 @@ uint		ia ;
 
 
 #if	CF_SAFE
-	if (op == NULL)
-	    return SR_FAULT ;
+	if (op == NULL) return SR_FAULT ;
 
-	if (op->magic != YAGS_MAGIC)
-	    return SR_NOTOPEN ;
+	if (op->magic != YAGS_MAGIC) return SR_NOTOPEN ;
 #endif /* F_SAFE */
 
 	chi = (ia >> 2) % op->chlen ;

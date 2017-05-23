@@ -399,9 +399,7 @@ char		*t1fname, *t2fname ;
 	        ti.in += 1 ;
 #endif
 
-
 	tracedata_free(&ti) ;
-
 
 	if (pip->verboselevel > 0)
 	    bprintf(pip->ofp,

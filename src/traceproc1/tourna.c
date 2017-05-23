@@ -222,25 +222,25 @@ int	glen ;
 
 /* we're out of here */
 bad3:
-	free(op->lbht) ;
-
+	uc_free(op->lbht) ;
 #ifdef	MALLOCLOG
 	malloclog_free(op->lbht,"tourna_init:lbht") ;
 #endif
+	op->lbht = NULL ;
 
 bad2:
-	free(op->gpht) ;
-
+	uc_free(op->gpht) ;
 #ifdef	MALLOCLOG
 	malloclog_free(op->gpht,"tourna_init:gpht") ;
 #endif
+	op->lbht = NULL ;
 
 bad1:
-	free(op->cpht) ;
-
+	uc_free(op->cpht) ;
 #ifdef	MALLOCLOG
 	malloclog_free(op->cpht,"tourna_init:cpht") ;
 #endif
+	op->cpht = NULL ;
 
 bad0:
 	return rs ;
@@ -252,53 +252,42 @@ bad0:
 int tourna_free(op)
 TOURNA	*op ;
 {
-	int	rs = SR_BADFMT ;
+	int		rs = SR_BADFMT ;
 
+	if (op == NULL) return SR_FAULT ;
 
-	if (op == NULL)
-	    return SR_FAULT ;
-
-	if (op->magic != TOURNA_MAGIC)
-	    return SR_NOTOPEN ;
+	if (op->magic != TOURNA_MAGIC) return SR_NOTOPEN ;
 
 	if (op->lpht != NULL) {
-
-	    free(op->lpht) ;
-
+	    uc_free(op->lpht) ;
 #ifdef	MALLOCLOG
 	    malloclog_free(op->lpht,"tourna_free:lpht") ;
 #endif
-
+	    op->lpht = NULL ;
 	}
 
 	if (op->lbht != NULL) {
-
-	    free(op->lbht) ;
-
+	    uc_free(op->lbht) ;
 #ifdef	MALLOCLOG
 	    malloclog_free(op->lbht,"tourna_free:lbht") ;
 #endif
-
+	    op->lbht = NULL ;
 	}
 
 	if (op->gpht != NULL) {
-
-	    free(op->gpht) ;
-
+	    uc_free(op->gpht) ;
 #ifdef	MALLOCLOG
 	    malloclog_free(op->gpht,"tourna_free:gpht") ;
 #endif
-
+	    op->gpht = NULL ;
 	}
 
 	if (op->cpht != NULL) {
-
-	    free(op->cpht) ;
-
+	    uc_free(op->cpht) ;
 #ifdef	MALLOCLOG
 	    malloclog_free(op->cpht,"tourna_free:cpht") ;
 #endif
-
+	    op->cpht = NULL ;
 	}
 
 	op->magic = 0 ;
@@ -312,18 +301,15 @@ int tourna_lookup(op,ia)
 TOURNA	*op ;
 ULONG	ia ;
 {
-	int	lbi, lpi ;
-	int	gi ;
-	int	f_pred ;
-	int	f_select ;
-
+	int		lbi, lpi ;
+	int		gi ;
+	int		f_pred ;
+	int		f_select ;
 
 #if	CF_SAFE
-	if (op == NULL)
-	    return SR_FAULT ;
+	if (op == NULL) return SR_FAULT ;
 
-	if (op->magic != TOURNA_MAGIC)
-	    return SR_NOTOPEN ;
+	if (op->magic != TOURNA_MAGIC) return SR_NOTOPEN ;
 #endif /* F_SAFE */
 
 	gi = op->bhistory & op->historymask ;
@@ -335,20 +321,14 @@ ULONG	ia ;
 	f_select = GETPRED(op->cpht[gi]) ;
 
 	if (f_select) {
-
 	    f_pred = GETPRED(op->gpht[gi]) ;
-
 	} else {
-
 	    lbi = (ia >> 2) % op->lhlen ;
 	    lpi = op->lbht[lbi] % op->lplen ;
-
 #if	CF_DEBUGS
 	    debugprintf("tourna_lookup: lbi=%d lpi=%d\n",lbi,lpi) ;
 #endif
-
 	    f_pred = GETPRED3(op->lpht[lpi]) ;
-
 	}
 
 	return f_pred ;
@@ -361,18 +341,15 @@ int tourna_confidence(op,ia)
 TOURNA	*op ;
 ULONG	ia ;
 {
-	int	lbi, lpi ;
-	int	gi ;
-	int	confi ;
-	int	f_select ;
-
+	int		lbi, lpi ;
+	int		gi ;
+	int		confi ;
+	int		f_select ;
 
 #if	CF_SAFE
-	if (op == NULL)
-	    return SR_FAULT ;
+	if (op == NULL) return SR_FAULT ;
 
-	if (op->magic != TOURNA_MAGIC)
-	    return SR_NOTOPEN ;
+	if (op->magic != TOURNA_MAGIC) return SR_NOTOPEN ;
 #endif /* F_SAFE */
 
 	gi = op->bhistory & op->historymask ;
@@ -384,20 +361,14 @@ ULONG	ia ;
 	f_select = GETPRED(op->cpht[gi]) ;
 
 	if (f_select) {
-
 	    confi = op->gpht[gi] * 2 ;
-
 	} else {
-
 	    lbi = (ia >> 2) % op->lhlen ;
 	    lpi = op->lbht[lbi] % op->lplen ;
-
 #if	CF_DEBUGS
 	    debugprintf("tourna_lookup: lbi=%d lpi=%d\n",lbi,lpi) ;
 #endif
-
 	    confi = op->lpht[lpi] ;
-
 	}
 
 	return confi ;
@@ -411,20 +382,16 @@ TOURNA	*op ;
 ULONG	ia ;
 int	f_outcome ;
 {
-	uint	ncount ;
-
-	int	lbi, lpi ;
-	int	gi ;
-	int	f_lpred, f_gpred ;
-	int	f_lagree, f_gagree ;
-
+	uint		ncount ;
+	int		lbi, lpi ;
+	int		gi ;
+	int		f_lpred, f_gpred ;
+	int		f_lagree, f_gagree ;
 
 #if	CF_SAFE
-	if (op == NULL)
-	    return SR_FAULT ;
+	if (op == NULL) return SR_FAULT ;
 
-	if (op->magic != TOURNA_MAGIC)
-	    return SR_NOTOPEN ;
+	if (op->magic != TOURNA_MAGIC) return SR_NOTOPEN ;
 #endif /* F_SAFE */
 
 	lbi = (ia >> 2) % op->lhlen ;

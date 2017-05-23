@@ -16,9 +16,7 @@
 /* revision history:
 
 	= 2000-02-15, David Morano
-
 	This code was started (for LevoSim).
-
 
 */
 
@@ -26,8 +24,8 @@
 
 /*******************************************************************************
 
-	This is the object (roughly) for handling simulator specific
-	operations such as call-backs.
+        This is the object (roughly) for handling simulator specific operations
+        such as call-backs.
 
 
 *******************************************************************************/
@@ -595,10 +593,11 @@ bad3:
 
 bad2:
 bad1:
-	for (j = 0 ; j < i ; j += 1)
+	for (j = 0 ; j < i ; j += 1) {
 	    vechand_finish(mip->qes + j) ;
-
+	}
 	uc_free(mip->qes) ;
+	mip->qes = NULL ;
 
 bad0:
 
@@ -618,12 +617,9 @@ LSIM		*mip ;
 LSIM_MACHOBJ	*machobj ;
 {
 	struct proginfo	*pip ;
+	int		rs = SR_OK ;
 
-	int	rs = SR_OK ;
-
-
-	if (mip == NULL)
-	    return SR_FAULT ;
+	if (mip == NULL) return SR_FAULT ;
 
 #if	CF_SAFE
 	if ((mip->magic != LSIM_MAGIC) && (mip->magic != 0))
@@ -640,14 +636,11 @@ LSIM_MACHOBJ	*machobj ;
 	    debugprintf("lsim_setmach: entered\n") ;
 #endif
 
-	if (machobj->topobjp == NULL)
-	    return SR_FAULT ;
+	if (machobj->topobjp == NULL) return SR_FAULT ;
 
-	if (machobj->topcombp == NULL)
-	    return SR_FAULT ;
+	if (machobj->topcombp == NULL) return SR_FAULT ;
 
-	if (machobj->topclockp == NULL)
-	    return SR_FAULT ;
+	if (machobj->topclockp == NULL) return SR_FAULT ;
 
 /* the machine object information */
 
@@ -709,17 +702,12 @@ int lsim_free(mip)
 LSIM	*mip ;
 {
 	struct proginfo	*pip ;
-
 	LSIM_COE	*ep ;
-
 	vechand		*cqp ;
+	int		rs = SR_OK ;
+	int		i, j ;
 
-	int	rs = SR_OK ;
-	int	i, j ;
-
-
-	if (mip == NULL)
-	    return SR_FAULT ;
+	if (mip == NULL) return SR_FAULT ;
 
 #if	CF_SAFE
 	if ((mip->magic != LSIM_MAGIC) && (mip->magic != 0))
@@ -738,8 +726,9 @@ LSIM	*mip ;
 
 /* free up SYSCALLs data structure */
 
-	if (mip->f.syscalls)
+	if (mip->f.syscalls) {
 	    lsim_syscallsfree(mip) ;
+	}
 
 /* free up the program mapping */
 
@@ -759,8 +748,9 @@ LSIM	*mip ;
 	    debugprintf("lsim_free: free Q entries\n") ;
 #endif
 
-	while (plainq_rem(&mip->fq,(PLAINQ_ENTRY **) &ep) >= 0)
+	while (plainq_rem(&mip->fq,(PLAINQ_ENTRY **) &ep) >= 0) {
 	    uc_free(ep) ;
+	}
 
 /* free all entries on the future pending queue */
 
@@ -771,17 +761,14 @@ LSIM	*mip ;
 
 	{
 	    HDB_DATUM	key, value ;
-
 	    HDB_CUR	hcur ;
-
 
 	    hdb_curbegin(&mip->pq,&hcur) ;
 
 	    while (hdb_enum(&mip->pq,&hcur,&key,&value) >= 0) {
-
-	        if (value.buf != NULL)
+	        if (value.buf != NULL) {
 	            uc_free(value.buf) ;
-
+		}
 	    } /* end while */
 
 	    hdb_curend(&mip->pq,&hcur) ;
@@ -799,11 +786,9 @@ LSIM	*mip ;
 
 	    cqp = mip->qes + i ;
 	    for (j = 0 ; (rs = vechand_get(cqp,j,&ep)) >= 0 ; j += 1) {
-
-	        if (ep == NULL) continue ;
-
-	        uc_free(ep) ;
-
+	        if (ep != NULL) {
+	            uc_free(ep) ;
+		}
 	    } /* end while */
 
 	} /* end for */
@@ -816,9 +801,7 @@ LSIM	*mip ;
 #endif
 
 	for (i = 0 ; i < mip->nq ; i += 1) {
-
 	    vechand_finish(mip->qes + i) ;
-
 	} /* end for */
 
 	plainq_finish(&mip->fq) ;
@@ -826,7 +809,6 @@ LSIM	*mip ;
 	hdb_finish(&mip->pq) ;
 
 	uc_free(mip->qes) ;
-
 	mip->qes = NULL ;
 
 #if	CF_MASTERDEBUG && CF_DEBUG
@@ -849,12 +831,9 @@ uint	nclocks ;
 int	phase ;
 {
 	struct proginfo	*pip ;
-
 	LSIM_COE	*ep ;
-
-	int	rs = SR_OK ;
-	int	i ;
-
+	int		rs = SR_OK ;
+	int		i ;
 
 #if	CF_SAFE
 	if (mip == NULL)
@@ -871,7 +850,7 @@ int	phase ;
 
 #if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel >= 4) {
-	    debugprintf("lsim_callout: entered func=%08lx objp=%08lx argp=%08lx\n",
+	    debugprintf("lsim_callout: ent func=%08lx objp=%08lx argp=%08lx\n",
 	        func,objp,argp) ;
 	    debugprintf("lsim_callout: ck=%llu nclocks=%u\n",
 	        mip->clock,nclocks) ;
@@ -2136,14 +2115,10 @@ bad0:
 static int lsim_syscallsfree(mip)
 LSIM	*mip ;
 {
-	HDB_CUR	cur ;
-
+	HDB_CUR		cur ;
 	HDB_DATUM	key, value ;
-
 	LSIM_SYMBOL	*sep ;
-
-	int	rs ;
-
+	int		rs ;
 
 	    hdb_curbegin(&mip->syscalls,&cur) ;
 
@@ -2151,8 +2126,9 @@ LSIM	*mip ;
 
 	        sep = (LSIM_SYMBOL *) value.buf ;
 
-		if (sep != NULL)
+		if (sep != NULL) {
 		    uc_free(sep) ;
+		}
 
 	    } /* end while */
 
@@ -2192,33 +2168,23 @@ char	name[] ;
 uint	*rp ;
 {
 	LMAPPROG_SNCURSOR	cur ;
-
 	Elf32_Sym	*best, *sep ;
-
 	struct proginfo	*pip ;
+	int		rankbest = -1 ;
+	int		rankcur ;
+	int		rs ;
 
-	int	rankbest = -1 ;
-	int	rankcur ;
-	int	rs ;
-
-
-	if (mip == NULL)
-	    return SR_FAULT ;
+	if (mip == NULL) return SR_FAULT ;
 
 #if	CF_SAFE
 	if ((mip->magic != LSIM_MAGIC) && (mip->magic != 0)) {
-
 	    debugprintf("lsim_finddatamem: bad format\n") ;
-
 	    return SR_BADFMT ;
 	}
-
-	if (mip->magic != LSIM_MAGIC)
-	    return SR_NOTOPEN ;
+	if (mip->magic != LSIM_MAGIC) return SR_NOTOPEN ;
 #endif /* F_SAFE */
 
-	if (name == NULL)
-		return SR_FAULT ;
+	if (name == NULL) return SR_FAULT ;
 
 	pip = mip->pip ;
 

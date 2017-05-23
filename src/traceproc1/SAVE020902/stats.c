@@ -3,8 +3,8 @@
 /* statistics gathering */
 
 
-#define	F_DEBUGS	0		/* non-switchable */
-#define	F_DEBUG		0		/* switchable */
+#define	CF_DEBUGS	0		/* non-switchable */
+#define	CF_DEBUG	1		/* switchable */
 #define	F_SAFE		1		/* extra safe mode ? */
 #define	F_SAFE2		1		/* extra safe mode ? */
 #define F_PVALUESBEF    0		/* print values before */
@@ -19,7 +19,7 @@
 
 /* revision history:
 
-	= 01/07/10, Dave Morano
+	= 01/07/10, David Morano
 
 	This code (the old i-fetch code) has been turned into SimpleSim !
 
@@ -29,7 +29,7 @@
 	I added another field to the call of lexec (ilptr).
 
 
-	= 01/08/10, Dave Morano
+	= 01/08/10, David Morano
 
 	I changed the code so that the ISA registers are passed to us.
 	Also, the code will only execute for a maximum number of
@@ -39,34 +39,34 @@
 	boolean variables.
 
 
-	= 01/08/17, Dave Morano
+	= 01/08/17, David Morano
 
 	I added the calls to write out trace information.
 	I had to add the whole trace facility to LevoSim first.
 
 
-	= 01/08/29, Dave Morano
+	= 01/08/29, David Morano
 
 	I added the calls to get some disassembled output text for the
 	instrcutions being executed.
 
 
-	= 01/10/07, Dave Morano
+	= 01/10/07, David Morano
 
 	I fixed the instructions SH, LWL, and LWR.
 
 
-	= 01/10/10, Dave Morano
+	= 01/10/10, David Morano
 
 	I added the code for the LWC1 and SWC1 instructions.
 
 
-	= 01/11/06, Dave Morano
+	= 01/11/06, David Morano
 
 	I added the code for the LDC1 and SDC1 instructions.
 
 
-	= 02/03/14, Dave Morano
+	= 02/03/14, David Morano
 
 	I took this from the old LevoSim (file 'simplesim.c') and
 	hacked it up to be used for gathering statistics from
@@ -75,6 +75,7 @@
 
 */
 
+/* Copyright © 1998 David Morano.  All rights reserved. */
 
 /******************************************************************************
 
@@ -89,17 +90,19 @@
 ******************************************************************************/
 
 
+#include	<envstandards.h>
 
 #include	<sys/types.h>
+#include	<time.h>
 #include	<stdlib.h>
 #include	<string.h>
 #include	<math.h>
 
 #include	<vsystem.h>
-#include	<bio.h>
+#include	<bfile.h>
 #include	<keyopt.h>
+#include	<localmisc.h>
 
-#include	"misc.h"
 #include	"config.h"
 #include	"defs.h"
 
@@ -107,14 +110,12 @@
 #include	"lmapprog.h"
 #include	"fcount.h"
 #include	"ssh.h"
-#include	"regstats.h"
 #include	"vpred.h"
 #include	"yags.h"
-#include	"tourna.h"
+#include	"bpalpha.h"
 #include	"gspag.h"
-#include	"gskew.h"
+#include	"eveight.h"
 #include	"bpresult.h"
-#include	"bpeval.h"
 
 #include	"lflowgroup.h"
 #include	"lmipsregs.h"
@@ -134,30 +135,20 @@
 
 /* local defines */
 
-#define	BPLOADDIR	"lib/traceproc/bp"
-
 #define	INSTRDISLEN	100		/* buffer to hold disassembly */
 #define	BPSIZE		100		/* instructions in basic block */
 #define	BTSIZE		10000		/* instructions in basic block */
 
-#ifndef	DEBUGLEVEL
 #define	DEBUGLEVEL(n)	(pip->debuglevel >= (n))
-#endif
 
 #define	FE_SGINM	".sginm"
 #define	FE_ICOUNTS	".eticounts"
 #define	FE_FCOUNTS	".etfcounts"
 #define	FE_BPLEN	".etbplen"
-#define	FE_BFTLEN	".etbftlen"	/* forward target length */
-#define	FE_BBTLEN	".etbbtlen"	/* backward target length */
+#define	FE_BTLEN	".etbtlen"
 #define	FE_HTLEN	".ethtlen"
 #define	FE_BSTATS	".etstats"
 #define	FE_SSH		".ssh"
-#define	FE_REGUSE	".ruse"
-#define	FE_REGLIFE	".rlife"
-#define	FE_REGREAD	".rread"
-#define	FE_REGWRITE	".rwrite"
-#define	FE_REGRINT	".rrint"
 
 #define	NSSH		1000		/* expected (?) number SSH */
 
@@ -175,31 +166,30 @@
 #define	DEFYAGS_CPHT		4096
 #define	DEFYAGS_DPHT		1024
 
-#define	DEFTOURNA_ROWS		64
-#define	DEFTOURNA_DELAY		512
-#define	DEFTOURNA_LBHT		512
-#define	DEFTOURNA_LPHT		1024
-#define	DEFTOURNA_GPHT		4096
+#define	DEFBPALPHA_ROWS		64
+#define	DEFBPALPHA_DELAY	512
+#define	DEFBPALPHA_LBHT		512
+#define	DEFBPALPHA_LPHT		1024
+#define	DEFBPALPHA_GPHT		4096
 
 #define	DEFGSPAG_ROWS		64
 #define	DEFGSPAG_DELAY		512
 #define	DEFGSPAG_LBHT		1024
 #define	DEFGSPAG_GPHT		4096
 
-#define	DEFGSKEW_ROWS		1
-#define	DEFGSKEW_DELAY		512
-#define	DEFGSKEW_TLEN		-1
+#define	DEFEVEIGHT_ROWS		1
+#define	DEFEVEIGHT_DELAY	512
+#define	DEFEVEIGHT_TLEN		-1
 
 
 
 /* external subroutines */
 
-extern int	cfdeci(const char *,int,int *) ;
-extern int	mkpath2(char *,const char *,const char *) ;
 extern int	mkfname2(char *,const char *,const char *) ;
 extern int	optmatch3(const char **,const char *,int) ;
 extern int	headkeymat(const char *,const char *,int) ;
 extern int	fmeanvaral(ULONG *,int,double *,double *) ;
+extern int	cfdeci(const char *,int,int *) ;
 
 extern char	*timestr_log(time_t,char *) ;
 
@@ -223,12 +213,12 @@ struct instrinfo {
 	uint	f_taken : 1 ;		/* only for conditional branches */
 	uint	f_nullify : 1 ;		/* state for instruction NULLIFY */
 	uint	f_yags : 1 ;
-	uint	f_tourna : 1 ;
+	uint	f_bpalpha : 1 ;
 	uint	f_gspag : 1 ;
-	uint	f_gskew : 1 ;
+	uint	f_eveight : 1 ;
 } ;
 
-struct stats {
+struct ustats {
 	ULONG	in ;			/* number of instructions */
 	ULONG	cf ;			/* control-flow-change instructions */
 	ULONG	cf_ind ;		/* indirect CFC */
@@ -238,8 +228,7 @@ struct stats {
 	ULONG	br_ssh ;		/* single-sided simple hammocks */
 	ULONG	lexecop[LEXECOP_TOTAL] ;	/* opcodes */
 	ULONG	bplen[BPSIZE] ;		/* instructions per BP */
-	ULONG	bftlen[BTSIZE] ;	/* branch forward target length */
-	ULONG	bbtlen[BTSIZE] ;	/* branch backward target length */
+	ULONG	btlen[BTSIZE] ;		/* branch target length */
 	ULONG	htlen[BTSIZE] ;		/* SS hammock branch target length */
 	ULONG	ia_bad ;		/* bad IA from execution */
 	ULONG	vp_inlu ;
@@ -250,12 +239,12 @@ struct stats {
 	ULONG	vp_allcor ;		/* all operands correct */
 	ULONG	yags_correct ;		/* YAGS predicted correctly */
 	ULONG	yags_bits ;		/* YAGS bits */
-	ULONG	tourna_correct ;	/* TOURNA predicted correctly */
-	ULONG	tourna_bits ;		/* TOURNA bits */
+	ULONG	bpalpha_correct ;	/* BPALPHA predicted correctly */
+	ULONG	bpalpha_bits ;		/* BPALPHA bits */
 	ULONG	gspag_correct ;		/* GSPAG predicted correctly */
 	ULONG	gspag_bits ;		/* GSPAG bits */
-	ULONG	gskew_correct ;		/* GSKEW predicted correctly */
-	ULONG	gskew_bits ;		/* GSKEW bits */
+	ULONG	eveight_correct ;	/* EVEIGHT predicted correctly */
+	ULONG	eveight_bits ;		/* EVEIGHT bits */
 } ;
 
 struct testing {
@@ -268,7 +257,6 @@ struct testing {
 struct params {
 	uint	rows ;
 	uint	delay ;
-	uint	f_confidence ;
 	uint	vp_rows ;
 	uint	vp_delay ;
 	uint	vp_entries ;
@@ -278,18 +266,18 @@ struct params {
 	uint	yags_delay ;
 	uint	yags_cpht ;
 	uint	yags_dpht ;
-	uint	tourna_rows ;
-	uint	tourna_delay ;
-	uint	tourna_lbht ;
-	uint	tourna_lpht ;
-	uint	tourna_gpht ;
+	uint	bpalpha_rows ;
+	uint	bpalpha_delay ;
+	uint	bpalpha_lbht ;
+	uint	bpalpha_lpht ;
+	uint	bpalpha_gpht ;
 	uint	gspag_rows ;
 	uint	gspag_delay ;
 	uint	gspag_lbht ;
 	uint	gspag_gpht ;
-	uint	gskew_rows ;
-	uint	gskew_delay ;
-	uint	gskew_tlen ;
+	uint	eveight_rows ;
+	uint	eveight_delay ;
+	uint	eveight_tlen ;
 } ;
 
 struct vpentry {
@@ -313,11 +301,10 @@ static int	storeinstr(struct proginfo *,LMAPPROG *,int,uint,uint,uint,
 			uint *,uint *,uint *,uint *) ;
 static int	regload(struct proginfo *,int,uint,uint,uint,uint,
 			uint *,uint *) ;
-static int	writestats(struct proginfo *, struct statemips *,
-			VPRED_STATS *, struct stats *,BPEVAL *,
-			struct params *) ;
-static int	writevpstats(struct proginfo *, struct statemips *,
-			VPRED_STATS *, struct stats *,int) ;
+static int	writestats(struct proginfo *, struct ustatemips *,
+			VPRED_STATS *, struct ustats *,struct params *) ;
+static int	writevpstats(struct proginfo *, struct ustatemips *,
+			VPRED_STATS *, struct ustats *,int) ;
 
 static int	hias_check(struct testing *,uint) ;
 static int	getstatsopts(struct proginfo *,KEYOPT *,struct params *) ;
@@ -339,7 +326,6 @@ static double	percentll(ULONG,ULONG) ;
 static const char	*keyopts[] = {
 	    "rows",
 	    "delay",
-	"confidence",
 	    "vpred:rows",
 	    "vpred:delay",
 	    "vpred:entries",
@@ -349,25 +335,24 @@ static const char	*keyopts[] = {
 	    "yags:delay",
 	    "yags:cpht",
 	    "yags:dpht",
-	    "tourna:rows",
-	    "tourna:delay",
-	    "tourna:lbht",
-	    "tourna:lpht",
-	    "tourna:gpht",
+	    "bpalpha:rows",
+	    "bpalpha:delay",
+	    "bpalpha:gpht",
+	    "bpalpha:lpht",
+	    "bpalpha:lbht",
 	    "gspag:rows",
 	    "gspag:delay",
 	    "gspag:lbht",
 	    "gspag:gpht",
-	    "gskew:rows",
-	    "gskew:delay",
-	    "gskew:tlen",
+	    "eveight:rows",
+	    "eveight:delay",
+	    "eveight:tlen",
 	    NULL
 } ;
 
 enum keyopts {
 	keyopt_rows,
 	keyopt_delay,
-	keyopt_confidence,
 	keyopt_vprows,
 	keyopt_vpdelay,
 	keyopt_vpentries,
@@ -377,18 +362,18 @@ enum keyopts {
 	keyopt_yagsdelay,
 	keyopt_yagscpht,
 	keyopt_yagsdpht,
-	keyopt_tournarows,
-	keyopt_tournadelay,
-	keyopt_tournalbht,
-	keyopt_tournalpht,
-	keyopt_tournagpht,
+	keyopt_bpalpharows,
+	keyopt_bpalphadelay,
+	keyopt_bpalphagpht,
+	keyopt_bpalphalpht,
+	keyopt_bpalphalbht,
 	keyopt_gspagrows,
 	keyopt_gspagdelay,
 	keyopt_gspaglbht,
 	keyopt_gspaggpht,
-	keyopt_gskewrows,
-	keyopt_gskewdelay,
-	keyopt_gskewtlen,
+	keyopt_eveightrows,
+	keyopt_eveightdelay,
+	keyopt_eveighttlen,
 	keyopt_overlast
 } ;
 
@@ -421,26 +406,11 @@ KEYOPT		*kop ;
 ULONG		skipinstr ;
 char		tfname[] ;
 {
-	struct statemips	mstate, *smp = &mstate  ;
-	struct statemips	sstate ;
-
-	struct params		p ;
-
-	struct instrinfo	bii, pii, cii ;
-
-	struct vpfifo		vf ;
-
-	struct stats		scounts ;
-
-	struct testing		other ;
-
 	LDECODE 		di ;
 
 	EXECTRACE		t ;
 
 	EXECTRACE_ENTRY		e, *ep = &e ;
-
-	REGSTATS		rstats ;
 
 	SSH			hammocks ;
 
@@ -452,17 +422,28 @@ char		tfname[] ;
 
 	YAGS			*bp_yags ;
 
-	TOURNA			*bp_tourna ;
+	BPALPHA			*bp_bpalpha ;
 
 	GSPAG			*bp_gspag ;
 
-	GSKEW			*bp_gskew ;
+	EVEIGHT			*bp_eveight ;
 
 	FCOUNT			funcs ;
 
-	BPFIFO			bf_yags, bf_tourna, bf_gspag, bf_gskew ;
+	struct ustatemips	mstate, *smp = &mstate  ;
+	struct ustatemips	sstate ;
 
-	BPEVAL			bps ;
+	struct params		p ;
+
+	struct instrinfo	bii, pii, cii ;
+
+	struct vpfifo		vf ;
+
+	BPFIFO			bf_yags, bf_bpalpha, bf_gspag, bf_eveight ;
+
+	struct ustats		scounts ;
+
+	struct testing		other ;
 
 	ULONG	in_bp ;			/* branch path instruction number */
 	ULONG	nlast ;			/* last instruction for us */
@@ -489,9 +470,9 @@ char		tfname[] ;
 	int	f_vpred = FALSE ;	/* have value-prediction */
 	int	f_vpredicted ;		/* value-predicted ? */
 	int	f_yags = FALSE ;	/* YAGS branch predictor */
-	int	f_tourna = FALSE ;	/* TOURNA branch predictor */
+	int	f_bpalpha = FALSE ;	/* BPALPHA branch predictor */
 	int	f_gspag = FALSE ;	/* GSPAG predictor */
-	int	f_gskew = FALSE ;	/* GSKEW */
+	int	f_eveight = FALSE ;	/* EVEIGHT */
 	int	f ;
 
 	char	tmpfname[MAXPATHLEN + 1] ;
@@ -499,19 +480,19 @@ char		tfname[] ;
 	char	instrdis[INSTRDISLEN + 1] ;
 
 
-	(void) memset(&mstate,0,sizeof(struct statemips)) ;
+	(void) memset(&mstate,0,sizeof(struct ustatemips)) ;
 
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	if (DEBUGLEVEL(4))
-	    eprintf("stats: tfname=%s\n",tfname) ;
+	    debugprintf("stats: tfname=%s\n",tfname) ;
 #endif
 
 	rs = exectrace_open(&t,tfname,"r",0666,NULL) ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	if (DEBUGLEVEL(4))
-	    eprintf("stats: exectrace_open() rs=%d\n",rs) ;
+	    debugprintf("stats: exectrace_open() rs=%d\n",rs) ;
 #endif
 
 	if (rs < 0) {
@@ -533,9 +514,7 @@ char		tfname[] ;
 	size = sizeof(struct params) ;
 	(void) memset(&p,0,size) ;
 
-
 	getstatsopts(pip,kop,&p) ;
-
 
 /* general */
 
@@ -564,9 +543,9 @@ char		tfname[] ;
 	if (p.vp_entries <= 0)
 	    p.vp_entries = DEFVP_ENTRY ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	if (DEBUGLEVEL(4))
-	    eprintf("stats: vp_entries=%d vp_rows=%d\n",
+	    debugprintf("stats: vp_entries=%d vp_rows=%d\n",
 	        p.vp_entries,p.vp_rows) ;
 #endif
 
@@ -584,22 +563,22 @@ char		tfname[] ;
 	if (p.yags_dpht < 1)
 	    p.yags_dpht = DEFYAGS_DPHT ;
 
-/* TOURNA */
+/* BPALPHA */
 
-	if (p.tourna_rows < 1)
-	    p.tourna_rows = (p.rows > 0) ? p.rows : DEFTOURNA_ROWS ;
+	if (p.bpalpha_rows < 1)
+	    p.bpalpha_rows = (p.rows > 0) ? p.rows : DEFBPALPHA_ROWS ;
 
-	if (p.tourna_delay < 1)
-	    p.tourna_delay = (p.delay > 0) ? p.delay : DEFTOURNA_DELAY ;
+	if (p.bpalpha_delay < 1)
+	    p.bpalpha_delay = (p.delay > 0) ? p.delay : DEFBPALPHA_DELAY ;
 
-	if (p.tourna_lbht < 1)
-	    p.tourna_lbht = DEFTOURNA_LBHT ;
+	if (p.bpalpha_lbht < 1)
+	    p.bpalpha_lbht = DEFBPALPHA_LBHT ;
 
-	if (p.tourna_lpht < 1)
-	    p.tourna_lpht = DEFTOURNA_LPHT ;
+	if (p.bpalpha_lpht < 1)
+	    p.bpalpha_lpht = DEFBPALPHA_LPHT ;
 
-	if (p.tourna_gpht < 1)
-	    p.tourna_gpht = DEFTOURNA_GPHT ;
+	if (p.bpalpha_gpht < 1)
+	    p.bpalpha_gpht = DEFBPALPHA_GPHT ;
 
 /* GSPAG */
 
@@ -615,16 +594,16 @@ char		tfname[] ;
 	if (p.gspag_gpht < 1)
 	    p.gspag_gpht = DEFGSPAG_GPHT ;
 
-/* GSKEW */
+/* EVEIGHT */
 
-	if (p.gskew_rows < 1)
-	    p.gskew_rows = (p.rows > 0) ? p.rows : DEFGSKEW_ROWS ;
+	if (p.eveight_rows < 1)
+	    p.eveight_rows = (p.rows > 0) ? p.rows : DEFEVEIGHT_ROWS ;
 
-	if (p.gskew_delay < 1)
-	    p.gskew_delay = (p.delay > 0) ? p.delay : DEFGSKEW_DELAY ;
+	if (p.eveight_delay < 1)
+	    p.eveight_delay = (p.delay > 0) ? p.delay : DEFEVEIGHT_DELAY ;
 
-	if (p.gskew_tlen < 1)
-	    p.gskew_tlen = DEFGSKEW_TLEN ;
+	if (p.eveight_tlen < 1)
+	    p.eveight_tlen = DEFEVEIGHT_TLEN ;
 
 
 /* statistics */
@@ -633,7 +612,7 @@ char		tfname[] ;
 	ia_lastbranch = 0 ;
 	ta_lastbranch = 0 ;
 
-	size = sizeof(struct stats) ;
+	size = sizeof(struct ustats) ;
 	(void) memset(&scounts,0,size) ;
 
 
@@ -649,9 +628,9 @@ char		tfname[] ;
 	if (pip->in.n > 0)
 	    nlast = (nlast > 0) ? MIN(pip->in.end,nlast) : pip->in.end ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	if (DEBUGLEVEL(5))
-	    eprintf("stats: nlast=%lld\n",nlast) ;
+	    debugprintf("stats: nlast=%lld\n",nlast) ;
 #endif
 
 
@@ -659,9 +638,9 @@ char		tfname[] ;
 
 	if (pip->f.opt_vpred) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	    if (DEBUGLEVEL(4))
-	        eprintf("stats: opt_vpred\n") ;
+	        debugprintf("stats: opt_vpred\n") ;
 #endif
 
 	    size = p.vp_rows * sizeof(VPRED) ;
@@ -696,7 +675,7 @@ char		tfname[] ;
 	        for (i = 0 ; i < p.vp_rows ; i += 1)
 	            vpred_free(&valuepred[i]) ;
 
-	        free(valuepred) ;
+	        uc_free(valuepred) ;
 
 #ifdef	MALLOCLOG
 	        malloclog_free(valuepred,"stats:valuepred") ;
@@ -705,9 +684,9 @@ char		tfname[] ;
 	        goto bad1 ;
 	    }
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	    if (DEBUGLEVEL(4))
-	        eprintf("stats: f_vpred=%d\n",f_vpred) ;
+	        debugprintf("stats: f_vpred=%d\n",f_vpred) ;
 #endif
 
 	} /* end if (opt_vpred) */
@@ -717,9 +696,9 @@ char		tfname[] ;
 
 	if (pip->f.opt_yags) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	    if (DEBUGLEVEL(4))
-	        eprintf("stats: opt_yags\n") ;
+	        debugprintf("stats: opt_yags\n") ;
 #endif
 
 	    size = p.yags_rows * sizeof(YAGS) ;
@@ -735,16 +714,16 @@ char		tfname[] ;
 	    f_yags = TRUE ;
 	    for (i = 0 ; i < p.yags_rows ; i += 1) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	        if (DEBUGLEVEL(4))
-	            eprintf("stats: i=%d yags_init()\n",i) ;
+	            debugprintf("stats: i=%d yags_init()\n",i) ;
 #endif
 
 	        rs = yags_init(&bp_yags[i], p.yags_cpht,p.yags_dpht) ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	        if (DEBUGLEVEL(4))
-	            eprintf("stats: yags_init() rs=%d\n",rs) ;
+	            debugprintf("stats: yags_init() rs=%d\n",rs) ;
 #endif
 
 	        f_yags &= (rs >= 0) ;
@@ -760,10 +739,11 @@ char		tfname[] ;
 
 	    if ((! f_yags) || (rs < 0)) {
 
-	        for (i = 0 ; i < p.yags_rows ; i += 1)
+	        for (i = 0 ; i < p.yags_rows ; i += 1) {
 	            yags_free(&bp_yags[i]) ;
+		}
 
-	        free(bp_yags) ;
+	        uc_free(bp_yags) ;
 
 #ifdef	MALLOCLOG
 	        malloclog_free(bp_yags,"stats:bp_yags") ;
@@ -772,89 +752,91 @@ char		tfname[] ;
 	        goto bad2 ;
 	    }
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	    if (DEBUGLEVEL(4))
-	        eprintf("stats: f_yags=%d\n",f_yags) ;
+	        debugprintf("stats: f_yags=%d\n",f_yags) ;
 #endif
 
 	} /* end if (opt_yags) */
 
 
-/* TOURNA branch predictor */
+/* BPALPHA branch predictor */
 
-	if (pip->f.opt_tourna) {
+	if (pip->f.opt_bpalpha) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	    if (DEBUGLEVEL(4))
-	        eprintf("stats: opt_tourna\n") ;
+	        debugprintf("stats: opt_bpalpha\n") ;
 #endif
 
-	    size = p.tourna_rows * sizeof(TOURNA) ;
-	    rs = uc_malloc(size,&bp_tourna) ;
+	    size = p.bpalpha_rows * sizeof(BPALPHA) ;
+	    rs = uc_malloc(size,&bp_bpalpha) ;
 
 	    if (rs < 0)
 	        goto bad2a ;
 
 #ifdef	MALLOCLOG
-	    malloclog_alloc(bp_tourna,rs,"stats:bp_tourna") ;
+	    malloclog_alloc(bp_bpalpha,rs,"stats:bp_bpalpha") ;
 #endif
 
-	    f_tourna = TRUE ;
-	    for (i = 0 ; i < p.tourna_rows ; i += 1) {
+	    f_bpalpha = TRUE ;
+	    for (i = 0 ; i < p.bpalpha_rows ; i += 1) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	        if (DEBUGLEVEL(4))
-	            eprintf("stats: i=%d tourna_init()\n",i) ;
+	            debugprintf("stats: i=%d bpalpha_init()\n",i) ;
 #endif
 
-	        rs = tourna_init(&bp_tourna[i], 
-	            p.tourna_lbht,p.tourna_lpht,p.tourna_gpht) ;
+	        rs = bpalpha_init(&bp_bpalpha[i], 
+	            p.bpalpha_lbht,p.bpalpha_lpht,p.bpalpha_gpht) ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	        if (DEBUGLEVEL(4))
-	            eprintf("stats: tourna_init() rs=%d\n",rs) ;
+	            debugprintf("stats: bpalpha_init() rs=%d\n",rs) ;
 #endif
 
-	        f_tourna &= (rs >= 0) ;
+	        f_bpalpha &= (rs >= 0) ;
 	        if (rs < 0)
 	            bprintf(pip->efp,
-	                "%s: could not initialize the TOURNA predictor (%d)\n",
+	                "%s: could not initialize the BPALPHA predictor (%d)\n",
 	                pip->progname,rs) ;
 
 	    } /* end for */
 
-	    if (f_tourna)
-	        rs = bpfifo_init(&bf_tourna,p.tourna_delay + 2) ;
+	    if (f_bpalpha) {
+	        rs = bpfifo_init(&bf_bpalpha,p.bpalpha_delay + 2) ;
+	    }
 
-	    if ((! f_tourna) || (rs < 0)) {
+	    if ((! f_bpalpha) || (rs < 0)) {
 
-	        for (i = 0 ; i < p.tourna_rows ; i += 1)
-	            tourna_free(&bp_tourna[i]) ;
+	        for (i = 0 ; i < p.bpalpha_rows ; i += 1) {
+	            bpalpha_free(&bp_bpalpha[i]) ;
+		}
 
-	        free(bp_tourna) ;
+	        uc_free(bp_bpalpha) ;
 
 #ifdef	MALLOCLOG
-	        malloclog_free(bp_tourna,"stats:bp_tourna") ;
+	        malloclog_free(bp_bpalpha,"stats:bp_bpalpha") ;
 #endif
 
 	        goto bad2a ;
 	    }
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	    if (DEBUGLEVEL(4))
-	        eprintf("stats: f_tourna=%d\n",f_tourna) ;
+	        debugprintf("stats: f_bpalpha=%d\n",f_bpalpha) ;
 #endif
 
-	} /* end if (opt_tourna) */
+	} /* end if (opt_bpalpha) */
 
 
 /* GSPAG branch predictor */
 
 	if (pip->f.opt_gspag) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	    if (DEBUGLEVEL(4))
-	        eprintf("stats: opt_gspag\n") ;
+	        debugprintf("stats: opt_gspag\n") ;
 #endif
 
 	    size = p.gspag_rows * sizeof(GSPAG) ;
@@ -870,16 +852,16 @@ char		tfname[] ;
 	    f_gspag = TRUE ;
 	    for (i = 0 ; i < p.gspag_rows ; i += 1) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	        if (DEBUGLEVEL(4))
-	            eprintf("stats: i=%d gspag_init()\n",i) ;
+	            debugprintf("stats: i=%d gspag_init()\n",i) ;
 #endif
 
 	        rs = gspag_init(&bp_gspag[i], p.gspag_lbht,p.gspag_gpht) ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	        if (DEBUGLEVEL(4))
-	            eprintf("stats: gspag_init() rs=%d\n",rs) ;
+	            debugprintf("stats: gspag_init() rs=%d\n",rs) ;
 #endif
 
 	        f_gspag &= (rs >= 0) ;
@@ -890,15 +872,17 @@ char		tfname[] ;
 
 	    } /* end for */
 
-	    if (f_gspag)
+	    if (f_gspag) {
 	        rs = bpfifo_init(&bf_gspag,p.gspag_delay + 2) ;
+	    }
 
 	    if ((! f_gspag) || (rs < 0)) {
 
-	        for (i = 0 ; i < p.gspag_rows ; i += 1)
+	        for (i = 0 ; i < p.gspag_rows ; i += 1) {
 	            gspag_free(&bp_gspag[i]) ;
+		}
 
-	        free(bp_gspag) ;
+	        uc_free(bp_gspag) ;
 
 #ifdef	MALLOCLOG
 	        malloclog_free(bp_gspag,"stats:bp_gspag") ;
@@ -907,126 +891,98 @@ char		tfname[] ;
 	        goto bad2b ;
 	    }
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	    if (DEBUGLEVEL(4))
-	        eprintf("stats: f_gspag=%d\n",f_gspag) ;
+	        debugprintf("stats: f_gspag=%d\n",f_gspag) ;
 #endif
 
 	} /* end if (opt_gspag) */
 
 
-/* GSKEW branch predictor */
+/* EVEIGHT branch predictor */
 
-	if (pip->f.opt_gskew) {
+	if (pip->f.opt_eveight) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	    if (DEBUGLEVEL(4))
-	        eprintf("stats: opt_gskew\n") ;
+	        debugprintf("stats: opt_eveight\n") ;
 #endif
 
-	    size = p.gskew_rows * sizeof(GSKEW) ;
-	    rs = uc_malloc(size,&bp_gskew) ;
+	    size = p.eveight_rows * sizeof(EVEIGHT) ;
+	    rs = uc_malloc(size,&bp_eveight) ;
 
 	    if (rs < 0)
 	        goto bad2c ;
 
 #ifdef	MALLOCLOG
-	    malloclog_alloc(bp_gskew,rs,"stats:bp_gskew") ;
+	    malloclog_alloc(bp_eveight,rs,"stats:bp_eveight") ;
 #endif
 
-	    f_gskew = TRUE ;
-	    for (i = 0 ; i < p.gskew_rows ; i += 1) {
+	    f_eveight = TRUE ;
+	    for (i = 0 ; i < p.eveight_rows ; i += 1) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	        if (DEBUGLEVEL(4))
-	            eprintf("stats: i=%d gskew_init()\n",i) ;
+	            debugprintf("stats: i=%d eveight_init()\n",i) ;
 #endif
 
-	        rs = gskew_init(&bp_gskew[i], p.gskew_tlen,-1,-1,-1) ;
+	        rs = eveight_init(&bp_eveight[i], p.eveight_tlen,-1,-1,-1) ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	        if (DEBUGLEVEL(4))
-	            eprintf("stats: gskew_init() rs=%d\n",rs) ;
+	            debugprintf("stats: eveight_init() rs=%d\n",rs) ;
 #endif
 
-	        f_gskew &= (rs >= 0) ;
+	        f_eveight &= (rs >= 0) ;
 	        if (rs < 0)
 	            bprintf(pip->efp,
-	                "%s: could not initialize the GSKEW predictor (%d)\n",
+	                "%s: could not initialize the EVEIGHT predictor (%d)\n",
 	                pip->progname,rs) ;
 
 	    } /* end for */
 
-	    if (f_gskew)
-	        rs = bpfifo_init(&bf_gskew,p.gskew_delay + 2) ;
+	    if (f_eveight)
+	        rs = bpfifo_init(&bf_eveight,p.eveight_delay + 2) ;
 
-	    if ((! f_gskew) || (rs < 0)) {
+	    if ((! f_eveight) || (rs < 0)) {
 
-	        for (i = 0 ; i < p.gskew_rows ; i += 1)
-	            gskew_free(&bp_gskew[i]) ;
+	        for (i = 0 ; i < p.eveight_rows ; i += 1) {
+	            eveight_free(&bp_eveight[i]) ;
+		}
 
-	        free(bp_gskew) ;
+	        uc_free(bp_eveight) ;
 
 #ifdef	MALLOCLOG
-	        malloclog_free(bp_gskew,"stats:bp_gskew") ;
+	        malloclog_free(bp_eveight,"stats:bp_eveight") ;
 #endif
 
 	        goto bad2c ;
 	    }
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	    if (DEBUGLEVEL(4))
-	        eprintf("stats: f_gskew=%d\n",f_gskew) ;
+	        debugprintf("stats: f_eveight=%d\n",f_eveight) ;
 #endif
 
-	} /* end if (opt_gskew) */
-
-
-/* BP-evaluation module */
-
-	{
-		char	bploaddir[MAXPATHLEN + 1] ;
-
-
-		mkpath2(bploaddir,pip->programroot,BPLOADDIR) ;
-
-		rs = bpeval_init(&bps,bploaddir,p.rows,p.delay) ;
-
-#if	F_MASTERDEBUG && F_DEBUG
-	if (DEBUGLEVEL(4))
-		eprintf("stats: bpeval_init() rs=%d\n",rs) ;
-#endif
-
-		if (rs >= 0) {
-
-			rs = loadbps(pip,kop,&bps) ;
-
-#if	F_MASTERDEBUG && F_DEBUG
-	if (DEBUGLEVEL(4))
-		eprintf("stats: loadbps() rs=%d\n",rs) ;
-#endif
-
-		}
-
-	} /* end block (BP-evaluation module) */
+	} /* end if (opt_eveight) */
 
 
 /* SS-Hammocks */
 
 	if (pip->f.opt_ssh) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	    if (DEBUGLEVEL(4))
-	        eprintf("stats: opt_ssh\n") ;
+	        debugprintf("stats: opt_ssh\n") ;
 #endif
 
 	    mkfname2(sshfname,pip->basename,FE_SSH) ;
 
 	    rs = ssh_init(&hammocks,sshfname) ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	    if (DEBUGLEVEL(4))
-	        eprintf("stats: ssh_init() rs=%d\n",rs) ;
+	        debugprintf("stats: ssh_init() rs=%d\n",rs) ;
 #endif
 
 	    f_ssh = (rs >= 0) ;
@@ -1052,14 +1008,14 @@ char		tfname[] ;
 	        other.n = i ;
 
 	        if (DEBUGLEVEL(4))
-	            eprintf("stats: SSH-n %d\n", other.n) ;
+	            debugprintf("stats: SSH-n %d\n", other.n) ;
 
 	    } /* end if (SSH testing) */
 #endif /* F_SSHTESTING */
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	    if (DEBUGLEVEL(4))
-	        eprintf("stats: f_ssh=%d\n",f_ssh) ;
+	        debugprintf("stats: f_ssh=%d\n",f_ssh) ;
 #endif
 
 	} /* end if (opt_ssh) */
@@ -1069,9 +1025,9 @@ char		tfname[] ;
 
 	if (pip->f.opt_fcount) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	    if (DEBUGLEVEL(4))
-	        eprintf("stats: opt_fcount\n") ;
+	        debugprintf("stats: opt_fcount\n") ;
 #endif
 
 	    mkfname2(tmpfname,pip->basename,FE_SGINM) ;
@@ -1081,34 +1037,12 @@ char		tfname[] ;
 	    if (rs < 0)
 	        goto bad4 ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	    if (DEBUGLEVEL(4))
-	        eprintf("stats: fcount_init() rs=%d\n",rs) ;
+	        debugprintf("stats: f_fcount=%d\n",rs) ;
 #endif
 
 	} /* end if (opt_fcount) */
-
-
-/* register stastics */
-
-	if (pip->f.opt_regstats) {
-
-#if	F_MASTERDEBUG && F_DEBUG
-	    if (DEBUGLEVEL(4))
-	        eprintf("stats: opt_regstats\n") ;
-#endif
-
-	    rs = regstats_init(&rstats,2048,2048,256) ;
-
-	    if (rs < 0)
-	        goto bad4a ;
-
-#if	F_MASTERDEBUG && F_DEBUG
-	    if (DEBUGLEVEL(4))
-	        eprintf("stats: regstats_init() rs=%d\n",rs) ;
-#endif
-
-	} /* end if (opt_regstats) */
 
 
 /* other initialization */
@@ -1152,9 +1086,9 @@ char		tfname[] ;
 
 	        rs = exectrace_read(&t,&e) ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	        if ((pip->debuglevel >= 2) && (rs < 0))
-	            eprintf("stats: exectrace_read() rs=%d\n",rs) ;
+	            debugprintf("stats: exectrace_read() rs=%d\n",rs) ;
 #endif
 
 	        if (rs <= 0)
@@ -1162,9 +1096,9 @@ char		tfname[] ;
 
 	        trecs += 1 ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	        if (DEBUGLEVEL(7))
-	            eprintf("stats: trecs=%lld f_ia=%d\n",trecs,e.f.ia) ;
+	            debugprintf("stats: trecs=%lld f_ia=%d\n",trecs,e.f.ia) ;
 #endif
 
 	        if (e.f.ia)
@@ -1174,9 +1108,9 @@ char		tfname[] ;
 
 	    if (rs <= 0) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	        if (DEBUGLEVEL(5))
-	            eprintf("stats: end-of-trace in=%lld\n",smp->in) ;
+	            debugprintf("stats: end-of-trace in=%lld\n",smp->in) ;
 #endif
 
 	        goto done ;
@@ -1186,9 +1120,9 @@ char		tfname[] ;
 
 	        scounts.ia_bad += 1 ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	        if (DEBUGLEVEL(3))
-	            eprintf("stats: bad IA in=%lld next_ia=%08x e_ia=%08x\n",
+	            debugprintf("stats: bad IA in=%lld next_ia=%08x e_ia=%08x\n",
 	                smp->in,
 	                ia_next,e.ia) ;
 #endif
@@ -1212,14 +1146,14 @@ char		tfname[] ;
 
 	        f_outcome = (bii.ta == ia) ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	        if (DEBUGLEVEL(4))
-	            eprintf("stats: f_outcome=%d\n",f_outcome) ;
+	            debugprintf("stats: f_outcome=%d\n",f_outcome) ;
 #endif
 
 	        if (f_yags) {
 
-	            if (f_se && EQUIV(bii.f_yags,f_outcome))
+	            if (f_se && LEQUIV(bii.f_yags,f_outcome))
 	                scounts.yags_correct += 1 ;
 
 	            fin = bii.in + p.yags_delay ;
@@ -1228,20 +1162,20 @@ char		tfname[] ;
 
 	        } /* end if (queue YAGS update) */
 
-	        if (f_tourna) {
+	        if (f_bpalpha) {
 
-	            if (f_se && EQUIV(bii.f_tourna,f_outcome))
-	                scounts.tourna_correct += 1 ;
+	            if (f_se && LEQUIV(bii.f_bpalpha,f_outcome))
+	                scounts.bpalpha_correct += 1 ;
 
-	            fin = bii.in + p.tourna_delay ;
-	            bprow = bii.in % p.tourna_rows ;
-	            bpfifo_add(&bf_tourna,fin, bii.ia,bprow,f_outcome) ;
+	            fin = bii.in + p.bpalpha_delay ;
+	            bprow = bii.in % p.bpalpha_rows ;
+	            bpfifo_add(&bf_bpalpha,fin, bii.ia,bprow,f_outcome) ;
 
-	        } /* end if (queue TOURNA update) */
+	        } /* end if (queue BPALPHA update) */
 
 	        if (f_gspag) {
 
-	            if (f_se && EQUIV(bii.f_gspag,f_outcome))
+	            if (f_se && LEQUIV(bii.f_gspag,f_outcome))
 	                scounts.gspag_correct += 1 ;
 
 	            fin = bii.in + p.gspag_delay ;
@@ -1250,18 +1184,16 @@ char		tfname[] ;
 
 	        } /* end if (queue GSPAG update) */
 
-	        if (f_gskew) {
+	        if (f_eveight) {
 
-	            if (f_se && EQUIV(bii.f_gskew,f_outcome))
-	                scounts.gskew_correct += 1 ;
+	            if (f_se && LEQUIV(bii.f_eveight,f_outcome))
+	                scounts.eveight_correct += 1 ;
 
-	            fin = bii.in + p.gskew_delay ;
-	            bprow = bii.in % p.gskew_rows ;
-	            bpfifo_add(&bf_gskew,fin, bii.ia,bprow,f_outcome) ;
+	            fin = bii.in + p.eveight_delay ;
+	            bprow = bii.in % p.eveight_rows ;
+	            bpfifo_add(&bf_eveight,fin, bii.ia,bprow,f_outcome) ;
 
-	        } /* end if (queue GSKEW update) */
-
-		bpeval_outcome(&bps,(uint) bii.in,bii.ia,f_se,f_outcome) ;
+	        } /* end if (queue EVEIGHT update) */
 
 	    } /* end if (had a conditional-branch) */
 #endif /* F_LATEUPDATE */
@@ -1275,23 +1207,23 @@ char		tfname[] ;
 
 /* continue like we were (almost) for "real" ! */
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	    if (DEBUGLEVEL(6))
-	        eprintf("stats: in=%lld ia=%08x\n",smp->in,ia) ;
+	        debugprintf("stats: in=%lld ia=%08x\n",smp->in,ia) ;
 #endif
 
 	    rs = lmapprog_readinstr(mpp,ia,&instr) ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	    if (DEBUGLEVEL(6)) {
-	        eprintf("stats: lmapprog_readinstr() rs=%d instr=%08x\n",
+	        debugprintf("stats: lmapprog_readinstr() rs=%d instr=%08x\n",
 	            rs,instr) ;
 	    }
 #endif
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	    if ((pip->debuglevel >= 2) && (rs < 0))
-	        eprintf("stats: lmapprog_readinstr() rs=%d "
+	        debugprintf("stats: lmapprog_readinstr() rs=%d "
 	            "ia=%08x instr=%08x\n",
 	            rs,ia,instr) ;
 #endif
@@ -1299,7 +1231,7 @@ char		tfname[] ;
 	    if (rs < 0)
 	        break ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	    if (DEBUGLEVEL(5)) {
 
 	        rs1 = SR_NOTSUP ;
@@ -1310,12 +1242,12 @@ char		tfname[] ;
 	        if (rs1 < 0)
 	            strcpy(instrdis,"unknown") ;
 
-	        eprintf("stats: in=%lld ia=%08x instr=%08x %s\n",
+	        debugprintf("stats: in=%lld ia=%08x instr=%08x %s\n",
 	            smp->in,ia,instr,instrdis) ;
 	    }
-#endif /* F_DEBUG */
+#endif /* CF_DEBUG */
 
-#if	F_MASTERDEBUG && F_DEBUG && F_CREATETRACE
+#if	F_MASTERDEBUG && CF_DEBUG && F_CREATETRACE
 	    if (DEBUGLEVEL(5) &&
 	        (instrdis[0] == '\0')) {
 
@@ -1327,7 +1259,7 @@ char		tfname[] ;
 	        if (rs1 < 0)
 	            strcpy(instrdis,"unknown") ;
 
-	        eprintf("simplesim!itrace: %08x %08x %s\n",
+	        debugprintf("simplesim!itrace: %08x %08x %s\n",
 	            ia,instr,instrdis) ;
 
 	    }
@@ -1336,17 +1268,17 @@ char		tfname[] ;
 
 	    rs = ldecode_decode(&di,ia,instr) ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	    if ((pip->debuglevel >= 2) && (rs != 0)) {
-	        eprintf("stats: ldecode_decode() rs=%d\n",rs) ;
-	        eprintf("stats: in=%lld ia=%08x instr=%08x\n",
+	        debugprintf("stats: ldecode_decode() rs=%d\n",rs) ;
+	        debugprintf("stats: in=%lld ia=%08x instr=%08x\n",
 	            smp->in,ia,instr) ;
 	        rs1 = mipsdis_getlevo(mdp,ia,instr,
 	            instrdis,INSTRDISLEN) ;
 	        if (rs1 >= 0)
-	            eprintf("stats: instr> %s\n",instrdis) ;
+	            debugprintf("stats: instr> %s\n",instrdis) ;
 	    }
-#endif /* F_DEBUG */
+#endif /* CF_DEBUG */
 
 	    if (rs < 0) {
 
@@ -1358,9 +1290,9 @@ char		tfname[] ;
 	    if (rs != 0)
 	        break ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	    if (DEBUGLEVEL(5))
-	        eprintf("stats: class=%s(%d) opexec=%d\n",
+	        debugprintf("stats: class=%s(%d) opexec=%d\n",
 	            instrclasses[di.opclass],di.opclass,di.opexec) ;
 #endif
 
@@ -1371,9 +1303,9 @@ char		tfname[] ;
 
 	    if (rs < 0) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	        if (DEBUGLEVEL(2))
-	            eprintf("stats: proginfo_selection() rs=%dd\n",
+	            debugprintf("stats: proginfo_selection() rs=%dd\n",
 	                rs) ;
 #endif
 	        return rs ;
@@ -1381,16 +1313,16 @@ char		tfname[] ;
 
 	    f_se = (rs > 0) ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	    if (DEBUGLEVEL(6))
-	        eprintf("stats: in=%lld f_se=%d\n",
+	        debugprintf("stats: in=%lld f_se=%d\n",
 	            smp->in,f_se) ;
 #endif
 
 
 /* check for our favorite instructions ! */
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	    if (DEBUGLEVEL(5)) {
 
 	        if ((di.opexec == LEXECOP_CVTDW) || 
@@ -1400,16 +1332,16 @@ char		tfname[] ;
 	            (di.opexec == LEXECOP_CVTSD) || 
 	            (di.opexec == LEXECOP_CVTDS)) {
 
-	            eprintf("stats: CVT in=%lld ia=%08x instr=%08x\n",
+	            debugprintf("stats: CVT in=%lld ia=%08x instr=%08x\n",
 	                smp->in,ia,instr) ;
 
 	            if (DEBUGLEVEL(6))
-	                eprintf("stats: CVT s1=%d s2=%d d1=%d d2=%d\n",
+	                debugprintf("stats: CVT s1=%d s2=%d d1=%d d2=%d\n",
 	                    di.src1, di.src2, di.dst1, di.dst2) ;
 
 	        }
 	    }
-#endif /* F_DEBUG */
+#endif /* CF_DEBUG */
 
 
 /* statistics update */
@@ -1425,30 +1357,6 @@ char		tfname[] ;
 
 
 /* prepare some operand stuff */
-
-	   if (pip->f.opt_regstats) {
-
-	        if (di.src1 >= 0)
-			regstats_read(&rstats,smp->in,f_se,
-				di.src1,smp->regs[di.src1]) ;
-
-	        if (di.src2 >= 0)
-			regstats_read(&rstats,smp->in,f_se,
-				di.src2,smp->regs[di.src2]) ;
-
-	        if (di.src3 >= 0)
-			regstats_read(&rstats,smp->in,f_se,
-				di.src3,smp->regs[di.src3]) ;
-
-	        if (di.src4 >= 0)
-			regstats_read(&rstats,smp->in,f_se,
-				di.src4,smp->regs[di.src4]) ;
-
-	        if (di.src5 >= 0)
-			regstats_read(&rstats,smp->in,f_se,
-				di.src5,smp->regs[di.src5]) ;
-
-	} /* end if (register statistics) */
 
 
 /* source operand value prediction */
@@ -1655,11 +1563,11 @@ char		tfname[] ;
 
 /* do the instruction execution */
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	    if (DEBUGLEVEL(4)) {
 
 	        if (pii.f_nullify)
-	            eprintf("stats: this instructions was nullified\n") ;
+	            debugprintf("stats: this instructions was nullified\n") ;
 
 	    }
 #endif
@@ -1677,34 +1585,39 @@ char		tfname[] ;
 
 	            ma = offset + smp->regs[di.src1] ;
 
-#if	F_MASTERDEBUG && F_DEBUG && F_PVALUESBEF
+#if	F_MASTERDEBUG && CF_DEBUG && F_PVALUESBEF
 	            if (DEBUGLEVEL(5)) {
-	                eprintf("stats: load before> %08x %08x %s\n",
+	                debugprintf("stats: load before> %08x %08x %s\n",
 	                    ia,instr,instrdis) ;
 
-	                eprintf("stats: ma=%08x\n", ma) ;
-	                eprintf("stats: src r%d=%08x r%d=%08x\n",
+	                debugprintf("stats: ma=%08x\n", ma) ;
+	                debugprintf("stats: src r%d=%08x r%d=%08x\n",
 	                    di.src1, smp->regs[di.src1],
 	                    di.src2, smp->regs[di.src2]) ;
-	                eprintf("stats: dst r%d=%08x r%d=%08x\n",
+	                debugprintf("stats: dst r%d=%08x r%d=%08x\n",
 	                    di.dst1,smp->regs[di.dst1],
 	                    di.dst2,smp->regs[di.dst2]) ;
 
 	            }
-#endif /* F_DEBUG */
+#endif /* CF_DEBUG */
 
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	            if (DEBUGLEVEL(5))
-	                eprintf("stats: loadinstr()\n") ;
+	                debugprintf("stats: loadinstr()\n") ;
 #endif
 
 	            rs = loadinstr(pip,mpp,di.opexec,
 	                ma, smp->regs[di.src2],&dst1,&dst2) ;
 
-#if	F_MASTERDEBUG && F_DEBUG
-	            if ((DEBUGLEVEL(2) && (rs < 0)) || DEBUGLEVEL(5))
-	                eprintf("stats: loadinstr() rs=%d ma=%08x\n",
+#if	F_MASTERDEBUG && CF_DEBUG
+	            if (DEBUGLEVEL(5))
+	                debugprintf("stats: loadinstr() rs=%d\n",rs) ;
+#endif
+
+#if	F_MASTERDEBUG && CF_DEBUG && F_MEMFAULT
+	            if ((pip->debuglevel >= 2) && (rs < 0))
+	                debugprintf("stats: loadinstr() rs=%d ma=%08x\n",
 	                    rs,ma) ;
 #endif
 
@@ -1713,18 +1626,19 @@ char		tfname[] ;
 	            if (rs < 0)
 	                break ;
 
-#if	F_MASTERDEBUG && F_DEBUG && F_PVALUESAFT
+#if	F_MASTERDEBUG && CF_DEBUG && F_PVALUESAFT
 	            if (DEBUGLEVEL(5)) {
-	                eprintf("stats: load after> %08x %08x %s\n",
+	                debugprintf("stats: load after> %08x %08x %s\n",
 	                    ia,instr,instrdis) ;
 
-	                eprintf("stats: ma=%08x\n",
+	                debugprintf("stats: ma=%08x\n",
 	                    ma) ;
-	                eprintf("stats: dst r%d=%08x r%d=%08x\n",
+	                debugprintf("stats: dst r%d=%08x r%d=%08x\n",
 	                    di.dst1,dst1,
 	                    di.dst2,dst2) ;
 	            }
-#endif /* F_DEBUG */
+#endif /* CF_DEBUG */
+
 
 #endif /* F_MEMFAULT */
 
@@ -1733,13 +1647,13 @@ char		tfname[] ;
 	            offset = di.const1 ;
 	            ma = offset + smp->regs[di.src1] ;
 
-#if	F_MASTERDEBUG && F_DEBUG && F_PVALUESBEF
+#if	F_MASTERDEBUG && CF_DEBUG && F_PVALUESBEF
 	            if (DEBUGLEVEL(5)) {
 
-	                eprintf("stats: store before> %08x %08x %s\n",
+	                debugprintf("stats: store before> %08x %08x %s\n",
 	                    ia,instr,instrdis) ;
 
-	                eprintf("stats: <%x> "
+	                debugprintf("stats: <%x> "
 	                    "base:[%d]=%x offset:%x src:[%d]=%x\n",
 	                    ma,
 	                    di.src1 ,smp->regs[di.src1],
@@ -1747,7 +1661,7 @@ char		tfname[] ;
 	                    di.src2,smp->regs[di.src2]) ;
 
 	            }
-#endif /* F_DEBUG */
+#endif /* CF_DEBUG */
 
 
 	            rs = storeinstr(pip,mpp,di.opexec,
@@ -1756,9 +1670,9 @@ char		tfname[] ;
 	                smp->regs[di.src3],
 	                &ma,&mv,&mv2,&dp) ;
 
-#if	F_MASTERDEBUG && F_DEBUG && F_MEMFAULT
+#if	F_MASTERDEBUG && CF_DEBUG && F_MEMFAULT
 	            if ((pip->debuglevel >= 2) && (rs < 0))
-	                eprintf("stats: storeinstr() rs=%d\n",rs) ;
+	                debugprintf("stats: storeinstr() rs=%d\n",rs) ;
 #endif
 
 #if	F_MEMFAULT
@@ -1770,20 +1684,20 @@ char		tfname[] ;
 
 	            f_double = (rs == 1) ;
 
-#if	F_MASTERDEBUG && F_DEBUG && F_PVALUESAFT
+#if	F_MASTERDEBUG && CF_DEBUG && F_PVALUESAFT
 	            if (DEBUGLEVEL(5)) {
 
-	                eprintf("stats: store after> %08x %08x %s\n",
+	                debugprintf("stats: store after> %08x %08x %s\n",
 	                    ia,instr,instrdis) ;
 
-	                eprintf("stats: <%x> "
+	                debugprintf("stats: <%x> "
 	                    "base:[%d]=%x src:[%d]=%x\n",
 	                    (offset + smp->regs[di.src1]),
 	                    di.src1 ,smp->regs[di.src1],
 	                    di.src2,smp->regs[di.src2]) ;
 
 	            }
-#endif /* F_DEBUG */
+#endif /* CF_DEBUG */
 
 
 	        } else if (di.opexec != LEXECOP_SYSCALL) {
@@ -1797,36 +1711,36 @@ char		tfname[] ;
 
 /* everything else goes to LEXEC */
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	            if (DEBUGLEVEL(6))
-	                eprintf("stats: need LEXEC execution\n") ;
+	                debugprintf("stats: need LEXEC execution\n") ;
 #endif
 
-#if	F_MASTERDEBUG && F_DEBUG && F_PVALUESBEF 
+#if	F_MASTERDEBUG && CF_DEBUG && F_PVALUESBEF 
 	            if (DEBUGLEVEL(5)) {
 
-	                eprintf("stats: LEXEC before> %08x %08x %s\n",
+	                debugprintf("stats: LEXEC before> %08x %08x %s\n",
 	                    ia,instr,instrdis) ;
 
-	                eprintf("stats: s1[%d]=%x s2[%d]=%x "
+	                debugprintf("stats: s1[%d]=%x s2[%d]=%x "
 	                    "s3[%d]=%x \n",
 	                    di.src1,smp->regs[di.src1],
 	                    di.src2,smp->regs[di.src2],
 	                    di.src3,smp->regs[di.src3]) ;
-	                eprintf("stats: s4[%d]=%x s5[%d]=%x\n",
+	                debugprintf("stats: s4[%d]=%x s5[%d]=%x\n",
 	                    di.src4,smp->regs[di.src4],
 	                    di.src5,smp->regs[di.src5]) ;
 
-	                eprintf("stats: const=%08x\n",
+	                debugprintf("stats: const=%08x\n",
 	                    di.const1) ;
 
-	                eprintf("stats: d1[%d]=%x d2[%d]=%x d3[%d]=%x\n",
+	                debugprintf("stats: d1[%d]=%x d2[%d]=%x d3[%d]=%x\n",
 	                    di.dst1,smp->regs[di.dst1],
 	                    di.dst2,smp->regs[di.dst2],
 	                    di.dst3,smp->regs[di.dst3]) ;
 
 	            }
-#endif /* F_DEBUG */
+#endif /* CF_DEBUG */
 
 
 	            cii.f_cf = (cii.opclass == OPCLASS_BREL) || 
@@ -1848,28 +1762,28 @@ char		tfname[] ;
 
 	                    cii.f_yags = (rs > 0) ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	                    if (DEBUGLEVEL(4))
-	                        eprintf("stats: in=%lld yags_lu() rs=%d\n",
+	                        debugprintf("stats: in=%lld yags_lookup() rs=%d\n",
 	                            smp->in,rs) ;
 #endif
 
 	                } /* end if (YAGS) */
 
-	                if (f_tourna) {
+	                if (f_bpalpha) {
 
-	                    bprow = smp->in % p.tourna_rows ;
-	                    rs = tourna_lookup(&bp_tourna[bprow],ia) ;
+	                    bprow = smp->in % p.bpalpha_rows ;
+	                    rs = bpalpha_lookup(&bp_bpalpha[bprow],ia) ;
 
-	                    cii.f_tourna = (rs > 0) ;
+	                    cii.f_bpalpha = (rs > 0) ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	                    if (DEBUGLEVEL(4))
-	                        eprintf("stats: in=%lld tourna_lu() rs=%d\n",
+	                        debugprintf("stats: in=%lld bpalpha_lookup() rs=%d\n",
 	                            smp->in,rs) ;
 #endif
 
-	                } /* end if (TOURNA) */
+	                } /* end if (BPALPHA) */
 
 	                if (f_gspag) {
 
@@ -1878,35 +1792,28 @@ char		tfname[] ;
 
 	                    cii.f_gspag = (rs > 0) ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	                    if (DEBUGLEVEL(4))
-	                        eprintf("stats: in=%lld gspag_lu() rs=%d\n",
+	                        debugprintf("stats: in=%lld gspag_lookup() rs=%d\n",
 	                            smp->in,rs) ;
 #endif
 
 	                } /* end if (GSPAG) */
 
-	                if (f_gskew) {
+	                if (f_eveight) {
 
-	                    bprow = smp->in % p.gskew_rows ;
-	                    rs = gskew_lookup(&bp_gskew[bprow],ia) ;
+	                    bprow = smp->in % p.eveight_rows ;
+	                    rs = eveight_lookup(&bp_eveight[bprow],ia) ;
 
-	                    cii.f_gskew = (rs > 0) ;
+	                    cii.f_eveight = (rs > 0) ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	                    if (DEBUGLEVEL(4))
-	                        eprintf("stats: in=%lld gskew_lu() rs=%d\n",
+	                        debugprintf("stats: in=%lld eveight_lookup() rs=%d\n",
 	                            smp->in,rs) ;
 #endif
 
-	                } /* end if (GSKEW) */
-
-		if (p.f_confidence) {
-
-			rs = bpeval_confidence(&bps,(uint) smp->in,ia,f_se) ;
-
-		} else
-			bpeval_lookup(&bps,(uint) smp->in,ia,f_se) ;
+	                } /* end if (EVEIGHT) */
 
 	            } /* end if (a conditional branch) */
 
@@ -1929,25 +1836,25 @@ char		tfname[] ;
 
 	            rs = lexec(&li,&ls,&ld) ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	            if (DEBUGLEVEL(6))
-	                eprintf("stats: lexec() rs=%d\n",rs) ;
+	                debugprintf("stats: lexec() rs=%d\n",rs) ;
 #endif
 
 
 /* check for execution faults like divide-by-zero and illegal */
 
-#if	F_MASTERDEBUG && F_DEBUG && F_EXECFAULT
+#if	F_MASTERDEBUG && CF_DEBUG && F_EXECFAULT
 	            if ((pip->debuglevel >= 2) && (rs < 0)) {
-	                eprintf("stats: lexec() rs=%d\n",rs) ;
-	                eprintf("stats: in=%lld ia=%08x instr=%08x\n",
+	                debugprintf("stats: lexec() rs=%d\n",rs) ;
+	                debugprintf("stats: in=%lld ia=%08x instr=%08x\n",
 	                    smp->in,ia,instr) ;
 	                rs1 = mipsdis_getlevo(mdp,ia,instr,
 	                    instrdis,INSTRDISLEN) ;
 	                if (rs1 >= 0)
-	                    eprintf("stats: instr> %s\n",instrdis) ;
+	                    debugprintf("stats: instr> %s\n",instrdis) ;
 	            }
-#endif /* F_DEBUG */
+#endif /* CF_DEBUG */
 
 #if	F_EXECFAULT
 
@@ -1968,9 +1875,9 @@ char		tfname[] ;
 
 	            if (cii.f_cf) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	                if (DEBUGLEVEL(6))
-	                    eprintf("stats: LEXEC f_taken=%d\n", ld.f.taken) ;
+	                    debugprintf("stats: LEXEC f_taken=%d\n", ld.f.taken) ;
 #endif
 
 	                cii.f_nullify = ld.f.nullify ;
@@ -1983,16 +1890,16 @@ char		tfname[] ;
 
 	                }
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	                if (DEBUGLEVEL(6))
-	                    eprintf("stats: CF f_taken=%d\n",cii.f_taken) ;
+	                    debugprintf("stats: CF f_taken=%d\n",cii.f_taken) ;
 #endif
 
 	                if (cii.f_cbr) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	                    if (DEBUGLEVEL(4))
-	                        eprintf("stats: CB f_taken=%d\n",cii.f_taken) ;
+	                        debugprintf("stats: CB f_taken=%d\n",cii.f_taken) ;
 #endif
 
 	                    cii.f_fcbr = (cii.ta > cii.ia) ;
@@ -2014,9 +1921,9 @@ char		tfname[] ;
 
 	                } /* end if (conditional branch) */
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	                if (DEBUGLEVEL(6))
-	                    eprintf("stats: CF f_taken=%d\n",
+	                    debugprintf("stats: CF f_taken=%d\n",
 	                        cii.f_taken) ;
 #endif
 
@@ -2046,11 +1953,7 @@ char		tfname[] ;
 	                            if (n >= BTSIZE)
 	                                n = BTSIZE - 1 ;
 
-				    if (cii.f_fcbr)
-	                            scounts.bftlen[n] += 1 ;
-
-				    else
-	                            scounts.bbtlen[n] += 1 ;
+	                            scounts.btlen[n] += 1 ;
 
 /* test for ss-hammocks */
 
@@ -2078,11 +1981,10 @@ char		tfname[] ;
 	                                        scounts.htlen[n] += 1
 	                                            ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	                                        if (DEBUGLEVEL(4))
-	                                            eprintf("stats: SSH "
-							"in=%lld "
-							"ia=%08x n=%d\n",
+	                                            debugprintf(
+	                                                "stats: SSH in=%lld ia=%08x n=%d\n",
 	                                                smp->in,cii.ia,
 	                                                n) ;
 #endif
@@ -2092,13 +1994,13 @@ char		tfname[] ;
 #if	F_SSHTESTING
 	                                    rs = hias_check(&other,ia) ;
 
-	                                    if (! EQUIV((rs >= 0),f)) {
+	                                    if (! LEQUIV((rs >= 0),f)) {
 
 	                                        other.c_ne += 1 ;
 
 	                                        if (DEBUGLEVEL(4))
-	                                            eprintf("stats: SSH-ne"
-							" in=%lld"
+	                                            debugprintf(
+	                                                "stats: SSH-ne in=%lld"
 							" ia=%08x rs=%d\n",
 	                                                smp->in,ia,rs) ;
 
@@ -2128,26 +2030,26 @@ char		tfname[] ;
 	            } /* end if (control flow instruction) */
 
 
-#if	F_MASTERDEBUG && F_DEBUG && F_PVALUESAFT 
+#if	F_MASTERDEBUG && CF_DEBUG && F_PVALUESAFT 
 	            if (DEBUGLEVEL(5)) {
-	                eprintf("stats: LEXEC after> %08x %08x %s\n",
+	                debugprintf("stats: LEXEC after> %08x %08x %s\n",
 	                    ia,instr,instrdis) ;
 
-	                eprintf("stats: d1[%d]=%x d2[%d]=%x d3[%d]=%x\n",
+	                debugprintf("stats: d1[%d]=%x d2[%d]=%x d3[%d]=%x\n",
 	                    di.dst1,smp->regs[di.dst1],
 	                    di.dst2,smp->regs[di.dst2],
 	                    di.dst3,smp->regs[di.dst3]) ;
 
 	            }
-#endif /* F_DEBUG */
+#endif /* CF_DEBUG */
 
 	        } else {
 
 /* it is a real SYSCALL, we're screwed so just get out ! */
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	            if (DEBUGLEVEL(2))
-	                eprintf("stats: SYSCALL encountered\n") ;
+	                debugprintf("stats: SYSCALL encountered\n") ;
 #endif
 
 	            bprintf(pip->efp,"%s: SYSCALL encountered\n",
@@ -2175,7 +2077,7 @@ char		tfname[] ;
 #endif /* COMMENT */
 
 
-/* TRACE: write back the register values from the trace */
+/* TRCAE: write back the register values from the trace */
 
 	        if (ep->f.reg) {
 
@@ -2195,53 +2097,10 @@ char		tfname[] ;
 /* TRACE: end of trace thing */
 
 
-/* assumulate register statistics */
-
-		if (pip->f.opt_regstats) {
-
-/* reads */
-
-	        if (di.src1 >= 0)
-			regstats_readupdate(&rstats,smp->in,f_se,
-				di.src1,smp->regs[di.src1]) ;
-
-	        if (di.src2 >= 0)
-			regstats_readupdate(&rstats,smp->in,f_se,
-				di.src2,smp->regs[di.src2]) ;
-
-	        if (di.src3 >= 0)
-			regstats_readupdate(&rstats,smp->in,f_se,
-				di.src3,smp->regs[di.src3]) ;
-
-	        if (di.src4 >= 0)
-			regstats_readupdate(&rstats,smp->in,f_se,
-				di.src4,smp->regs[di.src4]) ;
-
-	        if (di.src5 >= 0)
-			regstats_readupdate(&rstats,smp->in,f_se,
-				di.src5,smp->regs[di.src5]) ;
-
-/* writes */
-
-	        if (di.dst1 > 0)
-			regstats_write(&rstats,smp->in,f_se,
-				di.dst1,smp->regs[di.dst1]) ;
-
-	        if (di.dst2 > 0)
-			regstats_write(&rstats,smp->in,f_se,
-	            		di.dst2,smp->regs[di.dst2]) ;
-
-	        if (di.dst3 > 0)
-			regstats_write(&rstats,smp->in,f_se,
-	            		di.dst3,smp->regs[di.dst3]) ;
-
-		} /* end if (register statistics) */
-
-
 	    } /* end if (instruction was not NULLIFYed) */
 
 
-/* update any predictors that have scheduled updates pending */
+/* update any predictors that are scheduled into the future */
 
 	    if (f_yags) {
 
@@ -2252,28 +2111,28 @@ char		tfname[] ;
 
 	        rs = bpfifo_read(&bf_yags,&fin,&fia,&frow,&foutcome) ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	        if (DEBUGLEVEL(4))
-	            eprintf("stats: in=%lld bpfifo_read() rs=%d\n",
+	            debugprintf("stats: in=%lld bpfifo_read() rs=%d\n",
 	                smp->in,rs) ;
 #endif
 
 	        if ((rs >= 0) && (smp->in >= fin)) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	            if (DEBUGLEVEL(4)) {
-	                eprintf("stats: in=%lld yags_update() \n",
+	                debugprintf("stats: in=%lld yags_update() \n",
 	                    smp->in) ;
-	                eprintf("stats: frow=%d fia=%08x\n",
+	                debugprintf("stats: frow=%d fia=%08x\n",
 	                    frow,fia) ;
 	            }
 #endif
 
 	            rs = yags_update(bp_yags + frow,fia,foutcome) ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	            if (DEBUGLEVEL(4))
-	                eprintf("stats: in=%lld yags_update() rs=%d\n",
+	                debugprintf("stats: in=%lld yags_update() rs=%d\n",
 	                    smp->in,rs) ;
 #endif
 
@@ -2284,47 +2143,47 @@ char		tfname[] ;
 
 	    } /* end if (YAGS) */
 
-	    if (f_tourna) {
+	    if (f_bpalpha) {
 
 	        ULONG	fin ;
 
 	        uint	fia, frow, foutcome ;
 
 
-	        rs = bpfifo_read(&bf_tourna,
+	        rs = bpfifo_read(&bf_bpalpha,
 	            &fin,&fia,&frow,&foutcome) ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	        if (DEBUGLEVEL(4))
-	            eprintf("stats: in=%lld bpfifo_read() rs=%d\n",
+	            debugprintf("stats: in=%lld bpfifo_read() rs=%d\n",
 	                smp->in,rs) ;
 #endif
 
 	        if ((rs >= 0) && (smp->in >= fin)) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	            if (DEBUGLEVEL(4)) {
-	                eprintf("stats: in=%lld tourna_update() \n",
+	                debugprintf("stats: in=%lld bpalpha_update() \n",
 	                    smp->in) ;
-	                eprintf("stats: frow=%d fia=%08x\n",
+	                debugprintf("stats: frow=%d fia=%08x\n",
 	                    frow,fia) ;
 	            }
 #endif
 
-	            rs = tourna_update(bp_tourna + frow,fia,foutcome) ;
+	            rs = bpalpha_update(bp_bpalpha + frow,fia,foutcome) ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	            if (DEBUGLEVEL(4))
-	                eprintf("stats: in=%lld yags_update() rs=%d\n",
+	                debugprintf("stats: in=%lld yags_update() rs=%d\n",
 	                    smp->in,rs) ;
 #endif
 
-	            bpfifo_remove(&bf_tourna,
+	            bpfifo_remove(&bf_bpalpha,
 	                &fin,&fia,&frow,&foutcome) ;
 
 	        } /* end if (did an update) */
 
-	    } /* end if (TOURNA) */
+	    } /* end if (BPALPHA) */
 
 	    if (f_gspag) {
 
@@ -2336,28 +2195,28 @@ char		tfname[] ;
 	        rs = bpfifo_read(&bf_gspag,
 	            &fin,&fia,&frow,&foutcome) ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	        if (DEBUGLEVEL(4))
-	            eprintf("stats: in=%lld bpfifo_read() rs=%d\n",
+	            debugprintf("stats: in=%lld bpfifo_read() rs=%d\n",
 	                smp->in,rs) ;
 #endif
 
 	        if ((rs >= 0) && (smp->in >= fin)) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	            if (DEBUGLEVEL(4)) {
-	                eprintf("stats: in=%lld gspag_update() \n",
+	                debugprintf("stats: in=%lld gspag_update() \n",
 	                    smp->in) ;
-	                eprintf("stats: frow=%d fia=%08x\n",
+	                debugprintf("stats: frow=%d fia=%08x\n",
 	                    frow,fia) ;
 	            }
 #endif
 
 	            rs = gspag_update(bp_gspag + frow,fia,foutcome) ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	            if (DEBUGLEVEL(4))
-	                eprintf("stats: in=%lld gspag_update() rs=%d\n",
+	                debugprintf("stats: in=%lld gspag_update() rs=%d\n",
 	                    smp->in,rs) ;
 #endif
 
@@ -2368,66 +2227,64 @@ char		tfname[] ;
 
 	    } /* end if (GSPAG) */
 
-	    if (f_gskew) {
+	    if (f_eveight) {
 
 	        ULONG	fin ;
 
 	        uint	fia, frow, foutcome ;
 
 
-	        rs = bpfifo_read(&bf_gskew,
+	        rs = bpfifo_read(&bf_eveight,
 	            &fin,&fia,&frow,&foutcome) ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	        if (DEBUGLEVEL(4))
-	            eprintf("stats: in=%lld bpfifo_read() rs=%d\n",
+	            debugprintf("stats: in=%lld bpfifo_read() rs=%d\n",
 	                smp->in,rs) ;
 #endif
 
 	        if ((rs >= 0) && (smp->in >= fin)) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	            if (DEBUGLEVEL(4)) {
-	                eprintf("stats: in=%lld gskew_update() \n",
+	                debugprintf("stats: in=%lld eveight_update() \n",
 	                    smp->in) ;
-	                eprintf("stats: frow=%d fia=%08x\n",
+	                debugprintf("stats: frow=%d fia=%08x\n",
 	                    frow,fia) ;
 	            }
 #endif
 
-	            rs = gskew_update(bp_gskew + frow,fia,foutcome) ;
+	            rs = eveight_update(bp_eveight + frow,fia,foutcome) ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	            if (DEBUGLEVEL(4))
-	                eprintf("stats: in=%lld gskew_update() rs=%d\n",
+	                debugprintf("stats: in=%lld eveight_update() rs=%d\n",
 	                    smp->in,rs) ;
 #endif
 
-	            bpfifo_remove(&bf_gskew,
+	            bpfifo_remove(&bf_eveight,
 	                &fin,&fia,&frow,&foutcome) ;
 
 	        } /* end if (did an update) */
 
-	    } /* end if (GSKEW) */
-
-	bpeval_checkmid(&bps,(uint) smp->in) ;
+	    } /* end if (EVEIGHT) */
 
 
 /* increment the number of instructions executed */
 
 	    smp->in += 1 ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	    if (DEBUGLEVEL(4)) {
 
 	        if (((smp->in % 10000000) == 0) && (smp->in > 0)) {
 
 	            if (smp->in > 0)
-	                eprintf("stats: so far executed instructions=%lld\n",
+	                debugprintf("stats: so far executed instructions=%lld\n",
 	                    smp->in) ;
 	        }
 	    }
-#endif /* F_DEBUG */
+#endif /* CF_DEBUG */
 
 
 /* statistics */
@@ -2456,9 +2313,9 @@ char		tfname[] ;
 	        int	f_conditional ;
 
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	        if (DEBUGLEVEL(5))
-	            eprintf("stats: PI was CF\n") ;
+	            debugprintf("stats: PI was CF\n") ;
 #endif
 
 	        f_conditional = ((pii.opclass == OPCLASS_BREL) &&
@@ -2496,9 +2353,9 @@ char		tfname[] ;
 	            const char	*np ;
 
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	            if (DEBUGLEVEL(5))
-	                eprintf("stats: PI CF was taken ! ta=%08x\n",
+	                debugprintf("stats: PI CF was taken ! ta=%08x\n",
 	                    pii.ta) ;
 #endif
 
@@ -2511,9 +2368,9 @@ char		tfname[] ;
 	            rs = -1 ;
 #endif
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	            if (DEBUGLEVEL(6))
-	                eprintf("stats: syscalls_issyscall() rs=%d n=%s\n",
+	                debugprintf("stats: syscalls_issyscall() rs=%d n=%s\n",
 	                    rs,np) ;
 #endif
 
@@ -2532,11 +2389,11 @@ char		tfname[] ;
 	                ar.sp = smp->regs[29] ;
 	                rs = syscalls_handle(scp,pii.ta,&ar,&rr) ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	                if (DEBUGLEVEL(6)) {
-	                    eprintf("stats: PSYSCALL rs=%d ia=%08x\n",
+	                    debugprintf("stats: PSYSCALL rs=%d ia=%08x\n",
 	                        rs,ia) ;
-	                    eprintf("stats: in=%lld\n",smp->in) ;
+	                    debugprintf("stats: in=%lld\n",smp->in) ;
 	                }
 #endif
 
@@ -2561,12 +2418,10 @@ char		tfname[] ;
 
 	    } /* end if (control flow change) */
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	    if (DEBUGLEVEL(5))
-	        eprintf("stats: next ia=%08x\n",ia) ;
+	        debugprintf("stats: next ia=%08x\n",ia) ;
 #endif
-
-	bpeval_checkend(&bps,(uint) smp->in) ;
 
 	    bii = pii ;
 	    pii = cii ;
@@ -2584,76 +2439,50 @@ done:
 	{
 	    VPRED_STATS		vps ;
 
+	    YAGS_STATS		bpystat ;
+
+	    BPALPHA_STATS	bpastat ;
+
+	    GSPAG_STATS		stat_gspag ;
+
+	    EVEIGHT_STATS	stat_eveight ;
+
 	    char	tmpfname[MAXPATHLEN + 1] ;
 
 
 	    if (f_yags) {
 
-	    YAGS_STATS		s ;
+	        yags_stats(&bp_yags[0],&bpystat) ;
 
-
-	        yags_stats(&bp_yags[0],&s) ;
-
-	        scounts.yags_bits = s.bits ;
+	        scounts.yags_bits = bpystat.bits ;
 
 	    }
 
-	    if (f_tourna) {
+	    if (f_bpalpha) {
 
-	    TOURNA_STATS	s ;
+	        bpalpha_stats(&bp_bpalpha[0],&bpastat) ;
 
-
-	        tourna_stats(&bp_tourna[0],&s) ;
-
-	        scounts.tourna_bits = s.bits ;
+	        scounts.bpalpha_bits = bpastat.bits ;
 
 	    }
 
 	    if (f_gspag) {
 
-	    GSPAG_STATS		s ;
+	        gspag_stats(&bp_gspag[0],&stat_gspag) ;
 
-
-	        gspag_stats(&bp_gspag[0],&s) ;
-
-	        scounts.gspag_bits = s.bits ;
+	        scounts.gspag_bits = stat_gspag.bits ;
 
 	    }
 
-	    if (f_gskew) {
+	    if (f_eveight) {
 
-	    GSKEW_STATS	s ;
+	        eveight_stats(&bp_eveight[0],&stat_eveight) ;
 
-
-	        gskew_stats(&bp_gskew[0],&s) ;
-
-#if	F_MASTERDEBUG && F_DEBUG
-	if (DEBUGLEVEL(4))
-		eprintf("stats: gskew tlen=%d bits=%d\n",
-		s.tlen,s.bits) ;
-#endif
-
-	        scounts.gskew_bits = s.bits ;
-
-	if (pip->verboselevel > 1) {
-
-	        bprintf(pip->ofp,
-	            "GSKEW LU=%u bim=%u eskew=%u\n",
-			s.lu, s.use_bim,s.use_eskew) ;
-
-	        bprintf(pip->ofp,
-	            "GSKEW update_meta=%u updateup_meta=%u\n",
-			s.update_meta,s.updateup_meta) ;
-
-	        bprintf(pip->ofp,
-	            "GSKEW update_all=%u update_bim=%u update_eskew=%u\n",
-			s.update_all,s.update_bim,s.update_eskew) ;
-
-	}
+	        scounts.eveight_bits = stat_eveight.bits ;
 
 	    }
 
-	    rs1 = writestats(pip,smp,&vps,&scounts,&bps,&p) ;
+	    rs1 = writestats(pip,smp,&vps,&scounts,&p) ;
 
 
 /* value prediction stuff */
@@ -2704,11 +2533,11 @@ done:
 
 	            for (i = 0 ; fcount_get(&funcs,i,&ep) >= 0 ; i += 1) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	                if (DEBUGLEVEL(4)) {
-	                    eprintf("stats: i=%d ep=%p\n",i,ep) ;
+	                    debugprintf("stats: i=%d ep=%p\n",i,ep) ;
 	                    if (ep != NULL)
-	                        eprintf("stats: ia=%08x ins=%u n=%s\n",
+	                        debugprintf("stats: ia=%08x ins=%u n=%s\n",
 	                            ep->ia,ep->ins,ep->name) ;
 	                }
 #endif
@@ -2731,91 +2560,6 @@ done:
 	    } /* end if (function instruction counts) */
 
 
-/* write out the register statistics */
-
-		if (pip->f.opt_regstats) {
-
-			bfile	tmpfile ;
-
-			char	tmp1fname[MAXPATHLEN + 1] ;
-			char	tmp2fname[MAXPATHLEN + 1] ;
-			char	tmp3fname[MAXPATHLEN + 1] ;
-			char	tmp4fname[MAXPATHLEN + 1] ;
-			char	tmp5fname[MAXPATHLEN + 1] ;
-
-			double	sd ;
-
-
-	        mkfname2(tmp1fname,pip->jobname,FE_REGRINT) ;
-
-	        mkfname2(tmp2fname,pip->jobname,FE_REGLIFE) ;
-
-	        mkfname2(tmp3fname,pip->jobname,FE_REGUSE) ;
-
-	        mkfname2(tmp4fname,pip->jobname,FE_REGREAD) ;
-
-	        mkfname2(tmp5fname,pip->jobname,FE_REGWRITE) ;
-
-#if	F_MASTERDEBUG && F_DEBUG
-	if (DEBUGLEVEL(4)) {
-		eprintf("stats: tmp1fname=%s\n",tmp1fname) ;
-		eprintf("stats: tmp2fname=%s\n",tmp2fname) ;
-		eprintf("stats: tmp3fname=%s\n",tmp3fname) ;
-		eprintf("stats: tmp4fname=%s\n",tmp4fname) ;
-		eprintf("stats: tmp5fname=%s\n",tmp5fname) ;
-	}
-#endif /* F_DEBUG */
-
-	regstats_storefiles(&rstats,
-		tmp1fname,tmp2fname,tmp3fname,tmp4fname,tmp5fname) ;
-
-/* write to the stats file */
-
-	mkfname2(tmp1fname,pip->jobname,FE_BSTATS) ;
-
-	if ((rs = bopen(&tmpfile,tmp1fname,"wa",0666)) >= 0) {
-
-		REGSTATS_STATS	st ;
-
-
-		regstats_stats(&rstats,&st) ;
-
-		bprintf(&tmpfile,"= register statistics\n") ;
-
-		bprintf(&tmpfile,"read-interval mean     %12.4f\n",
-			st.read_mean) ;
-
-		bprintf(&tmpfile,"read-interval variance %12.4f\n",
-			st.read_var) ;
-
-		bprintf(&tmpfile,"read-interval stddev   %12.4f\n",
-			sqrt(st.read_var)) ;
-
-		bprintf(&tmpfile,"lifetime mean          %12.4f\n",
-			st.life_mean) ;
-
-		bprintf(&tmpfile,"lifetime variance      %12.4f\n",
-			st.life_var) ;
-
-		bprintf(&tmpfile,"lifetime stddev        %12.4f\n",
-			sqrt(st.life_var)) ;
-
-		bprintf(&tmpfile,"def-use mean           %12.4f\n",
-			st.use_mean) ;
-
-		bprintf(&tmpfile,"def-use variance       %12.4f\n",
-			st.use_var) ;
-
-		bprintf(&tmpfile,"def-use stddev         %12.4f\n",
-			sqrt(st.use_var)) ;
-
-		bclose(&tmpfile) ;
-
-	} /* end if */
-
-		} /* end if (register statistics) */
-
-
 	} /* end block (writing statistics) */
 
 
@@ -2836,50 +2580,44 @@ done:
 
 	} /* end if (verbosity) */
 
-
 #if	F_SSHTESTING
 	if (DEBUGLEVEL(4)) {
-	    eprintf("stats: SSH          %d\n",
+	    debugprintf("stats: SSH          %d\n",
 	        other.c_ssh) ;
-	    eprintf("stats: SSH-ne       %d\n",
+	    debugprintf("stats: SSH-ne       %d\n",
 	        other.c_ne) ;
 	}
 #endif
 
-
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	if (DEBUGLEVEL(4))
-	    eprintf("stats: returning in=%llu rs=%d\n",smp->in,rs) ;
+	    debugprintf("stats: exiting in=%llu rs=%d\n",smp->in,rs) ;
 #endif
 
 
 bad5:
-	if (pip->f.opt_regstats)
-	    regstats_free(&rstats) ;
-
-bad4a:
-	if (pip->f.opt_fcount)
+	if (pip->f.opt_fcount) {
 	    fcount_free(&funcs) ;
+	}
 
 bad4:
-	if (f_ssh)
+	if (f_ssh) {
 	    ssh_free(&hammocks) ;
-
-bad3a:
-	bpeval_free(&bps) ;
+	}
 
 bad3:
-	if (f_gskew) {
+	if (f_eveight) {
 
-	    bpfifo_free(&bf_gskew) ;
+	    bpfifo_free(&bf_eveight) ;
 
-	    for (i = 0 ; i < p.gskew_rows ; i += 1)
-	        gskew_free(&bp_gskew[i]) ;
+	    for (i = 0 ; i < p.eveight_rows ; i += 1) {
+	        eveight_free(&bp_eveight[i]) ;
+	    }
 
-	    free(bp_gskew) ;
+	    uc_free(bp_eveight) ;
 
 #ifdef	MALLOCLOG
-	    malloclog_free(bp_gskew,"stats:bp_gskew") ;
+	    malloclog_free(bp_eveight,"stats:bp_eveight") ;
 #endif
 
 	}
@@ -2889,10 +2627,11 @@ bad2c:
 
 	    bpfifo_free(&bf_gspag) ;
 
-	    for (i = 0 ; i < p.gspag_rows ; i += 1)
+	    for (i = 0 ; i < p.gspag_rows ; i += 1) {
 	        gspag_free(&bp_gspag[i]) ;
+	    }
 
-	    free(bp_gspag) ;
+	    uc_free(bp_gspag) ;
 
 #ifdef	MALLOCLOG
 	    malloclog_free(bp_gspag,"stats:bp_gspag") ;
@@ -2901,17 +2640,18 @@ bad2c:
 	}
 
 bad2b:
-	if (f_tourna) {
+	if (f_bpalpha) {
 
-	    bpfifo_free(&bf_tourna) ;
+	    bpfifo_free(&bf_bpalpha) ;
 
-	    for (i = 0 ; i < p.tourna_rows ; i += 1)
-	        tourna_free(&bp_tourna[i]) ;
+	    for (i = 0 ; i < p.bpalpha_rows ; i += 1) {
+	        bpalpha_free(&bp_bpalpha[i]) ;
+	    }
 
-	    free(bp_tourna) ;
+	    uc_free(bp_bpalpha) ;
 
 #ifdef	MALLOCLOG
-	    malloclog_free(bp_tourna,"stats:bp_tourna") ;
+	    malloclog_free(bp_bpalpha,"stats:bp_bpalpha") ;
 #endif
 
 	}
@@ -2921,10 +2661,11 @@ bad2a:
 
 	    bpfifo_free(&bf_yags) ;
 
-	    for (i = 0 ; i < p.yags_rows ; i += 1)
+	    for (i = 0 ; i < p.yags_rows ; i += 1) {
 	        yags_free(&bp_yags[i]) ;
+	    }
 
-	    free(bp_yags) ;
+	    uc_free(bp_yags) ;
 
 #ifdef	MALLOCLOG
 	    malloclog_free(bp_yags,"stats:bp_yags") ;
@@ -2937,10 +2678,11 @@ bad2:
 
 	    vpfifo_free(&vf) ;
 
-	    for (i = 0 ; i < p.vp_rows ; i += 1)
+	    for (i = 0 ; i < p.vp_rows ; i += 1) {
 	        vpred_free(&valuepred[i]) ;
+	    }
 
-	    free(valuepred) ;
+	    uc_free(valuepred) ;
 
 #ifdef	MALLOCLOG
 	    malloclog_free(valuepred,"stats:valuepred") ;
@@ -2957,9 +2699,7 @@ bad0:
 /* end subroutine (stats) */
 
 
-
-/* LOCAL SUBROUTINES */
-
+/* local subroutines */
 
 
 /* execute a load type instruction */
@@ -2972,32 +2712,30 @@ uint		rval ;		/* source value */
 uint		*dvp ;		/* destination value (resulting register) */
 uint		*d2p ;		/* destination 2 */
 {
-	uint	mval1, mval2 ;
-
-	int	rs ;
-
+	uint		mval1, mval2 ;
+	int		rs ;
 
 /* read the memory loacation */
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	if (DEBUGLEVEL(7))
-	    eprintf("loadinstr: ma=%08x rval=%08x\n",ma,rval) ;
+	    debugprintf("loadinstr: ma=%08x rval=%08x\n",ma,rval) ;
 #endif
 
 	rs = lmapprog_readint(mip,(ma & (~ 3)),&mval1) ;
 
-#if	F_MASTERDEBUG && F_DEBUG && F_MEMFAULT
+#if	F_MASTERDEBUG && CF_DEBUG && F_MEMFAULT
 	if ((pip->debuglevel >= 2) && (rs < 0))
-	    eprintf("loadinstr: 1 lmapprog_readint() rs=%d ma=%08x\n",
+	    debugprintf("loadinstr: 1 lmapprog_readint() rs=%d ma=%08x\n",
 	        rs,(ma & (~ 3))) ;
 #endif
 
 	if (rs < 0)
 	    return rs ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	if (DEBUGLEVEL(7))
-	    eprintf("loadinstr: 1 lmapprog_readint() rs=%d ma=%08x mv=%08x\n",
+	    debugprintf("loadinstr: 1 lmapprog_readint() rs=%d ma=%08x mv=%08x\n",
 	        rs,ma,mval1) ;
 #endif
 
@@ -3006,21 +2744,21 @@ uint		*d2p ;		/* destination 2 */
 	case LEXECOP_LDC1:
 	    rs = lmapprog_readint(mip,((ma + 4) & (~ 3)),&mval2) ;
 
-#if	F_MASTERDEBUG && F_DEBUG && F_MEMFAULT
+#if	F_MASTERDEBUG && CF_DEBUG && F_MEMFAULT
 	    if ((pip->debuglevel >= 2) && (rs < 0))
-	        eprintf("loadinstr: 2 lmapprog_readint() rs=%d ma=%08x\n",
+	        debugprintf("loadinstr: 2 lmapprog_readint() rs=%d ma=%08x\n",
 	            rs,((ma + 4) & (~ 3))) ;
 #endif
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	    if (DEBUGLEVEL(7))
-	        eprintf("loadinstr: lmapprog_readint() 2 rs=%d mval2=%08x\n",
+	        debugprintf("loadinstr: lmapprog_readint() 2 rs=%d mval2=%08x\n",
 	            rs,mval2) ;
 #endif
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	    if (DEBUGLEVEL(7))
-	        eprintf("loadinstr: got a LDC1\n") ;
+	        debugprintf("loadinstr: got a LDC1\n") ;
 #endif
 
 	    break ;
@@ -3031,9 +2769,9 @@ uint		*d2p ;		/* destination 2 */
 
 	rs = regload(pip,opexec,ma,mval1,mval2,rval,dvp,d2p) ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	if (DEBUGLEVEL(7))
-	    eprintf("loadinstr: regload() rs=%d dreg=%08x\n",rs,*dvp) ;
+	    debugprintf("loadinstr: regload() rs=%d dreg=%08x\n",rs,*dvp) ;
 #endif
 
 	return rs ;
@@ -3058,9 +2796,9 @@ uint		*d2p ;
 
 	boundary = ma & 3 ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	if (DEBUGLEVEL(7))
-	    eprintf("regload: rval=%08x ma=%08x mv=%08x boundary=%d\n",
+	    debugprintf("regload: rval=%08x ma=%08x mv=%08x boundary=%d\n",
 	        rval,ma,mval,boundary) ;
 #endif
 
@@ -3122,9 +2860,9 @@ uint		*d2p ;
 
 	    } /* end switch */
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	    if (DEBUGLEVEL(7))
-	        eprintf("regload: LBU ma=%08x mv=%08x rv=%08x\n",
+	        debugprintf("regload: LBU ma=%08x mv=%08x rv=%08x\n",
 	            ma,mval,*dvp) ;
 #endif
 
@@ -3180,9 +2918,9 @@ uint		*d2p ;
 
 	case LEXECOP_LWL:
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	    if (DEBUGLEVEL(7))
-	        eprintf("regload: LWL\n") ;
+	        debugprintf("regload: LWL\n") ;
 #endif
 
 	    switch (boundary) {
@@ -3215,9 +2953,9 @@ uint		*d2p ;
 
 	case LEXECOP_LWR:
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	    if (DEBUGLEVEL(7))
-	        eprintf("regload: LWR\n") ;
+	        debugprintf("regload: LWR\n") ;
 #endif
 
 	    switch (boundary) {
@@ -3263,9 +3001,9 @@ uint		*d2p ;
 
 	} /* end switch */
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	if (DEBUGLEVEL(7))
-	    eprintf("regload: exiting rs=%d\n",rs) ;
+	    debugprintf("regload: exiting rs=%d\n",rs) ;
 #endif
 
 	return rs ;
@@ -3293,9 +3031,9 @@ uint    	*dpp ;		/* returned memory data present */
 
 	boundary = vaddr & 3 ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	if (DEBUGLEVEL(7))
-	    eprintf("storeinstr: ma=%08x mv=%08x boundary=%d\n",
+	    debugprintf("storeinstr: ma=%08x mv=%08x boundary=%d\n",
 	        vaddr,dv1,boundary) ;
 #endif
 
@@ -3412,9 +3150,9 @@ uint    	*dpp ;		/* returned memory data present */
 
 	case LEXECOP_SDC1:
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	    if (DEBUGLEVEL(7))
-	        eprintf("storeinstr: got a SDC1\n") ;
+	        debugprintf("storeinstr: got a SDC1\n") ;
 #endif
 
 	    f_double = TRUE ;
@@ -3429,15 +3167,15 @@ uint    	*dpp ;		/* returned memory data present */
 
 	} /* end switch */
 
-#if	F_MASTERDEBUG && F_DEBUG && F_MEMFAULT
+#if	F_MASTERDEBUG && CF_DEBUG && F_MEMFAULT
 	if ((pip->debuglevel >= 2) & ( rs < 0))
-	    eprintf("storeinstr: LEXEC-type deocde failure rs=%d opexec=%d\n",
+	    debugprintf("storeinstr: LEXEC-type deocde failure rs=%d opexec=%d\n",
 	        rs,opexec) ;
 #endif
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	if (DEBUGLEVEL(7))
-	    eprintf("storeinstr: lmapprog_writeint() ma=%08x mv=%08x\n",
+	    debugprintf("storeinstr: lmapprog_writeint() ma=%08x mv=%08x\n",
 	        vaddr,mv1) ;
 #endif
 
@@ -3447,18 +3185,18 @@ uint    	*dpp ;		/* returned memory data present */
 	    *mv1p = mv1 ;
 	    rs = lmapprog_writeint(mip,(vaddr & (~ 3)),mv1,*dpp) ;
 
-#if	F_MASTERDEBUG && F_DEBUG && F_MEMFAULT
+#if	F_MASTERDEBUG && CF_DEBUG && F_MEMFAULT
 	    if ((pip->debuglevel >= 2) && (rs < 0))
-	        eprintf("storeinstr: 1 lmapprog_writeint() rs=%d ta=%08x\n",
+	        debugprintf("storeinstr: 1 lmapprog_writeint() rs=%d ta=%08x\n",
 	            rs,(vaddr & (~ 3))) ;
 #endif
 
 	    if ((rs >= 0) && f_double) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	        if (DEBUGLEVEL(7)) {
-	            eprintf("storeinstr: 2 lmapprog_writeint() rs=%d\n",rs) ;
-	            eprintf("storeinstr: ma=%08x mv=%08x\n",
+	            debugprintf("storeinstr: 2 lmapprog_writeint() rs=%d\n",rs) ;
+	            debugprintf("storeinstr: ma=%08x mv=%08x\n",
 	                (vaddr + 4),mv2) ;
 	        }
 #endif
@@ -3466,9 +3204,9 @@ uint    	*dpp ;		/* returned memory data present */
 	        *mv2p = mv2 ;
 	        rs = lmapprog_writeint(mip,((vaddr + 4) & (~ 3)),mv2,*dpp) ;
 
-#if	F_MASTERDEBUG && F_DEBUG && F_MEMFAULT
+#if	F_MASTERDEBUG && CF_DEBUG && F_MEMFAULT
 	        if ((pip->debuglevel >= 2) && (rs < 0))
-	            eprintf("storeinstr: 2 lmapprog_writeint() rs=%d ta=%08x\n",
+	            debugprintf("storeinstr: 2 lmapprog_writeint() rs=%d ta=%08x\n",
 	                rs,((vaddr + 4) & (~ 3))) ;
 #endif
 
@@ -3496,16 +3234,16 @@ uint		ia, ta ;
 
 
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	if (DEBUGLEVEL(7))
-	    eprintf("checkpsyscall: syscalls_issyscall() \n") ;
+	    debugprintf("checkpsyscall: syscalls_issyscall() \n") ;
 #endif
 
 	rs = syscalls_issyscall(scp,ta,&np) ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	if (DEBUGLEVEL(7))
-	    eprintf("checkpsyscall: syscalls_issyscall() rs=%d n=%s\n",
+	    debugprintf("checkpsyscall: syscalls_issyscall() rs=%d n=%s\n",
 	        rs,np) ;
 #endif
 
@@ -3513,9 +3251,9 @@ uint		ia, ta ;
 
 	if (rs > 0) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	    if (DEBUGLEVEL(7))
-	        eprintf("checkpsyscall: PSYSCALL ia=%08x ta=%08x syscall=%s\n",
+	        debugprintf("checkpsyscall: PSYSCALL ia=%08x ta=%08x syscall=%s\n",
 	            ia,ta,np) ;
 #endif
 
@@ -3548,12 +3286,11 @@ LDECODE	*dip ;
 
 
 /* write out the statistics */
-static int writestats(pip,smp,vsp,scp,bpsp,pp)
+static int writestats(pip,smp,vsp,scp,pp)
 struct proginfo		*pip ;
-struct stats		*scp ;
+struct ustats		*scp ;
 VPRED_STATS		*vsp ;
-struct statemips	*smp ;
-BPEVAL			*bpsp ;
+struct ustatemips	*smp ;
 struct params		*pp ;
 {
 	BPRESULT	results ;
@@ -3565,10 +3302,10 @@ struct params		*pp ;
 
 	time_t	daytime ;
 
-	int	rs, i, j, k ;
+	int	rs, i ;
 
 	char	tmpfname[MAXPATHLEN + 1] ;
-	char	timebuf1[40], timebuf2[40] ;
+	char	timebuf1[TIMEBUFLEN + 1], timebuf2[TIMEBUFLEN + 1] ;
 
 
 /* write out the instruction (operations) frequencies */
@@ -3600,29 +3337,17 @@ struct params		*pp ;
 
 /* write out the branch-target lengths */
 
-	mkfname2(tmpfname,pip->jobname,FE_BFTLEN) ;
+	mkfname2(tmpfname,pip->jobname,FE_BTLEN) ;
 
 	if ((rs = bopen(&tmpfile,tmpfname,"wct",0666)) >= 0) {
 
 	    for (i = 0 ; i < BTSIZE ; i += 1)
 	        bprintf(&tmpfile,"%4d %12llu\n", 
-	            i,scp->bftlen[i]) ;
+	            i,scp->btlen[i]) ;
 
 	    bclose(&tmpfile) ;
 
-	} /* end if (opened bftlen file) */
-
-	mkfname2(tmpfname,pip->jobname,FE_BBTLEN) ;
-
-	if ((rs = bopen(&tmpfile,tmpfname,"wct",0666)) >= 0) {
-
-	    for (i = 0 ; i < BTSIZE ; i += 1)
-	        bprintf(&tmpfile,"%4d %12llu\n", 
-	            i,scp->bbtlen[i]) ;
-
-	    bclose(&tmpfile) ;
-
-	} /* end if (opened bbtlen file) */
+	} /* end if (opened btlen file) */
 
 /* write out SS hammock branch-target lengths */
 
@@ -3638,17 +3363,11 @@ struct params		*pp ;
 
 	} /* end if (opened htlen file) */
 
-/* write out general stuff */
+/* write out other branch path information */
 
 	mkfname2(tmpfname,pip->jobname,FE_BSTATS) ;
 
 	if ((rs = bopen(&tmpfile,tmpfname,"wct",0666)) >= 0) {
-
-		struct rusage	ut ;
-
-		ULONG	llw ;
-
-		int	rs1 ;
 
 	    double	percent, mean, var, stddev ;
 
@@ -3664,32 +3383,6 @@ struct params		*pp ;
 	    bprintf(&tmpfile,"started %s (elapsed time %s)\n",
 	        timestr_log(pip->starttime,timebuf1),
 	        timestr_elapsed((daytime - pip->starttime),timebuf2)) ;
-
-		rs1 = uc_getrusage(RUSAGE_SELF,&ut) ;
-
-		if (rs1 >= 0) {
-
-			char	timebuf[40] ;
-
-			int	elapsed ;
-
-
-			u_time(&daytime) ;
-
-			elapsed = daytime - pip->starttime ;
-			bprintf(&tmpfile,"real   time=%s.%06d\n",
-				timestr_elapsed(elapsed,timebuf),
-				ut.ru_utime.tv_usec) ;
-	
-			bprintf(&tmpfile,"user   time=%s.%06d\n",
-				timestr_elapsed(ut.ru_utime.tv_sec,timebuf),
-				ut.ru_utime.tv_usec) ;
-	
-			bprintf(&tmpfile,"system time=%s.%06d\n",
-				timestr_elapsed(ut.ru_stime.tv_sec,timebuf),
-				ut.ru_stime.tv_usec) ;
-
-		} /* end if (getrusage) */
 
 	    bputc(&tmpfile,'\n') ;
 
@@ -3717,19 +3410,13 @@ struct params		*pp ;
 	        (scp->cf - scp->br_con),
 	        percentll((scp->cf - scp->br_con) ,smp->in)) ;
 
-	    bprintf(&tmpfile,"conditional branches  %12llu (%7.3f%%)\n",
+	    bprintf(&tmpfile,"branch paths          %12llu (%7.3f%%)\n",
 	        scp->br_con,
 	        percentll(scp->br_con,smp->in)) ;
 
 	    bprintf(&tmpfile,"forward c-branches    %12llu (%7.3f%%)\n",
 	        scp->br_fwd,
 	        percentll(scp->br_fwd,smp->in)) ;
-
-		llw = scp->br_con - scp->br_fwd ;
-	    percent = percentll(llw,smp->in) ;
-
-	    bprintf(&tmpfile,"backward c-branches   %12llu (%7.3f%%)\n",
-	        llw,percent) ;
 
 	    if (pip->f.opt_ssh)
 	        bprintf(&tmpfile,"branch SS-hammocks    %12llu (%7.3f%%)\n",
@@ -3750,8 +3437,6 @@ struct params		*pp ;
 
 	    if (rs >= 0) {
 
-	    bprintf(&tmpfile,"instructions per branch path\n") ;
-
 	        bprintf(&tmpfile,"IPBP mean           %17.4f\n",
 	            mean) ;
 
@@ -3770,54 +3455,27 @@ struct params		*pp ;
 
 	    bprintf(&tmpfile,"= branch target-distance statistics\n") ;
 
-/* forward */
-
-	    rs = fmeanvaral(scp->bftlen,BTSIZE,&mean,&var) ;
+	    rs = fmeanvaral(scp->btlen,BTSIZE,&mean,&var) ;
 
 	    if (rs >= 0) {
 
-	    bprintf(&tmpfile,"instructions per forward branch target\n") ;
-
-	        bprintf(&tmpfile,"IPFBT mean          %17.4f\n",
+	        bprintf(&tmpfile,"IPBT mean           %17.4f\n",
 	            mean) ;
 
-	        bprintf(&tmpfile,"IPFBT variance      %17.4f\n",
+	        bprintf(&tmpfile,"IPBT variance       %17.4f\n",
 	            var) ;
 
 	        stddev = sqrt(var) ;
 
-	        bprintf(&tmpfile,"IPFBT stddev        %17.4f\n",
+	        bprintf(&tmpfile,"IPBT stddev         %17.4f\n",
 	            stddev) ;
 
 	    } else
 	        bprintf(&tmpfile,"*NA*\n") ;
 
-/* backward */
+/* branch target statistics */
 
-	    rs = fmeanvaral(scp->bbtlen,BTSIZE,&mean,&var) ;
-
-	    if (rs >= 0) {
-
-	    bprintf(&tmpfile,"instructions per backward branch target\n") ;
-
-	        bprintf(&tmpfile,"IPBBT mean          %17.4f\n",
-	            mean) ;
-
-	        bprintf(&tmpfile,"IPBBT variance      %17.4f\n",
-	            var) ;
-
-	        stddev = sqrt(var) ;
-
-	        bprintf(&tmpfile,"IPBBT stddev        %17.4f\n",
-	            stddev) ;
-
-	    } else
-	        bprintf(&tmpfile,"*NA*\n") ;
-
-/* SS-Hammock branch target statistics */
-
-	    bprintf(&tmpfile,
-		"= hammock branch target-distance statistics\n") ;
+	    bprintf(&tmpfile,"= hammock branch target-distance statistics\n") ;
 
 	    rs = fmeanvaral(scp->htlen,BTSIZE,&mean,&var) ;
 
@@ -3839,42 +3497,35 @@ struct params		*pp ;
 
 /* forward conditional branches */
 
-	    percent = percentll(scp->br_fwd,scp->br_con) ;
+	    {
+	        double	fa, fb ;
+
+
+	        fa = scp->br_fwd ;
+	        fb = scp->br_con ;
+	        percent = (fa / fb) * 100.0 ;
+
+	    } /* end block */
 
 	    bprintf(&tmpfile,
 	        "forward c-branches    %12llu (%6.2f %% of conditional)\n",
 	        scp->br_fwd,percent) ;
 
-		llw = scp->br_con - scp->br_fwd ;
-	    percent = percentll(llw,scp->br_con) ;
-
-	    bprintf(&tmpfile,
-	        "backward c-branches   %12llu (%6.2f %% of conditional)\n",
-	        llw,percent) ;
-
 /* ss-hammocks */
 
-	    percent = percentll(scp->br_ssh,scp->br_con) ;
+	    {
+	        double	fa, fb ;
+
+
+	        fa = scp->br_ssh ;
+	        fb = scp->br_con ;
+	        percent = (fa / fb) * 100.0 ;
+
+	    } /* end block */
 
 	    bprintf(&tmpfile,
 	        "SS hammocks           %12llu (%6.2f %% of conditional)\n",
 	        scp->br_ssh,percent) ;
-
-
-/* other stuff */
-
-	if (pip->f.opt_badias) {
-
-	    bprintf(&tmpfile,
-		"= debugging\n") ;
-
-	    bprintf(&tmpfile,
-	        "bad IAs               %12llu (%7.3f%%)\n",
-	        scp->ia_bad,
-	        percentll(scp->ia_bad,smp->in)) ;
-
-	}
-
 
 /* branch prediction results */
 
@@ -3917,6 +3568,47 @@ struct params		*pp ;
 
 	    } /* end if (YAGS) */
 
+/* BPALPHA */
+
+	    if (pip->f.opt_bpalpha) {
+
+	        bprintf(&tmpfile,
+	            "BPALPHA rows          %12d\n",
+	            pp->bpalpha_rows) ;
+
+	        bprintf(&tmpfile,
+	            "BPALPHA delay         %12d\n",
+	            pp->bpalpha_delay) ;
+
+	        bprintf(&tmpfile,
+	            "BPALPHA LBHT          %12d\n",
+	            pp->bpalpha_lbht) ;
+
+	        bprintf(&tmpfile,
+	            "BPALPHA LPHT          %12d\n",
+	            pp->bpalpha_lpht) ;
+
+	        bprintf(&tmpfile,
+	            "BPALPHA GPHT          %12d\n",
+	            pp->bpalpha_gpht) ;
+
+	        bprintf(&tmpfile,
+	            "BPALPHA bits          %12llu\n",
+	            scp->bpalpha_bits) ;
+
+	        acc = percentll(scp->bpalpha_correct,scp->br_con) ;
+
+	        bprintf(&tmpfile,
+	            "BPALPHA accuracy      %12llu (%7.3f%%)\n",
+	            scp->bpalpha_correct,
+	            acc) ;
+
+	        bpresult_write(&results,pip->basename,acc, "bpalpha",
+			(int) scp->bpalpha_bits,
+			pp->bpalpha_lbht,pp->bpalpha_lpht,pp->bpalpha_gpht,0) ;
+
+	    } /* end if (BPALPHA) */
+
 /* GSPAG */
 
 	    if (pip->f.opt_gspag) {
@@ -3954,184 +3646,51 @@ struct params		*pp ;
 
 	    } /* end if (GSPAG) */
 
-/* TOURNA */
+/* EVEIGHT */
 
-	    if (pip->f.opt_tourna) {
-
-	        bprintf(&tmpfile,
-	            "TOURNA rows           %12d\n",
-	            pp->tourna_rows) ;
+	    if (pip->f.opt_eveight) {
 
 	        bprintf(&tmpfile,
-	            "TOURNA delay          %12d\n",
-	            pp->tourna_delay) ;
+	            "EVEIGHT rows          %12d\n",
+	            pp->eveight_rows) ;
 
 	        bprintf(&tmpfile,
-	            "TOURNA LBHT           %12d\n",
-	            pp->tourna_lbht) ;
+	            "EVEIGHT delay         %12d\n",
+	            pp->eveight_delay) ;
 
 	        bprintf(&tmpfile,
-	            "TOURNA LPHT           %12d\n",
-	            pp->tourna_lpht) ;
+	            "EVEIGHT tlen          %12d\n",
+	            pp->eveight_tlen) ;
 
 	        bprintf(&tmpfile,
-	            "TOURNA GPHT           %12d\n",
-	            pp->tourna_gpht) ;
+	            "EVEIGHT bits          %12llu\n",
+	            scp->eveight_bits) ;
+
+	        acc = percentll(scp->eveight_correct,scp->br_con) ;
 
 	        bprintf(&tmpfile,
-	            "TOURNA bits           %12llu\n",
-	            scp->tourna_bits) ;
-
-	        acc = percentll(scp->tourna_correct,scp->br_con) ;
-
-	        bprintf(&tmpfile,
-	            "TOURNA accuracy       %12llu (%7.3f%%)\n",
-	            scp->tourna_correct,
+	            "EVEIGHT accuracy      %12llu (%7.3f%%)\n",
+	            scp->eveight_correct,
 	            acc) ;
 
-	        bpresult_write(&results,pip->basename,acc, "tourna",
-			(int) scp->tourna_bits,
-			pp->tourna_lbht,pp->tourna_lpht,pp->tourna_gpht,0) ;
+	        bpresult_write(&results,pip->basename,acc, "eveight",
+			(int) scp->eveight_bits,
+			pp->eveight_tlen,-1,0,0) ;
 
-	    } /* end if (TOURNA) */
-
-/* GSKEW */
-
-	    if (pip->f.opt_gskew) {
-
-	        bprintf(&tmpfile,
-	            "GSKEW rows            %12d\n",
-	            pp->gskew_rows) ;
-
-	        bprintf(&tmpfile,
-	            "GSKEW delay           %12d\n",
-	            pp->gskew_delay) ;
-
-	        bprintf(&tmpfile,
-	            "GSKEW tlen            %12d\n",
-	            pp->gskew_tlen) ;
-
-	        bprintf(&tmpfile,
-	            "GSKEW bits            %12llu\n",
-	            scp->gskew_bits) ;
-
-	        acc = percentll(scp->gskew_correct,scp->br_con) ;
-
-	        bprintf(&tmpfile,
-	            "GSKEW accuracy        %12llu (%7.3f%%)\n",
-	            scp->gskew_correct,
-	            acc) ;
-
-	        bpresult_write(&results,pip->basename,acc, "gskew",
-			(int) scp->gskew_bits,
-			pp->gskew_tlen,-1,0,0) ;
-
-	    } /* end if (GSKEW) */
-
-/* do the predictors that were dynamically loaded ! */
-
-	{
-		BPEVAL_STATS	es ;
-
-
-#if	F_MASTERDEBUG && F_DEBUG
-	if (DEBUGLEVEL(4))
-		eprintf("stats/writestats: dynamic preds\n") ;
-#endif
-
-	        bprintf(&tmpfile,"= dynamically loaded branch predictors :\n") ;
-
-	        bprintf(&tmpfile,
-	            "rows                  %12d\n",
-	            pp->rows) ;
-
-	        bprintf(&tmpfile,
-	            "delay                 %12d\n",
-	            pp->delay) ;
-
-		for (i = 0 ; bpeval_stats(bpsp,i,&es) >= 0 ; i += 1) {
-
-	        bprintf(&tmpfile,
-	            "%-8s params           %8d %8d %8d %8d\n",
-	            es.name,
-		    es.p.p1,es.p.p2,es.p.p3,es.p.p4) ;
-
-	        bprintf(&tmpfile,
-	            "%-8s bits         %12u\n",
-	            es.name,es.bits) ;
-
-	        bprintf(&tmpfile,
-	            "%-8s lookups      %12u\n",
-			es.name,
-	            es.lookups) ;
-
-	        acc = percentll((ULONG) es.corrects,scp->br_con) ;
-
-	        bprintf(&tmpfile,
-	            "%-8s accuracy     %12u (%7.3f%%)\n",
-			es.name,
-	            es.corrects, acc) ;
-
-/* prediction confidences */
-
-		for (k = 0 ; k < 2 ; k += 1) {
-
-	        bprintf(&tmpfile,
-	            "%-8s confidences %d-%d  ",
-			es.name,(k * 4),((k * 4) + 3)) ;
-
-		for (j = (k * 4) ; j < ((k + 1) * 4) ; j += 1) {
-
-	        	acc = percentll((ULONG) es.confidence[j],scp->br_con) ;
-
-	        	bprintf(&tmpfile,"%7.3f%%",acc) ;
-
-		}
-
-	        bprintf(&tmpfile,"\n") ;
-
-		} /* end for */
-
-/* correct confidences */
-
-		for (k = 0 ; k < 2 ; k += 1) {
-
-	        bprintf(&tmpfile,
-	            "%-8s correct-conf %d-%d ",
-			es.name,(k * 4),((k * 4) + 3)) ;
-
-		for (j = (k * 4) ; j < ((k + 1) * 4) ; j += 1) {
-
-	        	acc = percentll((ULONG) es.cc[j],scp->br_con) ;
-
-	        	bprintf(&tmpfile,"%7.3f%%",acc) ;
-
-		}
-
-	        bprintf(&tmpfile,"\n") ;
-
-		} /* end for */
-
-/* write out the report for this predictor */
-
-	        acc = percentll((ULONG) es.corrects,scp->br_con) ;
-
-	        bpresult_write(&results,pip->basename,acc, es.name,
-			(int) es.bits,
-			es.p.p1,es.p.p2,es.p.p3,es.p.p4) ;
-
-		} /* end for (looping through loaded predictors) */
-
-	} /* end block (dynamically loaded predictors) */
+	    } /* end if (EVEIGHT) */
 
 /* close out the branch predictor results */
 
 	    bpresult_close(&results) ;
 
+/* other stuff */
+
+	    bprintf(&tmpfile,
+	        "bad IAs               %12llu (%7.3f%%)\n",
+	        scp->ia_bad,
+	        percentll(scp->ia_bad,smp->in)) ;
 
 /* value prediction stuff */
-
-	if (pip->f.opt_vpred) {
 
 	    bprintf(&tmpfile,"= value prediction statistics (external)\n") ;
 
@@ -4199,7 +3758,6 @@ struct params		*pp ;
 	        scp->vp_opcor,
 	        percentll(scp->vp_opcor,scp->vp_ophit)) ;
 
-	} /* end if (value prediction) */
 
 /* done */
 
@@ -4216,9 +3774,9 @@ struct params		*pp ;
 /* write out value prediction statistics */
 static int writevpstats(pip,smp,vsp,scp,vprow)
 struct proginfo		*pip ;
-struct stats		*scp ;
+struct ustats		*scp ;
 VPRED_STATS		*vsp ;
-struct statemips	*smp ;
+struct ustatemips	*smp ;
 int			vprow ;
 {
 	bfile	tmpfile ;
@@ -4343,7 +3901,7 @@ struct params	*pp ;
 /* process all of the options that we have so far */
 
 	n = 0 ;
-	keyopt_cursorinit(kop,&kcur) ;
+	keyopt_curbegin(kop,&kcur) ;
 
 	while ((rs = keyopt_enumkeys(kop,&kcur,&kp)) >= 0) {
 
@@ -4357,7 +3915,7 @@ struct params	*pp ;
 /* get the first (non-zero length) value for this key */
 
 	    vlen = -1 ;
-	    keyopt_cursorinit(kop,&vcur) ;
+	    keyopt_curbegin(kop,&vcur) ;
 
 	    while ((rs = keyopt_enumvalues(kop,kp,&vcur,&vp)) >= 0) {
 
@@ -4368,15 +3926,15 @@ struct params	*pp ;
 
 	    } /* end while */
 
-	    keyopt_cursorfree(kop,&vcur) ;
+	    keyopt_curend(kop,&vcur) ;
 
 /* do we support this option ? */
 
 	    if ((oi = optmatch3(keyopts,kp,klen)) >= 0) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	        if (DEBUGLEVEL(4))
-	            eprintf("getstatsopts: system valid option, oi=%d\n",
+	            debugprintf("getstatsopts: system valid option, oi=%d\n",
 	                oi) ;
 #endif
 
@@ -4398,17 +3956,6 @@ struct params	*pp ;
 	            if ((vlen > 0) && (cfdeci(vp,vlen,&val) >= 0)) {
 
 	                pp->delay = val ;
-	                n += 1 ;
-
-	            }
-
-	            break ;
-
-	        case keyopt_confidence:
-	            pp->f_confidence = FALSE ;
-	            if ((vlen > 0) && (cfdeci(vp,vlen,&val) >= 0)) {
-
-	                pp->f_confidence = (val != 0) ;
 	                n += 1 ;
 
 	            }
@@ -4514,55 +4061,55 @@ struct params	*pp ;
 
 	            break ;
 
-	        case keyopt_tournarows:
-	            pp->tourna_rows = 0 ;
+	        case keyopt_bpalpharows:
+	            pp->bpalpha_rows = 0 ;
 	            if ((vlen > 0) && (cfdeci(vp,vlen,&val) >= 0)) {
 
-	                pp->tourna_rows = val ;
+	                pp->bpalpha_rows = val ;
 	                n += 1 ;
 
 	            }
 
 	            break ;
 
-	        case keyopt_tournadelay:
-	            pp->tourna_delay = 0 ;
+	        case keyopt_bpalphadelay:
+	            pp->bpalpha_delay = 0 ;
 	            if ((vlen > 0) && (cfdeci(vp,vlen,&val) >= 0)) {
 
-	                pp->tourna_delay = val ;
+	                pp->bpalpha_delay = val ;
 	                n += 1 ;
 
 	            }
 
 	            break ;
 
-	        case keyopt_tournalbht:
-	            pp->tourna_lbht = 0 ;
+	        case keyopt_bpalphalbht:
+	            pp->bpalpha_lbht = 0 ;
 	            if ((vlen > 0) && (cfdeci(vp,vlen,&val) >= 0)) {
 
-	                pp->tourna_lbht = val ;
+	                pp->bpalpha_lbht = val ;
 	                n += 1 ;
 
 	            }
 
 	            break ;
 
-	        case keyopt_tournalpht:
-	            pp->tourna_lpht = 0 ;
+	        case keyopt_bpalphalpht:
+	            pp->bpalpha_lpht = 0 ;
 	            if ((vlen > 0) && (cfdeci(vp,vlen,&val) >= 0)) {
 
-	                pp->tourna_lpht = val ;
+	                pp->bpalpha_lpht = val ;
 	                n += 1 ;
 
 	            }
 
 	            break ;
 
-	        case keyopt_tournagpht:
-	            pp->tourna_gpht = 0 ;
+	        case keyopt_bpalphagpht:
+	            pp->bpalpha_gpht = 0 ;
 	            if ((vlen > 0) && (cfdeci(vp,vlen,&val) >= 0)) {
 
-	                pp->tourna_gpht = val ;
+	                pp->bpalpha_gpht = val ;
 	                n += 1 ;
 
 	            }
@@ -4613,22 +4160,22 @@ struct params	*pp ;
 
 	            break ;
 
-	        case keyopt_gskewrows:
-	            pp->gskew_rows = 0 ;
+	        case keyopt_eveightrows:
+	            pp->eveight_rows = 0 ;
 	            if ((vlen > 0) && (cfdeci(vp,vlen,&val) >= 0)) {
 
-	                pp->gskew_rows = val ;
+	                pp->eveight_rows = val ;
 	                n += 1 ;
 
 	            }
 
 	            break ;
 
-	        case keyopt_gskewdelay:
-	            pp->gskew_delay = 0 ;
+	        case keyopt_eveightdelay:
+	            pp->eveight_delay = 0 ;
 	            if ((vlen > 0) && (cfdeci(vp,vlen,&val) >= 0)) {
 
-	                pp->gskew_delay = val ;
+	                pp->eveight_delay = val ;
 	                n += 1 ;
 
 	            }
@@ -4641,11 +4188,11 @@ struct params	*pp ;
 
 	} /* end while */
 
-	keyopt_cursorfree(kop,&kcur) ;
+	keyopt_curend(kop,&kcur) ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	F_MASTERDEBUG && CF_DEBUG
 	if (DEBUGLEVEL(4))
-	    eprintf("getstatsopts: n=%d\n",n) ;
+	    debugprintf("getstatsopts: n=%d\n",n) ;
 #endif
 
 	return n ;
@@ -4653,147 +4200,7 @@ struct params	*pp ;
 /* end subroutine (getstatsopts) */
 
 
-/* load any specified branch predictor modules */
-int loadbps(pip,kop,bpsp)
-struct proginfo	*pip ;
-KEYOPT		*kop ;
-BPEVAL		*bpsp ;
-{
-	    KEYOPT_CURSOR	vcur ;
-
-	int	rs ;
-	int	sl, vl ;
-	int	n ;
-
-	char	name[MAXNAMELEN + 1] ;
-	char	*vp ;
-	char	*sp, *cp ;
-
-
-	n = 0 ;
-	    keyopt_cursorinit(kop,&vcur) ;
-
-	    while ((vl = keyopt_enumvalues(kop,"bpload",&vcur,&vp)) >= 0) {
-
-		int	p1, p2, p3, p4 ;
-
-
-		if (vp == NULL)
-			continue ;
-
-#if	F_MASTERDEBUG && F_DEBUG
-	if (DEBUGLEVEL(4))
-		eprintf("loadbps: vl=%d vp=>%s<\n",vl,vp) ;
-#endif
-
-		rs = SR_INVALID ;
-		if (vp[0] == '\0')
-			break ;
-
-	        p1 = p2 = p3 = p4 = -1 ;
-
-		sp = vp ;
-		sl = -1 ;
-		if ((cp = strchr(sp,':')) != NULL)
-			sl = cp - vp ;
-
-		if (sl == 0)
-			break ;
-
-		strwcpy(name,sp,MIN(sl,(MAXNAMELEN - 1))) ;
-
-#if	F_MASTERDEBUG && F_DEBUG
-	if (DEBUGLEVEL(4))
-		eprintf("loadbps: name=%s\n",name) ;
-#endif
-
-		if (cp != NULL) {
-
-			sp = cp + 1 ;
-			sl = -1 ;
-			if ((cp = strchr(sp,':')) != NULL)
-				sl = cp - sp ;
-
-#if	F_MASTERDEBUG && F_DEBUG
-	if (DEBUGLEVEL(4))
-		eprintf("loadbps: p1s=%w\n",sp,sl) ;
-#endif
-
-			cfdeci(sp,sl,&p1) ;
-
-		}
-
-		if (cp != NULL) {
-
-			sp = cp + 1 ;
-			sl = -1 ;
-			if ((cp = strchr(sp,':')) != NULL)
-				sl = cp - sp ;
-
-			cfdeci(sp,sl,&p2) ;
-
-		}
-
-		if (cp != NULL) {
-
-			sp = cp + 1 ;
-			sl = -1 ;
-			if ((cp = strchr(sp,':')) != NULL)
-				sl = cp - sp ;
-
-			cfdeci(sp,sl,&p3) ;
-
-		}
-
-		if (cp != NULL) {
-
-			sp = cp + 1 ;
-			sl = -1 ;
-			if ((cp = strchr(sp,':')) != NULL)
-				sl = cp - sp ;
-
-			cfdeci(sp,sl,&p4) ;
-
-		}
-
-#if	F_MASTERDEBUG && F_DEBUG
-	if (DEBUGLEVEL(4))
-		eprintf("loadbps: p1=%d p2=%d p3=%d p4=%d\n",p1,p2,p3,p4) ;
-#endif
-
-		rs = bpeval_add(bpsp,name,NULL,p1,p2,p3,p4) ;
-
-#if	F_MASTERDEBUG && F_DEBUG
-	if (DEBUGLEVEL(4))
-		eprintf("loadbps: bpeval_add() rs=%d\n",rs) ;
-#endif
-
-		if (rs < 0)
-			break ;
-
-		n += 1 ;
-
-	    } /* end while */
-
-	    keyopt_cursorfree(kop,&vcur) ;
-
-/* do we have a particular one selected ? */
-
-	    if ((vl = keyopt_enumvalues(kop,"bpsel",NULL,&vp)) >= 0) {
-
-		if (vp != NULL)
-		bpeval_bpsel(bpsp,vp) ;
-
-	} /* end if */
-
-	return (rs >= 0) ? n : rs ;
-}
-/* end subroutine (loadbps) */
-
-
-
 /* VPFIFO */
-
 static int vpfifo_init(op,n)
 struct vpfifo	*op ;
 int		n ;
@@ -4821,15 +4228,12 @@ static int vpfifo_free(op)
 struct vpfifo	*op ;
 {
 
-
 	if (op->table != NULL) {
-
-	    free(op->table) ;
-
+	    uc_free(op->table) ;
 #ifdef	MALLOCLOG
 	    malloclog_free(op->table,"stats:op_table") ;
 #endif
-
+	    op->table = NULL ;
 	}
 
 	return SR_OK ;
@@ -4843,9 +4247,8 @@ uint		values[] ;
 int		n ;
 int		row ;
 {
-	int	i ;
-	int	size ;
-
+	int		i ;
+	int		size ;
 
 	i = op->tail ;
 	size = n * sizeof(uint) ;
@@ -4864,9 +4267,8 @@ struct vpfifo	*op ;
 uint		values[] ;
 int		*rp ;
 {
-	int	i, n ;
-	int	size ;
-
+	int		i, n ;
+	int		size ;
 
 	i = op->head ;
 	*rp = op->table[i].row ;
@@ -4878,7 +4280,5 @@ int		*rp ;
 	return n ;
 }
 /* end subroutine (vpfifo_remove) */
-
-
 
 

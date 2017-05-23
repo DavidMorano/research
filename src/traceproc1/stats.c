@@ -5226,15 +5226,12 @@ static int vpfifo_free(op)
 struct vpfifo	*op ;
 {
 
-
 	if (op->table != NULL) {
-
 	    uc_free(op->table) ;
-
 #ifdef	MALLOCLOG
 	    malloclog_free(op->table,"stats:op_table") ;
 #endif
-
+	    op->table = NULL ;
 	}
 
 	return SR_OK ;
@@ -5248,9 +5245,8 @@ uint		values[] ;
 int		n ;
 int		row ;
 {
-	int	i ;
-	int	size ;
-
+	int		i ;
+	int		size ;
 
 	i = op->tail ;
 	size = n * sizeof(uint) ;
@@ -5269,9 +5265,8 @@ struct vpfifo	*op ;
 uint		values[] ;
 int		*rp ;
 {
-	int	i, n ;
-	int	size ;
-
+	int		i, n ;
+	int		size ;
 
 	i = op->head ;
 	*rp = op->table[i].row ;

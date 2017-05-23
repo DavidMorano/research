@@ -248,11 +248,10 @@ char		tfname[] ;
 	    debugprintf("fcounter: STDOUT bprintf() rs=%d\n",rs) ;
 #endif
 
-
-
 bad2:
-	if (pip->f.progmap)
-		fcount_free(&funcs) ;
+	if (pip->f.progmap) {
+	    fcount_free(&funcs) ;
+	}
 
 bad1:
 	exectrace_close(&t) ;

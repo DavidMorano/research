@@ -15,9 +15,7 @@
 /* revision history:
 
 	= 2001-06-06, David Morano
-
 	I am starting this out from scratch for the LevoSim simulator.
-
 
 */
 
@@ -25,10 +23,10 @@
 
 /*******************************************************************************
 
-	This little object allows for the writing and reading of a
-	committed execution trace of a program.  Provision is made for
-	the writing of instructions executed as well as register
-	written and memory locations written.
+        This little object allows for the writing and reading of a committed
+        execution trace of a program. Provision is made for the writing of
+        instructions executed as well as register written and memory locations
+        written.
 
 
 *******************************************************************************/
@@ -57,8 +55,6 @@
 
 
 /* local defines */
-
-#define	EXECTRACE_MAGIC		0x86553823
 
 #define	GETDP(type)		(((type) >> EXECTRACE_TBITS) & 15) ;
 

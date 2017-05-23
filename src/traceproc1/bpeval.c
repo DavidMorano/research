@@ -161,8 +161,10 @@ bad2:
 	vecitem_finish(&op->bps) ;
 
 bad1:
-	if (op->dir != NULL)
-	    free(op->dir) ;
+	if (op->dir != NULL) {
+	    uc_free(op->dir) ;
+	    op->dir = NULL ;
+	}
 
 bad0:
 	return rs ;
@@ -506,7 +508,7 @@ bad3:
 	}
 
 bad2:
-	free(e.op) ;
+	uc_free(e.op) ;
 
 bad1:
 	dlclose(e.dlp) ;
@@ -557,7 +559,7 @@ BPEVAL		*op ;
 
 	    }
 
-	    free(ep->op) ;
+	    uc_free(ep->op) ;
 
 	    dlclose(ep->dlp) ;
 
@@ -567,8 +569,10 @@ BPEVAL		*op ;
 
 	vecitem_finish(&op->bps) ;
 
-	if (op->dir != NULL)
-	    free(op->dir) ;
+	if (op->dir != NULL) {
+	    uc_free(op->dir) ;
+	    op->dir = NULL ;
+	}
 
 	op->magic = 0 ;
 	return rs ;

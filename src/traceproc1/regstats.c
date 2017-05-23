@@ -165,10 +165,10 @@ int		lentab ;
 
 /* bad stuff */
 bad2:
-	free(op->den) ;
+	uc_free(op->den) ;
+	op->den = NULL ;
 
 bad1:
-
 bad0:
 	return rs ;
 }
@@ -385,18 +385,19 @@ int regstats_free(op)
 REGSTATS	*op ;
 {
 
+	if (op == NULL) return SR_FAULT ;
 
-	if (op == NULL)
-	    return SR_FAULT ;
+	if (op->magic != REGSTATS_MAGIC) return SR_NOTOPEN ;
 
-	if (op->magic != REGSTATS_MAGIC)
-	    return SR_NOTOPEN ;
+	if (op->atrack != NULL) {
+	    uc_free(op->atrack) ;
+	    op->atrack = NULL ;
+	}
 
-	if (op->atrack != NULL)
-	    free(op->atrack) ;
-
-	if (op->den != NULL)
-	    free(op->den) ;
+	if (op->den != NULL) {
+	    uc_free(op->den) ;
+	    op->den = NULL ;
+	}
 
 	op->magic = 0 ;
 	return SR_OK ;
@@ -409,19 +410,14 @@ int regstats_stats(op,sp)
 REGSTATS	*op ;
 REGSTATS_STATS	*sp ;
 {
-	int	rs, c = 0 ;
+	int		rs ;
+	int		c = 0 ;
+	double		mean, var ;
 
-	double	mean, var ;
+	if (op == NULL) return SR_FAULT ;
+	if (sp == NULL) return SR_FAULT ;
 
-
-	if (op == NULL)
-	    return SR_FAULT ;
-
-	if (op->magic != REGSTATS_MAGIC)
-	    return SR_NOTOPEN ;
-
-	if (sp == NULL)
-	    return SR_FAULT ;
+	if (op->magic != REGSTATS_MAGIC) return SR_NOTOPEN ;
 
 	(void) memset(sp,0,sizeof(REGSTATS_STATS)) ;
 
@@ -490,16 +486,13 @@ char		usefname[] ;
 char		readfname[] ;
 char		writefname[] ;
 {
-	bfile	outfile ;
+	bfile		outfile ;
+	int		rs = SR_OK ;
+	int		i ;
 
-	int	rs = SR_OK, i ;
+	if (op == NULL) return SR_FAULT ;
 
-
-	if (op == NULL)
-	    return SR_FAULT ;
-
-	if (op->magic != REGSTATS_MAGIC)
-	    return SR_NOTOPEN ;
+	if (op->magic != REGSTATS_MAGIC) return SR_NOTOPEN ;
 
 /* read-interval density */
 

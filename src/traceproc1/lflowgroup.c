@@ -76,9 +76,7 @@ int lflowgroup_free(lfgp)
 LFLOWGROUP	*lfgp ;
 {
 
-
-	if (lfgp == NULL)
-		return SR_FAULT ;
+	if (lfgp == NULL) return SR_FAULT ;
 
 	return SR_OK ;
 }
@@ -91,16 +89,14 @@ uchar		bytes[] ;
 int		n ;
 {
 
-
-	if (lfgp == NULL)
-		return SR_FAULT ;
+	if (lfgp == NULL) return SR_FAULT ;
 
 	if (n > sizeof(uint))
 		return SR_TOOBIG ;
 
 	(void) memcpy((uchar *) &lfgp->dv,bytes,n) ;
 
-	    lfgp->dp = dps[n] ;
+	lfgp->dp = dps[n] ;
 	return SR_OK ;
 }
 /* end subroutine (lflowgroup_loadbytes) */
@@ -112,9 +108,7 @@ LFLOWGROUP	*lfgp ;
 int		ftt ;		/* forwarder's TT */
 {
 
-
-	if (lfgp == NULL)
-		return SR_FAULT ;
+	if (lfgp == NULL) return SR_FAULT ;
 
 	(void) memset(lfgp,0,sizeof(LFLOWGROUP)) ;
 
@@ -129,12 +123,9 @@ int lflowgroup_swapcopy(g1p,g2p)
 LFLOWGROUP	*g1p, *g2p ;
 {
 	LFLOWGROUP	tmp ;
+	int		rs = SR_OK ;
 
-	int	rs = SR_OK ;
-
-
-	if ((g1p == NULL) || (g2p == NULL))
-		return SR_FAULT ;
+	if ((g1p == NULL) || (g2p == NULL)) return SR_FAULT ;
 
 	tmp = *g1p ;
 	*g1p = *g2p ;
@@ -151,11 +142,9 @@ LFLOWGROUP	*lfgp ;
 int		ftt ;
 {
 
+	if (lfgp == NULL) return SR_FAULT ;
 
-	if (lfgp == NULL)
-		return SR_FAULT ;
-
-	    lfgp->ftt = ftt ;
+	lfgp->ftt = ftt ;
 	return SR_OK ;
 }
 /* end subroutine (lflowgroup_setftt) */
@@ -169,9 +158,7 @@ LFLOWGROUP	*lfgp ;
 XMLINFO		*xip ;
 {
 
-
-	if (lfgp == NULL)
-		return SR_FAULT ;
+	if (lfgp == NULL) return SR_FAULT ;
 
 	return SR_OK ;
 }
@@ -236,9 +223,7 @@ LFLOWGROUP	*lfgp ;
 XMLINFO		*xip ;
 {
 
-
-	if (lfgp == NULL)
-		return SR_FAULT ;
+	if (lfgp == NULL) return SR_FAULT ;
 
 	return SR_OK ;
 }

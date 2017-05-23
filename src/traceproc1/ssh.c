@@ -382,17 +382,16 @@ SSH_INFO	*rp ;
 int ssh_free(op)
 SSH		*op ;
 {
-	int	rs = SR_BADFMT ;
+	int		rs = SR_BADFMT ;
 
+	if (op == NULL) return SR_FAULT ;
 
-	if (op == NULL)
-	    return SR_FAULT ;
+	if (op->magic != SSH_MAGIC) return SR_NOTOPEN ;
 
-	if (op->magic != SSH_MAGIC)
-	    return SR_NOTOPEN ;
-
-	if (op->filemap != NULL)
+	if (op->filemap != NULL) {
 	    rs = u_munmap(op->filemap,(size_t) op->filesize) ;
+	    op->filemap = NULL ;
+	}
 
 	op->magic = 0 ;
 	return rs ;
@@ -400,23 +399,15 @@ SSH		*op ;
 /* end subroutine (ssh_free) */
 
 
-
-/* INTERNAL SUBROUTINES */
-
+/* private subroutines */
 
 
 /* calculate the next hash from a given one */
 static int hashindex(i,n)
 uint	i, n ;
 {
-	int	hi ;
-
-
-	hi = MODP2(i,n) ;
-
-	if (hi == 0)
-	    hi = 1 ;
-
+	int		hi = MODP2(i,n) ;
+	if (hi == 0) hi = 1 ;
 	return hi ;
 }
 /* end if (hashindex) */

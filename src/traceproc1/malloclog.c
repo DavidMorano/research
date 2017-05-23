@@ -173,35 +173,26 @@ ulong	a ;
 char	s[] ;
 {
 	HDB_DATUM	key, value ;
-
 	struct arec	*arp ;
-
 	ulong		addr = 0 ;
-
 	uint		sn = 0 ;
 	uint		count = 0 ;
-
-	int	rs = 0 ;
-	int	f_bad = FALSE ;
-
+	int		rs = 0 ;
+	int		f_bad = FALSE ;
 
 #if	CF_TRACK
 
 /* check startup */
 
 	if (! f_init) {
-
 	    f_init = TRUE ;
 	    hdb_start(&track,MALLOCLOG_TSIZE,0,NULL,NULL) ;
-
 	}
 
 	key.buf = &a ;
 	key.len = sizeof(ulong) ;
 
-	rs = hdb_fetch(&track,key,NULL,&value) ;
-
-	if (rs >= 0) {
+	if ((rs = hdb_fetch(&track,key,NULL,&value)) >= 0) {
 
 	    arp = (struct arec *) value.buf ;
 
@@ -213,14 +204,13 @@ char	s[] ;
 	        f_bad = TRUE ;
 
 	    if (count == 0) {
-
 	        rs = hdb_delkey(&track,key) ;
-
-		if (rs >= 0)
-	        	free(arp) ;
-
-	    } else
+		if (rs >= 0) {
+		    uc_free(arp) ;
+		}
+	    } else {
 	        f_bad = TRUE ;
+	    }
 
 	}
 
@@ -231,26 +221,23 @@ char	s[] ;
 	if (rs >= 0) {
 
 	if (f_bad) {
-
-	    if (malloclog_access(MALLOCLOG_FILE,W_OK) >= 0)
+	    if (malloclog_access(MALLOCLOG_FILE,W_OK) >= 0) {
 	        nprintf(MALLOCLOG_FILE,"%08x F %08lx %s (%d) %08lx\n",
 	            sn,a,count,s,addr) ;
-
+	    }
 	} else {
-
-	    if (malloclog_access(MALLOCLOG_FILE,W_OK) >= 0)
+	    if (malloclog_access(MALLOCLOG_FILE,W_OK) >= 0) {
 	        nprintf(MALLOCLOG_FILE,"%08x F %08lx %s\n",
 	            sn,a,s) ;
-
+	    }
 	}
 
 	} else {
-
-	    if (malloclog_access(MALLOCLOG_FILE,W_OK) >= 0)
+	    if (malloclog_access(MALLOCLOG_FILE,W_OK) >= 0) {
 	        nprintf(MALLOCLOG_FILE,
 			"******** F %08lx %s (never allocated)\n",
 	            a,s) ;
-
+	    }
 	}
 
 }
@@ -264,7 +251,6 @@ int	size ;
 char	s[] ;
 {
 
-
 	malloclog_free(oa,s) ;
 
 	malloclog_alloc(a,size,s) ;
@@ -275,7 +261,6 @@ char	s[] ;
 int malloclog_mark()
 {
 
-
 	mark = serial ;
 
 }
@@ -284,37 +269,29 @@ int malloclog_mark()
 int malloclog_dump()
 {
 	HDB_DATUM	key, value ;
-
-	HDB_CUR	c ;
-
+	HDB_CUR		c ;
 	struct arec	*arp ;
-
-	int	rs ;
-
+	int		rs ;
 
 #if	CF_TRACK
 
 	if (! f_init) {
-
 	    f_init = TRUE ;
 	    hdb_start(&track,10,0,NULL,NULL) ;
-
 	}
 
 	hdb_curbegin(&track,&c) ;
 
 	while ((rs = hdb_enum(&track,&c,&key,&value)) >= 0) {
-
 	    if (value.buf == NULL) continue ;
 
 	    arp = (struct arec *) value.buf ;
 
 	    if (arp->serial >= mark) {
-
-	        if (malloclog_access(MALLOCLOG_FILE,W_OK) >= 0)
+	        if (malloclog_access(MALLOCLOG_FILE,W_OK) >= 0) {
 	            nprintf(MALLOCLOG_FILE,"%08x D %08lx %d (%d)\n",
 	                arp->serial,arp->addr,arp->size,arp->count) ;
-
+		}
 	    }
 
 	}
@@ -329,12 +306,10 @@ int malloclog_dump()
 
 int malloclog_printf(const char fmt[],...)
 {
-	va_list	ap ;
-
-	int	len, rs ;
-
-	char	buf[MALLOCLOG_BUFLEN + 1] ;
-
+	va_list		ap ;
+	int		rs ;
+	int		len ;
+	char		buf[MALLOCLOG_BUFLEN + 1] ;
 
 	if (u_access(MALLOCLOG_FILE,W_OK) < 0)
 	    return SR_NOTOPEN ;
@@ -359,12 +334,9 @@ const char	fname[] ;
 int		perm ;
 {
 
-
 	if (! f_file) {
-
 		f_file = TRUE ;
 	        rs_file = u_access(fname,perm) ;
-
 	}
 
 	return rs_file ;

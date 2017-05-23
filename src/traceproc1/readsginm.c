@@ -432,7 +432,6 @@ static int record_free(rp)
 struct record	*rp ;
 {
 
-
 	return 0 ;
 }
 

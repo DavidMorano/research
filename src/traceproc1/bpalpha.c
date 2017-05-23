@@ -221,25 +221,25 @@ int	glen ;
 
 /* we're out of here */
 bad3:
-	free(op->lbht) ;
-
+	uc_free(op->lbht) ;
 #ifdef	MALLOCLOG
 	malloclog_free(op->lbht,"bpalpha_init:lbht") ;
 #endif
+	op->lbht = NULL ;
 
 bad2:
-	free(op->gpht) ;
-
+	uc_free(op->gpht) ;
 #ifdef	MALLOCLOG
 	malloclog_free(op->gpht,"bpalpha_init:gpht") ;
 #endif
+	op->hpht = NULL ;
 
 bad1:
-	free(op->cpht) ;
-
+	uc_free(op->cpht) ;
 #ifdef	MALLOCLOG
 	malloclog_free(op->cpht,"bpalpha_init:cpht") ;
 #endif
+	op->cpht = NULL ;
 
 bad0:
 	return rs ;
@@ -251,53 +251,42 @@ bad0:
 int bpalpha_free(op)
 BPALPHA	*op ;
 {
-	int	rs = SR_BADFMT ;
+	int		rs = SR_BADFMT ;
 
+	if (op == NULL) return SR_FAULT ;
 
-	if (op == NULL)
-	    return SR_FAULT ;
-
-	if (op->magic != BPALPHA_MAGIC)
-	    return SR_NOTOPEN ;
+	if (op->magic != BPALPHA_MAGIC) return SR_NOTOPEN ;
 
 	if (op->lpht != NULL) {
-
-	    free(op->lpht) ;
-
+	    uc_free(op->lpht) ;
 #ifdef	MALLOCLOG
 	    malloclog_free(op->lpht,"bpalpha_free:lpht") ;
 #endif
-
+	    op->lpht = NULL ;
 	}
 
 	if (op->lbht != NULL) {
-
-	    free(op->lbht) ;
-
+	    uc_free(op->lbht) ;
 #ifdef	MALLOCLOG
 	    malloclog_free(op->lbht,"bpalpha_free:lbht") ;
 #endif
-
+	    op->lbht = NULL ;
 	}
 
 	if (op->gpht != NULL) {
-
-	    free(op->gpht) ;
-
+	    uc_free(op->gpht) ;
 #ifdef	MALLOCLOG
 	    malloclog_free(op->gpht,"bpalpha_free:gpht") ;
 #endif
-
+	    op->hpht = NULL ;
 	}
 
 	if (op->cpht != NULL) {
-
-	    free(op->cpht) ;
-
+	    uc_free(op->cpht) ;
 #ifdef	MALLOCLOG
 	    malloclog_free(op->cpht,"bpalpha_free:cpht") ;
 #endif
-
+	    op->cpht = NULL ;
 	}
 
 	op->magic = 0 ;

@@ -32,6 +32,7 @@
 
 /* object defines */
 
+#define	EXECTRACE_MAGIC		0x86553823
 #define	EXECTRACE		struct exectrace_head
 #define	EXECTRACE_INFO		struct exectrace_info
 #define	EXECTRACE_ENTRY		struct exectrace_e
@@ -78,8 +79,6 @@
 #define	EXECTRACE_DPBYTE1	2
 #define	EXECTRACE_DPBYTE2	4
 #define	EXECTRACE_DPBYTE3	8
-
-
 
 
 struct exectrace_reading {

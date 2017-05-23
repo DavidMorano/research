@@ -489,12 +489,10 @@ char		tfname[] ;
 
 	tracedata_free(&ti) ;
 
-
-	if (pip->verboselevel > 0)
+	if (pip->verboselevel > 0) {
 	    bprintf(pip->ofp,
-	        "%lld records processed\n",
-	        trecs) ;
-
+	        "%lld records processed\n", trecs) ;
+	}
 
 bad1:
 	exectrace_close(&t) ;

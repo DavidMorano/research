@@ -318,17 +318,12 @@ int mipsdis_free(mdp)
 MIPSDIS	*mdp ;
 {
 	HDB_DATUM	key, value ;
+	HDB_CUR		cur ;
+	int		rs = SR_OK ;
 
-	HDB_CUR	cur ;
+	if (mdp == NULL) return SR_FAULT ;
 
-	int	rs = SR_OK ;
-
-
-	if (mdp == NULL)
-	    return SR_FAULT ;
-
-	if (mdp->magic != MIPSDIS_MAGIC)
-	    return SR_NOTOPEN ;
+	if (mdp->magic != MIPSDIS_MAGIC) return SR_NOTOPEN ;
 
 	if (mdp->server != NULL) {
 	    uc_free(mdp->server) ;
@@ -340,10 +335,9 @@ MIPSDIS	*mdp ;
 	hdb_curbegin(&mdp->addr,&cur) ;
 
 	while ((rs = hdb_enum(&mdp->addr,&cur,&key,&value)) >= 0) {
-
-	    if (key.buf != NULL)
+	    if (key.buf != NULL) {
 	        uc_free((void *) key.buf) ;
-
+	    }
 	} /* end while */
 
 	hdb_curend(&mdp->addr,&cur) ;
@@ -353,15 +347,10 @@ MIPSDIS	*mdp ;
 	hdb_curbegin(&mdp->instr,&cur) ;
 
 	while ((rs = hdb_enum(&mdp->instr,&cur,&key,&value)) >= 0) {
-
 	    if (value.buf != NULL) {
-
 	        entry_free((struct mipsdis_entry *) value.buf) ;
-
 	        uc_free((void *) value.buf) ;
-
 	    }
-
 	} /* end while */
 
 	hdb_curend(&mdp->instr,&cur) ;
@@ -544,9 +533,7 @@ char	fname[] ;
 
 	        rs = hdb_store(&mdp->dis,key,value) ;
 	        if (rs < 0) {
-
 	            uc_free(ep) ;
-
 	            break ;
 	        }
 
@@ -587,9 +574,7 @@ char	fname[] ;
 
 	        rs = hdb_store(&mdp->addr,key,value) ;
 	        if (rs < 0) {
-
 	            uc_free(iap) ;
-
 	            break ;
 	        }
 
@@ -690,9 +675,8 @@ int	stdlen, levolen ;
 
 bad1:
 	if (ep->std != NULL) {
-
 	    uc_free(ep->std) ;
-
+	    ep->std = NULL ;
 	}
 
 bad0:
@@ -738,17 +722,14 @@ static int entry_free(ep)
 struct mipsdis_entry	*ep ;
 {
 
-
 	if (ep->std != NULL) {
-
 	    uc_free(ep->std) ;
-
+	    ep->std = NULL ;
 	}
 
 	if (ep->levo != NULL) {
-
 	    uc_free(ep->levo) ;
-
+	    ep->levo = NULL ;
 	}
 
 	ep->std = ep->levo = NULL ;
@@ -757,9 +738,7 @@ struct mipsdis_entry	*ep ;
 /* end subroutine (entry_free) */
 
 
-
 /* WHAT IS THIS???????? */
-
 
 
 /* this is the old clunker that interfaced to Sean's thing */
@@ -824,7 +803,6 @@ int	*slp, *llp ;
 #endif
 
 	if ((rs = bopencmd(fpa,cmd)) >= 0) {
-
 	    pid = rs ;
 
 #if	CF_DEBUGS

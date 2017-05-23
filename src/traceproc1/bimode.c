@@ -12,11 +12,9 @@
 /* revision history:
 
 	= 2002-05-01, David Morano
-
-	This object module was created for Levo research.
-	It is a value predictor.  This is not coded as
-	hardware.  It is like Atom analysis subroutines !
-
+        This object module was created for Levo research. It is a value
+        predictor. This is not coded as hardware. It is like Atom analysis
+        subroutines!
 
 */
 
@@ -24,9 +22,9 @@
 
 /*******************************************************************************
 
-	This object module implements a branch predictor.  This BP
-	is a BIMODE (see Mudge) type branch predictor.  This BP *may*
-	be among the best of the "share" type predictors.
+        This object module implements a branch predictor. This BP is a BIMODE
+        (see Mudge) type branch predictor. This BP *may* be among the best of
+        the "share" type predictors.
 
 
 *******************************************************************************/
@@ -179,18 +177,18 @@ int		calen ;
 
 /* we're out of here */
 bad2:
-	free(op->taken) ;
-
+	uc_free(op->taken) ;
 #ifdef	MALLOCLOG
 	malloclog_free(op->taken,"bimode_init:taken") ;
 #endif
+	op->taken = NULL ;
 
 bad1:
-	free(op->choice) ;
-
+	uc_free(op->choice) ;
 #ifdef	MALLOCLOG
 	malloclog_free(op->choice,"bimode_init:choice") ;
 #endif
+	op->choice = NULL ;
 
 bad0:
 	return rs ;
@@ -212,33 +210,27 @@ BIMODE		*op ;
 	    return SR_NOTOPEN ;
 
 	if (op->choice != NULL) {
-
-	    free(op->choice) ;
-
+	    uc_free(op->choice) ;
 #ifdef	MALLOCLOG
 	malloclog_free(op->choice,"bimode_free:choice") ;
 #endif
-
+	    op->choice = NULL ;
 	}
 
 	if (op->taken != NULL) {
-
-	    free(op->taken) ;
-
+	    uc_free(op->taken) ;
 #ifdef	MALLOCLOG
 	malloclog_free(op->taken,"bimode_free:taken") ;
 #endif
-
+	    op->taken = NULL ;
 	}
 
 	if (op->nottaken != NULL) {
-
-	    free(op->nottaken) ;
-
+	    uc_free(op->nottaken) ;
 #ifdef	MALLOCLOG
 	malloclog_free(op->nottaken,"bimode_free:nottaken") ;
 #endif
-
+	    op->nottaken = NULL ;
 	}
 
 	op->magic = 0 ;

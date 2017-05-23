@@ -80,7 +80,6 @@ int tracedata_free(ip)
 struct tracedata	*ip ;
 {
 
-
 	return 0 ;
 }
 

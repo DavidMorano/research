@@ -262,6 +262,7 @@ bad3:
 
 bad2:
 	uc_free(op->den) ;
+	op->den = NULL ;
 
 bad1:
 bad0:
@@ -278,17 +279,13 @@ int		f_se ;
 uint		a, v ;
 {
 	struct memstats_te	*tep ;
-
-	int	rs ;
-	int	diff, diff0, diff1, diff_read, diff_write ;
-
+	int		rs ;
+	int		diff, diff0, diff1, diff_read, diff_write ;
 
 #if	CF_SAFE
-	if (op == NULL)
-	    return SR_FAULT ;
+	if (op == NULL) return SR_FAULT ;
 
-	if (op->magic != MEMSTATS_MAGIC)
-	    return SR_NOTOPEN ;
+	if (op->magic != MEMSTATS_MAGIC) return SR_NOTOPEN ;
 #endif /* CF_SAFE */
 
 #if	CF_DEBUGS
@@ -522,28 +519,21 @@ int memstats_free(op)
 MEMSTATS	*op ;
 {
 	struct memstats_group	*gp ;
-
 	HDB_DATUM	key, value ;
+	HDB_CUR		cur ;
+	int		rs ;
+	int		i ;
 
-	HDB_CUR	cur ;
+	if (op == NULL) return SR_FAULT ;
 
-	int	rs, i ;
-
-
-	if (op == NULL)
-	    return SR_FAULT ;
-
-	if (op->magic != MEMSTATS_MAGIC)
-	    return SR_NOTOPEN ;
+	if (op->magic != MEMSTATS_MAGIC) return SR_NOTOPEN ;
 
 /* free up the page entries */
 
 	hdb_curbegin(&op->tts,&cur) ;
 
 	while (hdb_enum(&op->tts,&cur,&key,&value) >= 0) {
-
 	    uc_free((void *) value.buf) ;
-
 	} /* end while */
 
 	hdb_curend(&op->tts,&cur) ;
@@ -553,17 +543,17 @@ MEMSTATS	*op ;
 /* free up the groups */
 
 	for (i = 0 ; vecitem_get(&op->groups,i,&gp) >= 0 ; i += 1) {
-
 	    u_munmap(gp->pa,op->groupsize) ;
-
 	} /* end for */
 
 	rs = vecitem_finish(&op->groups) ;
 
 /* finish up */
 
-	if (op->den != NULL)
+	if (op->den != NULL) {
 	    uc_free(op->den) ;
+	    op->den = NULL ;
+	}
 
 	op->magic = 0 ;
 	return rs ;
@@ -577,31 +567,21 @@ MEMSTATS	*op ;
 MEMSTATS_STATS	*sp ;
 {
 	struct memstats_tpe	*tpep ;
-
 	struct memstats_te	*tep ;
-
 	HDB_DATUM	key, value ;
+	HDB_CUR		cur ;
+	uint		c ;
+	int		rs ;
+	int		i ;
+	int		n ;
+	int		npages = 0 ;
+	double		percents[100] ;
+	double		mean, var, ov ;
 
-	HDB_CUR	cur ;
+	if (op == NULL) return SR_FAULT ;
+	if (sp == NULL) return SR_FAULT ;
 
-	uint	c ;
-
-	int	rs, i ;
-	int	n ;
-	int	npages = 0 ;
-
-	double	percents[100] ;
-	double	mean, var, ov ;
-
-
-	if (op == NULL)
-	    return SR_FAULT ;
-
-	if (op->magic != MEMSTATS_MAGIC)
-	    return SR_NOTOPEN ;
-
-	if (sp == NULL)
-	    return SR_FAULT ;
+	if (op->magic != MEMSTATS_MAGIC) return SR_NOTOPEN ;
 
 	(void) memset(sp,0,sizeof(MEMSTATS_STATS)) ;
 
@@ -622,8 +602,9 @@ MEMSTATS_STATS	*sp ;
 /* writes */
 
 	    c = 0 ;
-	    for (i = 0 ; i < op->lenden ; i += 1)
+	    for (i = 0 ; i < op->lenden ; i += 1) {
 	        c += op->denlife[i] ;
+	    }
 
 	    if (c != (op->c_write + op->c_writenew)) {
 	        debugprintf("memstats_stats: writes=%u c=%u\n",op->c_write,c) ;
@@ -633,11 +614,13 @@ MEMSTATS_STATS	*sp ;
 /* reads */
 
 	    c = 0 ;
-	    for (i = 0 ; i < op->lenden ; i += 1)
+	    for (i = 0 ; i < op->lenden ; i += 1) {
 	        c += op->denuse[i] ;
+	    }
 
-	    if (c != op->c_read)
+	    if (c != op->c_read) {
 	        debugprintf("memstats_stats: reads=%u c=%u\n",op->c_read,c) ;
+	    }
 
 	}
 #endif /* CF_DEBUGS2 */
@@ -653,10 +636,9 @@ MEMSTATS_STATS	*sp ;
 	    tep = tpep->pp ;
 	    n = op->pagesize / sizeof(struct memstats_te) ;
 	    for (i = 0 ; i < n ; i += 1) {
-
-	        if ((tep[i].read != 0) || (tep[i].write != 0))
+	        if ((tep[i].read != 0) || (tep[i].write != 0)) {
 	            sp->tes += 1 ;
-
+		}
 	    } /* end for */
 
 	    npages += 1 ;
@@ -1065,11 +1047,13 @@ struct memstats_te	**tepp ;
 	    value.len = size ;
 
 	    rs = hdb_store(&op->tts,key,value) ;
-	    if (rs < 0)
+	    if (rs < 0) {
 	        uc_free(tpep) ;
+	    }
 
-	    if (rs >= 0)
+	    if (rs >= 0) {
 	        op->c_page += 1 ;
+	    }
 
 	} else if (rs >= 0) {
 
