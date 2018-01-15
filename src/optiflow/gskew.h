@@ -1,15 +1,24 @@
 /* gskew */
 
 
+/* revision history:
+
+	= 2001-03-22, David A­D­ Morano
+	Originally written for Rightcore Network Services.
+
+*/
+
+/* Copyright © 2001 David A­D­ Morano.  All rights reserved. */
+
+
 #ifndef	GSKEW_INCLUDE
 #define	GSKEW_INCLUDE	1
 
 
+#Include	<envstandards.h>
 #include	<sys/types.h>
 #include	<time.h>
-
-#include	"localmisc.h"
-
+#include	<localmisc.h>
 
 
 /* object defines */
@@ -21,8 +30,6 @@
 /* more important defines */
 
 #define	GSKEW_COUNTBITS	2	/* counter bits */
-
-
 
 
 /* statistics */
@@ -56,21 +63,18 @@ struct gskew_head {
 } ;
 
 
-
 #if	(! defined(GSKEW_MASTER)) || (GSKEW_MASTER == 0)
 
 extern int	gskew_init(GSKEW *,int,int,int,int) ;
-extern int	gskew_lookup(GSKEW *,ULONG) ;
-extern int	gskew_confidence(GSKEW *,ULONG) ;
-extern int	gskew_update(GSKEW *,ULONG,int) ;
+extern int	gskew_lookup(GSKEW *,uint) ;
+extern int	gskew_confidence(GSKEW *,uint) ;
+extern int	gskew_update(GSKEW *,uint,int) ;
 extern int	gskew_zerostats(GSKEW *) ;
 extern int	gskew_stats(GSKEW *,GSKEW_STATS *) ;
 extern int	gskew_free(GSKEW *) ;
 
 #endif /* GSKEW_MASTER */
 
-
 #endif /* GSKEW_INCLUDE */
-
 
 

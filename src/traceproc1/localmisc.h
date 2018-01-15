@@ -7,12 +7,10 @@
 /* revision history:
 
 	= 1998-02-15, David A­D­ Morano
-
 	This code was started to make life easier on the outside (outside of
 	Lucent Technologies).  This file largely contains those things
 	(defines) that I have found to be either useful or problematic in the
 	past.
-
 
 */
 
@@ -42,8 +40,8 @@
 #endif
 
 #ifndef	repeat
-#define repeat		do
-#define	until(cond)	while(!(cond))
+#define repeat			do
+#define	until(cond)		while(!(cond))
 #endif
 
 #ifndef	TRUE
@@ -130,8 +128,13 @@
 #endif
 
 #ifndef	MKBOOL
-#define	MKBOOL(c)	((c)?1:0)
+#define	MKBOOL(c)	((c)!=0)
 #endif
+
+#ifndef	UC
+#define	UC(ch)		((unsigned char) (ch))
+#endif
+
 
 #ifndef	PF_LOCAL
 #ifdef	PF_UNIX
@@ -531,8 +534,10 @@ typedef long long		unixtime_t ;
 #ifndef	nelements
 #define	nelements(n)	(sizeof(n) / sizeof((n)[0]))
 #endif
-#endif
+#endif /* LANGUAGE_NELEMENTS */
 
+#ifndef	LANGUAGE_NELEM
+#define	LANGUAGE_NELEM		1
 #ifndef	nelem
 #ifdef	nelements
 #define	nelem		nelements
@@ -540,6 +545,7 @@ typedef long long		unixtime_t ;
 #define	nelem(n)	(sizeof(n) / sizeof((n)[0]))
 #endif
 #endif
+#endif /* LANGUAGE_NELEM */
 
 #ifndef	NULL
 #define	NULL		0
@@ -604,10 +610,6 @@ extern int	strnlen(const char *,int) ;
 
 /* names */
 
-#ifndef	NULLFNAME
-#define	NULLFNAME	"/dev/null"
-#endif
-
 #ifndef	STDNULLFNAME
 #define	STDNULLFNAME	"*STDNULL*"
 #endif
@@ -624,6 +626,17 @@ extern int	strnlen(const char *,int) ;
 #define	STDERRFNAME	"*STDERR*"
 #endif
 
+#ifndef	NULLFNAME
+#define	NULLFNAME	"/dev/null"
+#endif
+
+#ifndef	POLLINTMULT
+#define	POLLINTMULT	1000		/* poll-time multiplier */
+#endif
+
+#ifndef	REALNAMELEN
+#define	REALNAMELEN	100
+#endif
 
 #ifndef	TIMEBUFLEN
 #define	TIMEBUFLEN	80

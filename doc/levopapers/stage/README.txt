@@ -1,7 +1,11 @@
 scale
 
-
 This is the register and memory access interval characterization paper.
+
+
+title:	Investigating register and memory access intervals for use in a
+	distributed microarchitecture}
+
 
 file		description
 ----------------------------------

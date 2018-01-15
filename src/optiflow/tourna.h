@@ -1,25 +1,30 @@
 /* tourna */
 
 
+/* revision history:
+
+	= 2001-03-22, David A­D­ Morano
+	Originally written for Rightcore Network Services.
+
+*/
+
+/* Copyright © 2001 David A­D­ Morano.  All rights reserved. */
+
+
 #ifndef	TOURNA_INCLUDE
 #define	TOURNA_INCLUDE	1
 
 
+#Include	<envstandards.h>
 #include	<sys/types.h>
 #include	<time.h>
-
-#include	"localmisc.h"
-
+#include	<localmisc.h>
 
 
 /* object defines */
 
 #define	TOURNA			struct tourna_head
 #define	TOURNA_STATS		struct tourna_stats
-
-
-
-
 
 
 /* statistics */
@@ -45,21 +50,18 @@ struct tourna_head {
 } ;
 
 
-
 #if	(! defined(TOURNA_MASTER)) || (TOURNA_MASTER == 0)
 
 extern int	tourna_init(TOURNA *,int,int,int) ;
-extern int	tourna_lookup(TOURNA *,ULONG) ;
-extern int	tourna_confidence(TOURNA *,ULONG) ;
-extern int	tourna_update(TOURNA *,ULONG,int) ;
+extern int	tourna_lookup(TOURNA *,uint) ;
+extern int	tourna_confidence(TOURNA *,uint) ;
+extern int	tourna_update(TOURNA *,uint,int) ;
 extern int	tourna_zerostats(TOURNA *) ;
 extern int	tourna_stats(TOURNA *,TOURNA_STATS *) ;
 extern int	tourna_free(TOURNA *) ;
 
 #endif /* TOURNA_MASTER */
 
-
 #endif /* TOURNA_INCLUDE */
-
 
 

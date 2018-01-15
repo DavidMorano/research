@@ -36,9 +36,13 @@
 *******************************************************************************/
 
 
+#include	<envstandards.h>
+
 #include	<sys/types.h>
 #include	<localmisc.h>
 
+
+/* exported subroutines */
 
 
 /* is a sequence number in our receive window ? */

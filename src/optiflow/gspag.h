@@ -1,15 +1,24 @@
 /* gspag */
 
 
+/* revision history:
+
+	= 2001-03-22, David A­D­ Morano
+	Originally written for Rightcore Network Services.
+
+*/
+
+/* Copyright © 2001 David A­D­ Morano.  All rights reserved. */
+
+
 #ifndef	GSPAG_INCLUDE
 #define	GSPAG_INCLUDE	1
 
 
+#Include	<envstandards.h>
 #include	<sys/types.h>
 #include	<time.h>
-
-#include	"localmisc.h"
-
+#include	<localmisc.h>
 
 
 /* object defines */
@@ -21,8 +30,6 @@
 /* more important defines */
 
 #define	GSPAG_COUNTBITS	2	/* counter bits */
-
-
 
 
 /* statistics */
@@ -43,21 +50,18 @@ struct gspag_head {
 } ;
 
 
-
 #if	(! defined(GSPAG_MASTER)) || (GSPAG_MASTER == 0)
 
 extern int	gspag_init(GSPAG *,int,int) ;
-extern int	gspag_lookup(GSPAG *,ULONG) ;
-extern int	gspag_confidence(GSPAG *,ULONG) ;
-extern int	gspag_update(GSPAG *,ULONG,int) ;
+extern int	gspag_lookup(GSPAG *,uint) ;
+extern int	gspag_confidence(GSPAG *,uint) ;
+extern int	gspag_update(GSPAG *,uint,int) ;
 extern int	gspag_zerostats(GSPAG *) ;
 extern int	gspag_stats(GSPAG *,GSPAG_STATS *) ;
 extern int	gspag_free(GSPAG *) ;
 
 #endif /* GSPAG_MASTER */
 
-
 #endif /* GSPAG_INCLUDE */
-
 
 
