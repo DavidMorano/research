@@ -1,7 +1,6 @@
 LEVO
 
-Welcome to the source code tree for the LEVO project.
-
+Welcome to the source code tree for the LEVO research project.
 
 subdirectory	description
 ------------------------------------------------------
