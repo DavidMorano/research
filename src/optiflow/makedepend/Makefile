@@ -354,7 +354,7 @@ LINTXMWIDGETLIB = $(MWIDGETSRC)/llib-l/Xm.ln
      LINTXMTOOL = $(MTOOLKITSRC)/llib-lXt.ln
      LINTUILLIB = $(UILSRC)/llib-lUil.ln
 
-      YACCFLAGS =
+      YACXXFLAGS =
        UILFLAGS =
 
          RM_CMD = $(RM) *.CKP *.ln *.BAK *.bak *.o core errs ,* *~ *.a .emacs_* tags TAGS make.log MakeOut  *.Dat

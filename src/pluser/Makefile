@@ -47,7 +47,7 @@ LIBS= -lsio
 # flag setting
 CPPFLAGS= $(DEFS) $(INCDIRS) $(MAKECPPFLAGS)
 CFLAGS= $(MAKECFLAGS)
-CCFLAGS= $(MAKECCFLAGS)
+CXXFLAGS= $(MAKECXXFLAGS)
 ARFLAGS= $(MAKEARFLAGS)
 LDFLAGS= $(MAKELDFLAGS)
 
@@ -75,7 +75,7 @@ all:			$(ALL)
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c $<
 
 .cc.o:
-	$(CXX)  $(CPPFLAGS) $(CCFLAGS) -c $<
+	$(CXX)  $(CPPFLAGS) $(CXXFLAGS) -c $<
 
 
 $(T).x:			$(OBJ_SIX)
