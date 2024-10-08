@@ -10,9 +10,7 @@
 /* revision history:
 
 	= 2001-09-01, David Morano
-
 	This subroutine was originally written.
-
 
 */
 
@@ -23,15 +21,13 @@
 	This subroutine performs the function 'fcount' for the
 	TRACEPROC program when run in 'fcount' mode.
 
-
 *******************************************************************************/
 
-
 #include	<envstandards.h>
-
 #include	<sys/types.h>
-
 #include	<vsystem.h>
+#include	<mkpathx.h>
+#include	<strwcpy.h>
 #include	<localmisc.h>
 
 #include	"config.h"
@@ -54,8 +50,7 @@
 
 /* external subroutines */
 
-extern int	sncpy2(char *,int,const char *,const char *) ;
-extern int	mkfname2(char *,const char *,const char *) ;
+extern int	sncpy2(char *,int,cchar *,cchar *) ;
 
 
 /* external variables */

@@ -1,34 +1,31 @@
-/* sigdumpmsg */
+/* sigdumpmsg SUPPORT */
+/* lang=C++98 */
 
 /* create and parse the internal messages */
-
+/* version %I% last-modified %G% */
 
 #define	CF_DEBUGS	0
 
-
 /* revision history:
 
-	= 99/07/21, Dave Morano
-
+	= 1999-07-21, Dave Morano
 	This module was originally written.
-
 
 */
 
 
 /******************************************************************************
 
+  	Name:
+	sigdumpmsg
+
+	Description:
 	This module contains the subroutines to make and parse the 
 	SIGDUMPMSG family of messages.
 
-
-
 ******************************************************************************/
 
-
-#define	SIGDUMPMSG_MASTER	0
-
-
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<sys/stat.h>
@@ -37,14 +34,12 @@
 #include	<arpa/inet.h>
 #include	<unistd.h>
 #include	<fcntl.h>
-
 #include	<vsystem.h>
 #include	<vecstr.h>
 #include	<serialbuf.h>
+#include	<localmisc.h>
 
-#include	"localmisc.h"
 #include	"sigdumpmsg.h"
-
 
 
 /* local defines */
@@ -54,20 +49,25 @@
 #endif
 
 
-
 /* external subroutines */
+
+
+/* external variables */
 
 
 /* local structures */
 
 
+/* local references */
+
+
 /* local variables */
 
 
+/* exported subroutines */
 
 
-
-
+/* exported variables */
 
 int sigdumpmsg_request(buf,buflen,f,sp)
 char			buf[] ;

@@ -28,24 +28,21 @@
 	are purposely put into this file to try to keep them (gooko
 	subroutines) in the same place.
 
-
 	Important note:
 	Do NOT turn on the "define" option above named CF_WRITEDONE!
 	It really messed up the data!
 
-
 ******************************************************************************/
 
-
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
 #include <assert.h>
 #include <stdio.h>
-
-/* some of Dave's libraries */
-
+#include	<mkpathx.h>
+#include	<strwcpy.h>
 #include	<bio.h>
 #include	<sbuf.h>
 #include	<keyopt.h>
@@ -182,7 +179,6 @@ extern double	percentll(ULONG,ULONG) ;
 
 extern uint	nextpowtwo(uint) ;
 
-extern int	mkpath2(char *,const char *,const char *) ;
 extern int	mkfnamesuf(char *,const char *,const char *) ;
 extern int	sfsub(const char *,int,const char *,char **) ;
 extern int	cfdeci(const char *,int,int *) ;
@@ -194,9 +190,6 @@ extern int	densitystatll(ULONG *,int,double *,double *) ;
 extern int	procsimpoint(struct proginfo *,LONG *) ;
 
 extern char	*strnchr(const char *,int,int) ;
-extern char	*strwcpy(char *,const char *,int) ;
-extern char	*strwcpylow(char *,const char *,int) ;
-extern char	*strwcpyup(char *,const char *,int) ;
 extern char	*strsimpoint(char *,ULONG) ;
 
 
@@ -1641,7 +1634,7 @@ int sim_init(void)
 
 			cl = MIN(MAXPATHLEN,vl) ;
 			sp = tmpfname ;
-			sl = strwcpylow(tmpfname,vbuf,cl) - sp ;
+			sl = strwcpylc(tmpfname,vbuf,cl) - sp ;
 
 			if ((sfsub(sp,sl,"simpoint",NULL) >= 0) &&
 				(vl == 8)) {
@@ -2073,7 +2066,7 @@ int sim_init(void)
 	        eprintf("sim_init: opt_memstats\n") ;
 #endif
 
-	    mkfname2(tmpfname,pip->jobname,".memtrack") ;
+	    mkpath(tmpfname,pip->jobname,".memtrack") ;
 
 	    rs = memstats_init(&pip->mstats,tmpfname,-1,-1,
 		lip->memelemsize,lip->memdenlen) ;
@@ -5588,15 +5581,15 @@ const char	statfname[] ;
 	        double	sd ;
 
 
-	        mkfname2(tmp1fname,pip->jobname,FNE_REGRINT) ;
+	        mkpath(tmp1fname,pip->jobname,FNE_REGRINT) ;
 
-	        mkfname2(tmp2fname,pip->jobname,FNE_REGLIFE) ;
+	        mkpath(tmp2fname,pip->jobname,FNE_REGLIFE) ;
 
-	        mkfname2(tmp3fname,pip->jobname,FNE_REGUSE) ;
+	        mkpath(tmp3fname,pip->jobname,FNE_REGUSE) ;
 
-	        mkfname2(tmp4fname,pip->jobname,FNE_REGREAD) ;
+	        mkpath(tmp4fname,pip->jobname,FNE_REGREAD) ;
 
-	        mkfname2(tmp5fname,pip->jobname,FNE_REGWRITE) ;
+	        mkpath(tmp5fname,pip->jobname,FNE_REGWRITE) ;
 
 #if	CF_MASTERDEBUG && CF_DEBUG
 	        if (DEBUGLEVEL(4)) {
@@ -5749,11 +5742,11 @@ const char	statfname[] ;
 	        double	sd ;
 
 
-	        mkfname2(tmp1fname,pip->jobname,FNE_MEMRINT) ;
+	        mkpath(tmp1fname,pip->jobname,FNE_MEMRINT) ;
 
-	        mkfname2(tmp2fname,pip->jobname,FNE_MEMLIFE) ;
+	        mkpath(tmp2fname,pip->jobname,FNE_MEMLIFE) ;
 
-	        mkfname2(tmp3fname,pip->jobname,FNE_MEMUSE) ;
+	        mkpath(tmp3fname,pip->jobname,FNE_MEMUSE) ;
 
 		tmp4fname[0] = '\0' ;
 		tmp5fname[0] = '\0' ;

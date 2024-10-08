@@ -14,9 +14,7 @@
 /* revision history:
 
 	= 02/08/21, Dave Morano
-
 	This program was originally written.
-
 
 */
 
@@ -27,10 +25,9 @@
 	This object module tracks certain statistics about the
 	use of memory.
 
-
 **************************************************************************/
 
-
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/stat.h>
 #include	<sys/param.h>
@@ -40,7 +37,6 @@
 #include	<fcntl.h>
 #include	<stdlib.h>
 #include	<string.h>
-#include	<ctype.h>
 #include	<assert.h>
 
 #if	defined(IRIX)
@@ -48,12 +44,13 @@
 #endif
 
 #include	<vsystem.h>
+#include	<mkpathx.h>
+#include	<strwcpy.h>
 #include	<mallocstuff.h>
 #include	<bio.h>
 
 #include	"localmisc.h"
 #include	"memstats.h"
-
 
 
 /* local defines */
@@ -95,7 +92,6 @@
 extern uint	elfhash(const char *,int) ;
 extern uint	nextpowtwo(uint) ;
 
-extern int	mkfname2(char *,const char *,const char *) ;
 extern int	flbsi(uint) ;
 extern int	fmeanvarai(uint *,int,double *,double *) ;
 extern int	fmeanvaral(ULONG *,int,double *,double *) ;
@@ -1013,17 +1009,17 @@ char		usefname[] ;
 
 /* the 2^10 table */
 
-	mkfname2(fname,rintfname,"1") ;
+	mkpath(fname,rintfname,"1") ;
 
 	if (rs >= 0)
 	    rs = writearray(fname,op->denrint1,op->lenden) ;
 
-	mkfname2(fname,lifefname,"1") ;
+	mkpath(fname,lifefname,"1") ;
 
 	if (rs >= 0)
 	    rs = writearray(fname,op->denlife1,op->lenden) ;
 
-	mkfname2(fname,usefname,"1") ;
+	mkpath(fname,usefname,"1") ;
 
 	if (rs >= 0)
 	    rs = writearray(fname,op->denuse1,op->lenden) ;

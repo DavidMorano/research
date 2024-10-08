@@ -4,7 +4,7 @@
 
 
 #define	CF_DEBUGS	0		/* non-switchable */
-#define	CF_DEBUG		1		/* switchable debug print-outs */
+#define	CF_DEBUG	1		/* switchable debug print-outs */
 #define	CF_MACHINE	1		/* create & run the machine ? */
 #define	CF_MINT		0		/* so we need MINT ? */
 
@@ -28,7 +28,7 @@
 
 *****************************************************************************/
 
-
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<sys/resource.h>
@@ -38,6 +38,8 @@
 #include	<vsystem.h>
 #include	<vecstr.h>
 #include	<field.h>
+#include	<mkpathx.h>
+#include	<strwcpy.h>
 #include	<bio.h>
 #include	<mallocstuff.h>
 
@@ -88,7 +90,6 @@ extern int	perm(char *,int,int,int *,int) ;
 extern int	simplesim(struct proginfo *,PARAMFILE *,LSIM *,
 			struct statemips *,SYSCALLS *,ULONG) ;
 
-extern char	*strwcpy(char *,const char *,int) ;
 extern char	*strbasename(char *) ;
 extern char	*timestr_log(time_t,char *) ;
 extern char	*timestr_elapsed(time_t, char *) ;
@@ -786,7 +787,7 @@ ULONG		skipinstr ;
 	    else
 	        strwcpy(targetbuf,cp,(MAXNAMELEN - 1)) ;
 
-	        mkfname2(tmpfname,targetbuf,FE_SGINM) ;
+	        mkpath(tmpfname,targetbuf,FE_SGINM) ;
 
 	        rs = fcount_init(&pip->fc,mpp,tmpfname) ;
 
@@ -1296,7 +1297,7 @@ struct statemips	*smp ;
 
 	        rs = fcount_done(&pip->fc) ;
 
-	        mkfname2(tmpfname,pip->jobname,FE_FCOUNTS) ;
+	        mkpath(tmpfname,pip->jobname,FE_FCOUNTS) ;
 
 	        if ((rs1 = bopen(&tmpfile,tmpfname,"wct",0666)) >= 0) {
 

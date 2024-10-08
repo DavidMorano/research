@@ -17,17 +17,12 @@
 /* revision history:
 
 	= 01/07/10, Dave Morano
-
 	This code (the old i-fetch code) has been turned into SimpleSim !
 
-
 	= 01/07/27, Marcos de Alba
-
 	I added another field to the call of lexec (ilptr).
 
-
 	= 01/08/10, Dave Morano
-
 	I changed the code so that the ISA registers are passed to us.
 	Also, the code will only execute for a maximum number of
 	instructions (if specified).  I also changed some variable
@@ -35,36 +30,24 @@
 	whole program.  I also added symbolic TRUE/FALSE for
 	boolean variables.
 
-
 	= 01/08/17, Dave Morano
-
 	I added the calls to write out trace information.
 	I had to add the whole trace facility to LevoSim first.
 
-
 	= 01/08/29, Dave Morano
-
 	I added the calls to get some disassembled output text for the
 	instrcutions being executed.
 
-
 	= 01/10/07, Dave Morano
-
 	I fixed the instructions SH, LWL, and LWR.
 
-
 	= 01/10/10, Dave Morano
-
 	I added the code for the LWC1 and SWC1 instructions.
 
-
 	= 01/11/06, Dave Morano
-
 	I added the code for the LDC1 and SDC1 instructions.
 
-
 */
-
 
 /******************************************************************************
 
@@ -72,19 +55,18 @@
 	This subroutine is called when the main LevoSim program
 	is called in 'simplesim' mode.
 
-
 ******************************************************************************/
 
-
-
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<stdlib.h>
 #include	<string.h>
 #include	<math.h>
-
 #include	<vsystem.h>
 #include	<bio.h>
 #include	<libuc.h>
+#include	<mkpathx.h>
+#include	<strwcpy.h>
 
 #include	"localmisc.h"
 #include	"config.h"
@@ -131,7 +113,6 @@
 extern double	sqrt(double) ;
 #endif
 
-extern int	mkfname2(char *,const char *,const char *) ;
 extern int	fmeanvaral(ULONG *,int,double *,double *) ;
 
 extern char	*timestr_log(time_t,char *) ;
@@ -2007,7 +1988,7 @@ struct statemips	*smp ;
 
 /* write out the instruction (operations) frequencies */
 
-	mkfname2(tmpfname,pip->jobname,ICOUNTS) ;
+	mkpath(tmpfname,pip->jobname,ICOUNTS) ;
 
 	if ((rs = bopen(&tmpfile,tmpfname,"wct",0666)) >= 0) {
 
@@ -2020,7 +2001,7 @@ struct statemips	*smp ;
 
 /* write out the branch-path lengths */
 
-	mkfname2(tmpfname,pip->jobname,BPLEN) ;
+	mkpath(tmpfname,pip->jobname,BPLEN) ;
 
 	if ((rs = bopen(&tmpfile,tmpfname,"wct",0666)) >= 0) {
 
@@ -2034,7 +2015,7 @@ struct statemips	*smp ;
 
 /* write out the branch-target lengths */
 
-	mkfname2(tmpfname,pip->jobname,BTLEN) ;
+	mkpath(tmpfname,pip->jobname,BTLEN) ;
 
 	if ((rs = bopen(&tmpfile,tmpfname,"wct",0666)) >= 0) {
 
@@ -2050,7 +2031,7 @@ struct statemips	*smp ;
 
 /* write out SS hammock branch-target lengths */
 
-	mkfname2(tmpfname,pip->jobname,HTLEN) ;
+	mkpath(tmpfname,pip->jobname,HTLEN) ;
 
 	if ((rs = bopen(&tmpfile,tmpfname,"wct",0666)) >= 0) {
 
@@ -2066,7 +2047,7 @@ struct statemips	*smp ;
 
 /* write out other branch path information */
 
-	mkfname2(tmpfname,pip->jobname,BSTATS) ;
+	mkpath(tmpfname,pip->jobname,BSTATS) ;
 
 	if ((rs = bopen(&tmpfile,tmpfname,"wct",0666)) >= 0) {
 

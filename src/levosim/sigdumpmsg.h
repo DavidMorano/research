@@ -1,20 +1,15 @@
-/* sigdumpmsg */
-
+/* sigdumpmsg HEADER */
+/* lang=C++98 */
 
 
 #ifndef	SIGDUMPMSG_INCLUDE
-#define	SIGDUMPMSG_INCLUDE	1
+#define	SIGDUMPMSG_INCLUDE
 
 
-
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<netdb.h>
-
-#include	"localmisc.h"
-
-
-
-
+#include	<localmisc.h>
 
 
 /* client request message */
@@ -25,13 +20,11 @@ struct sigdumpmsg_request {
 	uchar	type ;
 } ;
 
-
 /* request types */
 enum sigdumpmsgtypes {
 	sigdumpmsgtype_request,
 	sigdumpmsgtype_overlast,
 } ;
-
 
 /* response codes */
 enum sigdumpmsgrcs {
@@ -44,15 +37,10 @@ enum sigdumpmsgrcs {
 } ;
 
 
-
 /* message sizes */
-
 #define	SIGDUMPMSG_SREQUEST	((7 * sizeof(uint)) + (3 * sizeof(ushort)) + 1)
 
-
-
 /* options */
-
 #define	SIGDUMPMSG_MBLANK	0x00
 #define	SIGDUMPMSG_MTCP		0x01		/* also the default */
 #define	SIGDUMPMSG_MUDP		0x02
@@ -60,11 +48,11 @@ enum sigdumpmsgrcs {
 #define	SIGDUMPMSG_MEXTRA	0x08		/* all information */
 
 
-#if	(! defined(SIGDUMPMSG_MASTER)) || (SIGDUMPMSG_MASTER == 0)
+EXTERNC_begin
 
 extern int	sigdumpmsg_request(char *,int,int,struct sigdumpmsg_request *) ;
 
-#endif /* SIGDUMPMSG_MASTER */
+EXTERNC_end
 
 
 #endif /* SIGDUMPMSG_INCLUDE */

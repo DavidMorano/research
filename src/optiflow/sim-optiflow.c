@@ -30,14 +30,12 @@
         to try to keep them (gooko subroutines) in the same place.
 
 	Important note:
-
 	Do NOT turn on the "define" option above named CF_WRITEDONE!
 	It really messed up the data!
 
-
 *******************************************************************************/
 
-
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include <stdlib.h>
@@ -45,9 +43,8 @@
 #include <math.h>
 #include <assert.h>
 #include <stdio.h>
-
-/* some of Dave's libraries */
-
+#include	<mkpathx.h>
+#include	<strwcpy.h>
 #include	<bio.h>
 #include	<sbuf.h>
 #include	<keyopt.h>
@@ -184,21 +181,17 @@ extern double	percentll(ULONG,ULONG) ;
 
 extern uint	nextpowtwo(uint) ;
 
-extern int	mkpath2(char *,const char *,const char *) ;
-extern int	mkfnamesuf(char *,const char *,const char *) ;
-extern int	sfsub(const char *,int,const char *,char **) ;
-extern int	cfdeci(const char *,int,int *) ;
-extern int	cfdecui(const char *,int,int *) ;
-extern int	cfdecull(const char *,int,ULONG *) ;
-extern int	cfdecmfull(const char *,int,ULONG *) ;
-extern int	cfnumui(const char *,int,uint *) ;
+extern int	mkfnamesuf(char *,cchar *,cchar *) ;
+extern int	sfsub(cchar *,int,cchar *,char **) ;
+extern int	cfdeci(cchar *,int,int *) ;
+extern int	cfdecui(cchar *,int,int *) ;
+extern int	cfdecull(cchar *,int,ULONG *) ;
+extern int	cfdecmfull(cchar *,int,ULONG *) ;
+extern int	cfnumui(cchar *,int,uint *) ;
 extern int	densitystatll(ULONG *,int,double *,double *) ;
 extern int	procsimpoint(struct proginfo *,LONG *) ;
 
-extern char	*strnchr(const char *,int,int) ;
-extern char	*strwcpy(char *,const char *,int) ;
-extern char	*strwcpylow(char *,const char *,int) ;
-extern char	*strwcpyup(char *,const char *,int) ;
+extern char	*strnchr(cchar *,int,int) ;
 extern char	*strsimpoint(char *,ULONG) ;
 
 
@@ -336,10 +329,10 @@ static int	sim_checktional(PROGINFO *) ;
 static int	sim_functional(PROGINFO *) ;
 
 static int	sim_asdump(PROGINFO *,SSAS *) ;
-static int	sim_tracedump(struct proginfo *,const char *) ;
-static int	sim_genstats(struct proginfo *,const char *) ;
-static int	sim_regstats(struct proginfo *,const char *) ;
-static int	sim_memstats(struct proginfo *,const char *) ;
+static int	sim_tracedump(struct proginfo *,cchar *) ;
+static int	sim_genstats(struct proginfo *,cchar *) ;
+static int	sim_regstats(struct proginfo *,cchar *) ;
+static int	sim_memstats(struct proginfo *,cchar *) ;
 
 static int	setas(SSAS *,int,int,int,int,int,int,int) ;
 static int	setasreg(SSAS *) ;
@@ -349,8 +342,8 @@ static int	setop(OPERAND *,uint,ULONG) ;
 static int	setopreg(OPERAND *,int) ;
 static int	mkdatapresent(uint,int) ;
 
-static int	peparse(struct proginfo *,const char *,int,int *,int *) ;
-static int	leparse(struct proginfo *,struct ssinfo *,const char *,int) ;
+static int	peparse(struct proginfo *,cchar *,int,int *,int *) ;
+static int	leparse(struct proginfo *,struct ssinfo *,cchar *,int) ;
 
 
 /* local variables */
@@ -522,7 +515,7 @@ static unsigned short dps[] = {
 	    0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff,
 } ;
 
-static const char	*ssparams[] = {
+static cchar	*ssparams[] = {
 	"modulus",
 	"nbpred",
 	"fqsize",
@@ -618,7 +611,7 @@ enum ssparams {
 	ssparam_overlast
 } ;
 
-static const char	*progopts[] = {
+static cchar	*progopts[] = {
 	"rows",
 	"delay",
 	"confidence",
@@ -1627,7 +1620,7 @@ int sim_init(void)
 
 			cl = MIN(MAXPATHLEN,vl) ;
 			sp = tmpfname ;
-			sl = strwcpylow(tmpfname,vbuf,cl) - sp ;
+			sl = strwcpylc(tmpfname,vbuf,cl) - sp ;
 
 			if ((sfsub(sp,sl,"simpoint",NULL) >= 0) &&
 				(vl == 8)) {
@@ -2001,7 +1994,7 @@ int sim_init(void)
 	    if (cp[0] != '/') {
 
 	        cp = loaddname ;
-	        mkpath2(loaddname,pip->pr,LOADDNAME) ;
+	        mkpath(loaddname,pip->pr,LOADDNAME) ;
 
 	    }
 
@@ -2068,7 +2061,7 @@ int sim_init(void)
 	        eprintf("sim_init: opt_memstats\n") ;
 #endif
 
-	    mkfname2(tmpfname,pip->jobname,".memtrack") ;
+	    mkpath(tmpfname,pip->jobname,".memtrack") ;
 
 	    rs = memstats_init(&pip->mstats,tmpfname,-1,-1,
 		lip->memelemsize,lip->memdenlen) ;
@@ -4796,7 +4789,7 @@ ret0:
 /* dump trace file */
 static int sim_tracedump(pip,tfname)
 struct proginfo	*pip ;
-const char	tfname[] ;
+cchar	tfname[] ;
 {
 	struct proginfo_stats	*psp = &pip->s ;
 
@@ -4871,7 +4864,7 @@ ret0:
 /* write out general statistics */
 static int sim_genstats(pip,statfname)
 struct proginfo	*pip ;
-const char	statfname[] ;
+cchar	statfname[] ;
 {
 	bfile	tmpfile, *tfp = &tmpfile ;
 
@@ -4922,7 +4915,7 @@ ret0:
 /* write out register statistics */
 static int sim_regstats(pip,statfname)
 struct proginfo	*pip ;
-const char	statfname[] ;
+cchar	statfname[] ;
 {
 	bfile	tmpfile ;
 
@@ -4937,15 +4930,15 @@ const char	statfname[] ;
 	        double	sd ;
 
 
-	        mkfname2(tmp1fname,pip->jobname,FNE_REGRINT) ;
+	        mkpath(tmp1fname,pip->jobname,FNE_REGRINT) ;
 
-	        mkfname2(tmp2fname,pip->jobname,FNE_REGLIFE) ;
+	        mkpath(tmp2fname,pip->jobname,FNE_REGLIFE) ;
 
-	        mkfname2(tmp3fname,pip->jobname,FNE_REGUSE) ;
+	        mkpath(tmp3fname,pip->jobname,FNE_REGUSE) ;
 
-	        mkfname2(tmp4fname,pip->jobname,FNE_REGREAD) ;
+	        mkpath(tmp4fname,pip->jobname,FNE_REGREAD) ;
 
-	        mkfname2(tmp5fname,pip->jobname,FNE_REGWRITE) ;
+	        mkpath(tmp5fname,pip->jobname,FNE_REGWRITE) ;
 
 #if	CF_MASTERDEBUG && CF_DEBUG
 	        if (DEBUGLEVEL(4)) {
@@ -5088,7 +5081,7 @@ const char	statfname[] ;
 /* write out memory statistics */
 static int sim_memstats(pip,statfname)
 struct proginfo	*pip ;
-const char	statfname[] ;
+cchar	statfname[] ;
 {
 	        bfile	tmpfile ;
 
@@ -5103,11 +5096,11 @@ const char	statfname[] ;
 	        double	sd ;
 
 
-	        mkfname2(tmp1fname,pip->jobname,FNE_MEMRINT) ;
+	        mkpath(tmp1fname,pip->jobname,FNE_MEMRINT) ;
 
-	        mkfname2(tmp2fname,pip->jobname,FNE_MEMLIFE) ;
+	        mkpath(tmp2fname,pip->jobname,FNE_MEMLIFE) ;
 
-	        mkfname2(tmp3fname,pip->jobname,FNE_MEMUSE) ;
+	        mkpath(tmp3fname,pip->jobname,FNE_MEMUSE) ;
 
 		tmp4fname[0] = '\0' ;
 		tmp5fname[0] = '\0' ;
@@ -6916,7 +6909,7 @@ tick_t now)		/* time of access */
 /* parse the PE numbers and latencies */
 static int peparse(pip,sp,sl,np,lp)
 struct proginfo	*pip ;
-const char	*sp ;
+cchar	*sp ;
 int		sl ;
 int		*np ;
 int		*lp ;
@@ -6974,7 +6967,7 @@ int		*lp ;
 static int leparse(pip,lip,sp,sl)
 struct proginfo	*pip ;
 struct ssinfo	*lip ;
-const char	*sp ;
+cchar	*sp ;
 int		sl ;
 {
 	FIELD	fsb ;

@@ -22,17 +22,12 @@
 /* revision history:
 
 	= 2001-07-10, David Morano
-
 	This code (the old i-fetch code) has been turned into SimpleSim!
 
-
 	= 2001-07-27, Marcos de Alba
-
 	I added another field to the call of lexec (ilptr).
 
-
 	= 2001-08-10, David Morano
-
 	I changed the code so that the ISA registers are passed to us.
 	Also, the code will only execute for a maximum number of
 	instructions (if specified).  I also changed some variable
@@ -40,44 +35,31 @@
 	whole program.  I also added symbolic TRUE/FALSE for
 	boolean variables.
 
-
 	= 2001-08-17, David Morano
-
 	I added the calls to write out trace information.
 	I had to add the whole trace facility to LevoSim first.
 
-
 	= 2001-08-29, David Morano
-
 	I added the calls to get some disassembled output text for the
 	instrcutions being executed.
 
-
 	= 2001-10-07, David Morano
-
 	I fixed the instructions SH, LWL, and LWR.
 
-
 	= 2001-10-10, David Morano
-
 	I added the code for the LWC1 and SWC1 instructions.
 
-
 	= 2001-11-06, David Morano
-
 	I added the code for the LDC1 and SDC1 instructions.
 
-
 	= 2002-03-14, David Morano
-
 	I took this from the old LevoSim (file 'simplesim.c') and
 	hacked it up to be used for gathering statistics from
 	traces.
 
-
 */
 
-/* Copyright © 1998 David Morano.  All rights reserved. */
+/* Copyright © 1998,2000¸2001,2002 David Morano.  All rights reserved. */
 
 /*******************************************************************************
 
@@ -90,21 +72,19 @@
 	This code just gathers statistics from traces now (sigh).
 	It used to be a part of LevoSim.
 
-
 *******************************************************************************/
 
-
 #include	<envstandards.h>
-
 #include	<sys/types.h>
 #include	<time.h>
 #include	<stdlib.h>
 #include	<string.h>
 #include	<math.h>
-
 #include	<vsystem.h>
 #include	<bfile.h>
 #include	<keyopt.h>
+#include	<mkpathx.h>
+#include	<strwcpy.h>
 #include	<localmisc.h>
 
 #include	"config.h"
@@ -206,8 +186,6 @@
 /* external subroutines */
 
 extern int	sncpy2(char *,int,const char *,const char *) ;
-extern int	mkpath2(char *,const char *,const char *) ;
-extern int	mkfname2(char *,const char *,const char *) ;
 extern int	matostr(const char **,int,const char *,int) ;
 extern int	headkeymat(const char *,const char *,int) ;
 extern int	fmeanvaral(ULONG *,int,double *,double *) ;
@@ -998,8 +976,7 @@ char		tfname[] ;
 	{
 	    char	bploaddir[MAXPATHLEN + 1] ;
 
-
-	    mkpath2(bploaddir,pip->pr,BPLOADDIR) ;
+	    mkpath(bploaddir,pip->pr,BPLOADDIR) ;
 
 	    rs = bpeval_init(&bps,bploaddir,p.rows,p.delay) ;
 
@@ -1031,7 +1008,7 @@ char		tfname[] ;
 	        debugprintf("stats: opt_ssh\n") ;
 #endif
 
-	    mkfname2(sshfname,pip->basename,FE_SSH) ;
+	    mkpath(sshfname,pip->basename,FE_SSH) ;
 
 	    rs = ssh_init(&hammocks,sshfname) ;
 
@@ -1085,7 +1062,7 @@ char		tfname[] ;
 	        debugprintf("stats: opt_fcount\n") ;
 #endif
 
-	    mkfname2(tmpfname,pip->basename,FE_SGINM) ;
+	    mkpath(tmpfname,pip->basename,FE_SGINM) ;
 
 	    rs = fcount_init(&funcs,mpp,tmpfname) ;
 
@@ -1131,7 +1108,7 @@ char		tfname[] ;
 	        debugprintf("stats: opt_memstats\n") ;
 #endif
 
-	    mkfname2(tmpfname,pip->jobname,".memtrack") ;
+	    mkpath(tmpfname,pip->jobname,".memtrack") ;
 
 	    rs = memstats_init(&mstats,tmpfname,-1,-1,-1) ;
 
@@ -2814,7 +2791,7 @@ done:
 
 	        fcount_done(&funcs) ;
 
-	        mkfname2(tmpfname,pip->jobname,FE_FCOUNTS) ;
+	        mkpath(tmpfname,pip->jobname,FE_FCOUNTS) ;
 
 	        if ((rs1 = bopen(&tmpfile,tmpfname,"wct",0666)) >= 0) {
 
@@ -2882,15 +2859,15 @@ done:
 	        double	sd ;
 
 
-	        mkfname2(tmp1fname,pip->jobname,FE_REGRINT) ;
+	        mkpath(tmp1fname,pip->jobname,FE_REGRINT) ;
 
-	        mkfname2(tmp2fname,pip->jobname,FE_REGLIFE) ;
+	        mkpath(tmp2fname,pip->jobname,FE_REGLIFE) ;
 
-	        mkfname2(tmp3fname,pip->jobname,FE_REGUSE) ;
+	        mkpath(tmp3fname,pip->jobname,FE_REGUSE) ;
 
-	        mkfname2(tmp4fname,pip->jobname,FE_REGREAD) ;
+	        mkpath(tmp4fname,pip->jobname,FE_REGREAD) ;
 
-	        mkfname2(tmp5fname,pip->jobname,FE_REGWRITE) ;
+	        mkpath(tmp5fname,pip->jobname,FE_REGWRITE) ;
 
 #if	CF_MASTERDEBUG && CF_DEBUG
 	        if (DEBUGLEVEL(4)) {
@@ -2907,7 +2884,7 @@ done:
 
 /* write to the stats file */
 
-	        mkfname2(tmp1fname,pip->jobname,FE_BSTATS) ;
+	        mkpath(tmp1fname,pip->jobname,FE_BSTATS) ;
 
 	        if ((rs1 = bopen(&tmpfile,tmp1fname,"wa",0666)) >= 0) {
 
@@ -2987,11 +2964,11 @@ done:
 	        double	sd ;
 
 
-	        mkfname2(tmp1fname,pip->jobname,FE_MEMRINT) ;
+	        mkpath(tmp1fname,pip->jobname,FE_MEMRINT) ;
 
-	        mkfname2(tmp2fname,pip->jobname,FE_MEMLIFE) ;
+	        mkpath(tmp2fname,pip->jobname,FE_MEMLIFE) ;
 
-	        mkfname2(tmp3fname,pip->jobname,FE_MEMUSE) ;
+	        mkpath(tmp3fname,pip->jobname,FE_MEMUSE) ;
 
 #if	CF_MASTERDEBUG && CF_DEBUG
 	        if (DEBUGLEVEL(4)) {
@@ -3008,7 +2985,7 @@ done:
 
 /* write to the stats file */
 
-	        mkfname2(tmp1fname,pip->jobname,FE_BSTATS) ;
+	        mkpath(tmp1fname,pip->jobname,FE_BSTATS) ;
 
 	        if ((rs1 = bopen(&tmpfile,tmp1fname,"wa",0666)) >= 0) {
 
@@ -3969,7 +3946,7 @@ struct params		*pp ;
 
 /* write out the instruction (operations) frequencies */
 
-	mkfname2(tmpfname,pip->jobname,FE_ICOUNTS) ;
+	mkpath(tmpfname,pip->jobname,FE_ICOUNTS) ;
 
 	if ((rs = bopen(&tmpfile,tmpfname,"wct",0666)) >= 0) {
 
@@ -3982,7 +3959,7 @@ struct params		*pp ;
 
 /* write out the branch-path lengths */
 
-	mkfname2(tmpfname,pip->jobname,FE_BPLEN) ;
+	mkpath(tmpfname,pip->jobname,FE_BPLEN) ;
 
 	if ((rs = bopen(&tmpfile,tmpfname,"wct",0666)) >= 0) {
 
@@ -3996,7 +3973,7 @@ struct params		*pp ;
 
 /* write out the branch-target lengths */
 
-	mkfname2(tmpfname,pip->jobname,FE_BFTLEN) ;
+	mkpath(tmpfname,pip->jobname,FE_BFTLEN) ;
 
 	if ((rs = bopen(&tmpfile,tmpfname,"wct",0666)) >= 0) {
 
@@ -4008,7 +3985,7 @@ struct params		*pp ;
 
 	} /* end if (opened bftlen file) */
 
-	mkfname2(tmpfname,pip->jobname,FE_BBTLEN) ;
+	mkpath(tmpfname,pip->jobname,FE_BBTLEN) ;
 
 	if ((rs = bopen(&tmpfile,tmpfname,"wct",0666)) >= 0) {
 
@@ -4022,7 +3999,7 @@ struct params		*pp ;
 
 /* write out SS hammock branch-target lengths */
 
-	mkfname2(tmpfname,pip->jobname,FE_HTLEN) ;
+	mkpath(tmpfname,pip->jobname,FE_HTLEN) ;
 
 	if ((rs = bopen(&tmpfile,tmpfname,"wct",0666)) >= 0) {
 
@@ -4036,7 +4013,7 @@ struct params		*pp ;
 
 /* write out general stuff */
 
-	mkfname2(tmpfname,pip->jobname,FE_BSTATS) ;
+	mkpath(tmpfname,pip->jobname,FE_BSTATS) ;
 
 	if ((rs = bopen(&tmpfile,tmpfname,"wct",0666)) >= 0) {
 
@@ -4634,7 +4611,7 @@ int			vprow ;
 	char	tmpfname[MAXPATHLEN + 1] ;
 
 
-	mkfname2(tmpfname,pip->jobname,FE_BSTATS) ;
+	mkpath(tmpfname,pip->jobname,FE_BSTATS) ;
 
 	if ((rs = bopen(&tmpfile,tmpfname,"wa",0666)) >= 0) {
 
