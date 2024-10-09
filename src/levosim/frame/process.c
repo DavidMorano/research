@@ -1,30 +1,30 @@
-/* process */
+/* process SUPPORT */
+/* lang=C++98 */
 
 /* setup for simulation (w/ MINT and otherwise) */
-
+/* version %I% last-modified %G% */
 
 #define	CF_DEBUGS	0		/* non-switchable */
 #define	CF_DEBUG	1		/* switchable debug print-outs */
 #define	CF_MACHINE	1		/* create & run the machine ? */
 #define	CF_MINT		0		/* so we need MINT ? */
 
-
 /* revision history :
 
-	= 00/02/15, Dave Morano
-
+	= 2000-02-15, Dave Morano
 	This subroutine was originally written.  Parts were copied
-	from other miscellaneous subroutines.
-
 
 */
 
 
 /*****************************************************************************
 
-	This subroutine ('process') is used to setup things
-	before calling MINT so that things are findable.
+  	Name:
+	process
 
+	Description:
+	This subroutine ('process') is used to setup things before
+	calling MINT so that things are findable.
 
 *****************************************************************************/
 
@@ -33,20 +33,22 @@
 #include	<sys/param.h>
 #include	<sys/resource.h>
 #include	<unistd.h>
-#include	<string.h>
-
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>
+#include	<cstring>
 #include	<vsystem.h>
 #include	<vecstr.h>
 #include	<field.h>
 #include	<mkpathx.h>
+#include	<mkfnamex.h>
 #include	<strwcpy.h>
 #include	<bio.h>
 #include	<mallocstuff.h>
+#include	<paramfile.h>
+#include	<getfname.h">
+#include	<timestr.h>
+#include	<localmisc.h>
 
-#include	"paramfile.h"
-#include	"getfname.h"
-
-#include	"localmisc.h"
 #include	"config.h"
 #include	"defs.h"
 #include	"exectrace.h"		/* execution tracing */
@@ -91,8 +93,6 @@ extern int	simplesim(struct proginfo *,PARAMFILE *,LSIM *,
 			struct statemips *,SYSCALLS *,ULONG) ;
 
 extern char	*strbasename(char *) ;
-extern char	*timestr_log(time_t,char *) ;
-extern char	*timestr_elapsed(time_t, char *) ;
 
 
 /* local structures */
@@ -106,7 +106,7 @@ static int	process_fcount(struct proginfo *, struct statemips *) ;
 
 /* local variables */
 
-static const char	*exts[] = {
+static cchar	*exts[] = {
 	"us5",
 	"s5",
 	"x",
@@ -117,7 +117,7 @@ static const char	*exts[] = {
 } ;
 
 /* program parameters */
-static const char	*pparams[] = {
+static cchar	*pparams[] = {
 	"stdin",			/* target STDIN file */
 	"stdout",			/* target STDOUT file */
 	"stderr",			/* target STDERR file */
@@ -200,7 +200,7 @@ ULONG		skipinstr ;
 	int	f_progargs = FALSE ;
 	int	f_etfname = FALSE ;
 
-	const char	**progargv, **progenvv ;
+	cchar	**progargv, **progenvv ;
 
 	char	exectraceopts[EXECTRACEOPTSLEN + 1] ;
 	char	xmltraceopts[XMLTRACEOPTSLEN + 1] ;
@@ -781,13 +781,14 @@ ULONG		skipinstr ;
 
 	    cp = strbasename(pip->execfname) ;
 
-	    if ((op = strchr(cp,'.')) != NULL)
+	    if ((op = strchr(cp,'.')) != NULL) {
 	        strwcpy(targetbuf,cp,MIN(op - cp,(MAXNAMELEN - 1))) ;
 
-	    else
+	    } else {
 	        strwcpy(targetbuf,cp,(MAXNAMELEN - 1)) ;
+	    }
 
-	        mkpath(tmpfname,targetbuf,FE_SGINM) ;
+	        mkfname(tmpfname,targetbuf,FE_SGINM) ;
 
 	        rs = fcount_init(&pip->fc,mpp,tmpfname) ;
 
@@ -1291,13 +1292,11 @@ struct statemips	*smp ;
 /* function instruction counts */
 
 	    if (pip->f.fcount) {
-
 	        bfile	tmpfile ;
-
 
 	        rs = fcount_done(&pip->fc) ;
 
-	        mkpath(tmpfname,pip->jobname,FE_FCOUNTS) ;
+	        mkfname(tmpfname,pip->jobname,FE_FCOUNTS) ;
 
 	        if ((rs1 = bopen(&tmpfile,tmpfname,"wct",0666)) >= 0) {
 

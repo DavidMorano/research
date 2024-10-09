@@ -1,8 +1,8 @@
-/* memstats */
+/* memstats SUPPORT */
+/* lang=C++98 */
 
 /* maintain register statistics */
 /* last modified %G% version %I% */
-
 
 #define	CF_DEBUGS	0		/* non-switchable debugs */
 #define	CF_DEBUGS2	0		/* non-switchable of next order */
@@ -10,10 +10,9 @@
 #define	CF_ASSERTS	1		/* include 'assert()'s in code */
 #define	CF_TESTGROUP	0		/* test group allocation */
 
-
 /* revision history:
 
-	= 02/08/21, Dave Morano
+	= 2002-08-21, Dave Morano
 	This program was originally written.
 
 */
@@ -22,6 +21,10 @@
 
 /**************************************************************************
 
+  	Name:
+	memstats
+
+	Description:
 	This object module tracks certain statistics about the
 	use of memory.
 
@@ -32,24 +35,21 @@
 #include	<sys/stat.h>
 #include	<sys/param.h>
 #include	<sys/mman.h>
-#include	<limits.h>
 #include	<unistd.h>
 #include	<fcntl.h>
-#include	<stdlib.h>
-#include	<string.h>
-#include	<assert.h>
-
-#if	defined(IRIX)
-#include	<standards.h>
-#endif
-
+#include	<climits>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>
+#include	<cstring>
+#include	<cassert>
 #include	<vsystem.h>
 #include	<mkpathx.h>
+#include	<mkfnamex.h>
 #include	<strwcpy.h>
 #include	<mallocstuff.h>
 #include	<bio.h>
+#include	<localmisc.h>
 
-#include	"localmisc.h"
 #include	"memstats.h"
 
 
@@ -1009,17 +1009,17 @@ char		usefname[] ;
 
 /* the 2^10 table */
 
-	mkpath(fname,rintfname,"1") ;
+	mkfname(fname,rintfname,"1") ;
 
 	if (rs >= 0)
 	    rs = writearray(fname,op->denrint1,op->lenden) ;
 
-	mkpath(fname,lifefname,"1") ;
+	mkfname(fname,lifefname,"1") ;
 
 	if (rs >= 0)
 	    rs = writearray(fname,op->denlife1,op->lenden) ;
 
-	mkpath(fname,usefname,"1") ;
+	mkfname(fname,usefname,"1") ;
 
 	if (rs >= 0)
 	    rs = writearray(fname,op->denuse1,op->lenden) ;

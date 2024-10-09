@@ -1,7 +1,8 @@
-/* sim-optiflow */
+/* sim-optiflow SUPPORT */
+/* lang=C++98 */
 
 /* sim-test.c - sample functional simulator implementation */
-
+/* version %I% last-modified %G% */
 
 #define	CF_DEBUGS	0		/* debug print-outs */
 #define	CF_DEBUG	0		/* switchable debug print-outs */
@@ -18,16 +19,20 @@
 #define	CF_WRITEDONE	0		/* close off writes for stats? */
 #define	CF_ADJINSTR	1		/* adjust instruction points */
 
-
 /* Copyright © 2003-2007 David A­D­ Morano.  All rights reserved. */
 
 /*******************************************************************************
 
-        This is the main code module for implementing the OpTiFlow simulator.
-        This file is loosely modeled after similar files that implement
-        simulators such as 'sim-outorder' and 'sim-mase'. Most of the gooko
-        (SimpleScalar interfacing) subroutines are purposely put into this file
-        to try to keep them (gooko subroutines) in the same place.
+  	Name:
+	sim-optiflow
+
+	Description:
+	This is the main code module for implementing the OpTiFlow
+	simulator.  This file is loosely modeled after similar files
+	that implement simulators such as 'sim-outorder' and
+	'sim-mase'.  Most of the gooko (SimpleScalar interfacing)
+	subroutines are purposely put into this file to try to keep
+	them (gooko subroutines) in the same place.
 
 	Important note:
 	Do NOT turn on the "define" option above named CF_WRITEDONE!
@@ -38,12 +43,14 @@
 #include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/param.h>
-#include <stdlib.h>
-#include <string.h>
-#include <math.h>
-#include <assert.h>
-#include <stdio.h>
+#include	<cmath>
+#include	<cassert>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>
+#include	<cstdio>
+#include	<cstring>
 #include	<mkpathx.h>
+#include	<mkfnamex.h>
 #include	<strwcpy.h>
 #include	<bio.h>
 #include	<sbuf.h>
@@ -1994,7 +2001,7 @@ int sim_init(void)
 	    if (cp[0] != '/') {
 
 	        cp = loaddname ;
-	        mkpath(loaddname,pip->pr,LOADDNAME) ;
+	        mkfname(loaddname,pip->pr,LOADDNAME) ;
 
 	    }
 
@@ -2061,7 +2068,7 @@ int sim_init(void)
 	        eprintf("sim_init: opt_memstats\n") ;
 #endif
 
-	    mkpath(tmpfname,pip->jobname,".memtrack") ;
+	    mkfname(tmpfname,pip->jobname,".memtrack") ;
 
 	    rs = memstats_init(&pip->mstats,tmpfname,-1,-1,
 		lip->memelemsize,lip->memdenlen) ;
@@ -4930,15 +4937,15 @@ cchar	statfname[] ;
 	        double	sd ;
 
 
-	        mkpath(tmp1fname,pip->jobname,FNE_REGRINT) ;
+	        mkfname(tmp1fname,pip->jobname,FNE_REGRINT) ;
 
-	        mkpath(tmp2fname,pip->jobname,FNE_REGLIFE) ;
+	        mkfname(tmp2fname,pip->jobname,FNE_REGLIFE) ;
 
-	        mkpath(tmp3fname,pip->jobname,FNE_REGUSE) ;
+	        mkfname(tmp3fname,pip->jobname,FNE_REGUSE) ;
 
-	        mkpath(tmp4fname,pip->jobname,FNE_REGREAD) ;
+	        mkfname(tmp4fname,pip->jobname,FNE_REGREAD) ;
 
-	        mkpath(tmp5fname,pip->jobname,FNE_REGWRITE) ;
+	        mkfname(tmp5fname,pip->jobname,FNE_REGWRITE) ;
 
 #if	CF_MASTERDEBUG && CF_DEBUG
 	        if (DEBUGLEVEL(4)) {
@@ -5096,11 +5103,11 @@ cchar	statfname[] ;
 	        double	sd ;
 
 
-	        mkpath(tmp1fname,pip->jobname,FNE_MEMRINT) ;
+	        mkfname(tmp1fname,pip->jobname,FNE_MEMRINT) ;
 
-	        mkpath(tmp2fname,pip->jobname,FNE_MEMLIFE) ;
+	        mkfname(tmp2fname,pip->jobname,FNE_MEMLIFE) ;
 
-	        mkpath(tmp3fname,pip->jobname,FNE_MEMUSE) ;
+	        mkfname(tmp3fname,pip->jobname,FNE_MEMUSE) ;
 
 		tmp4fname[0] = '\0' ;
 		tmp5fname[0] = '\0' ;

@@ -1,7 +1,8 @@
-/* simplesim */
+/* simplesim SUPPORT */
+/* lang=C++98 */
 
 /* SimpleSim MIPS ISA simulator */
-
+/* version %I% last-modified %G% */
 
 #define	F_DEBUGS	0		/* non-switchable */
 #define	F_DEBUG		1		/* switchable */
@@ -12,7 +13,6 @@
 #define F_CREATETRACE   1		/* create debugging trace data */
 #define	F_NOSTOP	0		/* stop after IA mismatch */
 #define	F_BREAKERROR	0		/* break out on error */
-
 
 /* revision history:
 
@@ -59,19 +59,21 @@
 
 #include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
-#include	<stdlib.h>
-#include	<string.h>
-#include	<math.h>
+#include	<cmath>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>
+#include	<cstring>
 #include	<vsystem.h>
 #include	<bio.h>
 #include	<libuc.h>
 #include	<mkpathx.h>
+#include	<mkfnamex.h>
 #include	<strwcpy.h>
+#include	<paramfile.h>
+#include	<localmisc.h>
 
-#include	"localmisc.h"
 #include	"config.h"
 #include	"defs.h"
-#include	"paramfile.h"
 #include	"debugwin.h"
 
 #include	"lsim.h"
@@ -88,7 +90,6 @@
 #include	"ldecode.h"
 #include	"lexec.h"
 #include	"mipsdis.h"
-
 
 
 /* local defines */
@@ -1988,7 +1989,7 @@ struct statemips	*smp ;
 
 /* write out the instruction (operations) frequencies */
 
-	mkpath(tmpfname,pip->jobname,ICOUNTS) ;
+	mkfname(tmpfname,pip->jobname,ICOUNTS) ;
 
 	if ((rs = bopen(&tmpfile,tmpfname,"wct",0666)) >= 0) {
 
@@ -2001,7 +2002,7 @@ struct statemips	*smp ;
 
 /* write out the branch-path lengths */
 
-	mkpath(tmpfname,pip->jobname,BPLEN) ;
+	mkfname(tmpfname,pip->jobname,BPLEN) ;
 
 	if ((rs = bopen(&tmpfile,tmpfname,"wct",0666)) >= 0) {
 
@@ -2015,7 +2016,7 @@ struct statemips	*smp ;
 
 /* write out the branch-target lengths */
 
-	mkpath(tmpfname,pip->jobname,BTLEN) ;
+	mkfname(tmpfname,pip->jobname,BTLEN) ;
 
 	if ((rs = bopen(&tmpfile,tmpfname,"wct",0666)) >= 0) {
 
@@ -2031,7 +2032,7 @@ struct statemips	*smp ;
 
 /* write out SS hammock branch-target lengths */
 
-	mkpath(tmpfname,pip->jobname,HTLEN) ;
+	mkfname(tmpfname,pip->jobname,HTLEN) ;
 
 	if ((rs = bopen(&tmpfile,tmpfname,"wct",0666)) >= 0) {
 
@@ -2047,7 +2048,7 @@ struct statemips	*smp ;
 
 /* write out other branch path information */
 
-	mkpath(tmpfname,pip->jobname,BSTATS) ;
+	mkfname(tmpfname,pip->jobname,BSTATS) ;
 
 	if ((rs = bopen(&tmpfile,tmpfname,"wct",0666)) >= 0) {
 

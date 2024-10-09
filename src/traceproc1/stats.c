@@ -1,7 +1,8 @@
-/* stats */
+/* stats SUPPORT */
+/* lang=C++98 */
 
 /* statistics gathering */
-
+/* version %I% last-modified %G% */
 
 #define	CF_DEBUGS	0		/* non-switchable */
 #define	CF_DEBUG	1		/* switchable */
@@ -17,7 +18,6 @@
 #define	CF_LATEUPDATE	1		/* do BP update from trace */
 #define	CF_VARIANCE	0
 #define	CF_CLOSELIFES	0		/* close off trailing lifetimes */
-
 
 /* revision history:
 
@@ -84,6 +84,7 @@
 #include	<bfile.h>
 #include	<keyopt.h>
 #include	<mkpathx.h>
+#include	<mkfnamex.h>
 #include	<strwcpy.h>
 #include	<localmisc.h>
 
@@ -976,7 +977,7 @@ char		tfname[] ;
 	{
 	    char	bploaddir[MAXPATHLEN + 1] ;
 
-	    mkpath(bploaddir,pip->pr,BPLOADDIR) ;
+	    mkfname(bploaddir,pip->pr,BPLOADDIR) ;
 
 	    rs = bpeval_init(&bps,bploaddir,p.rows,p.delay) ;
 
@@ -1008,7 +1009,7 @@ char		tfname[] ;
 	        debugprintf("stats: opt_ssh\n") ;
 #endif
 
-	    mkpath(sshfname,pip->basename,FE_SSH) ;
+	    mkfname(sshfname,pip->basename,FE_SSH) ;
 
 	    rs = ssh_init(&hammocks,sshfname) ;
 
@@ -1062,7 +1063,7 @@ char		tfname[] ;
 	        debugprintf("stats: opt_fcount\n") ;
 #endif
 
-	    mkpath(tmpfname,pip->basename,FE_SGINM) ;
+	    mkfname(tmpfname,pip->basename,FE_SGINM) ;
 
 	    rs = fcount_init(&funcs,mpp,tmpfname) ;
 
@@ -1108,7 +1109,7 @@ char		tfname[] ;
 	        debugprintf("stats: opt_memstats\n") ;
 #endif
 
-	    mkpath(tmpfname,pip->jobname,".memtrack") ;
+	    mkfname(tmpfname,pip->jobname,".memtrack") ;
 
 	    rs = memstats_init(&mstats,tmpfname,-1,-1,-1) ;
 
@@ -2791,7 +2792,7 @@ done:
 
 	        fcount_done(&funcs) ;
 
-	        mkpath(tmpfname,pip->jobname,FE_FCOUNTS) ;
+	        mkfname(tmpfname,pip->jobname,FE_FCOUNTS) ;
 
 	        if ((rs1 = bopen(&tmpfile,tmpfname,"wct",0666)) >= 0) {
 
@@ -2859,15 +2860,15 @@ done:
 	        double	sd ;
 
 
-	        mkpath(tmp1fname,pip->jobname,FE_REGRINT) ;
+	        mkfname(tmp1fname,pip->jobname,FE_REGRINT) ;
 
-	        mkpath(tmp2fname,pip->jobname,FE_REGLIFE) ;
+	        mkfname(tmp2fname,pip->jobname,FE_REGLIFE) ;
 
-	        mkpath(tmp3fname,pip->jobname,FE_REGUSE) ;
+	        mkfname(tmp3fname,pip->jobname,FE_REGUSE) ;
 
-	        mkpath(tmp4fname,pip->jobname,FE_REGREAD) ;
+	        mkfname(tmp4fname,pip->jobname,FE_REGREAD) ;
 
-	        mkpath(tmp5fname,pip->jobname,FE_REGWRITE) ;
+	        mkfname(tmp5fname,pip->jobname,FE_REGWRITE) ;
 
 #if	CF_MASTERDEBUG && CF_DEBUG
 	        if (DEBUGLEVEL(4)) {
@@ -2884,7 +2885,7 @@ done:
 
 /* write to the stats file */
 
-	        mkpath(tmp1fname,pip->jobname,FE_BSTATS) ;
+	        mkfname(tmp1fname,pip->jobname,FE_BSTATS) ;
 
 	        if ((rs1 = bopen(&tmpfile,tmp1fname,"wa",0666)) >= 0) {
 
@@ -2964,11 +2965,11 @@ done:
 	        double	sd ;
 
 
-	        mkpath(tmp1fname,pip->jobname,FE_MEMRINT) ;
+	        mkfname(tmp1fname,pip->jobname,FE_MEMRINT) ;
 
-	        mkpath(tmp2fname,pip->jobname,FE_MEMLIFE) ;
+	        mkfname(tmp2fname,pip->jobname,FE_MEMLIFE) ;
 
-	        mkpath(tmp3fname,pip->jobname,FE_MEMUSE) ;
+	        mkfname(tmp3fname,pip->jobname,FE_MEMUSE) ;
 
 #if	CF_MASTERDEBUG && CF_DEBUG
 	        if (DEBUGLEVEL(4)) {
@@ -2985,7 +2986,7 @@ done:
 
 /* write to the stats file */
 
-	        mkpath(tmp1fname,pip->jobname,FE_BSTATS) ;
+	        mkfname(tmp1fname,pip->jobname,FE_BSTATS) ;
 
 	        if ((rs1 = bopen(&tmpfile,tmp1fname,"wa",0666)) >= 0) {
 
@@ -3946,7 +3947,7 @@ struct params		*pp ;
 
 /* write out the instruction (operations) frequencies */
 
-	mkpath(tmpfname,pip->jobname,FE_ICOUNTS) ;
+	mkfname(tmpfname,pip->jobname,FE_ICOUNTS) ;
 
 	if ((rs = bopen(&tmpfile,tmpfname,"wct",0666)) >= 0) {
 
@@ -3959,7 +3960,7 @@ struct params		*pp ;
 
 /* write out the branch-path lengths */
 
-	mkpath(tmpfname,pip->jobname,FE_BPLEN) ;
+	mkfname(tmpfname,pip->jobname,FE_BPLEN) ;
 
 	if ((rs = bopen(&tmpfile,tmpfname,"wct",0666)) >= 0) {
 
@@ -3973,7 +3974,7 @@ struct params		*pp ;
 
 /* write out the branch-target lengths */
 
-	mkpath(tmpfname,pip->jobname,FE_BFTLEN) ;
+	mkfname(tmpfname,pip->jobname,FE_BFTLEN) ;
 
 	if ((rs = bopen(&tmpfile,tmpfname,"wct",0666)) >= 0) {
 
@@ -3985,7 +3986,7 @@ struct params		*pp ;
 
 	} /* end if (opened bftlen file) */
 
-	mkpath(tmpfname,pip->jobname,FE_BBTLEN) ;
+	mkfname(tmpfname,pip->jobname,FE_BBTLEN) ;
 
 	if ((rs = bopen(&tmpfile,tmpfname,"wct",0666)) >= 0) {
 
@@ -3999,7 +4000,7 @@ struct params		*pp ;
 
 /* write out SS hammock branch-target lengths */
 
-	mkpath(tmpfname,pip->jobname,FE_HTLEN) ;
+	mkfname(tmpfname,pip->jobname,FE_HTLEN) ;
 
 	if ((rs = bopen(&tmpfile,tmpfname,"wct",0666)) >= 0) {
 
@@ -4013,7 +4014,7 @@ struct params		*pp ;
 
 /* write out general stuff */
 
-	mkpath(tmpfname,pip->jobname,FE_BSTATS) ;
+	mkfname(tmpfname,pip->jobname,FE_BSTATS) ;
 
 	if ((rs = bopen(&tmpfile,tmpfname,"wct",0666)) >= 0) {
 
@@ -4611,7 +4612,7 @@ int			vprow ;
 	char	tmpfname[MAXPATHLEN + 1] ;
 
 
-	mkpath(tmpfname,pip->jobname,FE_BSTATS) ;
+	mkfname(tmpfname,pip->jobname,FE_BSTATS) ;
 
 	if ((rs = bopen(&tmpfile,tmpfname,"wa",0666)) >= 0) {
 
