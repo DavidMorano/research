@@ -635,7 +635,7 @@ int debugsched_check(pfp,eep)
 DEBUGSCHED	*pfp ;
 VECITEM		*eep ;
 {
-	struct stat	sb ;
+	USTAT	sb ;
 
 	DEBUGSCHED_FILE	*fep ;
 
@@ -730,7 +730,7 @@ VECITEM		*eep ;
 
 	DEBUGSCHED_ENTRY	pe ;
 
-	struct stat	sb ;
+	USTAT	sb ;
 
 	FIELD	fsb ;
 
