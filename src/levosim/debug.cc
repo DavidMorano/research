@@ -145,7 +145,7 @@ char	s[] ;
 /* return a count of the number of open files */
 int d_openfiles()
 {
-	struct stat	sb ;
+	USTAT	sb ;
 
 	int	i ;
 	int	count = 0 ;
