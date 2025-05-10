@@ -270,7 +270,7 @@ int main(int argc,const char **argv,const char **envv)
 	bfile		pidfile ;
 	bfile		btfile ;
 
-	struct stat		sb ;
+	USTAT		sb ;
 
 	struct proginfo		g, *pip = &g ;
 
