@@ -268,7 +268,7 @@ void ReadDict(char *pchFile) {
     unsigned cWords = 0;
     unsigned cLetters;
     int ch;
-    struct stat statBuf;
+    USTAT statBuf;
 
     if (stat(pchFile, &statBuf)) Fatal("Cannot stat dictionary\n", 0);
 

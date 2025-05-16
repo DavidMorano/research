@@ -111,7 +111,7 @@ const char	inputname[] ;
 char		fname[] ;
 int		type ;
 {
-	struct stat	sb ;
+	USTAT	sb ;
 
 	int	rs = SR_OK ;
 	int	f_local = FALSE ;

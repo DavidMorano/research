@@ -262,7 +262,7 @@ int sim_dump_stats = FALSE;
 struct opt_odb_t *sim_odb;
 
 /* stats database */
-struct stat_sdb_t *sim_sdb;
+USTAT_sdb_t *sim_sdb;
 
 /* EIO interfaces */
 char *sim_eio_fname = NULL;
@@ -304,7 +304,7 @@ int	argc ;
 char	*argv[] ;
 char	*envv[] ;
 {
-	struct stat	sb ;
+	USTAT	sb ;
 
 	struct proginfo	*pip = &pi ;
 

@@ -1036,7 +1036,7 @@ sys_syscall(struct regs_t *regs,	/* registers to access */
 #ifdef _MSC_VER
 	struct _stat sbuf;
 #else /* !_MSC_VER */
-	struct stat sbuf;
+	USTAT sbuf;
 #endif /* _MSC_VER */
 
 	/* copy filename to host memory */
@@ -1336,7 +1336,7 @@ sys_syscall(struct regs_t *regs,	/* registers to access */
 #ifdef _MSC_VER
 	struct _stat sbuf;
 #else /* !_MSC_VER */
-	struct stat sbuf;
+	USTAT sbuf;
 #endif /* _MSC_VER */
 
 	/* fstat() the file */

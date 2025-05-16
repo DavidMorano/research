@@ -17,7 +17,7 @@ struct inclist *inc_path(file, include, dot)
 	static char	path[ BUFSIZ ];
 	register char		**pp, *p;
 	register struct inclist	*ip;
-	struct stat	st;
+	USTAT	st;
 	boolean	found = FALSE;
 
 	/*
@@ -171,7 +171,7 @@ issymbolic(dir, component)
 	register char	*dir, *component;
 {
 #ifdef S_IFLNK
-	struct stat	st;
+	USTAT	st;
 	char	buf[ BUFSIZ ], **pp;
 
 	sprintf(buf, "%s%s%s", dir, *dir ? "/" : "", component);

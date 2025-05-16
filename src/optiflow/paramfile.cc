@@ -686,7 +686,7 @@ int paramfile_check(op,daytime)
 PARAMFILE		*op ;
 time_t			daytime ;
 {
-	struct stat	sb ;
+	USTAT	sb ;
 
 	PARAMFILE_FILE	*fep ;
 
@@ -767,7 +767,7 @@ time_t			daytime ;
 static int paramfile_getpwd(op)
 PARAMFILE		*op ;
 {
-	struct stat	sb ;
+	USTAT	sb ;
 
 	int	rs = SR_OK ;
 
@@ -820,7 +820,7 @@ static int paramfile_fileparse(op,fi)
 PARAMFILE		*op ;
 int			fi ;
 {
-	struct stat	sb ;
+	USTAT	sb ;
 
 	bfile		loadfile, *lfp = &loadfile ;
 

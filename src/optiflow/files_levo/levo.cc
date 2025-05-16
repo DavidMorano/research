@@ -211,7 +211,7 @@ void sim_main(void)
 {
 	struct proginfo	*pip = &pi ;
 
-	struct stat	sb ;
+	USTAT	sb ;
 
 	int	rs ;
 

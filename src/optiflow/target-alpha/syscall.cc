@@ -1631,7 +1631,7 @@ sys_syscall(struct regs_t *regs,	/* registers to access */
 #ifdef _MSC_VER
 	struct _stat sbuf;
 #else /* !_MSC_VER */
-	struct stat sbuf;
+	USTAT sbuf;
 #endif /* _MSC_VER */
 
 	/* copy filename to host memory */
@@ -1995,7 +1995,7 @@ sys_syscall(struct regs_t *regs,	/* registers to access */
 #ifdef _MSC_VER
         struct _stat sbuf;
 #else /* !_MSC_VER */
-	struct stat sbuf;
+	USTAT sbuf;
 #endif /* _MSC_VER */
 
 	/* fstat() the file */
@@ -2811,7 +2811,7 @@ sys_syscall(struct regs_t *regs,	/* registers to access */
       {
 	char buf[MAXBUFSIZE];
 	struct osf_statfs osf_sbuf;
-	struct statfs sbuf;
+	STATFS sbuf;
 
 	/* copy filename to host memory */
 	mem_strcpy(mem_fn, mem, Read, /*fName*/regs->regs_R[MD_REG_A0], buf);

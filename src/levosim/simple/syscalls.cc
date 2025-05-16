@@ -232,7 +232,7 @@ int syscalls_init(op,pip,mip,smp,stdfiles)
 SYSCALLS	*op ;
 struct proginfo	*pip ;
 LSIM		*mip ;
-struct statemips	*smp ;
+USTATemips	*smp ;
 char		*stdfiles[] ;
 {
 	int	rs, i ;
@@ -1355,7 +1355,7 @@ LSIM			*mip ;
 SYSCALLS_ARGREGS	*arp ;
 SYSCALLS_RETREG		*rrp ;
 {
-	struct stat	sb ;
+	USTAT	sb ;
 
 	struct sgistat	sgib ;
 
@@ -1377,7 +1377,7 @@ SYSCALLS_RETREG		*rrp ;
 	    eprintf("syscalls/handle_fstat: tfdi=%08x sgisize=%d solsize=%d\n",
 	        tfdi,
 	        sizeof(struct sgistat),
-	        sizeof(struct stat)) ;
+	        sizeof(USTAT)) ;
 #endif
 
 	if (tfdi >= SYSCALLS_NFILE)
@@ -1903,7 +1903,7 @@ LSIM			*mip ;
 SYSCALLS_ARGREGS	*arp ;
 SYSCALLS_RETREG		*rrp ;
 {
-	struct stat	sb ;
+	USTAT	sb ;
 
 	struct sgistat	sgib ;
 
@@ -2465,7 +2465,7 @@ SYSCALLS_RETREG		*rrp ;
 {
 	LSIM_MAXPROG	max ;
 
-	struct statemips	*smp ;
+	USTATemips	*smp ;
 
 	struct sgirusage	ru ;
 
@@ -2568,7 +2568,7 @@ LSIM			*mip ;
 SYSCALLS_ARGREGS	*arp ;
 SYSCALLS_RETREG		*rrp ;
 {
-	struct statemips	*smp ;
+	USTATemips	*smp ;
 
 	uint	ta ;
 
@@ -2651,7 +2651,7 @@ SYSCALLS_RETREG		*rrp ;
 {
 	LSIM_MAXPROG	max ;
 
-	struct statemips	*smp ;
+	USTATemips	*smp ;
 
 	struct sgitms		his ;
 

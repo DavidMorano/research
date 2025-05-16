@@ -317,7 +317,7 @@ struct filepointer *getfile(file)
 {
 	register int	fd;
 	struct filepointer	*content;
-	struct stat	st;
+	USTAT	st;
 
 	content = (struct filepointer *)malloc(sizeof(struct filepointer));
 	if ((fd = open(file, O_RDONLY)) < 0) {
@@ -458,7 +458,7 @@ redirect(line, makefile)
 	char	*line,
 		*makefile;
 {
-	struct stat	st;
+	USTAT	st;
 	FILE	*fdin, *fdout;
 	char	backup[ BUFSIZ ],
 		buf[ BUFSIZ ];

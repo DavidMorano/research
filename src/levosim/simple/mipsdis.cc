@@ -174,7 +174,7 @@ char	execfname[] ;
 	defsize = 100000 ;
 	if (f_dis) {
 
-	    struct stat	sb ;
+	    USTAT	sb ;
 
 
 	    rs = u_stat(tmpfname,&sb) ;
