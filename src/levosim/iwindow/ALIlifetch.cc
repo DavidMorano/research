@@ -67,7 +67,7 @@
 
 #include	<sys/types.h>
 #include	<assert.h>
-#include	<stdio.h>
+#include	<cstdio>
 
 #include	<vsystem.h>
 #include	<bio.h>

@@ -55,7 +55,7 @@
 
 #include	<sys/types.h>
 #include	<sys/param.h>
-#include	<string.h>
+#include	<cstring>
 #include	<ctype.h>
 #include	<malloc.h>
 

@@ -34,8 +34,8 @@
 #include	<envstandards.h>
 
 #include	<sys/types.h>
-#include	<stdlib.h>
-#include	<string.h>
+#include	<cstdlib>
+#include	<cstring>
 #include	<math.h>
 
 #include	<vsystem.h>

@@ -15,8 +15,8 @@
 /* Simulates fully associative caches of a range of sizes but of *
  * a constant line size with OPT replacement.                    */
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 
 #include "../host.h"
 #include "../misc.h"

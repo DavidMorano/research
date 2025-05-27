@@ -9,7 +9,7 @@
 
 #include	<sys/types.h>
 #include	<sys/param.h>
-#include	<limits.h>
+#include	<climits>
 
 #include	"localmisc.h"
 #include	"defs.h"

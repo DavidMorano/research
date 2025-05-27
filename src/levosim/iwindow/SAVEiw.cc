@@ -110,11 +110,11 @@
 
 
 #include	<sys/types.h>
-#include	<stdlib.h>
-#include	<string.h>
+#include	<cstdlib>
+#include	<cstring>
 
 #if	F_FPRINTF
-#include	<stdio.h>
+#include	<cstdio>
 #endif
 
 #include	<vsystem.h>

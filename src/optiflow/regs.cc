@@ -50,8 +50,8 @@
  */
 
 #include	<sys/types.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 
 #include	"localmisc.h"
 #include	"ssdecode.h"

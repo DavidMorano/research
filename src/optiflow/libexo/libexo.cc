@@ -67,12 +67,12 @@
  *
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdarg.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstdarg>
 #include <ctype.h>
-#include <limits.h>
-#include <errno.h>
+#include <climits>
+#include <cerrno>
 #include <assert.h>
 
 #include "../host.h"

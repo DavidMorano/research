@@ -50,12 +50,12 @@
  */
 
 #include	<sys/types.h>
-#include <limits.h>
-#include <stdlib.h>
+#include <climits>
+#include <cstdlib>
 #include <math.h>
 #include <assert.h>
-#include <signal.h>
-#include <stdio.h>
+#include <csignal>
+#include <cstdio>
 
 #include "host.h"
 #include "misc.h"

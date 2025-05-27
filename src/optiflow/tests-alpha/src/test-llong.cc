@@ -1,4 +1,4 @@
-#include <stdio.h>
+#include <cstdio>
 
 long long x = 0x100000000LL;
 long long y = 0x1ffffffffLL;

@@ -239,7 +239,7 @@
 #include	<envstandards.h>
 
 #include	<sys/types.h>
-#include	<limits.h>
+#include	<climits>
 #include	<math.h>
 #include	<ieeefp.h>
 

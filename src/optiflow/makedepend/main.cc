@@ -11,7 +11,7 @@
 #define _POSIX_SOURCE
 #endif
 #endif
-#include <signal.h>
+#include <csignal>
 
 #ifdef DEBUG
 int	_debugmask;

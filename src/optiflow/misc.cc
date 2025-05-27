@@ -49,12 +49,12 @@
  * Copyright (C) 1994-2001 by Todd M. Austin, Ph.D. and SimpleScalar, LLC.
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdarg.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstdarg>
+#include <cstring>
 #include <ctype.h>
-#include <errno.h>
+#include <cerrno>
 
 #if defined(__alpha) || defined(linux)
 #include <unistd.h>

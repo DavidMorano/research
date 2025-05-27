@@ -32,11 +32,11 @@
 #include	<sys/stat.h>
 #include	<unistd.h>
 #include	<fcntl.h>
-#include	<signal.h>
+#include	<csignal>
 #include	<stropts.h>
 #include	<poll.h>
-#include	<stdlib.h>
-#include	<string.h>
+#include	<cstdlib>
+#include	<cstring>
 #include	<ctype.h>
 
 #include	<vsystem.h>

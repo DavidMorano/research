@@ -285,12 +285,12 @@
 
 
 #include	<sys/types.h>
-#include	<limits.h>
-#include	<stdlib.h>
-#include	<string.h>
+#include	<climits>
+#include	<cstdlib>
+#include	<cstring>
 
 #if	F_FPRINTF || (F_MASTERDEBUG && F_DEBUG)
-#include	<stdio.h>
+#include	<cstdio>
 #endif
 
 #include	<vsystem.h>

@@ -35,7 +35,7 @@
 #include	<netdb.h>
 #include	<unistd.h>
 #include	<fcntl.h>
-#include	<string.h>
+#include	<cstring>
 #include	<ctype.h>
 
 #include	<vsystem.h>

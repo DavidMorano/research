@@ -45,14 +45,14 @@
 #include	<sys/stat.h>
 #include	<sys/utsname.h>
 #include	<sys/ucontext.h>
-#include	<limits.h>
+#include	<climits>
 #include	<netdb.h>
 #include	<unistd.h>
 #include	<fcntl.h>
 #include	<time.h>
-#include	<stdlib.h>
-#include	<string.h>
-#include	<errno.h>		/* for signal catching */
+#include	<cstdlib>
+#include	<cstring>
+#include	<cerrno>		/* for signal catching */
 
 #include	<vsystem.h>
 #include	<ascii.h>

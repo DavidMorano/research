@@ -5,7 +5,7 @@
 #define	F_STANDALONE	0		/* define 'main' or not */
 
 
-#include <stdio.h>
+#include <cstdio>
 #include <math.h>
 
 #include "licache.h"

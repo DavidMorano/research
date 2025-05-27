@@ -39,7 +39,7 @@
 #include	<unistd.h>
 #include	<fcntl.h>
 #include	<elf.h>
-#include	<string.h>
+#include	<cstring>
 
 #include	<vsystem.h>
 #include	<bfile.h>

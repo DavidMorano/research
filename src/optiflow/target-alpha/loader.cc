@@ -58,8 +58,8 @@
 #define	DAM	1
 
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 
 #if	CF_DEBUGS && CF_LEVO
 #include	"defs.h"

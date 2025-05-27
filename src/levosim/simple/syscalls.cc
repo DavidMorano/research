@@ -35,7 +35,7 @@
 #include	<sys/param.h>
 #include	<unistd.h>
 #include	<fcntl.h>
-#include	<string.h>
+#include	<cstring>
 
 #include	<vsystem.h>
 
@@ -47,10 +47,10 @@
 #include	"config.h"
 #include	"defs.h"
 #include	"lsim.h"
-#include	"sgierrno.h"
+#include	"sgicerrno"
 #include	"sgistat.h"
 #include	"sgiresource.h"
-#include	"sgisignal.h"
+#include	"sgicsignal"
 #include	"sgiprctl.h"
 #include	"sgisystime.h"
 #include	"sgisystimes.h"

@@ -51,11 +51,11 @@
  */
 
 #include	<sys/types.h>
-#include <stdlib.h>
+#include <cstdlib>
 #include <math.h>
 #include <assert.h>
-#include <signal.h>
-#include <stdio.h>
+#include <csignal>
+#include <cstdio>
 
 #include "host.h"
 #include "misc.h"

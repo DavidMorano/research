@@ -1,8 +1,8 @@
 
 /* Pre-processing routines to for OPT simulation	       */
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 
 #include "../host.h"
 #include "../misc.h"

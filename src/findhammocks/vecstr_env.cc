@@ -1,6 +1,6 @@
 /* vecstr_env */
 
-/* environment-type string handling */
+/* environment-type cstringandling */
 
 
 #define	CF_DEBUGS	0		/* compile-time debug print-outs */
@@ -54,9 +54,9 @@
 
 #include	<sys/types.h>
 #include	<sys/param.h>
-#include	<limits.h>
-#include	<stdlib.h>
-#include	<string.h>
+#include	<climits>
+#include	<cstdlib>
+#include	<cstring>
 
 #include	<vsystem.h>
 #include	<vecstr.h>

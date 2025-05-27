@@ -16,8 +16,8 @@
  * sizes, all caches being of the same size (same tag length)		*/
 
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 
 #include "../host.h"
 #include "../misc.h"

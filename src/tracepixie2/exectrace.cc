@@ -43,7 +43,7 @@
 #include	<unistd.h>
 #include	<fcntl.h>
 #include	<time.h>
-#include	<string.h>
+#include	<cstring>
 
 #include	<vsystem.h>
 #include	<bfile.h>

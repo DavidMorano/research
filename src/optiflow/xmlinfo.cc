@@ -34,7 +34,7 @@
 #include	<sys/param.h>
 #include	<unistd.h>
 #include	<fcntl.h>
-#include	<string.h>
+#include	<cstring>
 
 #include	<vsystem.h>
 #include	<field.h>

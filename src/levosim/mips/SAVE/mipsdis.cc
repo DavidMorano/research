@@ -55,9 +55,9 @@
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<sys/wait.h>
-#include	<limits.h>
-#include	<stdlib.h>
-#include	<string.h>
+#include	<climits>
+#include	<cstdlib>
+#include	<cstring>
 #include	<ctype.h>
 
 #include	<vsystem.h>

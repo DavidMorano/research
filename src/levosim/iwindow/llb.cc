@@ -57,8 +57,8 @@
 
 
 #include	<sys/types.h>
-#include	<stdlib.h>
-#include	<string.h>
+#include	<cstdlib>
+#include	<cstring>
 #include	<assert.h>
 
 #include	<vsystem.h>

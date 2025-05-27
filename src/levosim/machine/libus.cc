@@ -40,7 +40,7 @@
 
 
 #include	<sys/types.h>
-#include	<limits.h>
+#include	<climits>
 
 #include	<vsystem.h>
 

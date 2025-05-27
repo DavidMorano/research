@@ -33,7 +33,7 @@
 #include	<envstandards.h>
 
 #include	<sys/types.h>
-#include	<string.h>
+#include	<cstring>
 
 #include	<vsystem.h>
 #include	<field.h>

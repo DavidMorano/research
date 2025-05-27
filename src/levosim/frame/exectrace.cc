@@ -43,7 +43,7 @@
 #include	<sys/stat.h>
 #include	<unistd.h>
 #include	<fcntl.h>
-#include	<string.h>
+#include	<cstring>
 
 #include	<vsystem.h>
 #include	<bfile.h>

@@ -9,8 +9,8 @@
 
 
 #include	<sys/types.h>
-#include	<string.h>
-#include	<stdarg.h>
+#include	<cstring>
+#include	<cstdarg>
 
 #include	<vsystem.h>
 #include	<hdb.h>

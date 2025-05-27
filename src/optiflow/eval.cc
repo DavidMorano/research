@@ -49,11 +49,11 @@
  * Copyright (C) 1994-2001 by Todd M. Austin, Ph.D. and SimpleScalar, LLC.
  */
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 #include <ctype.h>
 #if defined(__CYGWIN32__)
-#include <errno.h>
+#include <cerrno>
 #endif
 
 #include "host.h"

@@ -36,10 +36,10 @@
 
 
 #include	<sys/types.h>
-#include	<stdlib.h>
-#include	<string.h>
+#include	<cstdlib>
+#include	<cstring>
 #include <math.h>
-#include <stdio.h>
+#include <cstdio>
 
 #include	<vsystem.h>
 #include	<veclist.h>

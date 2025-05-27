@@ -41,8 +41,8 @@
 #include	<unistd.h>
 #include	<fcntl.h>
 #include	<elf.h>
-#include	<stdlib.h>
-#include	<string.h>
+#include	<cstdlib>
+#include	<cstring>
 
 #include	<vsystem.h>
 #include	<char.h>

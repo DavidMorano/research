@@ -49,8 +49,8 @@
  * Copyright (C) 1994-2001 by Todd M. Austin, Ph.D. and SimpleScalar, LLC.
  */
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 #ifndef _MSC_VER
 #include <unistd.h>
 #else /* _MSC_VER */

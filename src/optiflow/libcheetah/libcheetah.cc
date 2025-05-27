@@ -14,8 +14,8 @@
 
 /* Processes command line arguments and calls routines as appropriate. */
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 
 #include "../host.h"
 #include "../misc.h"

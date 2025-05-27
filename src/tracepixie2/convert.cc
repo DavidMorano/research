@@ -28,7 +28,7 @@
 
 
 #include	<sys/types.h>
-#include	<string.h>
+#include	<cstring>
 #include	<ctype.h>
 
 #include	<vsystem.h>

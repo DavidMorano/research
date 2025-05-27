@@ -17,12 +17,12 @@ not, write to the Free Software Foundation, Inc., 675 Mass Ave,
 Cambridge, MA 02139, USA.  */
 
 #ifdef	BSD
-#include </usr/include/stdio.h>
+#include </usr/include/cstdio>
 #define EXIT_SUCCESS 0
 #else
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 #endif
 
 /* #include <float.h> */

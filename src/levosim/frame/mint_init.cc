@@ -56,7 +56,7 @@
 #include <sys/time.h>
 #include <sys/resource.h>
 #include <time.h>
-#include <stdio.h>
+#include <cstdio>
 
 #include	"getfname.h"
 #include	"paramfile.h"
@@ -68,7 +68,7 @@
 #if defined(__svr4__) || defined(_SVR4_SOURCE)
 #include <sys/times.h>
 #endif
-#include <limits.h>
+#include <climits>
 
 #define MAIN
 

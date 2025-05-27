@@ -58,8 +58,8 @@
  *
  */
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 #include "misc.h"
 #include "options.h"
 #include "libexo.h"

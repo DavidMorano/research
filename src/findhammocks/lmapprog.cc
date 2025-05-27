@@ -98,7 +98,7 @@
 #include	<fcntl.h>
 #include	<time.h>
 #include	<elf.h>
-#include	<string.h>
+#include	<cstring>
 
 #include	<vsystem.h>
 #include	<vecitem.h>

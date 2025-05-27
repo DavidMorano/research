@@ -16,8 +16,8 @@
 *  size, and a range of sizes with LRU replacement.			*/
 
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 
 #include "../host.h"
 #include "../misc.h"

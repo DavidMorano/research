@@ -72,8 +72,8 @@
 #include	<fcntl.h>
 #include	<dlfcn.h>
 #include	<link.h>
-#include	<stdlib.h>
-#include	<string.h>
+#include	<cstdlib>
+#include	<cstring>
 
 #include	<vsystem.h>
 #include	<mallocstuff.h>

@@ -15,8 +15,8 @@
 /* GBT method for simulating set associative caches of fixed line size.	*/
 
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 
 #include "../host.h"
 #include "../misc.h"

@@ -64,11 +64,11 @@
 #include <sys/stat.h>
 #include <time.h>
 #include <setjmp.h>
-#include <signal.h>
-#include <stdlib.h>
-#include <string.h>
+#include <csignal>
+#include <cstdlib>
+#include <cstring>
 #include <ctype.h>
-#include <stdio.h>
+#include <cstdio>
 
 #ifndef _MSC_VER
 #include <sys/time.h>
@@ -1783,7 +1783,7 @@ badarg:
 /* end subroutine (procargs) */
 
 
-/* stats signal handler */
+/* stats csignalandler */
 static void
 signal_sim_stats(int sigtype)
 {
@@ -1791,7 +1791,7 @@ signal_sim_stats(int sigtype)
 }
 
 
-/* exit signal handler */
+/* exit csignalandler */
 static void
 signal_exit_now(int sigtype)
 {

@@ -36,9 +36,9 @@
 #include	<netdb.h>
 #include	<unistd.h>
 #include	<fcntl.h>
-#include	<stdlib.h>
+#include	<cstdlib>
 #include	<time.h>
-#include	<string.h>
+#include	<cstring>
 #include	<ctype.h>
 
 #include	<bio.h>

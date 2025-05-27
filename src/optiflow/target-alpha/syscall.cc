@@ -76,8 +76,8 @@ The following macros SHOULD be defined :
 #endif
 
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 
 /* only enable a minimal set of systen call proxies if on limited
    hosts or if in cross endian live execution mode */
@@ -98,7 +98,7 @@ The following macros SHOULD be defined :
 #ifndef _MSC_VER
 #include <sys/param.h>
 #endif
-#include <errno.h>
+#include <cerrno>
 #include <time.h>
 #ifndef _MSC_VER
 #include <sys/time.h>
@@ -106,7 +106,7 @@ The following macros SHOULD be defined :
 #ifndef _MSC_VER
 #include <sys/resource.h>
 #endif
-#include <signal.h>
+#include <csignal>
 #ifndef _MSC_VER
 #include <sys/file.h>
 #endif
@@ -118,7 +118,7 @@ The following macros SHOULD be defined :
 #ifndef _MSC_VER
 #include <sys/times.h>
 #endif
-#include <limits.h>
+#include <climits>
 #ifndef _MSC_VER
 #include <sys/ioctl.h>
 #endif

@@ -36,11 +36,11 @@
 
 #include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 #include <math.h>
 #include <assert.h>
-#include <stdio.h>
+#include <cstdio>
 #include	<mkpathx.h>
 #include	<strwcpy.h>
 #include	<bio.h>

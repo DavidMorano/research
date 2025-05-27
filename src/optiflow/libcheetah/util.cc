@@ -14,8 +14,8 @@
 
 /* Functions used by the simulation algorithms */
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 
 #include "../host.h"
 #include "../misc.h"

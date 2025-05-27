@@ -128,8 +128,8 @@
  * prototypes, for those of you who have K&R compilers.
  */
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 #include <ctype.h>
 #include <sys/types.h>
 #include <sys/stat.h>

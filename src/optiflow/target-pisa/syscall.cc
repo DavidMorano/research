@@ -49,8 +49,8 @@
  * Copyright (C) 1994-2001 by Todd M. Austin, Ph.D. and SimpleScalar, LLC.
  */
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 #include "host.h"
 #include "misc.h"
 #include "machine.h"
@@ -75,7 +75,7 @@
 #ifndef _MSC_VER
 #include <sys/param.h>
 #endif
-#include <errno.h>
+#include <cerrno>
 #include <time.h>
 #ifndef _MSC_VER
 #include <sys/time.h>
@@ -83,7 +83,7 @@
 #ifndef _MSC_VER
 #include <sys/resource.h>
 #endif
-#include <signal.h>
+#include <csignal>
 
 /* #include <sys/file.h> */
 
@@ -95,7 +95,7 @@
 #ifndef _MSC_VER
 #include <sys/times.h>
 #endif
-#include <limits.h>
+#include <climits>
 #ifndef _MSC_VER
 #include <sys/ioctl.h>
 #endif
@@ -1607,7 +1607,7 @@ sys_syscall(struct regs_t *regs,	/* registers to access */
       /* FIXME: this is broken... */
       /* do not make the system call; instead, modify (the stack
 	 portion of) the simulator's main memory, ignore the 1st
-	 argument (regs->regs_R[4]), as it relates to signal handling */
+	 argument (regs->regs_R[4]), as it relates to csignalandling */
       if (regs->regs_R[5] != 0)
 	{
 	  (*maf)(Read, regs->regs_R[29]+28, (unsigned char *)&temp, 4);
