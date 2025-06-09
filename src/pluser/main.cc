@@ -7,12 +7,12 @@
 
 /* revision history:
 
-	= 2000-05-17, David A.D. Morano
+	= 2000-05-17, David A-D- Morano
 	This subroutine was originally written.
 
 */
 
-/* Copyright © 200 David A­D­ Morano.  All rights reserved. */
+/* Copyright © 200 David A-D- Morano.  All rights reserved. */
 
 #include	<sys/types.h>
 #include	<cerrno>
