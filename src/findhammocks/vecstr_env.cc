@@ -46,9 +46,7 @@
 	>=0		OK
 	<0		error
 
-
 *******************************************************************************/
-
 
 #include	<envstandards.h>	/* MUST be first to configure */
 
@@ -60,6 +58,8 @@
 
 #include	<vsystem.h>
 #include	<vecstr.h>
+#include	<strn.h>
+#include	<strwcpy.h>
 #include	<char.h>
 #include	<localmisc.h>
 
@@ -79,10 +79,6 @@ extern int	sncpy2(char *,int,const char *,const char *) ;
 extern int	sncpy3(char *,int,const char *,const char *,const char *) ;
 extern int	snwcpy(char *,int,const char *,int) ;
 extern int	vstrkeycmp(char **,char **) ;
-
-extern char	*strnpbrk(const char *,int,const char *) ;
-extern char	*strnchr(const char *,int,int) ;
-extern char	*strwcpy(char *,const char *,int) ;
 
 
 /* external variables */
@@ -154,7 +150,7 @@ int		sl ;
 	    sp,strnlen(sp,sl)) ;
 #endif
 
-	while ((tp = strnpbrk(sp,sl," \t\r\n,")) != NULL) {
+	while ((tp = strnbrk(sp,sl," \t\r\n,")) != NULL) {
 	    cp = sp ;
 	    cl = tp - sp ;
 	    if (cl > 0) {
