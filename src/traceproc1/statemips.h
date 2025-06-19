@@ -27,7 +27,7 @@
 
 /* architected state of the MIPS machine */
 
-struct ustatemips {
+ustatemips {
 	ULONG	in ;
 	uint	regs[LMIPSREG_NREGS] ;
 	uint	ia ;

@@ -87,7 +87,7 @@ FILTERCALLS	*op ;
 LMAPPROG	*mp ;
 const char	fname[] ;
 {
-	struct ustat	sb ;
+	ustat	sb ;
 
 	int	rs ;
 	int	size ;

@@ -135,7 +135,7 @@ extern int	mknpath2(char *,int,const char *,const char *) ;
 extern int	mknpath3(char *,int,const char *,const char *,const char *) ;
 extern int	nleadstr(const char *,const char *,int) ;
 extern int	nleadcasestr(const char *,const char *,int) ;
-extern int	sperm(IDS *,struct ustat *,int) ;
+extern int	sperm(IDS *,ustat *,int) ;
 extern int	getuserhome(char *,int,cchar *) ;
 extern int	hasuc(const char *,int) ;
 extern int	haslc(const char *,int) ;
@@ -386,7 +386,7 @@ static int subinfo_id(SUBINFO *sip)
 
 static int subinfo_dir(SUBINFO *sip,cchar dname[],mode_t dm)
 {
-	struct ustat	sb ;
+	ustat	sb ;
 	int		rs ;
 	int		f = FALSE ;
 
@@ -515,7 +515,7 @@ static int subinfo_user(SUBINFO *sip,char rbuf[],int rlen)
 	    if ((rs = GETPW_NAME(&pw,pwbuf,pwlen,sip->dname)) >= 0) {
 	        char	tbuf[MAXPATHLEN + 1] ;
 	        if ((rs = mkpath2(tbuf,pw.pw_dir,SWDFNAME)) >= 0) {
-		    struct ustat	sb ;
+		    ustat	sb ;
 		    if ((rs = u_lstat(tbuf,&sb)) >= 0) {
 	                if (S_ISLNK(sb.st_mode)) {
 	                    if ((rs = u_readlink(tbuf,rbuf,rlen)) >= 0) {

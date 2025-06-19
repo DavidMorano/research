@@ -160,7 +160,7 @@ const char	s[] ;
 /* return a count of the number of open files */
 int d_openfiles()
 {
-	struct ustat	sb ;
+	ustat	sb ;
 
 	int	i ;
 	int	count = 0 ;

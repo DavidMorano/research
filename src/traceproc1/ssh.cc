@@ -94,7 +94,7 @@ int ssh_init(op,fname)
 SSH		*op ;
 char		fname[] ;
 {
-	struct ustat	sb ;
+	ustat	sb ;
 
 	uint	*table ;
 
