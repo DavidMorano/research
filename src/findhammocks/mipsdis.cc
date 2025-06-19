@@ -173,7 +173,7 @@ char	execfname[] ;
 	defsize = 100000 ;
 	if (f_dis) {
 
-	    struct ustat	sb ;
+	    ustat	sb ;
 
 
 	    rs = u_stat(tmpfname,&sb) ;

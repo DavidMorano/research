@@ -1,37 +1,37 @@
-/* convert */
+/* convert SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
 /* convert a trace */
-
+/* version %I% last-modified %G% */
 
 #define	CF_DEBUG	0
 
-
 /* revision history:
 
-	= 01/09/01, David Morano
-
+	= 1001-09-01, David Morano
 	This subroutine was originally written.
-
 
 */
 
+/* Copyright © 2001 David A­D­ Morano.  All rights reserved. */
+/* Use is subject to license terms. */
 
-
-
+#include	<envstandards.h>	/* MUST be first to configure */
 #include	<sys/types.h>
 #include	<cstring>
 #include	<ctype.h>
 
 #include	<vsystem.h>
 #include	<baops.h>
-#include	<char.h>
 #include	<ascii.h>
+#include	<strx.h>
+#include	<char.h>
+#include	<localmisc.h>
 
-#include	"localmisc.h"
 #include	"config.h"
 #include	"defs.h"
 #include	"exectrace.h"
-
 
 
 /* local defines */
@@ -41,13 +41,12 @@
 #define	BITBYTES	((EXECTRACE_NREG / 8) + 1)
 
 
-
 /* external subroutines */
 
-extern int	cfdeci(const char *,int,int *) ;
-extern int	cfhexui(const char *,int,uint *) ;
-extern int	cfhexi(const char *,int,int *) ;
-extern int	cfnumui(const char *,int,uint *) ;
+extern int	cfdeci(cchar *,int,int *) ;
+extern int	cfhexui(cchar *,int,uint *) ;
+extern int	cfhexi(cchar *,int,int *) ;
+extern int	cfnumui(cchar *,int,uint *) ;
 
 
 /* external variables */
@@ -439,7 +438,7 @@ uint		*rap, *rvp ;
 	char	*sp, *cp ;
 
 
-	if ((cp = strpbrk(linebuf,"/=")) == NULL)
+	if ((cp = strbrk(linebuf,"/=")) == NULL)
 	    return SR_INVALID ;
 
 	sp = linebuf + 1 ;

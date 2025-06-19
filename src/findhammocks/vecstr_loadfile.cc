@@ -181,7 +181,7 @@ VECSTR		*vsp ;
 int		fu ;
 int		fd ;
 {
-	struct ustat	sb ;
+	ustat	sb ;
 
 	FILEBUF	loadfile, *lfp = &loadfile ;
 
