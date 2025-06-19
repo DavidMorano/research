@@ -189,7 +189,7 @@
 extern int	sncpy2(char *,int,const char *,const char *) ;
 extern int	matostr(const char **,int,const char *,int) ;
 extern int	headkeymat(const char *,const char *,int) ;
-extern int	fmeanvaral(ULONG *,int,double *,double *) ;
+extern int	fmeanvaral(ulong *,int,double *,double *) ;
 extern int	cfdeci(const char *,int,int *) ;
 
 extern char	*timestr_log(time_t,char *) ;
@@ -202,7 +202,7 @@ extern double	sqrt(double) ;
 /* local structures */
 
 struct instrinfo {
-	ULONG	in ;			/* instruction number */
+	ulong	in ;			/* instruction number */
 	uint	ia ;
 	uint	instr ;
 	uint	opexec ;
@@ -219,34 +219,34 @@ struct instrinfo {
 	uint	f_gskew : 1 ;
 } ;
 
-struct ustats {
-	ULONG	in ;			/* number of instructions */
-	ULONG	cf ;			/* control-flow-change instructions */
-	ULONG	cf_ind ;		/* indirect CFC */
-	ULONG	br_rel ;		/* relative branches */
-	ULONG	br_con ;		/* conditional branches */
-	ULONG	br_fwd ;		/* forward conditional branches */
-	ULONG	br_ssh ;		/* single-sided simple hammocks */
-	ULONG	lexecop[LEXECOP_TOTAL] ;	/* opcodes */
-	ULONG	bplen[BPSIZE] ;		/* instructions per BP */
-	ULONG	bftlen[BTSIZE] ;	/* branch forward target length */
-	ULONG	bbtlen[BTSIZE] ;	/* branch backward target length */
-	ULONG	htlen[BTSIZE] ;		/* SS hammock branch target length */
-	ULONG	ia_bad ;		/* bad IA from execution */
-	ULONG	vp_inlu ;
-	ULONG	vp_inhit ;		/* value-prediction lookup hit */
-	ULONG	vp_oplu ;		/* operand lookups */
-	ULONG	vp_ophit ;		/* operand lookup hits */
-	ULONG	vp_opcor ;		/* correct operand lookups */
-	ULONG	vp_allcor ;		/* all operands correct */
-	ULONG	yags_correct ;		/* YAGS predicted correctly */
-	ULONG	yags_bits ;		/* YAGS bits */
-	ULONG	tourna_correct ;	/* TOURNA predicted correctly */
-	ULONG	tourna_bits ;		/* TOURNA bits */
-	ULONG	gspag_correct ;		/* GSPAG predicted correctly */
-	ULONG	gspag_bits ;		/* GSPAG bits */
-	ULONG	gskew_correct ;		/* GSKEW predicted correctly */
-	ULONG	gskew_bits ;		/* GSKEW bits */
+USTAT {
+	ulong	in ;			/* number of instructions */
+	ulong	cf ;			/* control-flow-change instructions */
+	ulong	cf_ind ;		/* indirect CFC */
+	ulong	br_rel ;		/* relative branches */
+	ulong	br_con ;		/* conditional branches */
+	ulong	br_fwd ;		/* forward conditional branches */
+	ulong	br_ssh ;		/* single-sided simple hammocks */
+	ulong	lexecop[LEXECOP_TOTAL] ;	/* opcodes */
+	ulong	bplen[BPSIZE] ;		/* instructions per BP */
+	ulong	bftlen[BTSIZE] ;	/* branch forward target length */
+	ulong	bbtlen[BTSIZE] ;	/* branch backward target length */
+	ulong	htlen[BTSIZE] ;		/* SS hammock branch target length */
+	ulong	ia_bad ;		/* bad IA from execution */
+	ulong	vp_inlu ;
+	ulong	vp_inhit ;		/* value-prediction lookup hit */
+	ulong	vp_oplu ;		/* operand lookups */
+	ulong	vp_ophit ;		/* operand lookup hits */
+	ulong	vp_opcor ;		/* correct operand lookups */
+	ulong	vp_allcor ;		/* all operands correct */
+	ulong	yags_correct ;		/* YAGS predicted correctly */
+	ulong	yags_bits ;		/* YAGS bits */
+	ulong	tourna_correct ;	/* TOURNA predicted correctly */
+	ulong	tourna_bits ;		/* TOURNA bits */
+	ulong	gspag_correct ;		/* GSPAG predicted correctly */
+	ulong	gspag_bits ;		/* GSPAG bits */
+	ulong	gskew_correct ;		/* GSKEW predicted correctly */
+	ulong	gskew_bits ;		/* GSKEW bits */
 } ;
 
 struct testing {
@@ -304,11 +304,11 @@ static int	storeinstr(struct proginfo *,LMAPPROG *,int,uint,uint,uint,
 			uint *,uint *,uint *,uint *) ;
 static int	regload(struct proginfo *,int,uint,uint,uint,uint,
 			uint *,uint *) ;
-static int	writestats(struct proginfo *, struct ustatemips *,
-			VPRED_STATS *, struct ustats *,BPEVAL *,
+static int	writestats(struct proginfo *, ustatemips *,
+			VPRED_STATS *, ustat *,BPEVAL *,
 			struct params *) ;
-static int	writevpstats(struct proginfo *, struct ustatemips *,
-			VPRED_STATS *, struct ustats *,int) ;
+static int	writevpstats(struct proginfo *, ustatemips *,
+			VPRED_STATS *, ustat *,int) ;
 
 static int	hias_check(struct testing *,uint) ;
 static int	getstatsopts(struct proginfo *,KEYOPT *,struct params *) ;
@@ -322,7 +322,7 @@ static int	vpfifo_free(struct vpfifo *) ;
 static int	vpfifo_add(struct vpfifo *,uint *,int,int) ;
 static int	vpfifo_remove(struct vpfifo *,uint *,int *) ;
 
-static double	percentll(ULONG,ULONG) ;
+static double	percentll(ulong,ulong) ;
 
 
 /* local variables */
@@ -408,11 +408,11 @@ struct proginfo	*pip ;
 LMAPPROG	*mpp ;
 MIPSDIS		*mdp ;
 KEYOPT		*kop ;
-ULONG		skipinstr ;
+ulong		skipinstr ;
 char		tfname[] ;
 {
-	struct ustatemips	mstate, *smp = &mstate  ;
-	struct ustatemips	sstate ;
+	ustatemips	mstate, *smp = &mstate  ;
+	ustatemips	sstate ;
 
 	struct params		p ;
 
@@ -420,7 +420,7 @@ char		tfname[] ;
 
 	struct vpfifo		vf ;
 
-	struct ustats		scounts ;
+	ustat		scounts ;
 
 	struct testing		other ;
 
@@ -456,9 +456,9 @@ char		tfname[] ;
 
 	BPEVAL			bps ;
 
-	ULONG	in_bp ;			/* branch path instruction number */
-	ULONG	nlast ;			/* last instruction for us */
-	ULONG	trecs = 0 ;
+	ulong	in_bp ;			/* branch path instruction number */
+	ulong	nlast ;			/* last instruction for us */
+	ulong	trecs = 0 ;
 
 	uint	ia, instr ;
 	uint	dst1, dst2, dst3 ;
@@ -623,7 +623,7 @@ char		tfname[] ;
 	ia_lastbranch = 0 ;
 	ta_lastbranch = 0 ;
 
-	size = sizeof(struct ustats) ;
+	size = sizeof(ustat) ;
 	(void) memset(&scounts,0,size) ;
 
 
@@ -1131,7 +1131,7 @@ char		tfname[] ;
 
 /* some initial values */
 
-	(void) memset(smp,0,sizeof(struct ustatemips)) ;
+	(void) memset(smp,0,sizeof(ustatemips)) ;
 
 /* initial instruction address */
 
@@ -1240,7 +1240,7 @@ char		tfname[] ;
 #if	CF_LATEUPDATE
 	    if (bii.f_cbr) {
 
-	        ULONG	fin ;
+	        ulong	fin ;
 
 	        int	f_outcome ;
 
@@ -1259,7 +1259,7 @@ char		tfname[] ;
 
 	            fin = bii.in + p.yags_delay ;
 	            bprow = bii.in % p.yags_rows ;
-	            bpfifo_add(&bf_yags,fin,(ULONG) bii.ia,bprow,f_outcome) ;
+	            bpfifo_add(&bf_yags,fin,(ulong) bii.ia,bprow,f_outcome) ;
 
 	        } /* end if (queue YAGS update) */
 
@@ -1270,7 +1270,7 @@ char		tfname[] ;
 
 	            fin = bii.in + p.tourna_delay ;
 	            bprow = bii.in % p.tourna_rows ;
-	            bpfifo_add(&bf_tourna,fin,(ULONG) bii.ia,bprow,f_outcome) ;
+	            bpfifo_add(&bf_tourna,fin,(ulong) bii.ia,bprow,f_outcome) ;
 
 	        } /* end if (queue TOURNA update) */
 
@@ -1281,7 +1281,7 @@ char		tfname[] ;
 
 	            fin = bii.in + p.gspag_delay ;
 	            bprow = bii.in % p.gspag_rows ;
-	            bpfifo_add(&bf_gspag,fin,(ULONG) bii.ia,bprow,f_outcome) ;
+	            bpfifo_add(&bf_gspag,fin,(ulong) bii.ia,bprow,f_outcome) ;
 
 	        } /* end if (queue GSPAG update) */
 
@@ -1292,11 +1292,11 @@ char		tfname[] ;
 
 	            fin = bii.in + p.gskew_delay ;
 	            bprow = bii.in % p.gskew_rows ;
-	            bpfifo_add(&bf_gskew,fin,(ULONG) bii.ia,bprow,f_outcome) ;
+	            bpfifo_add(&bf_gskew,fin,(ulong) bii.ia,bprow,f_outcome) ;
 
 	        } /* end if (queue GSKEW update) */
 
-	        bpeval_outcome(&bps,bii.in,(ULONG) bii.ia,f_se,f_outcome) ;
+	        bpeval_outcome(&bps,bii.in,(ulong) bii.ia,f_se,f_outcome) ;
 
 	    } /* end if (had a conditional-branch) */
 #endif /* CF_LATEUPDATE */
@@ -1985,11 +1985,11 @@ char		tfname[] ;
 
 	                if (p.f_confidence) {
 
-	                    rs = bpeval_confidence(&bps,smp->in,(ULONG) ia,
+	                    rs = bpeval_confidence(&bps,smp->in,(ulong) ia,
 				f_se) ;
 
 	                } else
-	                    bpeval_lookup(&bps,smp->in,(ULONG) ia,f_se) ;
+	                    bpeval_lookup(&bps,smp->in,(ulong) ia,f_se) ;
 
 	            } /* end if (a conditional branch) */
 
@@ -2085,12 +2085,12 @@ char		tfname[] ;
 #if	(! CF_LATEUPDATE)
 	                    if (f_yags) {
 
-	                        ULONG	fin ;
+	                        ulong	fin ;
 
 
 	                        fin = smp->in + p.yags_delay ;
 	                        bprow = smp->in % p.yags_rows ;
-	                        bpfifo_add(&bf_yags,fin,(ULONG) ia,bprow,
+	                        bpfifo_add(&bf_yags,fin,(ulong) ia,bprow,
 	                            cii.f_taken) ;
 
 	                    }
@@ -2330,7 +2330,7 @@ char		tfname[] ;
 
 	    if (f_yags) {
 
-	        ULONG	fin, lia ;
+	        ulong	fin, lia ;
 
 	        uint	fia, frow, foutcome ;
 
@@ -2374,7 +2374,7 @@ char		tfname[] ;
 
 	    if (f_tourna) {
 
-	        ULONG	fin, lia ;
+	        ulong	fin, lia ;
 
 	        uint	fia, frow, foutcome ;
 
@@ -2419,7 +2419,7 @@ char		tfname[] ;
 
 	    if (f_gspag) {
 
-	        ULONG	fin, lia ;
+	        ulong	fin, lia ;
 
 	        uint	fia, frow, foutcome ;
 
@@ -2464,7 +2464,7 @@ char		tfname[] ;
 
 	    if (f_gskew) {
 
-	        ULONG	fin, lia ;
+	        ulong	fin, lia ;
 
 	        uint	fia, frow, foutcome ;
 
@@ -3924,9 +3924,9 @@ LDECODE	*dip ;
 /* write out the statistics */
 static int writestats(pip,smp,vsp,scp,bpsp,pp)
 struct proginfo		*pip ;
-struct ustats		*scp ;
+ustat		*scp ;
 VPRED_STATS		*vsp ;
-struct ustatemips	*smp ;
+ustatemips	*smp ;
 BPEVAL			*bpsp ;
 struct params		*pp ;
 {
@@ -4020,7 +4020,7 @@ struct params		*pp ;
 
 	    struct rusage	ut ;
 
-	    ULONG	llw ;
+	    ulong	llw ;
 
 	    int	rs1 ;
 
@@ -4447,7 +4447,7 @@ struct params		*pp ;
 	                es.name,
 	                es.lookups) ;
 
-	            acc = percentll((ULONG) es.corrects,scp->br_con) ;
+	            acc = percentll((ulong) es.corrects,scp->br_con) ;
 
 	            bprintf(&tmpfile,
 	                "%-8s accuracy     %12u (%7.3f%%)\n",
@@ -4464,7 +4464,7 @@ struct params		*pp ;
 
 	                for (j = (k * 4) ; j < ((k + 1) * 4) ; j += 1) {
 
-	                    acc = percentll((ULONG) es.confidence[j],scp->br_con) ;
+	                    acc = percentll((ulong) es.confidence[j],scp->br_con) ;
 
 	                    bprintf(&tmpfile,"%7.3f%%",acc) ;
 
@@ -4484,7 +4484,7 @@ struct params		*pp ;
 
 	                for (j = (k * 4) ; j < ((k + 1) * 4) ; j += 1) {
 
-	                    acc = percentll((ULONG) es.cc[j],scp->br_con) ;
+	                    acc = percentll((ulong) es.cc[j],scp->br_con) ;
 
 	                    bprintf(&tmpfile,"%7.3f%%",acc) ;
 
@@ -4496,7 +4496,7 @@ struct params		*pp ;
 
 /* write out the report for this predictor */
 
-	            acc = percentll((ULONG) es.corrects,scp->br_con) ;
+	            acc = percentll((ulong) es.corrects,scp->br_con) ;
 
 	            bpresult_write(&results,pip->basename,acc, es.name,
 	                (int) es.bits,
@@ -4598,9 +4598,9 @@ struct params		*pp ;
 /* write out value prediction statistics */
 static int writevpstats(pip,smp,vsp,scp,vprow)
 struct proginfo		*pip ;
-struct ustats		*scp ;
+ustat		*scp ;
 VPRED_STATS		*vsp ;
-struct ustatemips	*smp ;
+ustatemips	*smp ;
 int			vprow ;
 {
 	bfile	tmpfile ;
@@ -4687,13 +4687,9 @@ uint		ia ;
 }
 /* end subroutine (hias_check) */
 
-
-static double	percentll(in,id)
-ULONG	in, id ;
-{
+static double	percentll(ulong in,ulong id) {
 	double	dn, dd ;
 	double	dnp ;
-
 
 	if (id == 0)
 	    return 0.0 ;

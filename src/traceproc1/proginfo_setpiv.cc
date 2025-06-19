@@ -82,7 +82,7 @@ extern int	cfdeci(cchar *,int,int *) ;
 extern int	cfdecui(cchar *,int,uint *) ;
 extern int	getnodedomain(char *,char *) ;
 extern int	getrootdname(char *,int,cchar *,cchar *) ;
-extern int	sperm(IDS *,struct ustat *,int) ;
+extern int	sperm(IDS *,ustat *,int) ;
 extern int	isNotPresent(int) ;
 
 extern int	proginfo_getenv(PROGINFO *,cchar *,int,cchar **) ;
@@ -334,7 +334,7 @@ cchar	**rpp ;
 
 static int dircheck(IDS *idp,cchar *dname)
 {
-	struct ustat	sb ;
+	ustat	sb ;
 	int		rs ;
 	if ((rs = u_stat(dname,&sb)) >= 0) {
 	    if (S_ISDIR(sb.st_mode)) {
