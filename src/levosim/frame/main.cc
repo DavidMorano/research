@@ -2129,7 +2129,7 @@ int main(int argc,const char **argv,const char **envv)
 	            paramfile_cursorinit(&pfile,&cur) ;
 
 	            for (i = 0 ; 
-			paramfile_enum(&pfile,&cur,&pe,pebuf,PEBUFLEN) >= 0 ; 
+			paramfile_curenum(&pfile,&cur,&pe,pebuf,PEBUFLEN) >= 0 ; 
 	                i += 1) {
 
 	                if (pe.key != NULL)

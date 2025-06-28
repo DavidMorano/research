@@ -135,7 +135,7 @@ extern int	mknpath2(char *,int,const char *,const char *) ;
 extern int	mknpath3(char *,int,const char *,const char *,const char *) ;
 extern int	nleadstr(const char *,const char *,int) ;
 extern int	nleadcasestr(const char *,const char *,int) ;
-extern int	sperm(IDS *,ustat *,int) ;
+extern int	permid(IDS *,ustat *,int) ;
 extern int	getuserhome(char *,int,cchar *) ;
 extern int	hasuc(const char *,int) ;
 extern int	haslc(const char *,int) ;
@@ -393,7 +393,7 @@ static int subinfo_dir(SUBINFO *sip,cchar dname[],mode_t dm)
 	if ((rs = uc_stat(dname,&sb)) >= 0) {
 	    if (S_ISDIR(sb.st_mode)) {
 	        if ((rs = subinfo_id(sip)) >= 0) {
-	            if ((rs = sperm(&sip->id,&sb,dm)) >= 0) {
+	            if ((rs = permid(&sip->id,&sb,dm)) >= 0) {
 			f = TRUE ;
 		    } else if (rs == SR_ACCESS) {
 			rs = SR_OK ;
