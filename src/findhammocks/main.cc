@@ -954,7 +954,7 @@ char	*envv[] ;
 
 	    paramopt_curbegin(&aparams,&c) ;
 
-	    while (paramopt_enumvalues(&aparams,PO_DUMPOPT,&c,&cp) >= 0) {
+	    while (paramopt_curenumval(&aparams,PO_DUMPOPT,&c,&cp) >= 0) {
 
 	        rs = i = optmatch(dumpopts,cp,-1) ;
 

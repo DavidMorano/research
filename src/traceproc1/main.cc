@@ -1175,7 +1175,7 @@ const char	*envv[] ;
 
 	    paramopt_curbegin(&aparams,&c) ;
 
-	    while (paramopt_enumvalues(&aparams,DUMPOPTS,&c,&cp) >= 0) {
+	    while (paramopt_curenumval(&aparams,DUMPOPTS,&c,&cp) >= 0) {
 
 #if	CF_DEBUG
 	        if (pip->debuglevel > 1)

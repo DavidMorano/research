@@ -713,7 +713,7 @@ char	*envv[] ;
 
 	    paramopt_nullcursor(&opts,&c) ;
 
-	    while (paramopt_enumvalues(&opts,DUMPOPTS,&c,&cp) >= 0) {
+	    while (paramopt_curenumval(&opts,DUMPOPTS,&c,&cp) >= 0) {
 
 #if	CF_DEBUG
 	        if (pip->debuglevel > 1)
