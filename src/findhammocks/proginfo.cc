@@ -2,17 +2,14 @@
 
 /* program information */
 
-
 #define	CF_DEBUGS	0		/* compile-time debugging */
 #define	CF_DEBUGN	0		/* non-switchable debug print-outs */
 #define	CF_GETEXECNAME	1		/* use 'getexecname()' */
 #define	CF_RMEXT	1		/* remove extension */
 
-
 /* revision history:
 
 	= 1998-03-17, David Morano
-
 	I enhanced this somewhat from my previous version.
 
 */
@@ -24,20 +21,19 @@
 	This group of subroutines help find and set from variables
 	for program start-up type functions.
 
-
 *******************************************************************************/
 
-
 #include	<envstandards.h>	/* MUST be first to configure */
-
 #include	<sys/types.h>
 #include	<sys/param.h>
+#include	<cstddef>		/* |nullptr_t| */
 #include	<cstdlib>
 #include	<cstring>
-
 #include	<vsystem.h>
 #include	<vecstr.h>
 #include	<shellunder.h>
+#include	<rmx.h>
+#include	<hasx.h>
 #include	<localmisc.h>
 
 #include	"defs.h"
@@ -105,9 +101,6 @@ static int proginfo_setdefnames(struct proginfo *) ;
 static int proginfo_setdefdn(struct proginfo *) ;
 static int proginfo_setdefpn(struct proginfo *) ;
 #endif
-
-static int	rmext(const char *,int) ;
-static int	hasourbad(const char *,int) ;
 
 
 /* local variables */
@@ -844,65 +837,5 @@ struct proginfo	*pip ;
 /* end subroutine (proginfo_setdefpn) */
 
 #endif /* COMMENT */
-
-
-static int rmext(sp,sl)
-const char	sp[] ;
-int		sl ;
-{
-	const char	*tp ;
-	const char	*ep ;
-
-
-	if (sl < 0)
-	    sl = strlen(sp) ;
-
-	if ((tp = strnrchr(sp,sl,'.')) != NULL) {
-
-	    ep = (tp + 1) ;
-#if	CF_RMEXT
-	    if (matstr(exts,ep,-1) >= 0)
-	        sl = (tp - sp) ;
-#else
-	    sl = (tp - sp) ;
-#endif /* CF_RMEXT */
-
-	} /* end if */
-
-	return sl ;
-}
-/* end subroutine (rmext) */
-
-
-static int hasourbad(sp,sl)
-const char	*sp ;
-int		sl ;
-{
-	uint	sch ;
-
-	int	f = TRUE ;
-
-
-	if (sp == NULL)
-	    goto ret0 ;
-
-	f = hasprintbad(sp,sl) ;
-
-	if (! f) {
-	    int	i ;
-	    if (sl < 0)
-	        sl = strlen(sp) ;
-	    for (i = 0 ; i < sl ; i += 1) {
-	        sch = (sp[i] & 0xff) ;
-	        f = (sch >= 128) ;
-	        if (f)
-	            break ;
-	    } /* end for */
-	} /* end if */
-
-ret0:
-	return f ;
-}
-/* end subroutine (hadourbad) */
 
 
