@@ -36,8 +36,8 @@ I describe what I have modeled in FastLevo for each of the following
 cases.  Please see below.
 
 > Hi Ali and Dave,
-> 	First, please don't respond to this email with "I think...", I need
-> "I know..."'s. And if you don't know, please find out. Time is short, as
+> 	First, please do not respond to this email with "I think...", I need
+> "I know..."'s. And if you do not know, please find out. Time is short, as
 > you know.
 > 
 > 	I have been thinking about DEE operation and Levo, particularly
@@ -85,7 +85,7 @@ buses.
 The horizontal buses at the bottom of a column is not a bad idea.  They
 are probably needed in a real machine where we want to switch to another
 process and need to collect the committed register and memory values from
-a column.  I don't know if they can fit into your floorplan or not.
+a column.  I do not know if they can fit into your floorplan or not.
 
 
 > 3. What about the converse? M-path in column 5, D-path in column 2,
@@ -109,7 +109,7 @@ paths.  Almost all the time, the D-path is ahead of the main line and
 therefore the results have to be broadcasted on the earlier columns.  A
 horizontal bus seems the best solution to me and it can be pipelined.
 
-I don't see a need to stall the E-window.
+I do not see a need to stall the E-window.
 
 
 > 5. Not to mention commit issues....
@@ -119,20 +119,20 @@ I don't see a need to stall the E-window.
 > correct, but the performance effects of switching from one path to another
 > appear messy, at best.
 
-We just have to make sure that is happens rather fast. I don't think it is
+We just have to make sure that is happens rather fast. I do not think it is
 messy but it might not be very straight forward.  
 
 > Have we ever run experiments assuming the much simpler model of throwing
 > all M-path state logically after the D-path state out? But even this seems
 > problematic, given case 3. above.
 
-I don't think this is a good idea.  It is the same as flushing the
+I do not think this is a good idea.  It is the same as flushing the
 window. 
 
 > It seems to me we still have to move the D-path contents to the 
 > mispredicting branch's M-path, in order for everything to work out and be
-> clean. Now, we don't have to move the instructions, they're the same.
-> We don't really need to move the source operands. We do need to move the
+> clean. Now, we do not have to move the instructions, they're the same.
+> We do not really need to move the source operands. We do need to move the
 > actual predicate state and instruction operation results, if any exist.
 > We need to move the state (executed or not, etc.) of the instructions.
 > We can add logic so that if the result is recomputed, but doesn't change,
@@ -142,7 +142,7 @@ The D-path is going to replace teh ML-path. We just have to send the
 values back to the next ML.  Think of it as a feedback path (but not the
 same purpose).  We take the data from D-path and feed it back to
 ML-1.  There is some details here as how teh other D-paths are going to
-change but I don't think this would matter for the paper.  
+change but I do not think this would matter for the paper.  
 
 
 > So the questions are, how best to do this in a real Levo with the 
@@ -150,7 +150,7 @@ change but I don't think this would matter for the paper.
 > FastLevo (maybe with just a conservative DEE penalty) in time for 
 > MICRO?
 
-Let me know if you still need a modification to FastLevo.  If you don't
+Let me know if you still need a modification to FastLevo.  If you do not
 want to use the horizontal buses at the bottom of the column (or somewher
 else, maybe the buses that go to L1-D cache), then I need to make changes
 to FastLevo.  
@@ -177,7 +177,7 @@ email beforehand so I can free the line.
 
 > Note that what we need at a minimum here is a) to have an actual Levo
 > solution for the problem, but b) to contain it, conservatively, 
-> (but at least close to the real value so we don't penalize ourselves 
+> (but at least close to the real value so we do not penalize ourselves 
 > too much) from
 > a performance modelling point of view in FastLevo, at least for the
 > purposes of the MICRO paper.

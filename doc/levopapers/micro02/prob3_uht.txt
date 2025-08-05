@@ -51,5 +51,5 @@ with constant spanning bus length (8 SGs; for 4-x-x, use 4 SGs, unless you
 can currently model a spanning bus two columns long).
 
 Get back to me with estimate of how long it will take, wall clock time, to do 
-one complete run of 9 and 10; don't include error time, I'll include it.
+one complete run of 9 and 10; do not include error time, I'll include it.
 

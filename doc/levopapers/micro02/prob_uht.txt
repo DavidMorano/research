@@ -3,8 +3,8 @@ From: "Augustus (Gus) K. Uht" <uht@ele.uri.edu>
 Subject: DEE and Levo, with current floorplan
 
 Hi Ali and Dave,
-	First, please don't respond to this email with "I think...", I need
-"I know..."'s. And if you don't know, please find out. Time is short, as
+	First, please do not respond to this email with "I think...", I need
+"I know..."'s. And if you do not know, please find out. Time is short, as
 you know.
 
 	I have been thinking about DEE operation and Levo, particularly
@@ -54,8 +54,8 @@ problematic, given case 3. above.
 
 It seems to me we still have to move the D-path contents to the 
 mispredicting branch's M-path, in order for everything to work out and be
-clean. Now, we don't have to move the instructions, they're the same.
-We don't really need to move the source operands. We do need to move the
+clean. Now, we do not have to move the instructions, they're the same.
+We do not really need to move the source operands. We do need to move the
 actual predicate state and instruction operation results, if any exist.
 We need to move the state (executed or not, etc.) of the instructions.
 We can add logic so that if the result is recomputed, but doesn't change,
@@ -82,7 +82,7 @@ We may have to have a conference call on this tomorrow sometime.
 
 Note that what we need at a minimum here is a) to have an actual Levo
 solution for the problem, but b) to contain it, conservatively, 
-(but at least close to the real value so we don't penalize ourselves 
+(but at least close to the real value so we do not penalize ourselves 
 too much) from
 a performance modelling point of view in FastLevo, at least for the
 purposes of the MICRO paper.
