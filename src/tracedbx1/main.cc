@@ -17,7 +17,7 @@
 
 	= 01/08/01, David Morano
 
-	I don't know where this subroutine originally came from but
+	I do not know where this subroutine originally came from but
 	it's been a long time since 1990 !  I forget where I grabbed
 	this from but it is part of the TRACECMP program for Levo
 	research now !

@@ -49,7 +49,7 @@
 	Implementation note:
 
 	We use the subroutine 'dirsearch()' (below) to search the 'basenames'
-	directories since they may be indirect automount points and we don't
+	directories since they may be indirect automount points and we do not
 	want to get those stupid SYSLOG messages blabbing on about some certain
 	name in the automount map not being available.
 
