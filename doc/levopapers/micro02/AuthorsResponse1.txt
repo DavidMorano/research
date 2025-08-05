@@ -6,7 +6,7 @@ single paper. Separating the components out would not work, either,
 if we are to present the entire microarchitecture; the components depend
 on each other. Second,
 it is unreasonable to expect us to have a complete chip design done
-for this paper; we are not Intel: we don't have hundreds of engineers
+for this paper; we are not Intel: we do not have hundreds of engineers
 and $2 billion fab lines at our disposal. Thirdly, it is a dense paper,
 which is unavoidable, and requires both time and effort of the reader. 
 We think that at least with one of the reviewers, if not more, the 

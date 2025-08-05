@@ -92,7 +92,7 @@ think of what the power requirements would be for this microarchitecture.
 
 Do you model the latency of all of the comparisons that have to be done in
 order to determine that an instruction is ready to execute/reexecute? I
-certainly don't see back-to-back dependent instruction execution being
+certainly do not see back-to-back dependent instruction execution being
 possible with this setup.
 
 How would you keep legal memory ordering in a multiprocessor system?
@@ -107,7 +107,7 @@ How many distribution buses did your configurations have ?
 Have you considered how you determine that instructions are commitable? You
 mentioned that you commit one column at a time. Obviously it is easy to
 detect that the oldest instruction is commitable. How about if that caused
-a reexecution on the next oldest instruction? I don't see any bits of state
+a reexecution on the next oldest instruction? I do not see any bits of state
 for realizing that an instruction is in flight. However, this can probably
 be fixed fairly easily.
 
@@ -162,7 +162,7 @@ and maybe even show the performance dreop due to this delay. Also,
 instruction re-execution puts extra pressure on the execution units.
 
 If the baseline datapath has enough forwarding buses and physical
-registers, I don't see why the IPCs of the two machines may not be that
+registers, I do not see why the IPCs of the two machines may not be that
 different.
 
 In the beginning of the paper you talk about re-execution. It is not clear

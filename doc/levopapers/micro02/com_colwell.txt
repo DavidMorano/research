@@ -41,7 +41,7 @@ other...zero, design never completed. It also tickles me to see P6
 referred to as "typical". A lot has changed in 10 years.  :-)
 
 More seriously, I think you're right about scalability of Reorder
-buffers, RS's, and so on. But you don't mention pipeline depth?
+buffers, RS's, and so on. But you do not mention pipeline depth?
 Surprising, because that depth sets the direction of a lot of the rest
 of the uArch. Some good, some bad.  Deeper pipes, to a point, will get
 you around a lot of the objections you raise here, but come with their
@@ -76,7 +76,7 @@ to walk a single instr through the various stages. The problem overall
 is that if you lose the reader here, they will quit reading.
 
 I'm slow. I have now read and reread the paragraph on how the
-time-tagging works, and I just don't get it. In Figure 2, I assume that
+time-tagging works, and I just do not get it. In Figure 2, I assume that
 an OOO machine can have instrs 1, 5, and 9 execute in any order
 whatsoever. So all three are sitting in some temp structure with
 Levo-invented names (:-)) and instr 1 executes. Does instr 9 grab instr
@@ -113,7 +113,7 @@ Table 1...main memory latency 100 cycles? Seems awfully short, it's 100
 cycles right now in Pentium 4 systems. Why not something more like the
 800 cycles you mentioned earlier in the paper?
 
-section 7: I don't recognize the reference to a "PISA" machine model.
+section 7: I do not recognize the reference to a "PISA" machine model.
 Need a ref.
 
 section 7.2: usually if an incremental change to a machine design

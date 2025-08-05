@@ -11,7 +11,7 @@ of details presented without a lot of reason for the reader
 to get into these details.  A teaser would help.  
 
 The only other major concern is the presentation of the
-results.  I don't like some of the figures.  I again think
+results.  I do not like some of the figures.  I again think
 you need to sell the better.  I suspect this will change
 in the final version.
 
@@ -40,7 +40,7 @@ They do not "make" Levo scalable.
 
 Introduction:
 
-I don't know what you man by "little cycle-time increase".  This means
+I do not know what you man by "little cycle-time increase".  This means
 nothing to me.
 
 What does intransigent mean??  I doubts others will know its meaning either.
@@ -132,10 +132,10 @@ upset any circuit person.
 
 Table 1. Can you get rid of the whitespace in Table 1?
 
-Figures 8 and 9......  Where is the baseline??  I really don't
+Figures 8 and 9......  Where is the baseline??  I really do not
 get anything out of these figures.  At least clean up the figure to
 get rid of the 110%....  These figures are hard to read and really
-don't get me excited.
+do not get me excited.
 
 Figure 11. Why do you label it "absolute IPC"?  This gives the 
 reader some discomfort...
