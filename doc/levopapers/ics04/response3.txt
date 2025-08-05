@@ -44,7 +44,7 @@ likewise did not use FU clustering.
 Our intent was not to claim that we could scale to larger numbers of
 resources over conventional machines, but rather was only to show the
 potential performance of our machine at both small (conventional sizes)
-as well as possible future larger sizes (although we don't attempt to
+as well as possible future larger sizes (although we do not attempt to
 answer all questions about how such larger sizes might be physically
 realized).  However, we do feel that there are some fundamental
 differences between our microarchitecture and existing ones, largely

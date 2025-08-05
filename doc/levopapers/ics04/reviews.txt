@@ -201,7 +201,7 @@ grammar. Several times in the paper, you make reference to predication
 and multipath execution. This is terribly confusing as it is not clearly
 stated until quite late in the paper that those features are NOT
 supported by OpTiFlow. Either you support those features and you talk
-about them, or you don't support them and there is no point mentioning
+about them, or you do not support them and there is no point mentioning
 them over and over again. However, if you believe that your scheme could
 benefit from those features, or that it is well suited for those
 features, you may want to dedicate a paragraph to how to integrate them
