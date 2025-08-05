@@ -30,7 +30,7 @@ Aggressive Out-of-Order Processors"
 
 2. Pg. 1 - change course to coarse
 
-3. Pg. 2 - ICCD is a design conference.  You don't stress design
+3. Pg. 2 - ICCD is a design conference.  You do not stress design
 complexity issues enough.  How does eliminate the ROB?  You allude
 to this on page 6, but do not stress how ROBs limit scalability.
 You need to discuss this in the intro to motivate the whole design.
@@ -56,7 +56,7 @@ conveys a different message.
 
 7. Pg. 7 - Correct the text "way clear way"
 
-8. Pg. 6 - Why say that we don't have a clue about the number of
+8. Pg. 6 - Why say that we do not have a clue about the number of
 re-executions.  Of course there will be some changes due to various
 dependencies.  So why do you report it?  Because it gets better.  Can
 we just leave it at "and the number of re-executions is reduced..."

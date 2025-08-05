@@ -213,7 +213,7 @@ representing the number of instructions you fast-forwarded.
 Finally, I looked at Table 2 and could not see where 1.46% speedup
 came from.  I believe it comes from dividing 1.61 by 1.1.  You really
 should clarify where the number is coming from; otherwise, the reader
-keeps looking in the table for the number 1.46.  Most readers don't
+keeps looking in the table for the number 1.46.  Most readers do not
 keep a calculator handy when reading and thus will be annoyed when
 asked to actually perform calculations that the author could have
 simply mentioned.
