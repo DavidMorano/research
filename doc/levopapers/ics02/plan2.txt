@@ -94,12 +94,12 @@ Other notes :
 
 + DEE path size
 
-	we don't have it so we skip it !  (Is this correct ?)
+	we do not have it so we skip it !  (Is this correct ?)
 
 
 + DEE path "release"
 
-	we don't have it yet so we skip it !  (Is this correct ?)
+	we do not have it yet so we skip it !  (Is this correct ?)
 
 
 

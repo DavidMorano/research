@@ -50,7 +50,7 @@ frequency (how about frequently executed)....
 we need to fix this.
 24. My figure uses the terms mainline and disjoint.  Does this
 fit your terminology?
-25. In 4.1, don't say abbreviated (just put the abbreviation
+25. In 4.1, do not say abbreviated (just put the abbreviation
 in parens right after the words).  It can also help to capitalize
 the abbreviated word.
 26. I am going to overlook all spelling errors.  I am finding
@@ -61,7 +61,7 @@ previous figure (the one I sent you).
 28. Good to see Static fetch defined.  This formatting needs
 some cleaning up.
 29. I notice you are avoiding all mention of Levo.  Is this on
-purpose?  I don't really care, it is up to you.
+purpose?  I do not really care, it is up to you.
 30. Explanation of Figure 5 in text. I think it is obvious just
 from the figure what the order of bars is all about.  I labeled
 the bars with the benchmark names in larger fonts.
@@ -69,10 +69,10 @@ the bars with the benchmark names in larger fonts.
 Figure 5.  You should explain your reasons for selecting this
 range.
 32.  8-8-8 does not give the best IPC.  Am I going crazy??  
-33. You don't simulate 16-8-4.  Are you going crazy?
+33. You do not simulate 16-8-4.  Are you going crazy?
 34. Figure 6, you need to explain bzip and then the funny
 sweet spot in gap 8,8,16.
-35. There is presently no discussion of the data.  Please don't say
+35. There is presently no discussion of the data.  Please do not say
 as we increase x, y increases too.  You need to say why.  You need
 to indicate if it is interesting.  You need to say a lot.  Right
 now there isn't any discussion.

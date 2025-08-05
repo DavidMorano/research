@@ -16,7 +16,7 @@ otherwise you're going to drive the reader nuts.
 
 5. ", par. 4, last sentence: awkward; delete?
 
-6. Section 2, background: don't forget the first ones: IBM 360/91,
+6. Section 2, background: do not forget the first ones: IBM 360/91,
 and Riseman and Foster (1972).
 
 7. Section 2, par. 2, second sentence from end: awkward.
@@ -40,7 +40,7 @@ Suggest you mention RFU's explicitly, or equivalent structure.
 
 13. sec. 3.1, last par: huh? Delete.
 
-14. Section 3.2, par. 1: why is confidence being mentioned? we don't use it,
+14. Section 3.2, par. 1: why is confidence being mentioned? we do not use it,
 at least not yet. Suggest you leave out all references to confidence.
 
 15. ", par. 2, sent. 2 & 3: why put in? delete.

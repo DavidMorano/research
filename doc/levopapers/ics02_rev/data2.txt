@@ -1,6 +1,6 @@
 Here it comes!  I spent some time trying to find the best
 way to present the data and although I have two graphs, only one of them
-is nice(!) enough to put in the paper, but I don't even know if it is
+is nice(!) enough to put in the paper, but I do not even know if it is
 appropriate.  I am going to send it out later but basically it just shows
 the branch domain size versue percentage of branches.  
 
@@ -22,7 +22,7 @@ predict)
 		N: near  F: far
 
 Before going any furthur, I am open to any suggestion regarding the naming
-convention.  I don't like the above naming much but couldn't think of
+convention.  I do not like the above naming much but couldn't think of
 anything good.  Suggestions are welcomed!!
 
 Every one of the above catergories is quantified using a threshold value.  
@@ -44,13 +44,13 @@ For the following data the threshold values are:
 	case III: 0.66 * 256  (two third of the window, but it could be
 configuration dependent)
 
-I don't know how good the above values are.  A couple experiments need to
+I do not know how good the above values are.  A couple experiments need to
 be done.  Maybe a sensitivity test to see how sensitive the data are w.r.t
 the above parameters.  (Best way to put that in paper?!!).  comments?
 
 And here are the actuall data.  A couple commnets:
 -Both percentages and number of branches are important.
--Theoretically we don't really need to be worried about L** cases.  They
+-Theoretically we do not really need to be worried about L** cases.  They
 are supposed to be the branches with less executon frequency. 
 -for the benchamrks with high HPN, we might be wasting a portion of our
 D-path resources because even without D-pahts they would still be executed
