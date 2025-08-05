@@ -159,7 +159,7 @@ typedef unsigned long Quad;             /* for building our bit mask */
 #define ch2i(ch) ((ch)-'a')             /* convert letter to index */
 #define i2ch(ch) ((ch)+'a')             /* convert index to letter */
 
-/* IBM PC's don't like globs of memory larger than 64K without
+/* IBM PC's do not like globs of memory larger than 64K without
  * special gyrations.  That's where the huges get stuck in.  And the
  * two types of allocations on an IBM PC need to be handled differently.
  *

@@ -789,7 +789,7 @@ sys_syscall(struct regs_t *regs,	/* registers to access */
       break;
 
     case SS_SYS_close:
-      /* don't close stdin, stdout, or stderr as this messes up sim logs */
+      /* do not close stdin, stdout, or stderr as this messes up sim logs */
       if (/*fd*/regs->regs_R[4] == 0
 	  || /*fd*/regs->regs_R[4] == 1
 	  || /*fd*/regs->regs_R[4] == 2)
