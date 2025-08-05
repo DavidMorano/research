@@ -302,9 +302,9 @@ MFU,
 	--Clarified in text.
 
 so the question is, how many re-load happens on average? 
-	--We don't follow your question. A load only re-requests
+	--We do not follow your question. A load only re-requests
 	data if one of its inputs has changed (calculated
-	effective address), but we don't see how this relates to 
+	effective address), but we do not see how this relates to 
 	your prior discussion.
 	--No changes made to text.
 
@@ -352,7 +352,7 @@ the physical considerations and even some of the evaluation in a different
 paper, to make space for the detail of the operation.
 	--As discussed with the prior reviewer, we need all of the elements
 	you would have us move in order to make our case(s). And we
-	don't want to overwhelm the reader. Lastly, some kind of a 
+	do not want to overwhelm the reader. Lastly, some kind of a 
 	self-contained paper for Levo is highly desirable, and this is
 	it.
 	--No changes made.

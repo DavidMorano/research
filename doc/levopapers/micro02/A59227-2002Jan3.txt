@@ -103,7 +103,7 @@
    try to get on, they are either not given the option to place bets or
    they are kicked out when they try to register for an account.
    
-   "There are a number of sites out there that just don't care about the
+   "There are a number of sites out there that just do not care about the
    laws. They are perfectly happy to let U.S. gamblers in even though
    they know it's illegal," said Jeremy Thompson-Hill, an account manager
    for OrbisUK, which provides the sentry technology used by Sports.com,
@@ -127,7 +127,7 @@
    next year but was much more modest about his company's aspirations
    than some heads of other webcasting companies during the dot-com boom.
    
-   "We don't see the Internet as a revolutionary medium that will change
+   "We do not see the Internet as a revolutionary medium that will change
    the TV business," Miller said. "It'll be just another alternative
    vehicle for disseminating channels."
    
