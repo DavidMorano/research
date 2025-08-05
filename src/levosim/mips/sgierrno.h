@@ -143,7 +143,7 @@
 #define	SGIE_NOSYS	89	/* Function not implemented		*/
 #define	SGIE_LOOP	90	/* Symbolic link loop */
 #define	SGIE_RESTART 91	/* Restartable system call */
-#define	SGIE_STRPIPE 92	/* if pipe/FIFO, don't sleep in stream head */
+#define	SGIE_STRPIPE 92	/* if pipe/FIFO, do not sleep in stream head */
 
 #define	SGIE_NOTEMPTY 93	/* Directory not empty */
 

@@ -71,7 +71,7 @@ struct lwq_wqentry {
 	char		full;	/* flag: the slot is occupied */
 	char		ready;	/* flag: the memory data value is valid */
 	char		serv;	/* flag: the memory request is being serviced */
-	char		wait;	/* flag: don't service it in this clock*/
+	char		wait;	/* flag: do not service it in this clock*/
 	int		index;	/* index of the slot */
 	LFLOWGROUP	d;	/* pointer to the queue entries */
 };

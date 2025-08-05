@@ -2252,7 +2252,7 @@ int main(int argc,const char **argv,const char **envv)
 	    sigdumper(SIGDUMPFILE,pip->pid,"s2") ;
 #endif
 
-/* pop some signals that we don't want */
+/* pop some signals that we do not want */
 
 #if	CF_NOSIGINT
 

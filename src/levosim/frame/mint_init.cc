@@ -104,7 +104,7 @@ mint options:\n\
 	[-r]			back-end uses release consistency\n\
 	[-R]			do not recycle process ids\n\
 	[-s shmem_size]		shared memory size, default: %d (0x%x)\n\
-	[-S]			spin, don't block, on a failed lock acquire\n\
+	[-S]			spin, do not block, on a failed lock acquire\n\
 	[-t i]			trace instrutions\n\
 	[-t n]			trace nothing\n\
 	[-t r]			trace memory references, default\n\
@@ -976,7 +976,7 @@ allocate_fixed(long addr, long nbytes)
 	    exit(1) ;
 	}
 
-/* Delete the segment now so that we don't need to worry about
+/* Delete the segment now so that we do not need to worry about
 	     * cleaning up later.
 	     */
 	shmctl(id, IPC_RMID, NULL) ;
@@ -1012,7 +1012,7 @@ allocate_fixed(long addr, long nbytes)
 	        exit(1) ;
 	    }
 
-/* Delete the segment now so that we don't need to worry about
+/* Delete the segment now so that we do not need to worry about
 		         * cleaning up later.
 		         */
 	    shmctl(id, IPC_RMID, NULL) ;
@@ -1240,7 +1240,7 @@ create_addr_space()
 
 /****
 
-	We don't need to change the mapping since shared memory is
+	We do not need to change the mapping since shared memory is
 	mapped directly, but include this anyway in case someday
 	we change the mapping.
 

@@ -62,7 +62,7 @@ struct lloop_entry{
 
 struct lloop_state {
   struct lloop_info	*l ;
-  struct lloop_entry   *lstack ; /* I don't know, have to ask Dave */
+  struct lloop_entry   *lstack ; /* I do not know, have to ask Dave */
 } ;
 
 struct lloop_flags {
