@@ -66,7 +66,7 @@
  * in the fastest functional simulator.
  */
 
-/* don't count instructions flag, enabled by default, disable for inst count */
+/* do not count instructions flag, enabled by default, disable for inst count */
 #undef NO_INSN_COUNT
 
 #ifdef __GNUC__
