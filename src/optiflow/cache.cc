@@ -601,7 +601,7 @@ cache_access(struct cache_t *cp,	/* cache to access */
       if (repl_addr)
 	*repl_addr = CACHE_MK_BADDR(cp, repl->tag, set);
  
-      /* don't replace the block until outstanding misses are satisfied */
+      /* do not replace the block until outstanding misses are satisfied */
       lat += BOUND_POS(repl->ready - now);
  
       /* stall until the bus to next level of memory is available */

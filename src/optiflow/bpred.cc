@@ -754,7 +754,7 @@ bpred_update(struct bpred_t *pred,	/* branch predictor instance */
   struct bpred_btb_ent_t *lruhead = NULL, *lruitem = NULL;
   int index, i;
 
-  /* don't change bpred state for non-branch instructions or if this
+  /* do not change bpred state for non-branch instructions or if this
    * is a stateless predictor*/
   if (!(MD_OP_FLAGS(op) & F_CTRL))
     return;
@@ -783,7 +783,7 @@ bpred_update(struct bpred_t *pred,	/* branch predictor instance */
 	pred->used_bimod++;
     }
 
-  /* keep stats about JR's; also, but don't change any bpred state for JR's
+  /* keep stats about JR's; also, but do not change any bpred state for JR's
    * which are returns unless there's no retstack */
   if (MD_IS_INDIR(op))
     {
@@ -840,7 +840,7 @@ bpred_update(struct bpred_t *pred,	/* branch predictor instance */
 	shift_reg & ((1 << pred->dirpred.twolev->config.two.shift_width) - 1);
     }
 
-  /* find BTB entry if it's a taken branch (don't allocate for non-taken) */
+  /* find BTB entry if it's a taken branch (do not allocate for non-taken) */
   if (taken)
     {
       index = (baddr >> MD_BR_SHIFT) & (pred->btb.sets - 1);

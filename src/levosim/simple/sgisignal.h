@@ -187,7 +187,7 @@ typedef struct {                /* signal set type */
         unsigned int	__sigbits[4];
 } sgisigset_t;
 
-/* these aren't technically in POSIX90, but are permitted.. */
+/* these are not technically in POSIX90, but are permitted.. */
 typedef union sgi__sighandler {
     	void	(*__sa_handler)(int); /* SIG_DFL, SIG_IGN, or *fn */
     	void (*__sa_sigaction)(int, sgisiginfo_t *, void *);
@@ -235,12 +235,12 @@ typedef struct sgisigaction {
 #define	SGISA_SIGINFO      0x00000008	/* provide siginfo to handler */
 #define	SGISA_NODEFER      0x00000010	/* do not block current signal */
 /* The next 2 are only meaningful for SIGCHLD */
-#define	SGISA_NOCLDWAIT    0x00010000	/* don't save zombie children */
-#define	SGISA_NOCLDSTOP	0x00020000	/* if set don't send SIGCLD	*/
+#define	SGISA_NOCLDWAIT    0x00010000	/* do not save zombie children */
+#define	SGISA_NOCLDSTOP	0x00020000	/* if set do not send SIGCLD	*/
 					/* to parent when child stop	*/
 
 /* IRIX5 additions */
-#define	SGI_SA_BSDCALL	0x10000000	/* don't scan for dead children when */
+#define	SGI_SA_BSDCALL	0x10000000	/* do not scan for dead children when */
 					/* setting SIGCHLD */
 					/* SJCTRL bit in proc struct.	*/
 

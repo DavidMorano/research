@@ -3250,7 +3250,7 @@ uint		ninstr ;
 #endif
 
 
-/* we don't know anything about this instruction yet, so we must execute */
+/* we do not know anything about this instruction yet, so we must execute */
 
 	    ii.ia = casp->n.ia ;
 
@@ -7563,7 +7563,7 @@ int		*lp ;
 	*lp = -1 ;
 	field_init(&fsb,sp,sl) ;
 
-/* there are no comments within these values so we don't need to check */
+/* there are no comments within these values so we do not need to check */
 
 	for (i = 0 ; field_get(&fsb,NULL) > 0 ; i += 1) {
 
@@ -7623,7 +7623,7 @@ int		sl ;
 
 	field_init(&fsb,sp,sl) ;
 
-/* there are no comments within these values so we don't need to check */
+/* there are no comments within these values so we do not need to check */
 
 	while (field_get(&fsb,NULL) >= 0) {
 
