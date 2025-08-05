@@ -771,7 +771,7 @@ f_neg(struct eval_value_t val1)
 	}
       else
 	{
-	  /* don't promote type */
+	  /* do not promote type */
 	  val.type = et_int;
 	  val.value.as_int = - ((int)val1.value.as_uint);
 	}
@@ -785,7 +785,7 @@ f_neg(struct eval_value_t val1)
 	}
       else
 	{
-	  /* don't promote type */
+	  /* do not promote type */
 	  val.type = et_int;
 	  val.value.as_int = - val1.value.as_int;
 	}

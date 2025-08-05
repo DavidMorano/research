@@ -172,7 +172,7 @@ struct proginfo_flags {
 	uint	itrace : 1 ;		/* instruction traces */
 	uint	regstats : 1 ;
 	uint	memstats : 1 ;
-	uint	checkonly : 1 ;		/* don't run functional sim */
+	uint	checkonly : 1 ;		/* do not run functional sim */
 	uint	exit_target : 1 ;	/* ended due to target program */
 	uint	exit_clock : 1 ;	/* ended due to clock expiration */
 	uint	exit_instr : 1 ;	/* ended due to instr expiration */

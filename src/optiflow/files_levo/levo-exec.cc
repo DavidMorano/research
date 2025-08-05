@@ -1019,7 +1019,7 @@ void lsq_refresh(void)
         if (sinfo_table[j].addr == load_addr) {  /* check to see if the address matches */
 
           /* If the STA is unknown, we must be in blind speculation mode or
-           * using perfect disambiugtion; otherwise we don't get to this point.
+           * using perfect disambiugtion; otherwise we do not get to this point.
 	   * If both are set, use_blind_spec takes precedence. */
 
 	  /* For blind speculation, the LSQ index of the store is stored

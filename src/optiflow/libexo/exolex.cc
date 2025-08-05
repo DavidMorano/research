@@ -617,7 +617,7 @@ YY_MALLOC_DECL
 #endif
 
 /* No semi-colon after return; correct usage is to write "yyterminate();" -
- * we don't want an extra ';' after the "return" because that will cause
+ * we do not want an extra ';' after the "return" because that will cause
  * some compilers to complain about unreachable statements.
  */
 #ifndef yyterminate
@@ -925,7 +925,7 @@ ECHO;
 			 * transition.  We couldn't have
 			 * yy_get_previous_state() go ahead and do it
 			 * for us because it doesn't know how to deal
-			 * with the possibility of jamming (and we don't
+			 * with the possibility of jamming (and we do not
 			 * want to build jamming into it because then it
 			 * will run more slowly).
 			 */
@@ -1058,7 +1058,7 @@ static int yy_get_next_buffer()
 		*(dest++) = *(source++);
 
 	if ( yy_current_buffer->yy_buffer_status == YY_BUFFER_EOF_PENDING )
-		/* don't do the read, it's not guaranteed to return an EOF,
+		/* do not do the read, it's not guaranteed to return an EOF,
 		 * just force an EOF
 		 */
 		yy_current_buffer->yy_n_chars = yy_n_chars = 0;
@@ -1096,7 +1096,7 @@ static int yy_get_next_buffer()
 							 b->yy_buf_size + 2 );
 				}
 			else
-				/* Can't grow it, we don't own it. */
+				/* Can't grow it, we do not own it. */
 				b->yy_ch_buf = 0;
 
 			if ( ! b->yy_ch_buf )
@@ -1368,7 +1368,7 @@ YY_BUFFER_STATE new_buffer;
 	yy_current_buffer = new_buffer;
 	yy_load_buffer_state();
 
-	/* We don't actually know whether we did this switch during
+	/* We do not actually know whether we did this switch during
 	 * EOF (yywrap()) processing, but the only time this flag
 	 * is looked at is after yywrap() is called, so it's safe
 	 * to go ahead and always set it.

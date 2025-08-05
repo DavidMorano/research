@@ -3264,7 +3264,7 @@ spec_mem_access(struct mem_t *mem,		/* memory space to access */
 	    }
 	  else
 	    {
-	      /* read from non-speculative memory state, don't allocate
+	      /* read from non-speculative memory state, do not allocate
 	         memory pages with speculative loads */
 	      *((byte_t *)p) = MEM_READ_BYTE(mem, addr);
 	    }
@@ -3285,7 +3285,7 @@ spec_mem_access(struct mem_t *mem,		/* memory space to access */
 	    }
 	  else
 	    {
-	      /* read from non-speculative memory state, don't allocate
+	      /* read from non-speculative memory state, do not allocate
 	         memory pages with speculative loads */
 	      *((half_t *)p) = MEM_READ_HALF(mem, addr);
 	    }
@@ -3306,7 +3306,7 @@ spec_mem_access(struct mem_t *mem,		/* memory space to access */
 	    }
 	  else
 	    {
-	      /* read from non-speculative memory state, don't allocate
+	      /* read from non-speculative memory state, do not allocate
 	         memory pages with speculative loads */
 	      *((word_t *)p) = MEM_READ_WORD(mem, addr);
 	    }
@@ -3328,7 +3328,7 @@ spec_mem_access(struct mem_t *mem,		/* memory space to access */
 	    }
 	  else
 	    {
-	      /* read from non-speculative memory state, don't allocate
+	      /* read from non-speculative memory state, do not allocate
 	         memory pages with speculative loads */
 	      *((word_t *)p) = MEM_READ_WORD(mem, addr);
 	      *(((word_t *)p)+1) =
