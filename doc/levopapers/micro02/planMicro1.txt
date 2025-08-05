@@ -228,7 +228,7 @@ Some general comments on what path we could take for MACRO.
 step.  I am hoping this will also help us to come up with ways to improve 
 the performance of the D-scheme.
 
-- Regarding memory, we already have a relatively complex memory.  I don't
+- Regarding memory, we already have a relatively complex memory.  I do not
 know if we want to make any major modification to what we already have.  
 
 - Looking at the comments on earlier paper, I think we need to spend most
@@ -282,7 +282,7 @@ is the best way.
 > flushes.
 
 Does this mean using dynamic fetch?  The effect of flushes can be reduced
-by using the Dynamic-D (different instruction from ML) but I don't know if
+by using the Dynamic-D (different instruction from ML) but I do not know if
 this is an option or not.  It certainly complicates the fetch but maybe we
 can use a limited amount of Dynamic-D for only handling the
 "far" branches.
@@ -351,7 +351,7 @@ Fine, I'll take it into account as needed as I work on the layout.
 > now the "real" programs, then, yes, I agree, we should investigate how
 > we might try to migrate to those new "real" programs. :-) :-)
 
-I basically agree with you. I would rather use the SPECint's. I don't
+I basically agree with you. I would rather use the SPECint's. I do not
 know Mediabench, personally, but from the name it is addressing an
 application area that is not currently of interest to us; we want to
 do well on hard-to-parallelize programs. If we do well there, we'll do
@@ -448,16 +448,16 @@ Dave,
 Since I'm doing the writeup, I'm going to use what I am familiar
 with, and that's Coreldraw. Just because it's powerful doesn't mean the
 output has to be cluttered. I'm well aware of the danger of "clutter".
-But don't forget, we need enought detail to get across the operation of the
+But do not forget, we need enought detail to get across the operation of the
 machine, as you yourself pointed out.
 
 Dave M. says everything is problematic, usually after he starts
-working on it. I don't mind doing other benchmarks, but we've got to
+working on it. I do not mind doing other benchmarks, but we've got to
 get SPECint covered 'cause it's a virtual standard. I'm trying to come
 up with different approaches to the way we've been trying to do this
 so far, so that we can make progress.
 
-"Embedded" is not the issue; code complexity is; we don't want
+"Embedded" is not the issue; code complexity is; we do not want
 programs with easy parallelism, unless they're in SPECint.
 
 -----Gus
@@ -569,7 +569,7 @@ Some general comments on what path we could take for MACRO.
 step.  I am hoping this will also help us to come up with ways to improve 
 the performance of the D-scheme.
 
-- Regarding memory, we already have a relatively complex memory.  I don't
+- Regarding memory, we already have a relatively complex memory.  I do not
 know if we want to make any major modification to what we already have.  
 
 - Looking at the comments on earlier paper, I think we need to spend most
@@ -623,7 +623,7 @@ is the best way.
 > flushes.
 
 Does this mean using dynamic fetch?  The effect of flushes can be reduced
-by using the Dynamic-D (different instruction from ML) but I don't know if
+by using the Dynamic-D (different instruction from ML) but I do not know if
 this is an option or not.  It certainly complicates the fetch but maybe we
 can use a limited amount of Dynamic-D for only handling the
 "far" branches.
@@ -731,7 +731,7 @@ I will let you handle the figures.  I suspect you are worried
 that I am approaching this from the wrong angle.  That could very
 well be true.
 
-I don't think we are in "any pack" yet. We first have to get in the 
+I do not think we are in "any pack" yet. We first have to get in the 
 pack.  I feel you may be too focused on raw IPC here, and not on the real 
 beauty of the design.  I think we won't be successful unless we can 
 make readers come away with an appreciation for the architecture.  
