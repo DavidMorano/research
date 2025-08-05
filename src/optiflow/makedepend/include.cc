@@ -224,7 +224,7 @@ included_by(ip, newfile)
 	 * Put this include file (newfile) on the list of files included
 	 * by 'file'.  If 'file' is NULL, then it is not an include
 	 * file itself (i.e. was probably mentioned on the command line).
-	 * If it is already on the list, don't stick it on again.
+	 * If it is already on the list, do not stick it on again.
 	 */
 	if (ip->i_list == NULL)
 		ip->i_list = (struct inclist **)

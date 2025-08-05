@@ -211,7 +211,7 @@ int deftype (line, filep, file_red, file, parse_it)
 	ret = match(directive, directives);
 	*p = savechar;
 
-	/* If we don't recognize this compiler directive or we happen to just
+	/* If we do not recognize this compiler directive or we happen to just
 	 * be gobbling up text while waiting for an #endif or #elif or #else
 	 * in the case of an #elif we must check the zero_value and return an
 	 * ELIF or an ELIFFALSE.

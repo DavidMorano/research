@@ -47,8 +47,8 @@
 
 	Why use FILEBUF over BFILE?  Yes, FILEBUF is a tiny bit more
 	lightweight than BFILE -- on a good day.  But the real
-	reason may be so that we don't need to load BFILE in code
-	very deep in a software stack if we don't need it -- like
+	reason may be so that we do not need to load BFILE in code
+	very deep in a software stack if we do not need it -- like
 	deep inside loadable modules.  Anyway, just a thought!
 
 	Why are we using FIELD as opposed to 'nextfield()' or something

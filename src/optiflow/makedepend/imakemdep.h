@@ -95,7 +95,7 @@
 /*
  * Step 2:  dup2
  *     If your OS doesn't have a dup2() system call to duplicate one file
- *     descriptor onto another, define such a mechanism here (if you don't
+ *     descriptor onto another, define such a mechanism here (if you do not
  *     already fall under the existing category(ies).
  */
 #if defined(SYSV) && !defined(CRAY) && !defined(Mips)
