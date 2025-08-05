@@ -19,7 +19,7 @@
 #define	SGIFCREAT	0x0100		/* create if nonexistent */
 #define	SGIFTRUNC	0x0200		/* truncate to zero length */
 #define	SGIFEXCL	0x0400		/* error if already created */
-#define	SGIFNOCTTY	0x0800		/* don't make this tty control term */
+#define	SGIFNOCTTY	0x0800		/* do not make this tty control term */
 
 #ifdef	COMMENT /* assume these are the same as on Solaris */
 
@@ -44,7 +44,7 @@
 #define	O_CREAT		0x100	/* open with file create (uses third open arg) */
 #define	O_TRUNC		0x200	/* open with truncation */
 #define	O_EXCL		0x400	/* exclusive open */
-#define	O_NOCTTY	0x800	/* don't allocate controlling tty (POSIX) */
+#define	O_NOCTTY	0x800	/* do not allocate controlling tty (POSIX) */
 
 #endif /* COMMENT */
 

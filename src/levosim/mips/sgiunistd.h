@@ -54,8 +54,8 @@ extern "C" {
 #if defined(_LANGUAGE_C) || defined(_LANGUAGE_C_PLUS_PLUS) || defined(_LANGUAGE_ASSEMBLY)
 
 /* _daemonize(3C) flags */
-#define	_DF_NOFORK	0x1	/* don't fork */
-#define	_DF_NOCHDIR	0x2	/* don't chdir to / */
+#define	_DF_NOFORK	0x1	/* do not fork */
+#define	_DF_NOCHDIR	0x2	/* do not chdir to / */
 #define	_DF_NOCLOSE	0x4	/* close no files */
 
 /* Symbolic constants for the "lseek" routine: */
