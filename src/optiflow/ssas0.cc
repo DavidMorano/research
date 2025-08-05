@@ -932,7 +932,7 @@ OPERAND		**opp ;
 	if (! lasp->c.f.v)
 	    return SR_EMPTY ;
 
-/* if we don't have any exportable operands => we don't have any ! */
+/* if we do not have any exportable operands => we do not have any ! */
 
 	if (! lasp->c.f.export)
 	    return SR_EMPTY ;
@@ -973,7 +973,7 @@ OPERAND		**opp ;
 	int	f ;
 
 
-/* if we aren't valid => then we don't have any operands ! */
+/* if we are not valid => then we do not have any operands ! */
 
 	if (! lasp->c.f.v)
 	    return SR_EMPTY ;

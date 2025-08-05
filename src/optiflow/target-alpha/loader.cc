@@ -302,8 +302,8 @@ ld_load_prog(char *fname,		/* program to load */
 	fatal("cannot open executable `%s'", argv[0]);
 
     /* this call is mainly for its side effect of reading in the sections.
-       we follow the traditional behavior of `strings' in that we don't
-       complain if we don't recognize a file to be an object file.  */
+       we follow the traditional behavior of `strings' in that we do not
+       complain if we do not recognize a file to be an object file.  */
     if (!bfd_check_format(abfd, bfd_object))
       {
 	bfd_close(abfd);

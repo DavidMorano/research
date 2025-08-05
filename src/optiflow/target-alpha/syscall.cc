@@ -866,7 +866,7 @@ struct xlate_table_t sockopt_map[] =
 };
 
 /* setsockopt TCP options */
-#define OSF_TCP_NODELAY		0x01 /* don't delay send to coalesce packets */
+#define OSF_TCP_NODELAY		0x01 /* do not delay send to coalesce packets */
 #define OSF_TCP_MAXSEG		0x02 /* maximum segment size */
 #define OSF_TCP_RPTR2RXT	0x03 /* set repeat count for R2 RXT timer */
 #define OSF_TCP_KEEPIDLE	0x04 /* secs before initial keepalive probe */
@@ -874,7 +874,7 @@ struct xlate_table_t sockopt_map[] =
 #define OSF_TCP_KEEPCNT		0x06 /* num of keepalive probes before drop */
 #define OSF_TCP_KEEPINIT	0x07 /* initial connect timeout (seconds) */
 #define OSF_TCP_PUSH		0x08 /* set push bit in outbnd data packets */
-#define OSF_TCP_NODELACK	0x09 /* don't delay send to coalesce packets */
+#define OSF_TCP_NODELACK	0x09 /* do not delay send to coalesce packets */
 
 struct xlate_table_t tcpopt_map[] =
 {
@@ -1357,7 +1357,7 @@ sys_syscall(struct regs_t *regs,	/* registers to access */
       break;
 
     case OSF_SYS_close:
-      /* don't close stdin, stdout, or stderr as this messes up sim logs */
+      /* do not close stdin, stdout, or stderr as this messes up sim logs */
       if (/*fd*/regs->regs_R[MD_REG_A0] == 0
 	  || /*fd*/regs->regs_R[MD_REG_A0] == 1
 	  || /*fd*/regs->regs_R[MD_REG_A0] == 2)

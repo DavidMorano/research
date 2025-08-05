@@ -25,7 +25,7 @@
 
 	Rather than holding a copy of an IS that was fetched we now
 	hold a pointer to the IS that already exists in the CHECKER!
-	I don't see why we need to copy the IS since it is already in
+	I do not see why we need to copy the IS since it is already in
 	the CHECKER (I hope there was no need to copy it).
 
 
