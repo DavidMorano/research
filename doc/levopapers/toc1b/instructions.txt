@@ -1,6 +1,6 @@
 Hi Dave
 
-This is the latest version of ToC paper.  I don't want you to spend a
+This is the latest version of ToC paper.  I do not want you to spend a
 lot of time on it but maybe you can give me some feedback especially on
 the following topics.
 
@@ -9,7 +9,7 @@ more and have a short description of what the references you mention are
 about.
 
 2- Look at the proof for the hardware predicate and tell me what you
-think.  Of course I already know that you don't like proofs :)
+think.  Of course I already know that you do not like proofs :)
 
 3- Section II.F is titled summary.  What do you think about the title?
 I actually think of nameing it "Summary and Optimizations" and maybe
@@ -25,7 +25,7 @@ lifetime.
 
 5- Section III.B.  Do you think the description for Backward branches is
 clear enough or do I need to add something else.  I couldn't really come
-up with a figure that is exciting enough.  I don't know how much more
+up with a figure that is exciting enough.  I do not know how much more
 information the figure is going to transfer to the reader.  Maybe I can
 expand the text instead.
 
