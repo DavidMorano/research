@@ -27,10 +27,10 @@ worry about this design.  I doubt that is the case.
 prior work" and then comment out the citation in the reference list.
 Also, there are probably too many citations to Levo.  You should probably
 comment out 1 or 2 more, though you should also leave 1 or 2 in (though
-don't refer to it as "our prior work" in these instances.
+do not refer to it as "our prior work" in these instances.
 
 I reread where you compare the present work with Levo.  Since you already
-draw a connection to another project, you really don't need to say too
+draw a connection to another project, you really do not need to say too
 much about being different from Levo.....
 
 6. Since ICS this year is being run by MIT folks, I think you need to
@@ -54,16 +54,16 @@ Content-Type: TEXT/PLAIN; charset=US-ASCII
 Dave,
 
 Figure 2 also leaves my uninspired.  While it has boxes with names
-on them, I really don't get any insight into the function of any of
+on them, I really do not get any insight into the function of any of
 these boxes.
 
-I don't see where these boxes are loaded.  I don't see where they
+I do not see where these boxes are loaded.  I do not see where they
 are used (most feed into Figure 4).  By the way, can you redo Figure
 4 so that everyone doesn't think this is just another Levo?  This is
 pretty much the exact figure (maybe change the orientation of the
 bus to match the rest of your datapath in Figure 2?)
 
-Sorry, I don't mean to be so critical, but a picture is worth a
+Sorry, I do not mean to be so critical, but a picture is worth a
 thousand words.
 
 Dave

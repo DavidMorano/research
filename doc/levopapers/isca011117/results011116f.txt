@@ -32,7 +32,7 @@ PREDICTION.  As you can see, for small machines, our D+VP out-performace
 this result.  
 
 I have include the (8,8,16) config but you might want to skip that because
-we don't have any data for it.  But as you see, it outperforms the rest.
+we do not have any data for it.  But as you see, it outperforms the rest.
 
 Also note that 3 entries are still missing and I am waiting for them.
 

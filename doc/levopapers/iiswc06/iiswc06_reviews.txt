@@ -117,7 +117,7 @@ Specific Comments:
 There are a few typos and places where the /cite notation is still in
 the paper. Please clean up for future versions.
 
-I don't recall the paper ever discussing variables with useful-lifetime =
+I do not recall the paper ever discussing variables with useful-lifetime =
 0 being "dead" or "killed" variables. It might help readers fit the work
 into their own contexts if you mentioned this. Also, it seems surprising
 to me that in Figure 1, there are few registers with "0" useful lifetime
