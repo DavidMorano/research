@@ -1,18 +1,17 @@
-/* bpfifo */
+/* bpfifo SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
 /* branch prediction FIFO */
-
+/* version %I% last-modified %G% */
 
 #define	CF_DEBUGS	0		/* non-switchable */
 #define	CF_SAFE		0		/* extra safe mode? */
 
-
 /* revision history:
 
-	= 2002-06-11, David Morano
-
+	= 1998-11-01, David Morano
 	This code was snarfed from the VPFIFO code.
-
 
 */
 
@@ -20,22 +19,20 @@
 
 /*******************************************************************************
 
+	Object:
+	cpfifo
+
+	Description:
 	This is a little FIFO code for storing branch prediction
 	information for subsequent update.
 
-
 *******************************************************************************/
 
-
-#define	BPFIFO_MASTER	0
-
-
-#include	<envstandards.h>
-
+#include	<envstandards.h>	/* must be ordered first to configure */
 #include	<sys/types.h>
+#include	<cstddef>		/* |nullptr_t| */
 #include	<cstdlib>
 #include	<cstring>
-
 #include	<vsystem.h>
 #include	<localmisc.h>
 
@@ -44,33 +41,44 @@
 
 /* local defines */
 
-#define	BPFIFO_MAGIC	0x94732651
+
+/* local namespaces */
+
+
+/* local typedefs */
 
 
 /* external subroutines */
 
 
+/* external variables */
+
+
 /* local structures */
+
+
+/* forward references */
+
+
+/* local variables */
+
+
+/* exported variables */
 
 
 /* exported subroutines */
 
-
-int bpfifo_init(op,n)
-BPFIFO	*op ;
-int	n ;
-{
+int bpfifo_init(bpfido *op,int n) noex {
 	int	rs ;
-	int	size ;
-
+	int	sz ;
 
 	if (op == NULL)
 		return SR_FAULT ;
 
-	(void) memset(op,0,sizeof(BPFIFO)) ;
+	(void) memset(op,0,szof(BPFIFO)) ;
 
-	size = n * sizeof(BPFIFO_ENTRY) ;
-	rs = uc_malloc(size,&op->table) ;
+	sz = n * szof(BPFIFO_ENTRY) ;
+	rs = uc_malloc(sz,&op->table) ;
 
 	if (rs < 0)
 		goto bad0 ;
@@ -89,16 +97,9 @@ bad0:
 }
 
 
-int bpfifo_free(op)
-BPFIFO	*op ;
-{
-
-
-	if (op == NULL)
-		return SR_FAULT ;
-
-	if (op->magic != BPFIFO_MAGIC)
-		return SR_NOTOPEN ;
+int bpfifo_free(bpfifo *op) noex {
+	if (op == NULL) return SR_FAULT ;
+	if (op->magic != BPFIFO_MAGIC) return SR_NOTOPEN ;
 
 	if (op->table != NULL) {
 	    uc_free(op->table) ;
@@ -113,15 +114,8 @@ BPFIFO	*op ;
 }
 
 
-int bpfifo_add(op,in,ia,row,outcome)
-BPFIFO	*op ;
-ULONG	in ;
-ULONG	ia ;
-uint	row ;
-uint	outcome ;
-{
+int bpfifo_add(bpfifo *op,ulong in,ulong ia,int row,int outcome) noex {
 	int	i ;
-
 
 #if	CF_SAFE
 	if (op == NULL)
@@ -155,15 +149,8 @@ uint	outcome ;
 }
 
 
-int bpfifo_remove(op,inp,iap,brp,otp)
-BPFIFO	*op ;
-ULONG	*inp ;
-ULONG	*iap ;
-uint	*brp ;
-uint	*otp ;
-{
+int bpfifo_rem(bpfifo *op,ulong *inp,ulong *iap,uint *brp,uint *otp) noex {
 	int	i ;
-
 
 #if	CF_SAFE
 	if (op == NULL)
@@ -187,15 +174,8 @@ uint	*otp ;
 }
 
 
-int bpfifo_read(op,inp,iap,brp,otp)
-BPFIFO	*op ;
-ULONG	*inp ;
-ULONG	*iap ;
-uint	*brp ;
-uint	*otp ;
-{
+int bpfifo_read(bpfifo *op,ulong *inp,ulong *iap,uint *brp,uint *otp) noex {
 	int	i ;
-
 
 #if	CF_SAFE
 	if (op == NULL)
