@@ -1,57 +1,80 @@
-/* sfifo */
+/* sfifo HEADER */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
 /* synchronous FIFO */
+/* version %I% last-modified %G% */
 
+
+/* Copyright © 2002 David A­D­ Morano.  All rights reserved. */
+
+/******************************************************************************
+
+  	Object:
+	sfifo
+
+	Description:
+	This object implements a synchronous clocked FIFO.
+
+******************************************************************************/
 
 #ifndef	SFIFO_INCLUDE
-#define	SFIFO_INCLUDE		1
+#define	SFIFO_INCLUDE
 
 
-#include	<sys/types.h>
+#include	<envstandards.h>	/* ordered first to configure */
+#include	<clanguage.h>
+#include	<utypedefs.h>
+#include	<utypealiases.h>
+#include	<usysdefs.h>
+#include	<usysrets.h>
+#include	<usyscalls.h>
 
-#include	"localmisc.h"		/* for { uint, ULONG } */
 
-
-
+#define	SFIFO_MAGIC	0x94732451
 #define	SFIFO		struct sfifo_head
-
+#define	SFIFO_ST	struct sfifo_state
+#define	SFIFO_FL	struct sfifo_flags
 
 
 struct sfifo_state {
-	int	head, tail, c ;
+	int		head ;
+	int		tail ;
+	int		c ;
 } ;
 
 struct sfifo_flags {
-	uint	ins : 1 ;
-	uint	rem : 1 ;
+	uint		ins:1 ;
+	uint		rem:1 ;
 } ;
 
 struct sfifo_head {
-	unsigned long	magic ;
-	struct sfifo_state	c, n ;
-	struct sfifo_flags	f ;
+	SFIFO_ST	c, n ;
 	char		*buf ;
 	char		*valid ;
-	int		objsize, nobj ;
+	SFIFO_FL	fl ;
+	uint		magic ;
+	int		objsize ;
+	int		nobj ;
 } ;
 
+typedef	SFIFO		sfifo ;
+typedef	SFIFO_ST	sfifo_st ;
+typedef	SFIFO_FL	sfifo_fl ;
+
+EXTERNC_begin
+
+extern int	sfifo_init(sfifo *,int,int) noex ;
+extern int	sfifo_free(sfifo *) noex ;
+extern int	sfifo_ins(sfifo *,void *) noex ;
+extern int	sfifo_rem(sfifo *,void *) noex ;
+extern int	sfifo_read(sfifo *,void *) noex ;
+extern int	sfifo_clock(sfifo *) noex ;
+extern int	sfifo_comb(sfifo *,int) noex ;
+
+EXTERNC_end
 
 
-
-#if	(! defined(SFIFO_MASTER)) || (SFIFO_MASTER == 0)
-
-extern int	sfifo_init(SFIFO *,int,int) ;
-extern int	sfifo_free(SFIFO *) ;
-extern int	sfifo_ins(SFIFO *,void *) ;
-extern int	sfifo_rem(SFIFO *,void *) ;
-extern int	sfifo_read(SFIFO *,void *) ;
-extern int	sfifo_clock(SFIFO *) ;
-extern int	sfifo_comb(SFIFO *,int) ;
-
-#endif /* SFIFO */
-
-
-#endif /* SFIFO */
-
+#endif /* SFIFO_INCLUDE */
 
 
