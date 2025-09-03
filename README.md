@@ -1,3 +1,3 @@
 Microarchitecture-Research
 
-High interaction-level-parallelism (ILP) using Resource-Flow-Execution
+High Instruction-Level-Parallelism (ILP) using Resource-Flow-Execution
