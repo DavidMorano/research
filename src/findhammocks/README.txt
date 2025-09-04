@@ -1,17 +1,13 @@
 FINDHAMMOCKS
 
-
-This program find Simple Single-sided Hammocks conditional branches in
+Description:
+This program finds Simple-Single-sided Hammock conditional branches in
 a program executable and writes out information about them to a file.
 
-
-Synopsis :
-
+Synopsis:
 $ findhammocks file.mips [options]
 
-
-where options can be :
-
-
+Arguments:
+<file.mips>    executable file (for MIPS machine architecture)
 
 
