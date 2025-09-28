@@ -165,7 +165,7 @@
 #include	<assert.h>
 #include	<cstdio>
 
-#include	<vsystem.h>
+#include	<usystem.h>
 
 #include	"localmisc.h"
 #include	"lsim.h"
