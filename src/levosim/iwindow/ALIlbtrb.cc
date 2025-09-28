@@ -42,7 +42,7 @@
 #include	<cstring>
 #include	<assert.h>
 
-#include	<vsystem.h>
+#include	<usystem.h>
 
 #include	"localmisc.h"
 #include	"config.h"
