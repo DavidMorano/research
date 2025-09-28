@@ -292,7 +292,7 @@
 #include	<cstdio>
 #endif
 
-#include	<vsystem.h>
+#include	<usystem.h>
 
 #include	"localmisc.h"
 #include	"lsim.h"
