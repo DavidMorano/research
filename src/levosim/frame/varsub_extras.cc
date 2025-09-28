@@ -59,7 +59,7 @@
 #include	<ctype.h>
 #include	<malloc.h>
 
-#include	<vsystem.h>
+#include	<usystem.h>
 #include	<vecstr.h>
 #include	<varsub.h>
 
