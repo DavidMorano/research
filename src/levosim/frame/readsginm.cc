@@ -64,7 +64,7 @@
 #include	<cstdlib>
 #include	<cstring>
 
-#include	<vsystem.h>
+#include	<usystem.h>
 #include	<bitops.h>
 #include	<char.h>
 #include	<bfile.h>
