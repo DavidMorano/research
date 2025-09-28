@@ -18,7 +18,7 @@
 
 #include	<sys/types.h>
 
-#include	<vsystem.h>
+#include	<usystem.h>
 #include	<varsub.h>
 
 #include	"localmisc.h"
