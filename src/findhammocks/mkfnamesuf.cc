@@ -52,7 +52,7 @@
 #include	<sys/param.h>
 #include	<cstring>
 
-#include	<vsystem.h>
+#include	<usystem.h>
 
 
 /* forward references */
