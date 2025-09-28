@@ -56,7 +56,7 @@
 #include	<cstdlib>
 #include	<cstring>
 
-#include	<vsystem.h>
+#include	<usystem.h>
 #include	<vecstr.h>
 #include	<strn.h>
 #include	<strwcpy.h>
