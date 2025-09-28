@@ -117,7 +117,7 @@
 #include	<cstdio>
 #endif
 
-#include	<vsystem.h>
+#include	<usystem.h>
 #include	<hdb.h>
 
 #include	"localmisc.h"
