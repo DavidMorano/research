@@ -54,7 +54,7 @@
 #include	<cstring>
 #include	<cerrno>		/* for signal catching */
 
-#include	<vsystem.h>
+#include	<usystem.h>
 #include	<ascii.h>
 #include	<bitops.h>
 #include	<char.h>
