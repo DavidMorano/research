@@ -65,7 +65,7 @@
 #include	<cstring>
 #include	<ctype.h>
 
-#include	<vsystem.h>
+#include	<usystem.h>
 #include	<bfile.h>
 #include	<hdb.h>
 #include	<char.h>
