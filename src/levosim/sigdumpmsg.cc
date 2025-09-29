@@ -34,7 +34,7 @@
 #include	<arpa/inet.h>
 #include	<unistd.h>
 #include	<fcntl.h>
-#include	<vsystem.h>
+#include	<usystem.h>
 #include	<vecstr.h>
 #include	<serialbuf.h>
 #include	<localmisc.h>
