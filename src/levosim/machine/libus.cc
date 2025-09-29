@@ -42,7 +42,7 @@
 #include	<sys/types.h>
 #include	<climits>
 
-#include	<vsystem.h>
+#include	<usystem.h>
 
 #include	"localmisc.h"
 #include	"config.h"
