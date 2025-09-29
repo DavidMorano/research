@@ -10,7 +10,7 @@
 #include	<sys/types.h>
 #include	<sys/param.h>
 
-#include	<vsystem.h>
+#include	<usystem.h>
 #include	<bio.h>
 
 #include	"localmisc.h"
