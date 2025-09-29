@@ -41,7 +41,7 @@
 #include	<standards.h>
 #endif
 
-#include	<vsystem.h>
+#include	<usystem.h>
 #include	<mallocstuff.h>
 #include	<bio.h>
 
