@@ -39,7 +39,7 @@
 #include	<cstdlib>
 #include	<cstring>
 
-#include	<vsystem.h>
+#include	<usystem.h>
 #include	<veclist.h>
 #include	<vecelem.h>
 #include	<hdb.h>
