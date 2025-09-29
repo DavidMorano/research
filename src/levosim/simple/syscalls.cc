@@ -37,7 +37,7 @@
 #include	<fcntl.h>
 #include	<cstring>
 
-#include	<vsystem.h>
+#include	<usystem.h>
 
 #include	"localmisc.h"
 #include	"syscalls.h"
