@@ -21,7 +21,7 @@
 #include	<sys/types.h>
 #include	<netdb.h>
 
-#include	<vsystem.h>
+#include	<usystem.h>
 #include	<logfile.h>
 #include	<vecstr.h>
 
