@@ -1,62 +1,64 @@
-/* exectrace */
+/* exectrace SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
 /* create and read an execution trace */
+/* version %I% last-modified %G% */
 
-
-#define	CF_DEBUGS	0
+#define	CF_DEBUGS	0		/* compile-time debugging */
+#define	CF_DEBUGSRS	0
 #define	CF_SAFE		0		/* might need this */
 #define	CF_FASTCLEAR	1		/* caution: hack could be dangerous */
 #define	CF_FASTREAD	1
-#define	CF_NOCOMPRESS	1		/* do not compress IAs */
-
+#define	CF_NOCOMPRESS	0		/* do not compress IAs */
+#define	CF_SETBUF	0		/* set larger buffer size */
 
 /* revision history:
 
-	= 01/06/06, Dave Morano
-
+	= 2001-06-06, David Morano
 	I am starting this out from scratch for the LevoSim simulator.
-
 
 */
 
-/* Copyright © 2003-2007 David A­D­ Morano.  All rights reserved. */
+/* Copyright © 1998 David A-D- Morano.  All rights reserved. */
 
-/******************************************************************************
+/*******************************************************************************
 
 	This little object allows for the writing and reading of a
-	committed execution trace of a program.  Provision is made for
-	the writing of instructions executed as well as register
+	committed execution trace of a program.  Provision is made
+	for the writing of instructions executed as well as register
 	written and memory locations written.
 
+*******************************************************************************/
 
-******************************************************************************/
-
-
-#define	EXECTRACE_MASTER	1
-
-
+#include	<envstandards.h>	/* must be ordered first to configure */
 #include	<sys/types.h>
-#include	<sys/stat.h>
 #include	<sys/param.h>
+#include	<sys/stat.h>
 #include	<unistd.h>
 #include	<fcntl.h>
+#include	<ctime>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>
 #include	<cstring>
-
-#include	<vsystem.h>
-#include	<bio.h>
+#include	<usystem.h>
+#include	<getxusername.h>
+#include	<getnodedomain.h>
+#include	<bfile.h>
 #include	<netorder.h>
+#include	<sfx.h>
+#include	<cfdec.h>
+#include	<strwcpy.h>
+#include	<localmisc.h>
 
-#include	"localmisc.h"
 #include	"exectrace.h"
-
-
 
 
 /* local defines */
 
-#define	EXECTRACE_MAGIC		0x86553823
+#define	GETDP(type)	(((type) >> EXECTRACE_TBITS) & 15)
 
-#define	GETDP(type)		(((type) >> EXECTRACE_TBITS) & 15) ;
+#define	ET		EXECTRACE{
 
 /* modes */
 
@@ -64,19 +66,20 @@
 #define	EXECTRACE_MWRITE	1
 #define	EXECTRACE_MAPPEND	2
 
-#undef	LINELEN
-#define	LINELEN			80
+#ifndef	LINEBUFLEN
+#ifdef	LINE_MAX
+#define	LINEBUFLEN	MAX(LINE_MAX,2048)
+#else
+#define	LINEBUFLEN	2048
+#endif
+#endif
 
+#define	BUFSIZE			(8 * 8192)
+
+#define	EXECTRACEDEB		"exectrace.deb"
 
 
 /* external subroutines */
-
-extern int	getnodedomain(char *,char *) ;
-extern int	getlogname(char *,int) ;
-extern int	sfshrink(const char *,int,char **) ;
-extern int	cfdeci(const char *,int,int *) ;
-
-extern char	*strwcpy(char *,const char *,int) ;
 
 
 /* local structures */
@@ -88,7 +91,12 @@ int 		exectrace_read(EXECTRACE *,EXECTRACE_ENTRY *) ;
 
 static int	exectrace_readsub(EXECTRACE *,EXECTRACE_ENTRY *,uint) ;
 
+#if	CF_DEBUGS
+extern int	mkhexstr(char *,int,void *,int) ;
+#endif
+#if	CF_DEBUGS
 static int	half(LONG,int) ;
+#endif
 
 #ifdef	COMMENT
 static void	mkmodestr(char *,int) ;
@@ -121,16 +129,12 @@ static const char	*typenames[] = {
 #endif /* CF_DEBUGS */
 
 
+/* exported variables */
 
 
+/* exported subroutines */
 
-int exectrace_open(op,filename,accmode,perm,progname)
-EXECTRACE	*op ;
-char const	filename[] ;
-char const	accmode[] ;
-int		perm ;
-char const	progname[] ;
-{
+int exectrace_open(ET *op,cc *filename,cc *accmode,int perm,cc *progname) noex {
 	EXECTRACE_ENTRY	e ;
 
 	LONG	starttime ;
@@ -144,8 +148,8 @@ char const	progname[] ;
 	int	f_seekable = FALSE ;
 
 	char	nodename[NODENAMELEN + 1] ;
-	char	username[LOGNAMELEN + 1] ;
-	char	linebuf[LINELEN + 1] ;
+	char	username[USERNAMELEN + 1] ;
+	char	linebuf[LINEBUFLEN + 1] ;
 	char	*openmode = linebuf ;
 	char	*cp ;
 
@@ -163,7 +167,7 @@ char const	progname[] ;
 #if	CF_DEBUGS
 	for (i = 0 ; typenames[i] != NULL ; i += 1) ;
 	if (i != EXECTRACE_ROVERLAST)
-		return SR_BADFMT ;
+	    return SR_BADFMT ;
 #endif /* CF_DEBUGS */
 
 /* continue */
@@ -186,6 +190,8 @@ char const	progname[] ;
 	        f_append = TRUE ;
 	        *cp++ = 'r' ;
 
+/* FALL THROUGH */
+
 	    case 'w':
 	        f_write = TRUE ;
 	        *cp++ = 'w' ;
@@ -201,10 +207,8 @@ char const	progname[] ;
 	    return SR_INVALID ;
 
 	if (f_write && (! f_append)) {
-
 	    *cp++ = 'c' ;
 	    *cp++ = 't' ;
-
 	}
 
 	*cp = '\0' ;
@@ -217,32 +221,34 @@ char const	progname[] ;
 /* do the actual file open */
 
 #if	CF_DEBUGS
-	eprintf("exectrace_open: filename=%s omode=%s progname=%s\n",
+	debugprintf("exectrace_open: filename=%s omode=%s progname=%s\n",
 	    filename,openmode,progname) ;
 #endif
 
 	rs = bopen(&op->tfile,(char *) filename,openmode,perm) ;
 
 #if	CF_DEBUGS
-	eprintf("exectrace_open: bopen() rs=%d\n",rs) ;
+	debugprintf("exectrace_open: bopen() rs=%d\n",rs) ;
 #endif
 
 	if (rs < 0)
 	    goto bad0 ;
 
-	rs = bcontrol(&op->tfile,BC_CLOSEONEXEC,0) ;
+	rs = bcontrol(&op->tfile,BC_CLOSEONEXEC,TRUE) ;
 
 	if (rs < 0)
 	    goto bad1 ;
 
-/* if it is seekable, try to get the buffer size --->  UP ! */
+/* if it is seekable, try to get the buffer size --->  UP! */
 
+#if	CF_SETBUF
 	if (bseek(&op->tfile,0L,SEEK_CUR) >= 0) {
 
-		f_seekable = TRUE ;
-		bcontrol(&op->tfile,BC_SETBUF,(8 * 8192)) ;
+	    f_seekable = TRUE ;
+	    bcontrol(&op->tfile,BC_SETBUF,BUFSIZE) ;
 
 	}
+#endif /* F_STEBUF */
 
 /* do some things depending on how we are accessing */
 
@@ -252,17 +258,16 @@ char const	progname[] ;
 
 
 #if	CF_DEBUGS
-	    eprintf("exectrace_open: read/append\n") ;
+	    debugprintf("exectrace_open: read/append\n") ;
 #endif
 
-	    rs = bgetline(&op->tfile,linebuf,LINELEN) ;
+	    rs = breadline(&op->tfile,linebuf,LINEBUFLEN) ;
 
 #if	CF_DEBUGS
-	    eprintf("exectrace_open: bgetline() rs=%d\n",rs) ;
+	    debugprintf("exectrace_open: breadline() rs=%d\n",rs) ;
 #endif
 
 	    if (rs <= 0) {
-
 	        rs = SR_BADFMT ;
 	        goto bad1 ;
 	    }
@@ -276,23 +281,24 @@ char const	progname[] ;
 	    if (strncmp(cp,linebuf,sl) != 0) {
 
 #if	CF_DEBUGS
-	    eprintf("exectrace_open: bad (%d) magic=>%s<\n",sl,linebuf) ;
+	        debugprintf("exectrace_open: bad (%d) magic=>%s<\n",
+			sl,linebuf) ;
 #endif
 
 	        goto bad1 ;
-		}
+	    }
 
-	    sl = sfshrink(linebuf + sl,len - sl,&cp) ;
+	    sl = sfshrink((linebuf + sl),(len - sl),&cp) ;
 
 	    op->i.version = 0 ;
 	    if (sl > 0) {
 
-	        rs = cfdeci(linebuf + sl,len - sl,&op->i.version) ;
+	        rs = cfdeci((linebuf + sl),(len - sl),&op->i.version) ;
 
 	        if (rs < 0) {
 
 #if	CF_DEBUGS
-	        eprintf("exectrace_open: bad version parse\n") ;
+	            debugprintf("exectrace_open: bad version parse\n") ;
 #endif
 
 	            rs = SR_BADFMT ;
@@ -300,15 +306,15 @@ char const	progname[] ;
 	        }
 
 #if	CF_DEBUGS
-	        eprintf("exectrace_open: read file version=%d\n",
+	        debugprintf("exectrace_open: read file version=%d\n",
 	            op->i.version) ;
 #endif
 
 	        if (op->i.version > EXECTRACE_FILEVERSION) {
 
 #if	CF_DEBUGS
-	        eprintf("exectrace_open: bad version=%d\n",
-	            op->i.version) ;
+	            debugprintf("exectrace_open: bad version=%d\n",
+	                op->i.version) ;
 #endif
 
 	            rs = SR_NOTSUP ;
@@ -336,13 +342,12 @@ char const	progname[] ;
 	    op->istypeextra[EXECTRACE_RMEM] = TRUE ;
 	    op->istypeextra[EXECTRACE_RIN] = TRUE ;
 
-
 /* start the process off */
 
 	    rs = bgetc(&op->tfile) ;
 
 #if	CF_DEBUGS
-	    eprintf("exectrace_open: bgetc() rs=%d c=%02x\n",rs,rs) ;
+	    debugprintf("exectrace_open: bgetc() rs=%d c=%02x\n",rs,rs) ;
 #endif
 
 	    op->r.type = -1 ;
@@ -356,7 +361,7 @@ char const	progname[] ;
 	            rs = exectrace_read(op,&e) ;
 
 #if	CF_DEBUGS
-	            eprintf("exectrace_open: exectrace_read() rs=%d\n",rs) ;
+	            debugprintf("exectrace_open: exectrace_read() rs=%d\n",rs) ;
 #endif
 
 	        }
@@ -364,7 +369,7 @@ char const	progname[] ;
 	    } else if (rs == SR_EOF) {
 
 #if	CF_DEBUGS
-	        eprintf("exectrace_open: EOF rs=%d\n",rs) ;
+	        debugprintf("exectrace_open: EOF rs=%d\n",rs) ;
 #endif
 
 	        rs = SR_OK ;
@@ -388,7 +393,7 @@ char const	progname[] ;
 	        bputc(&op->tfile,EXECTRACE_RNAME) ;
 
 #if	CF_DEBUGS
-	    eprintf("exectrace_open: writing progname=%s\n",progname) ;
+	        debugprintf("exectrace_open: writing progname=%s\n",progname) ;
 #endif
 
 	        bprintf(&op->tfile,"%s\n",
@@ -401,12 +406,12 @@ char const	progname[] ;
 	    rs1 = getnodedomain(nodename,NULL) ;
 
 #if	CF_DEBUGS
-	    eprintf("exectrace_open: getnodedomain() rs=%d\n",rs1) ;
+	    debugprintf("exectrace_open: getnodedomain() rs=%d\n",rs1) ;
 #endif
 
 	    if (rs1 >= 0) {
 
-	        getlogname(username,LOGNAMELEN) ;
+	        getusername(username,USERNAMELEN,-1) ;
 
 	        bputc(&op->tfile,EXECTRACE_RWHERE) ;
 
@@ -417,27 +422,29 @@ char const	progname[] ;
 
 /* write a DATE record */
 
-	    u_unixtime(&starttime) ;
+	    starttime = unixtime(NULL) ;
 
 	    bputc(&op->tfile,EXECTRACE_RDATE) ;
 
 	    netorder_wll(linebuf,starttime) ;
 
 #if	CF_DEBUGS
-	eprintf("exectrace_open: date=%016llx %08x:%08x\n",
-		starttime,half(starttime,1),half(starttime,0)) ;
+	    debugprintf("exectrace_open: date=%016llx %08x:%08x\n",
+	        starttime,half(starttime,1),half(starttime,0)) ;
 #endif
 
-	    bwrite(&op->tfile,linebuf,sizeof(LONG)) ;
+	    rs = bwrite(&op->tfile,linebuf,sizeof(LONG)) ;
 
 	} /* end if (writing but not appending) */
 
 	if (f_append && f_seekable)
 	    bseek(&op->tfile,0L,SEEK_END) ;
 
+	if (rs < 0)
+	    goto bad1 ;
 
 #if	CF_DEBUGS
-	eprintf("exectrace_open: exiting OK rs=%d\n",rs) ;
+	debugprintf("exectrace_open: exiting OK rs=%d\n",rs) ;
 #endif
 
 	op->magic = EXECTRACE_MAGIC ;
@@ -450,7 +457,7 @@ bad1:
 bad0:
 
 #if	CF_DEBUGS
-	eprintf("exectrace_open: exiting bad rs=%d\n",rs) ;
+	debugprintf("exectrace_open: exiting bad rs=%d\n",rs) ;
 #endif
 
 	return rs ;
@@ -474,7 +481,7 @@ EXECTRACE	*op ;
 	rs = bclose(&op->tfile) ;
 
 #if	CF_DEBUGS
-	eprintf("exectrace_close: rs=%d\n",rs) ;
+	debugprintf("exectrace_close: rs=%d\n",rs) ;
 #endif
 
 	op->magic = 0 ;
@@ -501,6 +508,9 @@ ULONG		clock ;
 	    return SR_NOTOPEN ;
 #endif /* CF_SAFE */
 
+	if (op->rs < 0)
+	    return op->rs ;
+
 	*bp++ = EXECTRACE_RCLOCK ;
 	netorder_wull(bp,clock) ;
 
@@ -508,9 +518,10 @@ ULONG		clock ;
 	rs = bwrite(&op->tfile,buf,(bp - buf)) ;
 
 #if	CF_DEBUGS
-	eprintf("exectrace_wclock: rs=%d\n",rs) ;
+	debugprintf("exectrace_wclock: rs=%d\n",rs) ;
 #endif
 
+	op->rs = rs ;
 	return rs ;
 }
 /* end subroutine (exectrace_wclock) */
@@ -536,6 +547,18 @@ uint		ia ;
 	    return SR_NOTOPEN ;
 #endif /* CF_SAFE */
 
+#if	CF_DEBUGS
+	debugprintf("exectrace_wia: saved rs=%d\n",op->rs) ;
+#endif
+
+#if	CF_DEBUGSRS
+	if (op->rs < 0)
+		nprintf(EXECTRACEDEB,"wia: rs=%d\n",rs) ;
+#endif
+
+	if (op->rs < 0)
+	    return op->rs ;
+
 	type = EXECTRACE_RIA ;
 #if	CF_NOCOMPRESS
 	inc = -1 ;
@@ -545,32 +568,33 @@ uint		ia ;
 	if ((inc <= 0) || (inc >= 16)) {
 
 #if	CF_DEBUGS
-	eprintf("exectrace_wia: whole ia=%08x\n",ia) ;
+	    debugprintf("exectrace_wia: whole ia=%08x\n",ia) ;
 #endif
 
-	*bp++ = type ;
-	netorder_wuint(bp,ia) ;
+	    *bp++ = type ;
+	    netorder_wuint(bp,ia) ;
 
-	bp += 4 ;
+	    bp += 4 ;
 
 	} else
-		*bp++ = type | (inc << 4) ;
+	    *bp++ = type | (inc << 4) ;
 
 	op->ia_last = ia ;
 	rs = bwrite(&op->tfile,buf,(bp - buf)) ;
 
 #if	CF_DEBUGS
 	{
-		int	rs1 ;
+	    int	rs1 ;
 
-		char	hexbuf[40] ;
+	    char	hexbuf[100 + 1] ;
 
-	rs1 = mkhexstr(hexbuf,buf,(bp - buf)) ;
-	eprintf("exectrace_wia: rs=%d %s diff=%d rs1=%d\n",
-		rs,hexbuf,(bp - buf),rs1) ;
+	    rs1 = mkhexstr(hexbuf,100,buf,(bp - buf)) ;
+	    debugprintf("exectrace_wia: rs=%d %s diff=%d rs1=%d\n",
+	        rs,hexbuf,(bp - buf),rs1) ;
 	}
-#endif
+#endif /* CF_DEBUGS */
 
+	op->rs = rs ;
 	return rs ;
 }
 /* end subroutine (exectrace_wia) */
@@ -594,13 +618,21 @@ uint		n ;
 	    return SR_NOTOPEN ;
 #endif /* CF_SAFE */
 
+#if	CF_DEBUGSRS
+	if (op->rs < 0)
+		nprintf(EXECTRACEDEB,"wsom: rs=%d\n",rs) ;
+#endif
+
+	if (op->rs < 0)
+	    return op->rs ;
+
 	*bp++ = EXECTRACE_RSOM ;
 	netorder_wuint(bp,n) ;
 
 	bp += 4 ;
 	rs = bwrite(&op->tfile,buf,(bp - buf)) ;
 
-
+	op->rs = rs ;
 	return rs ;
 }
 /* end subroutine (exectrace_wsom) */
@@ -624,13 +656,21 @@ uint		n ;
 	    return SR_NOTOPEN ;
 #endif /* CF_SAFE */
 
+#if	CF_DEBUGSRS
+	if (op->rs < 0)
+		nprintf(EXECTRACEDEB,"wsyscall: rs=%d\n",rs) ;
+#endif
+
+	if (op->rs < 0)
+	    return op->rs ;
+
 	*bp++ = EXECTRACE_RSYSCALL ;
 	netorder_wuint(bp,n) ;
 
 	bp += 4 ;
 	rs = bwrite(&op->tfile,buf,(bp - buf)) ;
 
-
+	op->rs = rs ;
 	return rs ;
 }
 /* end subroutine (exectrace_wsyscall) */
@@ -654,13 +694,21 @@ ULONG		in ;
 	    return SR_NOTOPEN ;
 #endif /* CF_SAFE */
 
+#if	CF_DEBUGSRS
+	if (op->rs < 0)
+		nprintf(EXECTRACEDEB,"win: rs=%d\n",rs) ;
+#endif
+
+	if (op->rs < 0)
+	    return op->rs ;
+
 	*bp++ = EXECTRACE_RIN ;
 	netorder_wull(bp,in) ;
 
 	bp += 8 ;
 	rs = bwrite(&op->tfile,buf,(bp - buf)) ;
 
-
+	op->rs = rs ;
 	return rs ;
 }
 /* end subroutine (exectrace_win) */
@@ -686,6 +734,14 @@ uint		a, dv, dp ;
 	    return SR_NOTOPEN ;
 #endif /* CF_SAFE */
 
+#if	CF_DEBUGSRS
+	if (op->rs < 0)
+		nprintf(EXECTRACEDEB,"wreg: rs=%d\n",rs) ;
+#endif
+
+	if (op->rs < 0)
+	    return op->rs ;
+
 	type = EXECTRACE_RREG | (dp << 4) ;
 	*bp++ = type ;
 	*bp++ = a ;
@@ -695,9 +751,10 @@ uint		a, dv, dp ;
 	rs = bwrite(&op->tfile,buf,(bp - buf)) ;
 
 #if	CF_DEBUGS
-	eprintf("exectrace_wreg: rs=%d\n",rs) ;
+	debugprintf("exectrace_wreg: rs=%d\n",rs) ;
 #endif
 
+	op->rs = rs ;
 	return rs ;
 }
 /* end subroutine (exectrace_wreg) */
@@ -723,19 +780,28 @@ uint		a ;
 	    return SR_NOTOPEN ;
 #endif /* CF_SAFE */
 
+#if	CF_DEBUGSRS
+	if (op->rs < 0)
+		nprintf(EXECTRACEDEB,"wrsa: rs=%d\n",rs) ;
+#endif
+
+	if (op->rs < 0)
+	    return op->rs ;
+
 	*bp++ = EXECTRACE_RRSA ;
 	*bp++ = a ;
 	rs = bwrite(&op->tfile,buf,(bp - buf)) ;
 
 #if	CF_DEBUGS
 	{
-		char	hexbuf[40] ;
+	    char	hexbuf[100 + 1] ;
 
-	mkhexstr(hexbuf,buf,(bp - buf)) ;
-	eprintf("exectrace_wrsa: rs=%d %s\n",rs,hexbuf) ;
+	    mkhexstr(hexbuf,100,buf,(bp - buf)) ;
+	    debugprintf("exectrace_wrsa: rs=%d %s\n",rs,hexbuf) ;
 	}
-#endif
+#endif /* CF_DEBUGS */
 
+	op->rs = rs ;
 	return rs ;
 }
 /* end subroutine (exectrace_wrsa) */
@@ -761,6 +827,14 @@ uint		a, dv ;
 	    return SR_NOTOPEN ;
 #endif /* CF_SAFE */
 
+#if	CF_DEBUGSRS
+	if (op->rs < 0)
+		nprintf(EXECTRACEDEB,"wrsv: rs=%d\n",rs) ;
+#endif
+
+	if (op->rs < 0)
+	    return op->rs ;
+
 	*bp++ = EXECTRACE_RRSV ;
 	*bp++ = a ;
 	netorder_wuint(bp,dv) ;
@@ -769,9 +843,10 @@ uint		a, dv ;
 	rs = bwrite(&op->tfile,buf,(bp - buf)) ;
 
 #if	CF_DEBUGS
-	eprintf("exectrace_wrsa: rs=%d\n",rs) ;
+	debugprintf("exectrace_wrsa: rs=%d\n",rs) ;
 #endif
 
+	op->rs = rs ;
 	return rs ;
 }
 /* end subroutine (exectrace_wrsv) */
@@ -797,6 +872,14 @@ uint		a, dv, dp ;
 	    return SR_NOTOPEN ;
 #endif /* CF_SAFE */
 
+#if	CF_DEBUGSRS
+	if (op->rs < 0)
+		nprintf(EXECTRACEDEB,"wmem: rs=%d\n",rs) ;
+#endif
+
+	if (op->rs < 0)
+	    return op->rs ;
+
 	type = EXECTRACE_RMEM | (dp << 4) ;
 	*bp++ = type ;
 	netorder_wuint(bp,a) ;
@@ -808,9 +891,10 @@ uint		a, dv, dp ;
 	rs = bwrite(&op->tfile,buf,(bp - buf)) ;
 
 #if	CF_DEBUGS
-	eprintf("exectrace_wmem: rs=%d\n",rs) ;
+	debugprintf("exectrace_wmem: rs=%d\n",rs) ;
 #endif
 
+	op->rs = rs ;
 	return rs ;
 }
 /* end subroutine (exectrace_wmem) */
@@ -834,6 +918,14 @@ uint		a ;
 	    return SR_NOTOPEN ;
 #endif /* CF_SAFE */
 
+#if	CF_DEBUGSRS
+	if (op->rs < 0)
+		nprintf(EXECTRACEDEB,"wmsa: rs=%d\n",rs) ;
+#endif
+
+	if (op->rs < 0)
+	    return op->rs ;
+
 	*bp++ = EXECTRACE_RMSA ;
 	netorder_wuint(bp,a) ;
 
@@ -841,9 +933,10 @@ uint		a ;
 	rs = bwrite(&op->tfile,buf,(bp - buf)) ;
 
 #if	CF_DEBUGS
-	eprintf("exectrace_wmsa: a=%08x rs=%d\n",a,rs) ;
+	debugprintf("exectrace_wmsa: a=%08x rs=%d\n",a,rs) ;
 #endif
 
+	op->rs = rs ;
 	return rs ;
 }
 /* end subroutine (exectrace_wmsa) */
@@ -869,6 +962,14 @@ uint		a, dv ;
 	    return SR_NOTOPEN ;
 #endif /* CF_SAFE */
 
+#if	CF_DEBUGSRS
+	if (op->rs < 0)
+		nprintf(EXECTRACEDEB,"wmsv: rs=%d\n",rs) ;
+#endif
+
+	if (op->rs < 0)
+	    return op->rs ;
+
 	*bp++ = EXECTRACE_RMSV ;
 	netorder_wuint(bp,a) ;
 
@@ -880,14 +981,15 @@ uint		a, dv ;
 
 #if	CF_DEBUGS
 	{
-		char	hexbuf[40] ;
+	    char	hexbuf[100 + 1] ;
 
-	mkhexstr(hexbuf,buf,(bp - buf)) ;
-	eprintf("exectrace_wmsv: rs=%d %s\n",
-		rs,hexbuf) ;
+	    mkhexstr(hexbuf,100,buf,(bp - buf)) ;
+	    debugprintf("exectrace_wmsv: rs=%d %s\n",
+	        rs,hexbuf) ;
 	}
-#endif
+#endif /* CF_DEBUGS */
 
+	op->rs = rs ;
 	return rs ;
 }
 /* end subroutine (exectrace_wmsv) */
@@ -909,11 +1011,11 @@ EXECTRACE_ENTRY	*ep ;
 	int	*ebp ;
 #endif
 
-	    uchar	ch ;
+	uchar	ch ;
 
 
 #if	CF_DEBUGS
-	eprintf("exectrace_read: entered\n") ;
+	debugprintf("exectrace_read: entered\n") ;
 #endif
 
 #if	CF_SAFE
@@ -928,8 +1030,8 @@ EXECTRACE_ENTRY	*ep ;
 #endif /* CF_SAFE */
 
 #if	CF_DEBUGS
-	eprintf("exectrace_read: current type=%02x(%d)\n",
-		op->r.type, op->r.type) ;
+	debugprintf("exectrace_read: current type=%02x(%d)\n",
+	    op->r.type, op->r.type) ;
 #endif
 
 #if	CF_FASTCLEAR
@@ -946,14 +1048,14 @@ EXECTRACE_ENTRY	*ep ;
 	    rs = bread(&op->tfile,&ch,1) ;
 
 #if	CF_DEBUGS
-	    eprintf("exectrace_read: bread() rs=%d ch=%02x(%d)\n",
-		rs,ch,ch) ;
+	    debugprintf("exectrace_read: bread() rs=%d ch=%02x(%d)\n",
+	        rs,ch,ch) ;
 #endif
 
 	    op->r.type = ch & 0xFF ;
 	    if (rs <= 0) {
 
-		op->r.type = -1 ;
+	        op->r.type = -1 ;
 	        return rs ;
 	    }
 #else
@@ -968,14 +1070,14 @@ EXECTRACE_ENTRY	*ep ;
 #endif /* CF_FASTREAD */
 
 #if	CF_DEBUGS
-	    eprintf("exectrace_read: 1 newly read type=%02x(%d)\n",
-		op->r.type, op->r.type) ;
+	    debugprintf("exectrace_read: 1 newly read type=%02x(%d)\n",
+	        op->r.type, op->r.type) ;
 #endif
 
 	} /* end if (getting the sub-record type) */
 
 #if	CF_DEBUGS
-	eprintf("exectrace_read: about to loop type=%02x\n",op->r.type) ;
+	debugprintf("exectrace_read: about to loop type=%02x\n",op->r.type) ;
 #endif
 
 	rtype = op->r.type & EXECTRACE_TMASK ;
@@ -997,7 +1099,7 @@ EXECTRACE_ENTRY	*ep ;
 	    rs = exectrace_readsub(op,ep,rtype) ;
 
 #if	CF_DEBUGS
-	    eprintf("exectrace_read: exectrace_readsub() rs=%d\n",rs) ;
+	    debugprintf("exectrace_read: exectrace_readsub() rs=%d\n",rs) ;
 #endif
 
 	    if (rs < 0)
@@ -1031,14 +1133,14 @@ EXECTRACE_ENTRY	*ep ;
 	    rs = bread(&op->tfile,&ch,1) ;
 
 #if	CF_DEBUGS
-	    eprintf("exectrace_read: bread() rs=%d ch=%02x(%d)\n",
-		rs,ch,ch) ;
+	    debugprintf("exectrace_read: bread() rs=%d ch=%02x(%d)\n",
+	        rs,ch,ch) ;
 #endif
 
 	    op->r.type = ch & 0xFF ;
 	    if (rs <= 0) {
 
-		op->r.type = -1 ;
+	        op->r.type = -1 ;
 	        rs = SR_OK ;
 	        break ;
 	    }
@@ -1050,15 +1152,15 @@ EXECTRACE_ENTRY	*ep ;
 	        return rs ;
 
 	    if (rs == SR_EOF) {
-	        
+
 	        rs = SR_OK ;
 	        break ;
 	    }
 #endif /* CF_FASTREAD */
 
 #if	CF_DEBUGS
-	    eprintf("exectrace_read: 2 newly read type=%02x(%d)\n",
-		op->r.type, op->r.type) ;
+	    debugprintf("exectrace_read: 2 newly read type=%02x(%d)\n",
+	        op->r.type, op->r.type) ;
 #endif
 
 	    rtype = op->r.type & EXECTRACE_TMASK ;
@@ -1071,7 +1173,7 @@ EXECTRACE_ENTRY	*ep ;
 	    ep->clock = op->r.clock ;
 
 #if	CF_DEBUGS
-	eprintf("exectrace_read: rs=%d\n",rs) ;
+	debugprintf("exectrace_read: rs=%d\n",rs) ;
 #endif
 
 	return ((rs >= 0) ? n : rs) ;
@@ -1092,12 +1194,16 @@ EXECTRACE	*op ;
 	if (op->magic != EXECTRACE_MAGIC)
 	    return SR_NOTOPEN ;
 
+	if (op->rs < 0)
+	    return op->rs ;
+
 	rs = bflush(&op->tfile) ;
 
 #if	CF_DEBUGS
-	eprintf("exectrace_flush: rs=%d\n",rs) ;
+	debugprintf("exectrace_flush: rs=%d\n",rs) ;
 #endif
 
+	op->rs = rs ;
 	return rs ;
 }
 /* end subroutine (exectrace_flush) */
@@ -1115,8 +1221,11 @@ EXECTRACE_INFO	**ipp ;
 	if (op->magic != EXECTRACE_MAGIC)
 	    return SR_NOTOPEN ;
 
+	if (op->rs < 0)
+	    return op->rs ;
+
 	if (ipp == NULL)
-		return SR_FAULT ;
+	    return SR_FAULT ;
 
 	*ipp = &op->i ;
 	return SR_OK ;
@@ -1141,13 +1250,13 @@ uint		rtype ;
 	int	len, sl ;
 	int	noi ;
 
-	char	linebuf[LINELEN + 1] ;
+	char	linebuf[LINEBUFLEN + 1] ;
 	char	*cp ;
 
 
 #if	CF_DEBUGS
 	{
-	    eprintf("exectrace_readsub: subrecord type=%02x (%s)\n",
+	    debugprintf("exectrace_readsub: subrecord type=%02x (%s)\n",
 	        op->r.type,
 	        ((rtype < EXECTRACE_ROVERLAST) ?
 	        typenames[rtype] : "*unknown*")) ;
@@ -1158,7 +1267,7 @@ uint		rtype ;
 
 	case EXECTRACE_RNAME:
 	case EXECTRACE_RWHERE:
-	    rs = bgetline(&op->tfile,linebuf,LINELEN) ;
+	    rs = breadline(&op->tfile,linebuf,LINEBUFLEN) ;
 
 	    if (rs < 0)
 	        break ;
@@ -1180,7 +1289,7 @@ uint		rtype ;
 	        cp = op->i.name ;
 
 #if	CF_DEBUGS
-	        eprintf("exectrace_readsub: name=%W\n",
+	        debugprintf("exectrace_readsub: name=%W\n",
 	            linebuf,MIN(len,sl)) ;
 #endif
 
@@ -1191,7 +1300,7 @@ uint		rtype ;
 	        cp = op->i.where ;
 
 #if	CF_DEBUGS
-	        eprintf("exectrace_readsub: where=%W\n",
+	        debugprintf("exectrace_readsub: where=%W\n",
 	            linebuf,MIN(len,sl)) ;
 #endif
 
@@ -1218,8 +1327,8 @@ uint		rtype ;
 	    netorder_rll(linebuf,&op->i.date) ;
 
 #if	CF_DEBUGS
-	eprintf("exectrace_readsub: date=%016llx %08x:%08x\n",
-		op->i.date,half(op->i.date,1),half(op->i.date,0)) ;
+	    debugprintf("exectrace_readsub: date=%016llx %08x:%08x\n",
+	        op->i.date,half(op->i.date,1),half(op->i.date,0)) ;
 #endif
 
 	    break ;
@@ -1247,55 +1356,52 @@ uint		rtype ;
 	    break ;
 
 	case EXECTRACE_RIA:
-		if ((op->r.type & 0xF0) == 0) {
+	    if ((op->r.type & 0xF0) == 0) {
 
-	    rs = bread(&op->tfile,linebuf,sizeof(uint)) ;
+	        rs = bread(&op->tfile,linebuf,sizeof(uint)) ;
 
-	    if (rs < 0)
-	        break ;
+	        if (rs < 0)
+	            break ;
 
-	    if (rs == 0) {
+	        if (rs == 0) {
 
-	        rs = SR_BADFMT ;
-	        break ;
-	    }
+	            rs = SR_BADFMT ;
+	            break ;
+	        }
 
 	        netorder_ruint(linebuf,&ia) ;
 
-		} else {
+	    } else {
 
-			uint	inc ;
+	        uint	inc ;
 
 
-		inc = (op->r.type >> 4) & 15 ;
+	        inc = (op->r.type >> 4) & 15 ;
 	        ia = op->ia_last + inc ;
 
-		} /* end if (which variety) */
+	    } /* end if (which variety) */
 
 	    if (ep != NULL) {
 
 	        ep->f.ia = TRUE ;
-		ep->ia = ia ;
+	        ep->ia = ia ;
 
 #if	CF_DEBUGS
-	        eprintf("exectrace_readsub: ia=%08x\n",ep->ia) ;
-	if (ia == 0x00408935) {
-		off_t	place ;
-
-	    btell(&op->tfile,&place) ;
-
-	eprintf("exectrace_readsub: SPECIAL type=%02x place=%08lx\n",
-	        op->r.type,place) ;
-
-	eprintf("exectrace_readsub: next caddr=%p\n",
-		op->tfile.bp) ;
-
-	}
+	        debugprintf("exectrace_readsub: ia=%08x\n",ep->ia) ;
+	        if (ia == 0x00408935) {
+	            offset_t	place ;
+	            btell(&op->tfile,&place) ;
+	            debugprintf("exectrace_readsub: SPEC "
+			"type=%02x place=%08lx\n",
+	                op->r.type,place) ;
+	            debugprintf("exectrace_readsub: next caddr=%p\n",
+	                op->tfile.bp) ;
+	        }
 #endif /* CF_DEBUGS */
 
 	    } /* end if (filling entry) */
 
-	op->ia_last = ia ;
+	    op->ia_last = ia ;
 	    break ;
 
 	case EXECTRACE_RSOM:
@@ -1316,7 +1422,7 @@ uint		rtype ;
 	        netorder_ruint(linebuf,&ep->som) ;
 
 #if	CF_DEBUGS
-	        eprintf("exectrace_readsub: som=%08x\n",ep->som) ;
+	        debugprintf("exectrace_readsub: som=%08x\n",ep->som) ;
 #endif
 
 	    }
@@ -1341,7 +1447,7 @@ uint		rtype ;
 	        netorder_ruint(linebuf,&ep->sc) ;
 
 #if	CF_DEBUGS
-	        eprintf("exectrace_readsub: sc=%08x\n",ep->sc) ;
+	        debugprintf("exectrace_readsub: sc=%08x\n",ep->sc) ;
 #endif
 
 	    }
@@ -1363,7 +1469,7 @@ uint		rtype ;
 	    netorder_rull(linebuf,&op->r.in) ;
 
 #if	CF_DEBUGS
-	        eprintf("exectrace_readsub: in=%lld\n",op->r.in) ;
+	    debugprintf("exectrace_readsub: in=%lld\n",op->r.in) ;
 #endif
 
 	    if (ep != NULL) {
@@ -1387,7 +1493,7 @@ uint		rtype ;
 	    rs = bread(&op->tfile,linebuf,len) ;
 
 #if	CF_DEBUGS
-	    eprintf("exectrace_readsub: bread() len=%d rs=%d\n",len,rs) ;
+	    debugprintf("exectrace_readsub: bread() len=%d rs=%d\n",len,rs) ;
 #endif
 
 	    if (rs < 0)
@@ -1409,7 +1515,7 @@ uint		rtype ;
 	            netorder_ruint(linebuf + 1,&ep->reg[noi].dv) ;
 
 #if	CF_DEBUGS
-	            eprintf("exectrace_readsub: ra=%u rv=%08x dp=%d\n",
+	            debugprintf("exectrace_readsub: ra=%u rv=%08x dp=%d\n",
 	                ep->reg[noi].a,
 	                ep->reg[noi].dv,
 	                ep->reg[noi].dp) ;
@@ -1463,7 +1569,7 @@ uint		rtype ;
 	            }
 
 #if	CF_DEBUGS
-	            eprintf("exectrace_readsub: ra=%u rv=%08x dp=%d\n",
+	            debugprintf("exectrace_readsub: ra=%u rv=%08x dp=%d\n",
 	                ep->sreg[noi].a,
 	                ep->sreg[noi].dv,
 	                ep->sreg[noi].dp) ;
@@ -1501,7 +1607,7 @@ uint		rtype ;
 	            netorder_ruint(linebuf + sizeof(uint),&ep->mem[noi].dv) ;
 
 #if	CF_DEBUGS
-	            eprintf("exectrace_readsub: ma=%08x rv=%08x dp=%d\n",
+	            debugprintf("exectrace_readsub: ma=%08x rv=%08x dp=%d\n",
 	                ep->mem[noi].a,
 	                ep->mem[noi].dv,
 	                ep->mem[noi].dp) ;
@@ -1552,12 +1658,12 @@ uint		rtype ;
 
 	                ep->smem[noi].dp = 15 ;
 	                netorder_ruint(linebuf + sizeof(uint),
-				&ep->smem[noi].dv) ;
+	                    &ep->smem[noi].dv) ;
 
 	            }
 
 #if	CF_DEBUGS
-	            eprintf("exectrace_readsub: ma=%08x rv=%08x dp=%d\n",
+	            debugprintf("exectrace_readsub: ma=%08x rv=%08x dp=%d\n",
 	                ep->smem[noi].a,
 	                ep->smem[noi].dv,
 	                ep->smem[noi].dp) ;
@@ -1572,25 +1678,22 @@ uint		rtype ;
 	    break ;
 
 	default:
-		rs = SR_NOTSUP ;
+	    rs = SR_NOTSUP ;
 
 #if	CF_DEBUGS
-	{
-		off_t	place ;
-
-	    btell(&op->tfile,&place) ;
-
-	eprintf(
-	"exectrace_readsub: unknown type=%02x type=%02x place=%08lx\n",
-	        op->r.type,rtype,place) ;
-
-	}
+	    {
+	        offset_t	place ;
+	        btell(&op->tfile,&place) ;
+	        debugprintf("exectrace_readsub: unknown "
+			"type=%02x type=%02x place=%08lx\n",
+	            op->r.type,rtype,place) ;
+	    }
 #endif /* CF_DEBUGS */
 
 	} /* end switch */
 
 #if	CF_DEBUGS
-	eprintf("exectrace_readsub: rs=%d\n",rs) ;
+	debugprintf("exectrace_readsub: rs=%d\n",rs) ;
 #endif
 
 	return rs ;
@@ -1687,6 +1790,8 @@ int	type ;
 #endif /* COMMENT */
 
 
+#if	CF_DEBUGS
+
 static int half(v,w)
 LONG	v ;
 int	w ;
@@ -1697,14 +1802,17 @@ int	w ;
 
 
 	if (w == 0)
-		lw = (v & 0xffffffff) ;
+	    lw = (v & 0xffffffff) ;
 
 	else
-		lw = (v >> 32) & 0xffffffff ;
+	    lw = (v >> 32) & 0xffffffff ;
 
 	iw = (int) lw ;
 	return iw ;
 }
+/* end subroutine (half) */
+
+#endif /* CF_DEBUGS */
 
 
 
