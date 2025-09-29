@@ -60,7 +60,7 @@
 #include	<cstring>
 #include	<ctype.h>
 
-#include	<vsystem.h>
+#include	<usystem.h>
 #include	<bio.h>
 #include	<hdb.h>
 #include	<char.h>
