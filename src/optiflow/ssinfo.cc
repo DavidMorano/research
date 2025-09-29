@@ -10,7 +10,7 @@
 #include	<sys/types.h>
 #include	<cstring>
 
-#include	<vsystem.h>
+#include	<usystem.h>
 
 #include	"localmisc.h"
 #include	"ssinfo.h"
