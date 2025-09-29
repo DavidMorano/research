@@ -112,7 +112,7 @@
 #include	<cstdio>
 #endif
 
-#include	<vsystem.h>
+#include	<usystem.h>
 #include	<bio.h>
 #include	<paramfile.h>
 
