@@ -1,36 +1,43 @@
-/* exectrace */
+/* exectrace HEADER */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
+
+/* create and read an execution trace */
+/* version %I% last-modified %G% */
 
 
+/* revision history:
+
+	= 1998-11-01, David Morano
+	Originally written for Audix Database Processor (DBP) work.
+
+*/
+
+/* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
 
 #ifndef	EXECTRACE_INCLUDE
 #define	EXECTRACE_INCLUDE	1
 
 
-
-/* object defines */
-
-#define	EXECTRACE		struct exectrace_head
-#define	EXECTRACE_INFO		struct exectrace_info
-#define	EXECTRACE_ENTRY		struct exectrace_e
-#define	EXECTRACE_OPERAND	struct exectrace_operand
-
-
-
-
+#include	<envstandards.h>	/* must be ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<netdb.h>		/* for MAXHOSTNAMELEN */
-
-#include	<bio.h>
-
-#include	"localmisc.h"		/* for 'ULONG' */
+#include	<bfile.h>
+#include	<localmisc.h>		/* for 'ULONG' */
 
 
 #ifndef	UINT
 #define	UINT	unsigned int
 #endif
 
+/* object defines */
 
+#define	EXECTRACE_MAGIC		0x86553823
+#define	EXECTRACE		struct exectrace_head
+#define	EXECTRACE_INFO		struct exectrace_info
+#define	EXECTRACE_ENTRY		struct exectrace_e
+#define	EXECTRACE_OPERAND	struct exectrace_operand
 
 /* other defines */
 
@@ -75,8 +82,6 @@
 #define	EXECTRACE_DPBYTE3	8
 
 
-
-
 struct exectrace_reading {
 	ULONG	clock ;			/* running clock value (reading) */
 	ULONG	in ;			/* instruction number */
@@ -105,6 +110,7 @@ struct exectrace_head {
 	struct exectrace_info		i ;
 	bfile		tfile ;
 	uint		ia_last ;	/* last IA */
+	int		rs ;		/* latched error */
 	char		istypeinfo[EXECTRACE_ROVERLAST] ;
 	char		istypesom[EXECTRACE_ROVERLAST] ;
 	char		istypeextra[EXECTRACE_ROVERLAST] ;
@@ -142,9 +148,11 @@ struct exectrace_e {
 } ;
 
 
-
-
 #if	(! defined(EXECTRACE_MASTER)) || (EXECTRACE_MASTER == 1)
+
+#ifdef	__cplusplus
+extern "C" {
+#endif
 
 extern int	exectrace_open(EXECTRACE *,const char *,
 			const char *,int, const char *) ;
@@ -163,10 +171,12 @@ extern int	exectrace_wmsv(EXECTRACE *,UINT,UINT) ;
 extern int	exectrace_read(EXECTRACE *,EXECTRACE_ENTRY *) ;
 extern int	exectrace_flush(EXECTRACE *) ;
 
+#ifdef	__cplusplus
+}
+#endif
+
 #endif /* (! defined(EXECTRACE_MASTER)) || (EXECTRACE_MASTER == 0) */
 
-
 #endif /* EXECTRACE_INCLUDE */
-
 
 
