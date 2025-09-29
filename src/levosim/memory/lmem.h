@@ -17,7 +17,7 @@
 
 #include	<sys/types.h>
 
-#include	<vsystem.h>
+#include	<usystem.h>
 
 #include	"misc.h"
 #include	"paramfile.h"
