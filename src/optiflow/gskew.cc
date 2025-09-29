@@ -58,7 +58,7 @@
 #include	<cstdlib>
 #include	<cstring>
 
-#include	<vsystem.h>
+#include	<usystem.h>
 #include	<localmisc.h>
 
 #include	"bpload.h"
