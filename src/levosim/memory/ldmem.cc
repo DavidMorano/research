@@ -33,7 +33,7 @@
 #include	<sys/types.h>
 #include	<cstdlib>
 
-#include	<vsystem.h>
+#include	<usystem.h>
 
 #include	"localmisc.h"
 #include	"config.h"
