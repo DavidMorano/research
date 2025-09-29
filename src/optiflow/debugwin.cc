@@ -45,7 +45,7 @@
 #include	<cstring>
 #include	<ctype.h>
 
-#include	<vsystem.h>
+#include	<usystem.h>
 #include	<field.h>
 #include	<char.h>
 #include	<mallocstuff.h>
