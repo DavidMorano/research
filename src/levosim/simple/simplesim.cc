@@ -63,7 +63,7 @@
 #include	<cstddef>		/* |nullptr_t| */
 #include	<cstdlib>
 #include	<cstring>
-#include	<vsystem.h>
+#include	<usystem.h>
 #include	<bio.h>
 #include	<libuc.h>
 #include	<mkpathx.h>
