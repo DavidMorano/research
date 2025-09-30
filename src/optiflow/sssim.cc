@@ -41,7 +41,7 @@
 #include	<cstring>
 #include	<elf.h>
 
-#include	<vsystem.h>
+#include	<usystem.h>
 #include	<veclist.h>
 #include	<vecitem.h>
 #include	<hdb.h>
