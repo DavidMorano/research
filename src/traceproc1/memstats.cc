@@ -49,7 +49,7 @@
 #include	<standards.h>
 #endif
 
-#include	<vsystem.h>
+#include	<usystem.h>
 #include	<mallocstuff.h>
 #include	<bfile.h>
 #include	<localmisc.h>
