@@ -41,7 +41,7 @@
 #include	<elf.h>
 #include	<cstring>
 
-#include	<vsystem.h>
+#include	<usystem.h>
 #include	<bfile.h>
 #include	<mallocstuff.h>
 #include	<localmisc.h>
