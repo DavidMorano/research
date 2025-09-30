@@ -1,4 +1,5 @@
 /* stats SUPPORT */
+/* charset=ISO8859-1 */
 /* lang=C++98 */
 
 /* statistics gathering */
@@ -59,7 +60,7 @@
 
 */
 
-/* Copyright © 1998,2000¸2001,2002 David Morano.  All rights reserved. */
+/* Copyright © 1998,2000¸2001,2002 David A-D- Morano.  All rights reserved. */
 
 /*******************************************************************************
 
@@ -76,11 +77,12 @@
 
 #include	<envstandards.h>
 #include	<sys/types.h>
-#include	<time.h>
+#include	<ctime>
+#include	<cstddef>		/* |nullptr_t| */
 #include	<cstdlib>
 #include	<cstring>
-#include	<math.h>
-#include	<vsystem.h>
+#include	<cmath>
+#include	<usystem.h>
 #include	<bfile.h>
 #include	<keyopt.h>
 #include	<mkpathx.h>
