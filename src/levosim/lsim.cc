@@ -1,7 +1,9 @@
-/* lsim */
+/* lsim SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
 /* Levo simulator state sequencing operations */
-
+/* version %I% last-modified %G% */
 
 #define	CF_DEBUGS	0		/* non-switchable debug print-outs */
 #define	CF_DEBUG	0		/* switchable debugging */
@@ -12,7 +14,6 @@
 #define	CF_TESTMAP	1		/* test program mapping */
 #define	CF_TESTMAPSHORT	1		/* short test program mapping */
 
-
 /* revision history:
 
 	= 2000-02-15, David Morano
@@ -20,33 +21,29 @@
 
 */
 
-/* Copyright © 2000 David Morano.  All rights reserved. */
+/* Copyright © 2000 David A-D- Morano.  All rights reserved. */
 
 /*******************************************************************************
 
-        This is the object (roughly) for handling simulator specific operations
-        such as call-backs.
+  	Object:
+	lsim
 
+	Description:
+	This is the object (roughly) for handling simulator specific
+	operations such as call-backs.
 
 *******************************************************************************/
 
-
-#define	LSIM_MASTER	1
-
-
-#include	<envstandards.h>
-
+#include	<envstandards.h>	/* must be ordered first to configure */
 #include	<sys/types.h>
+#include	<elf.h>
+#include	<cstddef>		/* |nullptr_t| */
 #include	<cstdlib>
 #include	<cstring>
-#include	<elf.h>
-
-#include	<vsystem.h>
+#include	<usystem.h>
 #include	<vechand.h>
 #include	<vecitem.h>
 #include	<hdb.h>
-
-#include	<vsystem.h>
 #include	<paramfile.h>
 #include	<plainq.h>
 #include	<localmisc.h>
