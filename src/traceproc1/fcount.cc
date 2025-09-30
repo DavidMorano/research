@@ -45,7 +45,7 @@
 #include	<cstdlib>
 #include	<cstring>
 
-#include	<vsystem.h>
+#include	<usystem.h>
 #include	<char.h>
 #include	<vecitem.h>
 #include	<mallocstuff.h>
