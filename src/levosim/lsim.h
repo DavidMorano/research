@@ -1,37 +1,38 @@
-/* lsim */
+/* lsim SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
 /* simulator control related (utility) information */
+/* version %I% last-modified %G% */
 
 
 /* revision history:
 
 	= 2000-02-15, David Morano
-
 	This code was started (for LevoSim).
-
 
 */
 
-/* Copyright © 2000 David Morano.  All rights reserved. */
+/* Copyright © 2000 David A-D- Morano.  All rights reserved. */
 
 #ifndef	LSIM_INCLUDE
-#define	LSIM_INCLUDE	1
+#define	LSIM_INCLUDE
 
 
-#include	<envstandards.h>
-
+#include	<envstandards.h>	/* must be ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<elf.h>
-
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>
+#include	<usystem>
 #include	<hdb.h>
 #include	<vechand.h>
-
-#include	"plainq.h"
-#include	"paramfile.h"
+#include	<plainq.h>
+#include	<paramfile.h>
+#include	<localmisc.h>
 
 #include	"lmapprog.h"
-#include	"localmisc.h"
 #include	"config.h"
 #include	"defs.h"
 
@@ -39,10 +40,7 @@
 #ifndef	UINT
 #define	UINT	unsigned int
 #endif
-
-
 /* object defines (whatever) */
-
 #define	LSIM			struct mintinfo
 #define	LSIM_SIMPROG		struct lsim_simprog
 #define	LSIM_MACHOBJ		struct lsim_machobj
@@ -51,9 +49,7 @@
 #define	LSIM_SNCURSOR		struct lsim_sncursor
 #define	LSIM_MAXPROG		struct lsim_mp
 #define	MINTINFO		LSIM
-
 /* other defines */
-
 #define	LSIM_MAXCLOCKS	200
 #define	LSIM_NQUEUES	400
 #define	LSIM_MINPHASES	6
