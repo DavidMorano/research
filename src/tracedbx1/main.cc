@@ -1,64 +1,53 @@
-/* main */
+/* main SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
 /* compare execution traces */
 /* last modified %G% version %I% */
 
-
 #define	CF_DEBUGS	0		/* debug print-outs (non-switchable) */
 #define	CF_DEBUG	0		/* debug print-outs switchable */
 
-
 /* revision history:
 
-	= 90/11/01, David Morano
-
+	= 1998-11-01, David Morano
 	This subroutine was originally written.
 
-
-	= 01/08/01, David Morano
-
+	= 2001-08-01, David Morano
 	I do not know where this subroutine originally came from but
-	it's been a long time since 1990 !  I forget where I grabbed
+	it has been a long time since 1990!  I forget where I grabbed
 	this from but it is part of the TRACECMP program for Levo
-	research now !
+	research now!
 
-
-	= 01/09/06, David Morano
-
+	= 2001-09-06, David Morano
 	OK, Here we go one more time.  I am hacking this subroutine up
 	to tbe the front-end for the TRACEDBX program.  This program
 	will convert the Alireza-format DBX comparison trace format
 	into an EXECTRACE type trace.
 
-
 */
 
-/* Copyright © 1998 David Morano.  All rights reserved. */
+/* Copyright © 1998,2001 David A-D- Morano.  All rights reserved. */
 
 /**************************************************************************
 
 	Synopsis:
-
 	$ tracedbx program.dbxtrace program.et
 
 	Two arguments, the second is the output and it will be binary!
 
-
 **************************************************************************/
 
-
-/* Copyright © 1998 David Morano.  All rights reserved. */
-
+#include	<envstandards.h>	/* must be ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<sys/stat.h>
 #include	<unistd.h>
 #include	<fcntl.h>
+#include	<cstddef>		/* |nullptr_t| */
 #include	<cstdlib>
 #include	<cstring>
-#include	<ctype.h>
-
-#include	<vsystem.h>
+#include	<usystem.h>
 #include	<bfile.h>
 #include	<vecstr.h>
 #include	<paramopt.h>
