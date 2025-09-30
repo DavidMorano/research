@@ -39,7 +39,7 @@
 #include	<cstring>
 #include	<ctype.h>
 
-#include	<vsystem.h>
+#include	<usystem.h>
 #include	<storebuf.h>
 #include	<localmisc.h>
 
