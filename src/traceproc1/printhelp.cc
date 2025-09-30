@@ -67,7 +67,7 @@
 #include	<cstdlib>
 #include	<cstring>
 
-#include	<vsystem.h>
+#include	<usystem.h>
 #include	<vecstr.h>
 #include	<bfile.h>
 #include	<expcook.h>
