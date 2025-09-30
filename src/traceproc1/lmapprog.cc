@@ -1,7 +1,9 @@
-/* lmapprog */
+/* lmapprog SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
 /* map an ELF object file into memory for execution */
-
+/* version %I% last-modified %G% */
 
 #define	CF_DEBUGS	0		/* non-switchable debugging */
 #define	CF_DEBUG	0		/* switchable debug output */
@@ -14,11 +16,9 @@
 #define	CF_CHECKACCESS	1		/* check access for data reads */
 #define	CF_MIPS1	0		/* only accept MIPS1 */
 
-
 /* revision history:
 
 	= 2000-07-26, David Morano
-
 	I am writing this from stratch after trying to make the best
 	use of the MINT related code and becoming disgusted with the
 	failure of the attempt!  MINT is changing the code that it
@@ -26,30 +26,24 @@
 	either!  Worse, MINT inserts into the code some stuff for its
 	own purposes that currently escapes understanding.
 
-
 	= 2001-04-03, David Morano
-
 	I fixed a bug that had to do with the BSS segment being
 	zeroed out.  I was not properly zeroing out what I was
-	supposed to be.  I hope that it is correct now.  This, dispite
-	all the attention to this matter originally!
-
-	I reviewed the establishment of the program stack area also.
-	We need this to compare target program execution with that on
-	the SGI box exactly.  It has held up and appears to be OK
-	as far as I can tell.
-
+	supposed to be.  I hope that it is correct now.  This,
+	dispite all the attention to this matter originally!  I
+	reviewed the establishment of the program stack area also.
+	We need this to compare target program execution with that
+	on the SGI box exactly.  It has held up and appears to be
+	OK as far as I can tell.
 
 	= 2001-10-25, David Morano
-
 	Oh, I am trying to do something with the program "break" value.
-	I would like to privide what UNIX does with 'brk(2)' and
-	'sbrk(2)'.
-
+	I would like to privide what UNIX does with |brk(2)| and
+	|sbrk(2)|.
 
 */
 
-/* Copyright © 1998 David Morano.  All rights reserved. */
+/* Copyright © 1998 David A-D- Morano.  All rights reserved. */
 
 /*******************************************************************************
 
@@ -82,25 +76,20 @@
 	that is, I will have to modify this code to match the SGI box
 	exactly.  We seem to match up with the SGI box so far.
 
-
 *******************************************************************************/
 
-
-#define	LMAPPROG_MASTER		1
-
-
-#include	<envstandards.h>
-
+#include	<envstandards.h>	/* must be ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/mman.h>
 #include	<sys/stat.h>
 #include	<unistd.h>
 #include	<fcntl.h>
-#include	<time.h>
 #include	<elf.h>
+#include	<ctime>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>
 #include	<cstring>
-
-#include	<vsystem.h>
+#include	<usystem.h>
 #include	<vecitem.h>
 #include	<localmisc.h>
 
