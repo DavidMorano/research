@@ -1,32 +1,28 @@
-/* main */
+/* main SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
 /* compare execution traces */
 /* last modified %G% version %I% */
-
 
 #define	CF_DEBUGS	0		/* debug print-outs (non-switchable) */
 #define	CF_DEBUG	0		/* debug print-outs switchable */
 #define	CF_MIPSDIS	1		/* enable disassembly */
 
-
 /* revision history:
 
 	= 2000-11-01, David Morano
-
 	This subroutine was originally written.
 
-
 	= 2001-08-01, David Morano
-
 	I do not know where this subroutine originally came from but
-	it's been a long time since 1990 !  I forget where I grabbed
+	it's been a long time since 1990!  I forget where I grabbed
 	this from but it is part of the TRACECMP program for Levo
 	research now!
 
-
 */
 
-/* Copyright © 1998 David Morano.  All rights reserved. */
+/* Copyright © 1998 David A-D- Morano.  All rights reserved. */
 
 /*******************************************************************************
 
@@ -34,15 +30,11 @@
 	of tools.
 
 	Synopsis:
-
 	$ tracecmp trace1 trace2 
-
 
 *******************************************************************************/
 
-
-#include	<envstandards.h>
-
+#include	<envstandards.h>	/* must be ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<sys/stat.h>
@@ -50,12 +42,11 @@
 #include	<sys/resource.h>
 #include	<unistd.h>
 #include	<fcntl.h>
-#include	<time.h>
+#include	<ctime>
+#include	<cstddef>		/* |nullptr_t| */
 #include	<cstdlib>
 #include	<cstring>
-#include	<ctype.h>
-
-#include	<vsystem.h>
+#include	<usystem.h>
 #include	<vecstr.h>
 #include	<bfile.h>
 #include	<keyopt.h>
