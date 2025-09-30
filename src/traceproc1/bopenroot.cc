@@ -70,7 +70,7 @@
 #include	<cstdlib>
 #include	<cstring>
 
-#include	<vsystem.h>
+#include	<usystem.h>
 #include	<bfile.h>
 #include	<outbuf.h>
 #include	<localmisc.h>
