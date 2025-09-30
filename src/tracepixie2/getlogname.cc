@@ -54,7 +54,7 @@
 #include	<cstdlib>
 #include	<cstring>
 
-#include	<vsystem.h>
+#include	<usystem.h>
 #include	<getax.h>
 #include	<getutmpent.h>
 #include	<localmisc.h>
