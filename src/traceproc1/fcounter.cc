@@ -25,7 +25,7 @@
 
 #include	<envstandards.h>
 #include	<sys/types.h>
-#include	<vsystem.h>
+#include	<usystem.h>
 #include	<mkpathx.h>
 #include	<strwcpy.h>
 #include	<localmisc.h>
