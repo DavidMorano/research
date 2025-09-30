@@ -56,7 +56,7 @@
 #include	<cstdlib>
 #include	<strings.h>
 
-#include	<vsystem.h>
+#include	<usystem.h>
 #include	<bfile.h>
 #include	<field.h>
 #include	<char.h>
