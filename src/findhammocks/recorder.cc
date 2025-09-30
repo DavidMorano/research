@@ -1,7 +1,9 @@
-/* recorder */
+/* recorder SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
 /* IA recorder object */
-
+/* version %I% last-modified %G% */
 
 #define	CF_DEBUGS	0		/* non-switchable print-outs */
 #define	CF_FASTGROW	1		/* grow exponetially ? */
@@ -9,18 +11,15 @@
 #define	CF_SAFE		1
 #define	CF_WEIRD	0		/* do NOT use */
 
-
 /* revision history:
 
-	= 2002-04-29, David Morano
-
+	= 2002-04-29, David A-D- Morano
 	This object module was created for Levo research.
 	We need to identify SS-Hammock style conditional branches.
 
-
 */
 
-/* Copyright © 2002 David Morano.  All rights reserved. */
+/* Copyright © 2002 David A-D- Morano.  All rights reserved. */
 
 /******************************************************************************
 
@@ -29,26 +28,20 @@
 	to identify SS-Hammocks and to write the resulting data base
 	information out to a file.  This object only manages an
 	in-core version of the database.  Another "upper-level"
-	component must manage :
+	component must manage:
 
 	+ identification of SS-Hammocks
 	+ call this module to track them
 	+ write out the resulting data base to a file for storage
 
-
 *****************************************************************************/
 
-
-#define	RECORDER_MASTER	1
-
-
-#include	<envstandards.h>
-
+#include	<envstandards.h>	/* must be ordered first to configure */
 #include	<sys/types.h>
 #include	<cstdlib>
+#include	<cstdlib>
 #include	<cstring>
-
-#include	<vsystem.h>
+#include	<usystem.h>
 #include	<localmisc.h>
 
 #include	"recorder.h"
