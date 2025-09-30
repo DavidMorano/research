@@ -68,7 +68,7 @@
 #include	<cstring>
 #include	<pwd.h>
 
-#include	<vsystem.h>
+#include	<usystem.h>
 #include	<getbufsize.h>
 #include	<ids.h>
 #include	<getax.h>
