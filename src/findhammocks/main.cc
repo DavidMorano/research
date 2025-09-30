@@ -1,39 +1,33 @@
-/* main */
+/* main SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
 /* compare execution traces */
 /* last modified %G% version %I% */
 
-
 #define	CF_DEBUGS	0		/* debug print-outs (non-switchable) */
 #define	CF_DEBUG	0		/* debug print-outs switchable */
 
-
 /* revision history:
 
-	= 2000-11-01, David Morano
-
+	= 2000-11-01, David A-D- Morano
 	This subroutine was originally written.
-
 
 */
 
-/* Copyright © 2000 David Morano.  All rights reserved. */
+/* Copyright © 2000 David A-D- Morano.  All rights reserved. */
 
 /**************************************************************************
 
 	This is the front-end for some of the trace processing suite
 	of tools.
 
-	Execute as :
-
+	Synopsis:
 	$ findhammocks program1 program2
-
 
 **************************************************************************/
 
-
-#include	<envstandards.h>
-
+#include	<envstandards.h>	/* must be ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<sys/stat.h>
@@ -41,11 +35,10 @@
 #include	<unistd.h>
 #include	<fcntl.h>
 #include	<time.h>
+#include	<cstddef>		/* |nullptr_t| */
 #include	<cstdlib>
 #include	<cstring>
-#include	<ctype.h>
-
-#include	<vsystem.h>
+#include	<usystem.h>
 #include	<vecstr.h>
 #include	<bfile.h>
 #include	<paramopt.h>
