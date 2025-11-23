@@ -16,7 +16,7 @@
 /* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
 
 #ifndef	LMAPPROG_INCLUDE
-#define	LMAPPROG_INCLUDE	1
+#define	LMAPPROG_INCLUDE
 
 
 #include	<envstandards.h>	/* must be ordered first to configure */
@@ -47,10 +47,10 @@
 /* Segment Information */
 #define	LMAPPROG_SEGINFO	struct lmapprog_seginfo
 
-/* more object defines (need HDB first) */
+/* more object defines (need hdb first) */
 
 /* Symbol Name (SN) Cursor */
-#define	LMAPPROG_SNCURSOR	HDB_CUR
+#define	LMAPPROG_SNCURSOR	hdb_cur
 
 
 /* a segment iteration cursor */
@@ -109,7 +109,7 @@ struct lmapprog_segmentflags {
 struct lmapprog_segment {
 	struct lmapprog_segmentflags	f ;
 	caddr_t		pa ;		/* memory physical address */
-	offset_t		offset ;	/* original ELF offset */
+	offset_t	offset ;	/* original ELF offset */
 	ulong		vaddr ;		/* program virtual address */
 	ulong		vmbase ;	/* map base */
 	ulong		vpbase ;	/* virtual page base */
@@ -130,13 +130,13 @@ struct lmapprog_flags {
 } ;
 
 struct lmapprog_head {
-	unsigned long	magic ;
+	uint		magic ;
 	struct lmapprog_flags	f ;
 	vecitem		segments ;	/* program segments */
 	vecitem		symtabs ;	/* symbol tables */
-	HDB		pagetable ;
-	HDB		symbols ;	/* fast symbol access */
-	struct proginfo		*pip ;	/* program information */
+	hdb		pagetable ;
+	hdb		symbols ;	/* fast symbol access */
+	PROGINFO		*pip ;	/* program information */
 	char		*filename ;	/* ELF program file name */
 	Elf32_Shdr	*sheads  ;
 	time_t		lastaccess ;	/* last access time (informational) */
@@ -152,14 +152,9 @@ struct lmapprog_head {
 	int		zfd ;		/* "/dev/zero" FD */
 } ;
 
+EXTERNC_begin
 
-#if	(! defined(LMAPPROG_MASTER)) || (LMAPPROG_MASTER == 1)
-
-#ifdef	__cplusplus
-extern "C" {
-#endif
-
-extern int lmapprog_init(LMAPPROG *,struct proginfo *,char *,char **,char **) ;
+extern int lmapprog_init(LMAPPROG *,PROGINFO *,char *,char **,char **) ;
 extern int lmapprog_free(LMAPPROG *) ;
 extern int lmapprog_getentry(LMAPPROG *,uint *) ;
 extern int lmapprog_getstack(LMAPPROG *,uint *) ;
@@ -185,11 +180,8 @@ extern int lmapprog_enumseg(LMAPPROG *,LMAPPROG_SEGCURSOR *,
 		LMAPPROG_SEGINFO *) ;
 extern int lmapprog_getsec(LMAPPROG *,int,Elf32_Shdr **) ;
 
-#ifdef	__cplusplus
-}
-#endif
+EXTERNC_end
 
-#endif /* (! defined(LMAPPROG_MASTER)) || (LMAPPROG_MASTER == 1) */
 
 #endif /* LMAPPROG_INCLUDE */
 
