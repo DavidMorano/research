@@ -47,24 +47,25 @@
 
 /*******************************************************************************
 
-	This module is used to map the simulated program (stored in an
-	ELF object file) into memory for simulated execution.  We will
-	map the program into memory in a similar way as the OS would do
-	at load time.  We will only handle statically linked programs
-	right now so we do not have to do any run-time dynamic
-	linking.  We will check to make sure that we are not given a
-	dynamic executable before we go too far.
+  	Object:
+	lmapprog
 
+	Description:
+	This module is used to map the simulated program (stored
+	in an ELF object file) into memory for simulated execution.
+	We will map the program into memory in a similar way as the
+	OS would do at load time.  We will only handle statically
+	linked programs right now so we do not have to do any
+	run-time dynamic linking.  We will check to make sure that
+	we are not given a dynamic executable before we go too far.
 	Any program symbols that are present in the ELF file are
-	also accessible through this module.
+	also accessible through this module.  I am putting the
+	program's stack at the same place that it would be on an
+	SGI platform.  This should NOT be necessary but who can
+	know the state of programming today with the sorry state
+	of Computer Science education!!
 
-	I am putting the program's stack at the same place that it
-	would be on an SGI platform.  This should NOT be necessary but
-	who can know the state of programming today with the sorry
-	state of Computer Science education!!
-
-	Update 2001-04-03 from Dave Morano:
-
+	= Update 2001-04-03 from Dave Morano:
 	Having the program stack at the same place as the SGI box may
 	have an advantage in that an exact program execution trace from
 	this simulator and the SGI box **should** match up!  This will
@@ -135,12 +136,12 @@ static int	lmapprog_freesymtabs(LMAPPROG *) ;
 static int	lmapprog_initsymbols(LMAPPROG *) ;
 static int	lmapprog_freesymbols(LMAPPROG *) ;
 static int	lmapprog_loadargs(LMAPPROG *,char **,char **) ;
-static int	lmapprog_zerobss(LMAPPROG *,struct proginfo *,
+static int	lmapprog_zerobss(LMAPPROG *,PROGINFO *,
 			Elf32_Shdr *,int,uint) ;
 
 static ulong	ceiling(ulong,uint) ;
 
-static int	checkelf(struct proginfo *,Elf32_Ehdr *) ;
+static int	checkelf(PROGINFO *,Elf32_Ehdr *) ;
 static int	findsection(Elf32_Shdr *,int,char *,char *,int) ;
 static int	findhighsection(Elf32_Shdr *,int,char *,char *,int) ;
 
@@ -150,7 +151,7 @@ static int	findhighsection(Elf32_Shdr *,int,char *,char *,int) ;
 
 int lmapprog_init(mpp,pip,filename,argv,envv)
 LMAPPROG	*mpp ;
-struct proginfo	*pip ;
+PROGINFO	*pip ;
 char		filename[] ;
 char		*argv[], *envv[] ;
 {
@@ -1330,7 +1331,7 @@ bad0:
 int lmapprog_free(mpp)
 LMAPPROG	*mpp ;
 {
-	struct proginfo		*pip ;
+	PROGINFO		*pip ;
 	LMAPPROG_SEGMENT	*psp ;
 	int		i ;
 
@@ -1482,7 +1483,7 @@ int lmapprog_getentry(mpp,ap)
 LMAPPROG	*mpp ;
 uint		*ap ;
 {
-	struct proginfo		*pip ;
+	PROGINFO		*pip ;
 
 
 	if (mpp == NULL)
@@ -1515,7 +1516,7 @@ int lmapprog_getstack(mpp,ap)
 LMAPPROG	*mpp ;
 uint		*ap ;
 {
-	struct proginfo		*pip ;
+	PROGINFO		*pip ;
 
 
 	if (mpp == NULL)
@@ -1548,7 +1549,7 @@ int lmapprog_getbreak(mpp,ap)
 LMAPPROG	*mpp ;
 uint		*ap ;
 {
-	struct proginfo		*pip ;
+	PROGINFO		*pip ;
 
 
 	if (mpp == NULL)
@@ -1581,7 +1582,7 @@ int lmapprog_getpagesize(mpp,ap)
 LMAPPROG	*mpp ;
 uint		*ap ;
 {
-	struct proginfo		*pip ;
+	PROGINFO		*pip ;
 
 
 	if (mpp == NULL)
@@ -1614,7 +1615,7 @@ int lmapprog_getmax(mpp,mp)
 LMAPPROG		*mpp ;
 LMAPPROG_MAXPROG	*mp ;
 {
-	struct proginfo		*pip ;
+	PROGINFO		*pip ;
 
 
 	if (mpp == NULL)
@@ -1653,7 +1654,7 @@ int lmapprog_setbreak(mpp,newval)
 LMAPPROG	*mpp ;
 uint		newval ;
 {
-	struct proginfo		*pip ;
+	PROGINFO		*pip ;
 
 	ulong	breakextent ;
 	ulong	breakmax ;
@@ -1696,7 +1697,7 @@ LMAPPROG	*mpp ;
 uint		vaddr ;
 caddr_t		*pap ;
 {
-	struct proginfo		*pip ;
+	PROGINFO		*pip ;
 
 	LMAPPROG_PTE		*ptep ;
 
@@ -1763,7 +1764,7 @@ LMAPPROG	*mpp ;
 uint		vaddr ;
 uint		*vp ;
 {
-	struct proginfo		*pip ;
+	PROGINFO		*pip ;
 
 	HDB_DATUM		key, value ;
 
@@ -1851,7 +1852,7 @@ LMAPPROG	*mpp ;
 uint		vaddr ;
 uint		*vp ;
 {
-	struct proginfo		*pip ;
+	PROGINFO		*pip ;
 
 	HDB_DATUM		key, value ;
 
@@ -1947,7 +1948,7 @@ uint		vaddr ;
 uint		data ;
 uint		dp ;
 {
-	struct proginfo		*pip ;
+	PROGINFO		*pip ;
 
 	HDB_DATUM		key, value ;
 
@@ -2065,7 +2066,7 @@ LMAPPROG	*mpp ;
 uint		vaddr ;
 uint		mode ;
 {
-	struct proginfo		*pip ;
+	PROGINFO		*pip ;
 
 	HDB_DATUM		key, value ;
 
@@ -2152,7 +2153,7 @@ LMAPPROG	*mpp ;
 char		name[] ;
 Elf32_Sym	**sepp ;
 {
-	struct proginfo	*pip ;
+	PROGINFO	*pip ;
 
 	LMAPPROG_SYMTAB	*stp ;
 
@@ -2228,7 +2229,7 @@ int lmapprog_sncurbegin(mpp,cp)
 LMAPPROG		*mpp ;
 LMAPPROG_SNCURSOR	*cp ;
 {
-	struct proginfo	*pip ;
+	PROGINFO	*pip ;
 
 	int	rs ;
 
@@ -2318,7 +2319,7 @@ char			name[] ;
 LMAPPROG_SNCURSOR	*cp ;
 Elf32_Sym		**sepp ;
 {
-	struct proginfo		*pip ;
+	PROGINFO		*pip ;
 
 	LMAPPROG_SYMTAB		*stp ;
 
@@ -2395,7 +2396,7 @@ LMAPPROG_SNCURSOR	*cp ;
 char			**namepp ;
 Elf32_Sym		**sepp ;
 {
-	struct proginfo		*pip ;
+	PROGINFO		*pip ;
 
 	LMAPPROG_SYMTAB		*stp ;
 
@@ -2456,7 +2457,7 @@ int lmapprog_segcurbegin(mpp,cp)
 LMAPPROG		*mpp ;
 LMAPPROG_SEGCURSOR	*cp ;
 {
-	struct proginfo	*pip ;
+	PROGINFO	*pip ;
 
 	int	rs = SR_OK ;
 
@@ -2493,7 +2494,7 @@ int lmapprog_segcurend(mpp,cp)
 LMAPPROG		*mpp ;
 LMAPPROG_SEGCURSOR	*cp ;
 {
-	struct proginfo	*pip ;
+	PROGINFO	*pip ;
 
 	int	rs = SR_OK ;
 
@@ -2531,7 +2532,7 @@ LMAPPROG		*mpp ;
 LMAPPROG_SEGCURSOR	*cp ;
 LMAPPROG_SEGINFO	*sip ;
 {
-	struct proginfo		*pip ;
+	PROGINFO		*pip ;
 
 	LMAPPROG_SEGMENT	*psp ;
 
@@ -2605,7 +2606,7 @@ LMAPPROG		*mpp ;
 int			i ;
 Elf32_Shdr		**shpp ;
 {
-	struct proginfo		*pip ;
+	PROGINFO		*pip ;
 
 	int	rs = SR_OK ;
 
@@ -2658,7 +2659,7 @@ LMAPPROG	*mpp ;
 uint		vaddr ;
 uint		*vp ;
 {
-	struct proginfo		*pip ;
+	PROGINFO		*pip ;
 
 	LMAPPROG_SEGMENT	*psp ;
 
@@ -3038,7 +3039,7 @@ LMAPPROG	*mpp ;
 /* zero out leading parts of BSS sections */
 static int lmapprog_zerobss(mpp,pip,sheads,n,mapalign)
 LMAPPROG	*mpp ;
-struct proginfo	*pip ;
+PROGINFO	*pip ;
 Elf32_Shdr	*sheads ;
 int		n ;
 uint		mapalign ;
@@ -3105,7 +3106,7 @@ LMAPPROG	*mpp ;
 char		*argv[] ;
 char		*envv[] ;
 {
-	struct proginfo	*pip ;
+	PROGINFO	*pip ;
 
 	caddr_t	dummy ;
 
@@ -3391,7 +3392,7 @@ bad:
 
 /* check if we have an ELF file and if we can handle it */
 static int checkelf(pip,ehp)
-struct proginfo	*pip ;
+PROGINFO	*pip ;
 Elf32_Ehdr	*ehp ;
 {
 	int	rs = SR_OK ;
