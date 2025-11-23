@@ -24,6 +24,10 @@
 
 /*******************************************************************************
 
+  	Object:
+	exectrace
+
+	Description:
 	This little object allows for the writing and reading of a
 	committed execution trace of a program.  Provision is made
 	for the writing of instructions executed as well as register
