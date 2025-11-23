@@ -16,7 +16,7 @@
 /* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
 
 #ifndef	EXECTRACE_INCLUDE
-#define	EXECTRACE_INCLUDE	1
+#define	EXECTRACE_INCLUDE
 
 
 #include	<envstandards.h>	/* must be ordered first to configure */
@@ -24,32 +24,23 @@
 #include	<sys/param.h>
 #include	<netdb.h>		/* for MAXHOSTNAMELEN */
 #include	<bfile.h>
-#include	<localmisc.h>		/* for 'ULONG' */
+#include	<localmisc.h>		/* for 'ulong' */
 
-
-#ifndef	UINT
-#define	UINT	unsigned int
-#endif
 
 /* object defines */
-
 #define	EXECTRACE_MAGIC		0x86553823
 #define	EXECTRACE		struct exectrace_head
 #define	EXECTRACE_INFO		struct exectrace_info
 #define	EXECTRACE_ENTRY		struct exectrace_e
 #define	EXECTRACE_OPERAND	struct exectrace_operand
-
 /* other defines */
-
 #define	EXECTRACE_FILEMAGIC	"EXECTRACE"
 #define	EXECTRACE_FILEVERSION	0
 #define	EXECTRACE_NAMELEN	MAXNAMELEN
 #define	EXECTRACE_WHERELEN	MAXHOSTNAMELEN
 #define	EXECTRACE_NREG		256	/* maximum number of registers */
 #define	EXECTRACE_NMEM		256	/* maximum number memory variables */
-
 /* record types */
-
 #define	EXECTRACE_RNAME		0	/* program name */
 #define	EXECTRACE_RDATE		1	/* date started */
 #define	EXECTRACE_RWHERE	2	/* where recorded */
@@ -65,15 +56,10 @@
 #define	EXECTRACE_RRSV		12	/* register source value */
 #define	EXECTRACE_RMSV		13	/* memory source value */
 #define	EXECTRACE_RSYSCALL	14	/* SYSCALL */
-
 #define	EXECTRACE_ROVERLAST	15	/* end-valid marker */
-
-
 #define	EXECTRACE_TMASK		15	/* mask for extracting record type */
 #define	EXECTRACE_TBITS		4	/* number of type bits */
-
 /* record data present flags */
-
 #define	EXECTRACE_DPNONE	0
 #define	EXECTRACE_DPALL		15
 #define	EXECTRACE_DPBYTE0	1
@@ -83,28 +69,28 @@
 
 
 struct exectrace_reading {
-	ULONG	clock ;			/* running clock value (reading) */
-	ULONG	in ;			/* instruction number */
+	ulong	clock ;			/* running clock value (reading) */
+	ulong	in ;			/* instruction number */
 	int	type ;			/* last type (reading) */
 } ;
 
 struct exectrace_info {
-	ULONG	in ;			/* instruction number */
-	LONG	date ;
+	ulong	in ;			/* instruction number */
+	long	date ;
 	int	version ;		/* file version */
 	char	name[EXECTRACE_NAMELEN + 1] ;
 	char	where[EXECTRACE_WHERELEN + 1] ;
 } ;
 
 struct exectrace_flags {
-	UINT	eof : 1 ;		/* EOF indication on reading */
-	UINT	in : 1 ;		/* got a starting instruction number */
-	UINT	read : 1 ;		/* reading or writing */
-	UINT	append : 1 ;		/* appending */
+	uint	eof : 1 ;		/* EOF indication on reading */
+	uint	in : 1 ;		/* got a starting instruction number */
+	uint	read : 1 ;		/* reading or writing */
+	uint	append : 1 ;		/* appending */
 } ;
 
 struct exectrace_head {
-	unsigned long			magic ;
+	uint		magic ;
 	struct exectrace_flags		f ;
 	struct exectrace_reading	r ;
 	struct exectrace_info		i ;
@@ -117,65 +103,57 @@ struct exectrace_head {
 } ;
 
 struct exectrace_operand {
-	UINT	a ;			/* address */
-	UINT	dv ;			/* value */
-	UINT	dp ;			/* data present bits */
+	uint	a ;			/* address */
+	uint	dv ;			/* value */
+	uint	dp ;			/* data present bits */
 } ;
 
 struct exectrace_eflags {
-	UINT	clock : 1 ;
-	UINT	ia : 1 ;		/* instruction address */
-	UINT	sc : 1 ;		/* system call */
-	UINT	som : 1 ;		/* Start Of Major (SOM) record */
-	UINT	in : 1 ;
-	UINT	reg : 8 ;		/* number of registers */
-	UINT	sreg : 8 ;		/* number of source registers */
-	UINT	mem : 8 ;		/* number of memory variables */
-	UINT	smem : 8 ;		/* number of source memory variables */
+	uint	clock : 1 ;
+	uint	ia : 1 ;		/* instruction address */
+	uint	sc : 1 ;		/* system call */
+	uint	som : 1 ;		/* Start Of Major (SOM) record */
+	uint	in : 1 ;
+	uint	reg : 8 ;		/* number of registers */
+	uint	sreg : 8 ;		/* number of source registers */
+	uint	mem : 8 ;		/* number of memory variables */
+	uint	smem : 8 ;		/* number of source memory variables */
 } ;
 
 struct exectrace_e {
 	struct exectrace_eflags		f ;
-	ULONG				clock ;
-	ULONG				in ;
+	ulong				clock ;
+	ulong				in ;
 	struct exectrace_operand	reg[EXECTRACE_NREG] ;
 	struct exectrace_operand	sreg[EXECTRACE_NREG] ;
 	struct exectrace_operand	mem[EXECTRACE_NMEM] ;
 	struct exectrace_operand	smem[EXECTRACE_NMEM] ;
-	UINT				ia ;
-	UINT				som ;
-	UINT				sc ;
+	uint				ia ;
+	uint				som ;
+	uint				sc ;
 } ;
 
+EXTERNC_begin
 
-#if	(! defined(EXECTRACE_MASTER)) || (EXECTRACE_MASTER == 1)
-
-#ifdef	__cplusplus
-extern "C" {
-#endif
-
-extern int	exectrace_open(EXECTRACE *,const char *,
-			const char *,int, const char *) ;
+extern int	exectrace_open(EXECTRACE *,cchar *,
+			cchar *,int, cchar *) ;
 extern int	exectrace_close(EXECTRACE *) ;
-extern int	exectrace_wclock(EXECTRACE *,ULONG) ;
-extern int	exectrace_win(EXECTRACE *,ULONG) ;
-extern int	exectrace_wia(EXECTRACE *,UINT) ;
-extern int	exectrace_wsom(EXECTRACE *,UINT) ;
-extern int	exectrace_wsyscall(EXECTRACE *,UINT) ;
-extern int	exectrace_wreg(EXECTRACE *,UINT,UINT,UINT) ;
-extern int	exectrace_wrsa(EXECTRACE *,UINT) ;
-extern int	exectrace_wrsv(EXECTRACE *,UINT,UINT) ;
-extern int	exectrace_wmem(EXECTRACE *,UINT,UINT,UINT) ;
-extern int	exectrace_wmsa(EXECTRACE *,UINT) ;
-extern int	exectrace_wmsv(EXECTRACE *,UINT,UINT) ;
+extern int	exectrace_wclock(EXECTRACE *,ulong) ;
+extern int	exectrace_win(EXECTRACE *,ulong) ;
+extern int	exectrace_wia(EXECTRACE *,uint) ;
+extern int	exectrace_wsom(EXECTRACE *,uint) ;
+extern int	exectrace_wsyscall(EXECTRACE *,uint) ;
+extern int	exectrace_wreg(EXECTRACE *,uint,uint,uint) ;
+extern int	exectrace_wrsa(EXECTRACE *,uint) ;
+extern int	exectrace_wrsv(EXECTRACE *,uint,uint) ;
+extern int	exectrace_wmem(EXECTRACE *,uint,uint,uint) ;
+extern int	exectrace_wmsa(EXECTRACE *,uint) ;
+extern int	exectrace_wmsv(EXECTRACE *,uint,uint) ;
 extern int	exectrace_read(EXECTRACE *,EXECTRACE_ENTRY *) ;
 extern int	exectrace_flush(EXECTRACE *) ;
 
-#ifdef	__cplusplus
-}
-#endif
+EXTERNC_end
 
-#endif /* (! defined(EXECTRACE_MASTER)) || (EXECTRACE_MASTER == 0) */
 
 #endif /* EXECTRACE_INCLUDE */
 
