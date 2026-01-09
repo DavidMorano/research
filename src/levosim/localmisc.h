@@ -1,73 +1,58 @@
-/* misc */
+/* localmisc HEADER */
+/* charset=ISO8859-1 */
+/* lang=C20 */
 
-/* miscellaneous stuff which essentially every program wants ! */
-/* last modified %G% version %I% */
-
-
-/* revision history :
-
-	= 83/02/15, Dave Morano
-
-	This code was started.  This is largely a rip off of my old
-	'damutil.h' or some such file from use on Audix or early PPI
-	embedded work.
+/* miscellaneous stuff which essentially every program wants! */
+/* version %I% last-modified %G% */
 
 
-	= 95/02/02, Dave Morano
+/* revision history:
 
-	I added some definitions for 64-bit ints (longs).  This is a
-	hack for Solaris and is easily messed up when not used there.
-
+	= 1998-02-15, David A­D­ Morano
+	This code was started to make life easier on the outside
+	(outside of Lucent Technologies).  This file largely contains
+	those things (defines) that I have found to be either useful
+	or problematic in the past.
 
 */
 
+/* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
+
+#ifndef	LOCALMISC_INCLUDE
+#define	LOCALMISC_INCLUDE
 
 
+#include	<envstandards.h>	/* MUST be first to configure */
+#include	<sys/types.h>
+#include	<sys/param.h>
+#include	<limits.h>
+#include	<stdlib.h>		/* |size_t| */
+#include	<string.h>		/* |memset(3c)| */
+#include	<clanguage.h>
 
-#ifndef	MISC_INCLUDE
-#define	MISC_INCLUDE	1
 
-
-
-#ifdef	TRUE
-#undef	TRUE
-#undef	FALSE
-#endif
-
+#ifndef	TRUE
 #define	TRUE		1
+#endif
+
+#ifndef	FALSE
 #define	FALSE		0
-
-#ifdef	YES
-#undef	YES
-#undef	NO
 #endif
 
+#ifndef	YES
 #define	YES		1
+#endif
+
+#ifndef	NO
 #define	NO		0
-
-#ifdef	OK
-#undef	OK
-#undef	BAD
 #endif
 
+#ifndef	OK
 #define	OK		0
+#endif
+
+#ifndef	BAD
 #define	BAD		-1
-
-
-#ifndef	NULL
-#define	NULL		((void *) 0)
-#endif
-
-#ifndef	VOID
-#define	VOID		void
-#endif
-
-#ifndef	VOLATILE
-#define	VOLATILE	volatile
-#endif
-
-#ifndef	CONST
-#define	CONST		const
 #endif
 
 
@@ -79,232 +64,189 @@
 #define	MAX(a,b)	(((a) > (b)) ? (a) : (b))
 #endif
 
-#ifndef	UMIN
-#define	UMIN(a,b)	(((unsigned long) (a)) < ((unsigned long) (b))) \
-				 ? (a) : (b))
-#endif
-
-#ifndef	UMAX
-#define	UMAX(a,b)	((((unsigned long) (a)) > ((unsigned long) (b))) \
-				? (a) : (b))
-#endif
-
 #ifndef	ABS
 #define	ABS(a)		(((a) < 0) ? (- (a)) : (a))
 #endif
 
-#ifndef	LEQUIV
+#ifndef	LEQUIV /* should be operator » !^^ « */
 #define	LEQUIV(a,b)	(((a) && (b)) || ((! (a)) && (! (b))))
 #endif
 
-#ifndef	LXOR
+#ifndef	LXOR /* should be operator » ^^ « */
 #define	LXOR(a,b)	(((a) && (! (b))) || ((! (a)) && (b)))
-#endif
-
-#ifndef	BCEIL
-#define	BCEIL(v,m)	(((v) + ((m) - 1)) & (~ ((m) - 1)))
 #endif
 
 #ifndef	BFLOOR
 #define	BFLOOR(v,m)	((v) & (~ ((m) - 1)))
 #endif
 
-#ifndef	LANGUAGE_NELEMENTS
-#define	LANGUAGE_NELEMENTS	1
-#ifndef	nelements
-#define	nelements(n)	(sizeof(n) / sizeof(n[0]))
-#endif
+#ifndef	BCEIL
+#define	BCEIL(v,m)	(((v) + ((m) - 1)) & (~ ((m) - 1)))
 #endif
 
+#ifndef	CEILINT
+#define	CEILINT(v)	BCEIL((v),int(sizeof(int)))
+#endif
+
+#ifndef	CONMSGHDR_SPACE
+#define	CONMSGHDR_SPACE(len) \
+    			CEILINT(int(sizeof(struct cmsghdr)) + CEILINT(len))
+#endif
+
+#ifndef	CONMSGHDR_LEN
+#define	CONMSGHDR_LEN(len)	\
+    			CEILINT(int(sizeof(struct cmsghdr)) + (len))
+#endif
+
+#ifndef	MKCHAR
+#define	MKCHAR(ch)	((ch) & 0xff)
+#endif
+
+#ifndef	MKBOOL
+#define	MKBOOL(exp)	((exp) != 0)
+#endif
+
+#ifndef	UC
+#define	UC(ch)		((unsigned char) (ch))
+#endif
+
+#ifndef	MODP2
+#define	MODP2(v,n)	((v) & ((n) - 1))
+#endif
 
 /* basic scalar types */
 
-#ifndef	CHAR
-#define	CHAR	char
-#endif
-
-#ifndef	BYTE
-#define	BYTE	char
-#endif
-
-#ifndef	SHORT
-#define	SHORT	short
-#endif
-
-#ifndef	INT
-#define	INT	int
-#endif
-
-
 #ifndef	LONG
-#if	defined(IRIX) || defined(SOLARIS) || defined(LONGLONG)
+#define	LONG		long
+#endif
 
-#define	LONG	long long
-
-#else
-
-#define	LONG	long
-
-#endif /* (whether implementation has 'long long' or not) */
+#ifndef	SCHAR
+#define	SCHAR		signed char
 #endif
 
 #ifndef	UCHAR
-#define	UCHAR	unsigned char
+#define	UCHAR		unsigned char
 #endif
 
 #ifndef	USHORT
-#define	USHORT	unsigned short
+#define	USHORT		unsigned short
 #endif
 
 #ifndef	UINT
-#define	UINT	unsigned int
+#define	UINT		unsigned int
 #endif
 
 #ifndef	ULONG
-#define	ULONG	unsigned LONG
+#define	ULONG		unsigned long
 #endif
 
-
-#if	defined(DARWIN) 
-#define	TYPEDEF_USHORT	1
-#define	TYPEDEF_UINT	1
-#endif
-
-
-
-#if	(! defined(__EXTENSIONS__)) && (! defined(P_MYID))
-#if	defined(_POSIX_C_SOURCE) || defined(_XOPEN_SOURCE)
-#if	(! defined(IRIX)) || (! defined(_SYS_BSD_TYPES_H))
-
-#ifndef	TYPES_UNSIGNED
-#define	TYPES_UNSIGNED	1
-
-#ifndef	TYPEDEF_USHORT
-#define	TYPEDEF_USHORT	1
-
-typedef unsigned short	ushort ;
-
-#endif
-
-#ifndef	TYPEDEF_UINT
-#define	TYPEDEF_UINT	1
-
-typedef unsigned int	uint ;
-
-#endif
-
-#ifndef	TYPEDEF_ULONG
-#define	TYPEDEF_ULONG	1
-
-typedef unsigned long	ulong ;
-
-#endif
-
-#endif /* TYPES_UNSIGNED */
-
-#endif
-#endif
-#endif
-
-
-/* do it again ! */
-
-#if	(! defined(TYPES_UNSIGNED)) && (! defined(P_MYID))
-#if	(! defined(IRIX)) || (! defined(_SYS_BSD_TYPES_H))
-
-#ifndef	TYPES_UNSIGNED
-#define	TYPES_UNSIGNED	1
-
-#ifndef	TYPEDEF_USHORT
-#define	TYPEDEF_USHORT	1
-
-typedef unsigned short	ushort ;
-
-#endif
-
-#ifndef	TYPEDEF_UINT
-#define	TYPEDEF_UINT	1
-
-typedef unsigned int	uint ;
-
-#endif
-
-#ifndef	TYPEDEF_ULONG
-#define	TYPEDEF_ULONG	1
-
-typedef unsigned long	ulong ;
-
-#endif
-
-#endif /* TYPES_UNSIGNED */
-
-#endif
-#endif
-
-
+#ifndef	TYPEDEF_SCHAR
+#define	TYPEDEF_SCHAR
+typedef signed char		schar ;
+#endif /* TYPEDEF_SCHAR */
 
 #ifndef	TYPEDEF_UCHAR
-#define	TYPEDEF_UCHAR	1
+#define	TYPEDEF_UCHAR
+typedef unsigned char		uchar ;
+#endif
 
-typedef unsigned char	uchar ;
+#ifndef	TYPEDEF_USHORT
+#define	TYPEDEF_USHORT
+typedef unsigned short		ushort ;
+#endif
 
+#ifndef	TYPEDEF_UINT
+#define	TYPEDEF_UINT
+typedef unsigned int		uint ;
+#endif
+
+#ifndef	TYPEDEF_ULONG
+#define	TYPEDEF_ULONG
+typedef unsigned long		ulong ;
+#endif
+
+#ifndef	TYPEDEF_CSCHAR
+#define	TYPEDEF_CSCHAR
+typedef const signed char	cschar ;
+#endif /* TYPEDEF_SCHAR */
+
+#ifndef	TYPEDEF_CCHAR
+#define	TYPEDEF_CCHAR
+typedef const char		cchar ;
+#endif /* TYPEDEF_SCHAR */
+
+#ifndef	TYPEDEF_CSHORT
+#define	TYPEDEF_CSHORT
+typedef const short		cshort ;
+#endif /* TYPEDEF_CSHORT */
+
+#ifndef	TYPEDEF_CINT
+#define	TYPEDEF_CINT
+typedef const int		cint ;
+#endif /* TYPEDEF_CINT */
+
+#ifndef	TYPEDEF_CLONG
+#define	TYPEDEF_CLONG
+typedef const long		clong ;
+#endif /* TYPEDEF_CLONG */
+
+#ifndef	TYPEDEF_CUCHAR
+#define	TYPEDEF_CUCHAR
+typedef const unsigned char	cuchar ;
 #endif /* TYPEDEF_UCHAR */
 
-
-#ifndef	TYPEDEF_LONG64
-#define	TYPEDEF_LONG64	1
-
-typedef LONG	long64 ;
-
-#endif /* TYPEDEF_LONG64 */
-
-
-#ifndef	TYPEDEF_ULONG64
-#define	TYPEDEF_ULONG64	1
-
-typedef ULONG	ulong64 ;
-
-#endif /* TYPEDEF_ULONG64 */
-
-
-
-#ifndef	TYPEDEF_USTIMET
-#define	TYPEDEF_USTIMET		1
-typedef unsigned int		ustime_t ;
+#ifndef	TYPEDEF_CUSHORT
+#define	TYPEDEF_CUSHORT
+typedef const unsigned short	cushort ;
 #endif
 
-#ifndef	TYPEDEF_UTIMET
-#define	TYPEDEF_UTIMET		1
-#if	defined(_LP64)
-typedef unsigned long		utime_t ;
-#else
-typedef unsigned long long	utime_t ;
-#endif
+#ifndef	TYPEDEF_CUINT
+#define	TYPEDEF_CUINT
+typedef const unsigned int	cuint ;
 #endif
 
-#ifndef	TYPEDEF_UNIXTIMET
-#define	TYPEDEF_UNIXTIMET	1
-#if	defined(_LP64)
-typedef long			unixtime_t ;
-#else
-typedef long long		unixtime_t ;
-#endif
+#ifndef	TYPEDEF_CULONG
+#define	TYPEDEF_CULONG
+typedef const unsigned long	culong ;
 #endif
 
-
-
-/* some limits !! */
-
-#ifndef	LONG64_MIN
-#define	LONG64_MIN	(-9223372036854775807L-1LL)
+#ifndef	TYPEDEF_USTIME
+#define	TYPEDEF_USTIME
+typedef time_t			ustime ;
 #endif
 
-#ifndef	LONG64_MAX
-#define	LONG64_MAX	9223372036854775807LL
+#ifndef	TYPEDEF_UNIXTIME
+#define	TYPEDEF_UNIXTIME
+typedef time_t			unixtime ;
 #endif
 
-#ifndef	ULONG64_MAX
-#define	ULONG64_MAX	18446744073709551615ULL
+#ifndef	TYPEDEF_CUSTIME
+#define	TYPEDEF_CUSTIME
+typedef const time_t		custime ;
+#endif
+
+#ifndef	TYPEDEF_CUNIXTIME
+#define	TYPEDEF_CUNIXTIME
+typedef const time_t		cunixtime ;
+#endif
+
+#ifndef	TYPEDEF_CC
+#define	TYPEDEF_CC
+typedef const char		cc ;
+#endif
+
+/* C-language limits */
+
+#ifndef	INT64_MIN
+#define	INT64_MIN	(-9223372036854775807L-1LL)
+#endif
+
+#ifndef	INT64_MAX
+#define	INT64_MAX	9223372036854775807LL
+#endif
+
+#ifndef	UINT64_MAX
+#define	UINT64_MAX	18446744073709551615ULL
 #endif
 
 /* it would be nice if the implemenation had these */
@@ -334,20 +276,151 @@ typedef long long		unixtime_t ;
 #endif
 
 
+/* parameters */
 
-/* language features */
+#ifndef	MAXARGLEN
+#ifdef	ARG_MAX
+#define	MAXARGLEN	ARG_MAX
+#else
+#define	MAXARGLEN	(256 * 1024)
+#endif
+#endif
+
+#ifndef	MAXLINELEN
+#ifdef	LINE_MAX
+#define	MAXLINELEN	LINE_MAX
+#else
+#define	MAXLINELEN	(2*1024)
+#endif
+#endif
+
+#ifndef	MAXNAMELEN
+#ifdef	NAME_MAX
+#define	MAXNAMELEN	NAME_MAX
+#else
+#define	MAXNAMELEN	256
+#endif
+#endif
+
+#ifndef	MAXPATHLEN
+#ifdef	PATH_MAX
+#define	MAXPATHLEN	PATH_MAX
+#else
+#define	MAXPATHLEN	1024
+#endif
+#endif
+
+/* timezone (zoneinfo) name */
+#ifndef	TZNAMELEN
+#ifdef	TZNAME_MAX
+#define	TZNAMELEN	TZNAME_MAX
+#else
+#define	TZNAMELEN	256
+#endif
+#endif
+
+#ifndef	NODENAMELEN
+#define	NODENAMELEN	256
+#endif
+
+#ifndef	HOSTNAMELEN
+#define	HOSTNAMELEN	1024
+#endif
+
+/* timezone abbreviation */
+#ifndef	TZABBRLEN
+#define	TZABBRLEN	8
+#endif
+
+/* log-ID (for logging) */
+#ifndef	LOGIDLEN
+#define	LOGIDLEN	15
+#endif
+
+/* mail alias-length */
+#ifndef	MAILALIASLEN
+#define	MAILALIASLEN	64
+#endif
+
+/* this is (long) depracated from UNIX® */
+#ifndef	NOFILE
+#define	NOFILE		20		/* UNIX® number of files */
+#endif
+
+#ifndef	TIMEBUFLEN
+#define	TIMEBUFLEN	80		/* can hold? all known date strings */
+#endif
+
+/* common digit base (2, 8, 10, 16) buffer lengths (convenience defines) */
+
+#ifndef	BINBUFLEN
+#define	BINBUFLEN	256		/* can hold |int256_t| in binary */
+#endif
+
+#ifndef	OCTBUFLEN
+#define	OCTBUFLEN	86		/* can hold |int256_t| in octal */
+#endif
+
+#ifndef	DECBUFLEN
+#define	DECBUFLEN	78		/* can hold |int256_t| in decimal */
+#endif
+
+#ifndef	HEXBUFLEN
+#define	HEXBUFLEN	64		/* can hold |int256_t| in hexadecimal */
+#endif
+
+#ifndef	DIGBUFLEN
+#define	DIGBUFLEN	MAX(MAX(MAX(BINBUFLEN,OCTBUFLEN),DECBUFLEN),HEXBUFLEN)
+#endif
+
+#ifndef	REALNAMELEN
+#define	REALNAMELEN	100		/* "real" name length */
+#endif
+
+#ifndef	COLUMNS
+#define	COLUMNS		80		/* historical terminal columns */
+#endif
+
+#ifndef	POLL_INTMULT
+#define	POLL_INTMULT	1000		/* poll-interval-multiplier (to secs) */
+#endif
+
+#ifndef	NYEARS_CENTURY
+#define	NYEARS_CENTURY	100		/* years in a century */
+#endif
+
+#ifndef	NTABCOLS
+#define	NTABCOLS	8		/* eight columns per TAB character */
+#endif
+
+#define	eol		'\n'
+
+#ifndef	SUBROUTINE_LEQUIV
+#define	SUBROUTINE_LEQUIV
+
+static inline bool lequiv(bool a1,bool a2) noex {
+	return LEQUIV(a1,a2) ;
+}
+
+static inline bool lxor(bool a1,bool a2) noex {
+	return LXOR(a1,a2) ;
+}
+
+#endif /* SUBROUTINE_LEQUIV */
+
+#ifdef	__cplusplus
+#else
+#ifndef	SUBROUTINE_MEMCLEAR
+#define	SUBROUTINE_MEMCLEAR
+static inline int memclear(void *objp,int sz) noex {
+    	csize	objs = (size_t) sz ;
+    	memset(objp,0,objs) ;
+	return sz ;
+}
+#endif /* SUBROUTINE_MEMCLEAR */
+#endif /* __splusplus */
 
 
-#ifndef	LANGUAGE_FOREVER
-#define	LANGUAGE_FOREVER	1
-
-#define	forever		for (;;)
-
-#endif /* LANGUAGE_FOREVER */
-
-
-
-#endif /* MISC_INCLUDE */
-
+#endif /* LOCALMISC_INCLUDE */
 
 
