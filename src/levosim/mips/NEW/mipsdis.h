@@ -1,26 +1,32 @@
-/* mipsdis */
+/* mipsdis HEADER */
+/* charset=ISO8859-1 */
+/* lang=C20 (conformance reviewed) */
 
 /* MIPS instruction disassembly object */
+/* version %I% last-modified %G% */
 
 
+/* revision history:
+
+	= 1998-11-01, David Morano
+	Originally written for Audix Database Processor (DBP) work.
+
+*/
+
+/* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
 
 #ifndef	MIPSDIS_INCLUDE
-#define	MIPSDIS_INCLUDE	1
+#define	MIPSDIS_INCLUDE
 
 
+#include	<envstandards.h>
 #include	<sys/types.h>
-
 #include	<hdb.h>
-
-#include	"misc.h"
-
+#include	<localmisc.h>
 
 
 /* object defines */
-
 #define	MIPSDIS		struct mipsdis_head
-
-
 
 
 struct mipsdis_flags {
@@ -44,13 +50,9 @@ struct mipsdis_head {
 	int		mode ;
 } ;
 
-
-
 typedef struct mipsdis_head	mipsdis ;
 
-
-
-#ifndef	MIPSDIS_MASTER
+EXTERNC_begin
 
 extern int mipsdis_init(MIPSDIS *,char *,char *) ;
 extern int mipsdis_getstd(MIPSDIS *,uint,uint,char *,int) ;
@@ -61,10 +63,9 @@ extern mipsdis	obj_mipsdis(int,int) ;
 extern mipsdis	*new_mipsdis(int,int) ;
 extern void	free_mipsdis(MIPSDIS *) ;
 
-#endif /* MIPSDIS_MASTER */
+EXTERNC_end
 
 
 #endif /* MIPSDIS_INCLUDE */
-
 
 
