@@ -1,34 +1,32 @@
-/* mipsdis */
+/* mipsdis SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
 /* disassemble a MIPS instruction into its assembly language */
+/* version %I% last-modified %G% */
 
-
-#define	CF_DEBUGS	0
-
+#define	CF_DEBUGS	0		/* compile-time debugging */
 
 /* revision history:
 
 	= 2001-08-06, David Morano
-
 	This subroutine was written to interface to Sean's MIPS
 	disassember program.
 
-
 	= 2001-08-29, David Morano
-
-	Sean's disassember is not ready yet (it is delivered but it has
-	some bugs) so I changed this whole thing into something that
-	reads a disassembly file (created on 'ovel' from the
+	Sean's disassember is not ready yet (it is delivered but
+	it has some bugs) so I changed this whole thing into something
+	that reads a disassembly file (created on 'ovel' from the
 	executable) and stores the data in a database later retrieval.
-	This should be a good solution for the most part since the only
-	instructions that we should be executing are those that are in
-	the MIPS executable file!
-
+	This should be a good solution for the most part since the
+	only instructions that we should be executing are those
+	that are in the MIPS executable file!
 
 */
 
+/* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
 
-/******************************************************************************
+/*******************************************************************************
 
 	This module reads a disassembly output file from a MIPS
 	executable (the one that we are executing) and extracts the
@@ -38,41 +36,38 @@
 	generating that disassembled output, and according to the
 	instruction address of that instruction (when available).
 
-	Yes, yes, I should have processed the source disassembly file
-	into some sort of form (indexed) that could be memory mapped by
-	later executions.  In that way, I would not have to process and
-	index the source disassembly file every time.  Unfortunately,
-	on our schedule (!) everything that we should do is not
-	possible due to time constraints.  We will have to suffer for a
-	little while whenever we initialize to process the file on
-	every separate execution as a result.
+	Yes, yes, I should have processed the source disassembly
+	file into some sort of form (indexed) that could be memory
+	mapped by later executions.  In that way, I would not have
+	to process and index the source disassembly file every time.
+	Unfortunately, on our schedule (!) everything that we should
+	do is not possible due to time constraints.  We will have
+	to suffer for a little while whenever we initialize to
+	process the file on every separate execution as a result.
 
-
-******************************************************************************/
-
-
-#define	MIPSDIS_MASTER	1
-
+*******************************************************************************/
 
 #include	<envstandards.h>	/* MUST be first to configure */
-
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<sys/stat.h>
 #include	<sys/wait.h>
 #include	<climits>
+#include	<cstddef>		/* |nullptr_t| */
 #include	<cstdlib>
 #include	<cstring>
-#include	<ctype.h>
-
 #include	<usystem.h>
 #include	<bfile.h>
 #include	<hdb.h>
+#include	<cfhex.h>
+#include	<sfx.h>			/* |sfshrink(3uc)| */
+#include	<strwcpy.h>
 #include	<char.h>
+#include	<hasx.h>		/* |haself(3uc)| */
+#include	<ischarx.h>
+#include	<localmisc.h>
 
-#include	"localmisc.h"		/* for 'uint' */
 #include	"mipsdis.h"
-
 
 
 /* local defines */
@@ -91,15 +86,7 @@
 #endif
 
 
-
 /* external subroutines */
-
-extern uint	hashelf(const char *,int) ;
-
-extern int	cfhexui(const char *,int,uint *) ;
-extern int	sfshrink(const char *,int,char **) ;
-
-extern char	*strwcpy(char *,const char *,int) ;
 
 
 /* forward references */
@@ -120,14 +107,15 @@ MIPSDIS	*mdp ;
 char	server[] ;
 char	execfname[] ;
 {
-	int	rs, rs1 ;
+	int	rs = SR_OK ;
+	int	rs1 ;
 	int	defsize ;
 	int	f_dis = FALSE ;
 
 	char	tmpfname[MAXPATHLEN + 1] ;
 
 
-	if (mdp == NULL)
+	if (mdp == nullptr)
 	    return SR_FAULT ;
 
 	memset(mdp,0,sizeof(MIPSDIS)) ;
@@ -137,7 +125,7 @@ char	execfname[] ;
 /* if we are in mode 0, try and find a disassembled file */
 
 	f_dis = FALSE ;
-	if ((execfname != NULL) && (execfname[0] != '\0')) {
+	if ((execfname != nullptr) && (execfname[0] != '\0')) {
 
 	    char	*bnp, *dp ;
 	    char	*sp ;
@@ -147,13 +135,13 @@ char	execfname[] ;
 
 	    dp = strrchr(execfname,'.') ;
 
-	    if ((dp != NULL) && (bnp != NULL) && (dp > bnp))
+	    if ((dp != nullptr) && (bnp != nullptr) && (dp > bnp)) {
 	        sp = strwcpy(tmpfname,execfname,(dp - execfname)) ;
 
-	    else if ((dp != NULL) && (bnp == NULL))
+	    } else if ((dp != nullptr) && (bnp == nullptr)) {
 	        sp = strwcpy(tmpfname,execfname,(dp - execfname)) ;
 
-	        else
+	    } else
 	        sp = strwcpy(tmpfname,execfname,-1) ;
 
 	    if ((sp - tmpfname + 4) < (MAXPATHLEN - 1)) {
@@ -172,9 +160,7 @@ char	execfname[] ;
 
 	defsize = 100000 ;
 	if (f_dis) {
-
 	    ustat	sb ;
-
 
 	    rs = u_stat(tmpfname,&sb) ;
 
@@ -188,15 +174,15 @@ char	execfname[] ;
 
 	} /* end if (getting default size) */
 
-	rs = hdb_start(&mdp->dis,defsize,1,NULL,NULL) ;
+	rs = hdb_start(&mdp->dis,defsize,1,nullptr,nullptr) ;
 	if (rs < 0)
 	    goto bad0 ;
 
-	rs = hdb_start(&mdp->addr,defsize,1,NULL,NULL) ;
+	rs = hdb_start(&mdp->addr,defsize,1,nullptr,nullptr) ;
 	if (rs < 0)
 	    goto bad1 ;
 
-	rs = hdb_start(&mdp->instr,defsize,1,NULL,NULL) ;
+	rs = hdb_start(&mdp->instr,defsize,1,nullptr,nullptr) ;
 	if (rs < 0)
 	    goto bad2 ;
 
@@ -217,8 +203,8 @@ char	execfname[] ;
 
 /* do we have a server anyway? */
 
-	mdp->server = NULL ;
-	if ((server != NULL) && (server[0] != '\0')) {
+	mdp->server = nullptr ;
+	if ((server != nullptr) && (server[0] != '\0')) {
 
 	    rs = uc_mallocstrw(server,-1,&mdp->server) ;
 	    if (rs < 0)
@@ -273,7 +259,7 @@ int	disbuflen ;
 	    key.buf = &ia ;
 	    key.len = sizeof(uint) ;
 
-	    rs = hdb_fetch(&mdp->addr,key,NULL,&value) ;
+	    rs = hdb_fetch(&mdp->addr,key,nullptr,&value) ;
 
 	} /* end if (trying address first) */
 
@@ -281,11 +267,11 @@ int	disbuflen ;
 
 	    key.buf = &instr ;
 
-	    rs = hdb_fetch(&mdp->instr,key,NULL,&value) ;
+	    rs = hdb_fetch(&mdp->instr,key,nullptr,&value) ;
 
 	}
 
-	if ((rs >= 0) && (disbuf != NULL)) {
+	if ((rs >= 0) && (disbuf != nullptr)) {
 
 	    char	*sp ;
 
@@ -320,21 +306,16 @@ int mipsdis_free(mdp)
 MIPSDIS	*mdp ;
 {
 	HDB_DATUM	key, value ;
+	HDB_CUR		cur ;
+	int		rs = SR_OK ;
 
-	HDB_CUR	cur ;
+	if (mdp == nullptr) return SR_FAULT ;
 
-	int	rs = SR_OK ;
+	if (mdp->magic != MIPSDIS_MAGIC) return SR_NOTOPEN ;
 
-
-	if (mdp == NULL)
-	    return SR_FAULT ;
-
-	if (mdp->magic != MIPSDIS_MAGIC)
-	    return SR_NOTOPEN ;
-
-	if (mdp->server != NULL) {
+	if (mdp->server != nullptr) {
 	    uc_free(mdp->server) ;
-	    mdp->server = NULL ;
+	    mdp->server = nullptr ;
 	}
 
 /* free the keys in the ADDR DB */
@@ -342,10 +323,9 @@ MIPSDIS	*mdp ;
 	hdb_curbegin(&mdp->addr,&cur) ;
 
 	while ((rs = hdb_enum(&mdp->addr,&cur,&key,&value)) >= 0) {
-
-	    if (key.buf != NULL)
+	    if (key.buf != nullptr) {
 	        uc_free((void *) key.buf) ;
-
+	    }
 	} /* end while */
 
 	hdb_curend(&mdp->addr,&cur) ;
@@ -355,15 +335,10 @@ MIPSDIS	*mdp ;
 	hdb_curbegin(&mdp->instr,&cur) ;
 
 	while ((rs = hdb_enum(&mdp->instr,&cur,&key,&value)) >= 0) {
-
-	    if (value.buf != NULL) {
-
+	    if (value.buf != nullptr) {
 	        entry_free((struct mipsdis_entry *) value.buf) ;
-
 	        uc_free((void *) value.buf) ;
-
 	    }
-
 	} /* end while */
 
 	hdb_curend(&mdp->instr,&cur) ;
@@ -434,7 +409,7 @@ char	fname[] ;
 	    debugprintf("mipsdis_disload: possible 1\n") ;
 #endif
 
-	    if ((sp = strchr(lp,']')) == NULL)
+	    if ((sp = strchr(lp,']')) == nullptr)
 	        continue ;
 
 #if	CF_DEBUGS
@@ -448,7 +423,7 @@ char	fname[] ;
 	    if ((lp[0] == '0') && (tolower(lp[1]) == 'x'))
 	        lp += 2 ;
 
-	    if ((sp = strchr(lp,':')) == NULL)
+	    if ((sp = strchr(lp,':')) == nullptr)
 	        continue ;
 
 #if	CF_DEBUGS
@@ -472,7 +447,7 @@ char	fname[] ;
 	        while (*lp && CHAR_ISWHITE(*lp))
 	            lp += 1 ;
 
-	        if ((! isxdigit(lp[0])) || (! isxdigit(lp[1])))
+	        if ((! isdigex(lp[0])) || (! isdigex(lp[1])))
 	            break ;
 
 	        hexbuf[j++] = *lp++ ;
@@ -504,7 +479,7 @@ char	fname[] ;
 	        ia,instr,lp) ;
 #endif
 
-	    sig = entry_init(&e,instr,lp,-1,NULL,-1) ;
+	    sig = entry_init(&e,instr,lp,-1,nullptr,-1) ;
 
 /* do we already have this entry in the DB? */
 
@@ -546,9 +521,7 @@ char	fname[] ;
 
 	        rs = hdb_store(&mdp->dis,key,value) ;
 	        if (rs < 0) {
-
 	            uc_free(ep) ;
-
 	            break ;
 	        }
 
@@ -559,7 +532,7 @@ char	fname[] ;
 	    key.buf = &ep->instr ;
 	    key.len = sizeof(uint) ;
 
-	    rs = hdb_fetch(&mdp->instr,key,NULL,&value2) ;
+	    rs = hdb_fetch(&mdp->instr,key,nullptr,&value2) ;
 	    if (rs < 0) {
 
 	        rs = hdb_store(&mdp->instr,key,value) ;
@@ -573,7 +546,7 @@ char	fname[] ;
 	    key.buf = &ia ;
 	    key.len = sizeof(uint) ;
 
-	    rs = hdb_fetch(&mdp->addr,key,NULL,&value2) ;
+	    rs = hdb_fetch(&mdp->addr,key,nullptr,&value2) ;
 	    if (rs < 0) {
 
 	        uint	*iap ;
@@ -589,9 +562,7 @@ char	fname[] ;
 
 	        rs = hdb_store(&mdp->addr,key,value) ;
 	        if (rs < 0) {
-
 	            uc_free(iap) ;
-
 	            break ;
 	        }
 
@@ -662,11 +633,11 @@ int	stdlen, levolen ;
 	int	sig1, sig2 ;
 
 
-	ep->std = ep->levo = NULL ;
+	ep->std = ep->levo = nullptr ;
 	sig1 = sig2 = 0 ;
 	ep->instr = instr ;
 
-	if (std != NULL) {
+	if (std != nullptr) {
 
 	    rs = uc_mallocstrw(std,stdlen,&ep->std) ;
 
@@ -677,7 +648,7 @@ int	stdlen, levolen ;
 
 	}
 
-	if (levo != NULL) {
+	if (levo != nullptr) {
 
 	    rs = uc_mallocstrw(levo,levolen,&ep->levo) ;
 	    if (rs < 0)
@@ -691,10 +662,9 @@ int	stdlen, levolen ;
 	return ep->sig ;
 
 bad1:
-	if (ep->std != NULL) {
-
+	if (ep->std != nullptr) {
 	    uc_free(ep->std) ;
-
+	    ep->std = nullptr ;
 	}
 
 bad0:
@@ -711,20 +681,20 @@ struct mipsdis_entry	*e1p, *e2p ;
 	if (e1p->sig != e2p->sig)
 	    return FALSE ;
 
-	if (! LEQUIV((e1p->std == NULL),(e2p->std == NULL)))
+	if (! LEQUIV((e1p->std == nullptr),(e2p->std == nullptr)))
 	    return FALSE ;
 
-	if (! LEQUIV((e2p->levo == NULL),(e2p->levo == NULL)))
+	if (! LEQUIV((e2p->levo == nullptr),(e2p->levo == nullptr)))
 	    return FALSE ;
 
-	if (e1p->std != NULL) {
+	if (e1p->std != nullptr) {
 
 	    if (strcmp(e1p->std,e2p->std) != 0)
 	        return FALSE ;
 
 	}
 
-	if (e1p->levo != NULL) {
+	if (e1p->levo != nullptr) {
 
 	    if (strcmp(e1p->levo,e2p->levo) != 0)
 	        return FALSE ;
@@ -740,28 +710,23 @@ static int entry_free(ep)
 struct mipsdis_entry	*ep ;
 {
 
-
-	if (ep->std != NULL) {
-
+	if (ep->std != nullptr) {
 	    uc_free(ep->std) ;
-
+	    ep->std = nullptr ;
 	}
 
-	if (ep->levo != NULL) {
-
+	if (ep->levo != nullptr) {
 	    uc_free(ep->levo) ;
-
+	    ep->levo = nullptr ;
 	}
 
-	ep->std = ep->levo = NULL ;
+	ep->std = ep->levo = nullptr ;
 	return 0 ;
 }
 /* end subroutine (entry_free) */
 
 
-
 /* WHAT IS THIS???????? */
-
 
 
 /* this is the old clunker that interfaced to Sean's thing */
@@ -788,26 +753,26 @@ int	*slp, *llp ;
 	    program,instr) ;
 #endif
 
-	if ((program == NULL) || (program[0] == '\0'))
+	if ((program == nullptr) || (program[0] == '\0'))
 	    program = MIPSDIS_PROGRAM ;
 
-	if (disstd != NULL)
+	if (disstd != nullptr)
 	    disstd[0] = '\0' ;
 
-	if (dislevo != NULL)
+	if (dislevo != nullptr)
 	    dislevo[0] = '\0' ;
 
-	if (slp != NULL)
+	if (slp != nullptr)
 	    *slp = -1 ;
 
-	if (llp != NULL)
+	if (llp != nullptr)
 	    *llp = -1 ;
 
 #if	CF_DEBUGS
 	debugprintf("mipsdis: 2\n") ;
 #endif
 
-	fpa[0] = NULL ;
+	fpa[0] = nullptr ;
 	fpa[1] = &ofile ;
 	fpa[2] = &efile ;
 
@@ -826,7 +791,6 @@ int	*slp, *llp ;
 #endif
 
 	if ((rs = bopencmd(fpa,cmd)) >= 0) {
-
 	    pid = rs ;
 
 #if	CF_DEBUGS
@@ -848,7 +812,7 @@ int	*slp, *llp ;
 	        debugprintf("mipsdis: disstd=>%s>\n",disstd) ;
 #endif
 
-	        if (slp != NULL)
+	        if (slp != nullptr)
 	            *slp = (sp - disstd) ;
 
 	    }
@@ -867,7 +831,7 @@ int	*slp, *llp ;
 	        debugprintf("mipsdis: dislevo=>%s>\n",dislevo) ;
 #endif
 
-	        if (llp != NULL)
+	        if (llp != nullptr)
 	            *llp = (sp - dislevo) ;
 
 	    }
@@ -891,6 +855,5 @@ int	*slp, *llp ;
 	return rs ;
 }
 /* end subroutine (mipsdis) */
-
 
 
