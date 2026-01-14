@@ -99,9 +99,9 @@ The following macros SHOULD be defined :
 #include <sys/param.h>
 #endif
 #include <cerrno>
-#include <time.h>
+#include <ctime>
 #ifndef _MSC_VER
-#include <sys/time.h>
+#include <sys/ctime>
 #endif
 #ifndef _MSC_VER
 #include <sys/resource.h>
@@ -123,7 +123,7 @@ The following macros SHOULD be defined :
 #include <sys/ioctl.h>
 #endif
 #if defined(linux)
-#include <utime.h>
+#include <uctime>
 #include <dirent.h>
 #include <sys/vfs.h>
 #endif
@@ -162,8 +162,8 @@ int getdirentries(int fd, char *buf, int nbytes, long *basep);
 #if defined(__svr4__) || defined(__osf__)
 #include <sys/statvfs.h>
 #define statfs statvfs
-#include <sys/time.h>
-#include <utime.h>
+#include <sys/ctime>
+#include <uctime>
 #include <sgtty.h>
 #include <netinet/in.h>
 #include <netinet/tcp.h>
@@ -295,7 +295,7 @@ int getdirentries(int fd, char *buf, int nbytes, long *basep);
 #undef B7200
 #undef XTABS
 #include <sgtty.h>
-#include <utime.h>
+#include <uctime>
 #endif
 
 #ifdef __CYGWIN32__
@@ -324,7 +324,7 @@ int getdirentries(int fd, char *buf, int nbytes, long *basep);
 #define close		_close
 #define getpid		_getpid
 #define utime		_utime
-#include <sys/utime.h>
+#include <sys/uctime>
 #endif /* _MSC_VER */
 
 #include "host.h"
