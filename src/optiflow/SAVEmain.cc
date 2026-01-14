@@ -62,7 +62,7 @@
 
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <time.h>
+#include <ctime>
 #include <setjmp.h>
 #include <csignal>
 #include <cstdlib>
@@ -71,7 +71,7 @@
 #include <cstdio>
 
 #ifndef _MSC_VER
-#include <sys/time.h>
+#include <sys/ctime>
 #include <unistd.h>
 #endif
 
