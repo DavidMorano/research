@@ -53,9 +53,9 @@
 #include <sys/ipc.h>
 #include <sys/shm.h>
 #include <sys/utsname.h>
-#include <sys/time.h>
+#include <sys/ctime>
 #include <sys/resource.h>
-#include <time.h>
+#include <ctime>
 #include <cstdio>
 
 #include	"getfname.h"
