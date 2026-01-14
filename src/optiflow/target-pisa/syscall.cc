@@ -76,9 +76,9 @@
 #include <sys/param.h>
 #endif
 #include <cerrno>
-#include <time.h>
+#include <ctime>
 #ifndef _MSC_VER
-#include <sys/time.h>
+#include <sys/ctime>
 #endif
 #ifndef _MSC_VER
 #include <sys/resource.h>
@@ -105,7 +105,7 @@
 #endif
 #endif
 #ifdef linux
-#include <utime.h>
+#include <uctime>
 #include <sgtty.h>
 #endif /* linux */
 
@@ -114,7 +114,7 @@
 #endif
 
 #ifdef __svr4__
-#include "utime.h"
+#include "uctime"
 #endif
 
 #if defined(sparc) && defined(__unix__)
@@ -196,7 +196,7 @@
 #undef B7200
 #undef XTABS
 #include <sgtty.h>
-#include <utime.h>
+#include <uctime>
 #endif
 
 #ifdef _MSC_VER
@@ -217,7 +217,7 @@
 #define close		_close
 #define getpid		_getpid
 #define utime		_utime
-#include <sys/utime.h>
+#include <sys/uctime>
 #endif /* _MSC_VER */
 
 /* SimpleScalar SStrix (a derivative of Ultrix) system call codes, note these
