@@ -49,8 +49,10 @@
  * Copyright (C) 1994-2001 by Todd M. Austin, Ph.D. and SimpleScalar, LLC.
  */
 
+#include	<envstandards.h>	/* ordered first to configure */
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>		/* |getenv(3c)| */
 #include <cstdio>
-#include <cstdlib>
 #include "host.h"
 #include "misc.h"
 #include "machine.h"
@@ -78,7 +80,7 @@
 #include <cerrno>
 #include <ctime>
 #ifndef _MSC_VER
-#include <sys/ctime>
+#include <sys/time.h>
 #endif
 #ifndef _MSC_VER
 #include <sys/resource.h>
