@@ -101,7 +101,7 @@ The following macros SHOULD be defined :
 #include <cerrno>
 #include <ctime>
 #ifndef _MSC_VER
-#include <sys/ctime>
+#include <sys/time.h>
 #endif
 #ifndef _MSC_VER
 #include <sys/resource.h>
@@ -162,7 +162,7 @@ int getdirentries(int fd, char *buf, int nbytes, long *basep);
 #if defined(__svr4__) || defined(__osf__)
 #include <sys/statvfs.h>
 #define statfs statvfs
-#include <sys/ctime>
+#include <sys/time.h>
 #include <uctime>
 #include <sgtty.h>
 #include <netinet/in.h>
