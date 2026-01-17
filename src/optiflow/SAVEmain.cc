@@ -1,11 +1,11 @@
 /* main.c - main line routines */
-
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
 #define	F_DEBUGS	1		/* non-switchable debug print-outs */
 #define	F_DEBUG		1
 #define	F_DEBUGFORCE	0		/* force the debuglevel to something */
 #define	F_GETEXECNAME	0		/* use 'getexecname(3c)' */
-
 
 /* SimpleScalar(TM) Tool Suite
  * Copyright (C) 1994-2001 by Todd M. Austin, Ph.D. and SimpleScalar, LLC.
@@ -62,16 +62,16 @@
 
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <ctime>
 #include <setjmp.h>
+#include <ctime>
 #include <csignal>
-#include <cstdlib>
-#include <cstring>
-#include <ctype.h>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>		/* |getenv(3c)| */
 #include <cstdio>
+#include <cstring>
 
 #ifndef _MSC_VER
-#include <sys/ctime>
+#include <sys/time.h>
 #include <unistd.h>
 #endif
 
