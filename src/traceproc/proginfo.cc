@@ -29,7 +29,9 @@
 #include	<cstddef>		/* |nullptr_t| */
 #include	<cstdlib>
 #include	<cstring>
-#include	<usystem.h>
+#include	<clanguage.h>
+#include	<usysbase.h>
+#include	<getx.h>
 #include	<vecstr.h>
 #include	<shellunder.h>
 #include	<rmx.h>
@@ -60,36 +62,16 @@
 
 /* external subroutines */
 
-extern int	sncpy1(char *,int,const char *) ;
-extern int	mkpath1(char *,const char *) ;
-extern int	mkpath2(char *,const char *,const char *) ;
-extern int	mkpath2w(char *,const char *,const char *,int) ;
-extern int	sfdirname(const char *,int,const char **) ;
-extern int	sfbasename(const char *,int,const char **) ;
-extern int	matstr(const char **,const char *,int) ;
-extern int	getnodename(char *,int) ;
-extern int	getpwd(char *,int) ;
-extern int	getev(const char **,const char *,int,const char **) ;
-extern int	hasprintbad(const char *,int) ;
-extern int	hasuc(const char *,int) ;
-
 #if	CF_DEBUGN
-extern int	nprintf(const char *,const char *,...) ;
+extern int	nprintf(cchar *,cchar *,...) ;
 #endif
-
-extern char	*getourenv(const char **,const char *) ;
-extern char	*strwcpy(char *,const char *,int) ;
-extern char	*strwcpylc(char *,const char *,int) ;
-extern char	*strwcpyuc(char *,const char *,int) ;
-extern char	*strnchr(const char *,int,int) ;
-extern char	*strnrchr(const char *,int,int) ;
 
 
 /* forward references */
 
-int	proginfo_setentry(struct proginfo *,const char **,const char *,int) ;
-int	proginfo_setprogname(struct proginfo *,const char *) ;
-int	proginfo_setexecname(struct proginfo *,const char *) ;
+int	proginfo_setentry(struct proginfo *,cchar **,cchar *,int) ;
+int	proginfo_setprogname(struct proginfo *,cchar *) ;
+int	proginfo_setexecname(struct proginfo *,cchar *) ;
 int	proginfo_getpwd(struct proginfo *,char *,int) ;
 int	proginfo_pwd(struct proginfo *) ;
 int	proginfo_progdname(struct proginfo *) ;
@@ -106,7 +88,7 @@ static int proginfo_setdefpn(struct proginfo *) ;
 /* local variables */
 
 #if	CF_RMEXT
-static const char	*exts[] = {
+static cchar	*exts[] = {
 	"x",
 	"s5",
 	"s5u",
@@ -129,9 +111,9 @@ static const char	*exts[] = {
 
 int proginfo_start(pip,envv,argz,version)
 struct proginfo	*pip ;
-const char	*envv[] ;
-const char	argz[] ;
-const char	version[] ;
+cchar	*envv[] ;
+cchar	argz[] ;
+cchar	version[] ;
 {
 	int	rs ;
 	int	opts ;
@@ -146,7 +128,7 @@ const char	version[] ;
 
 	memset(pip,0,sizeof(struct proginfo)) ;
 
-	pip->envv = (const char **) envv ;
+	pip->envv = (cchar **) envv ;
 
 	opts = (VECSTR_OCONSERVE | VECSTR_OREUSE | VECSTR_OSWAP) ;
 	if ((rs = vecstr_start(&pip->stores,10,opts)) >= 0) {
@@ -157,7 +139,7 @@ const char	version[] ;
 		if (rs >= 0) {
 	    	    if ((rs = proginfo_setdefnames(pip)) >= 0) {
 			if ((rs >= 0) && (version != NULL)) {
-	    		    const char	**vpp = &pip->version ;
+	    		    cchar	**vpp = &pip->version ;
 	    		    rs = proginfo_setentry(pip,vpp,version,-1) ;
 			}
 		    }
@@ -197,8 +179,8 @@ struct proginfo	*pip ;
 /* set an entry */
 int proginfo_setentry(pip,epp,vp,vl)
 struct proginfo	*pip ;
-const char	**epp ;
-const char	*vp ;
+cchar	**epp ;
+cchar	*vp ;
 int		vl ;
 {
 	int	rs = SR_OK ;
@@ -235,11 +217,11 @@ int		vl ;
 #if	CF_DEBUGN
 int proginfo_storelists(pip,s)
 struct proginfo	*pip ;
-const char	s[] ;
+cchar	s[] ;
 {
 	VECSTR	*vsp = &pip->stores ;
 	int	i ;
-	const char	*cp ;
+	cchar	*cp ;
 	if (s != NULL)
 	    nprintf(NDEBFNAME,"proginfo_storelists: s=>%s<\n",s) ;
 	nprintf(NDEBFNAME,"proginfo_storelists: vi=%u\n",vsp->i) ;
@@ -257,7 +239,7 @@ const char	s[] ;
 
 int proginfo_setversion(pip,v)
 struct proginfo	*pip ;
-const char	v[] ;
+cchar	v[] ;
 {
 	int	rs ;
 
@@ -277,7 +259,7 @@ const char	v[] ;
 
 int proginfo_setbanner(pip,v)
 struct proginfo	*pip ;
-const char	v[] ;
+cchar	v[] ;
 {
 	int	rs ;
 
@@ -297,13 +279,13 @@ const char	v[] ;
 
 int proginfo_setsearchname(pip,var,value)
 struct proginfo	*pip ;
-const char	var[] ;
-const char	value[] ;
+cchar	var[] ;
+cchar	value[] ;
 {
 	int	rs = SR_OK ;
 	int	cl = -1 ;
 
-	const char	*cp = NULL ;
+	cchar	*cp = NULL ;
 
 
 	if (pip == NULL)
@@ -324,7 +306,7 @@ const char	value[] ;
 	}
 
 	if ((cp == NULL) && (pip->progname != NULL)) {
-	    const char	*tp ;
+	    cchar	*tp ;
 	    cp = pip->progname ;
 	    if ((tp = strrchr(cp,'.')) != NULL)
 	        cl = (tp - cp) ;
@@ -349,15 +331,15 @@ const char	value[] ;
 /* set program directory and program name (as might be possible) */
 int proginfo_setprogname(pip,ap)
 struct proginfo	*pip ;
-const char	ap[] ;
+cchar	ap[] ;
 {
 	int	rs = SR_OK ;
 	int	al ;
 	int	dl, bl ;
 
-	const char	*en = NULL ;
-	const char	*dn = NULL ;
-	const char	*dp, *bp ;
+	cchar	*en = NULL ;
+	cchar	*dn = NULL ;
+	cchar	*dp, *bp ;
 
 
 	if (ap == NULL)
@@ -476,7 +458,7 @@ const char	ap[] ;
 /* set program root */
 int proginfo_setprogroot(pip,prp,prl)
 struct proginfo	*pip ;
-const char	prp[] ;
+cchar	prp[] ;
 int		prl ;
 {
 	const int	tlen = MAXPATHLEN ;
@@ -500,7 +482,7 @@ int		prl ;
 	}
 
 	if (rs >= 0) {
-	    const char	**vpp = &pip->pr ;
+	    cchar	**vpp = &pip->pr ;
 	    rs = proginfo_setentry(pip,vpp,prp,prl) ;
 	}
 
@@ -512,7 +494,7 @@ int		prl ;
 /* set the program execution filename */
 int proginfo_setexecname(pip,enp)
 struct proginfo	*pip ;
-const char	*enp ;
+cchar	*enp ;
 {
 	int	rs = SR_OK ;
 
@@ -523,7 +505,7 @@ const char	*enp ;
 	    int	enl = strlen(enp) ;
 	    while ((enl > 0) && (enp[enl-1] == '/')) enl -= 1 ;
 	    if (enl > 0) {
-		const char	**vpp = &pip->progename ;
+		cchar	**vpp = &pip->progename ;
 	        rs = proginfo_setentry(pip,vpp,enp,enl) ;
 	    }
 	}
@@ -544,7 +526,7 @@ struct proginfo	*pip ;
 	if (pip->pwd == NULL) {
 	    char	pwdname[MAXPATHLEN + 1] ;
 	    if ((rs = getpwd(pwdname,MAXPATHLEN)) >= 0) {
-		const char	**vpp = &pip->pwd ;
+		cchar	**vpp = &pip->pwd ;
 	        pwdlen = rs ;
 	        pip->pwdlen = pwdlen ;
 	        rs = proginfo_setentry(pip,vpp,pwdname,pwdlen) ;
@@ -573,7 +555,7 @@ struct proginfo	*pip ;
 
 	    if ((rs >= 0) && (pip->progename != NULL)) {
 	        int		dl ;
-	        const char	*dp ;
+	        cchar	*dp ;
 	        dl = sfdirname(pip->progename,-1,&dp) ;
 	        if (dl == 0) {
 	            if (pip->pwd == NULL)
@@ -608,7 +590,7 @@ struct proginfo	*pip ;
 
 	if (pip->progename == NULL) {
 	    SHELLUNDER	su ;
-	    const char	*execfname = NULL ;
+	    cchar	*execfname = NULL ;
 
 #if	defined(OSNAME_SunOS) && (OSNAME_SunOS > 0) && CF_GETEXECNAME
 	    if ((rs >= 0) && (execfname == NULL)) {
@@ -624,7 +606,7 @@ struct proginfo	*pip ;
 	        execfname = getourenv(pip->envv,VAREXECFNAME) ;
 
 	    if ((rs >= 0) && (execfname == NULL)) {
-	        const char	*cp = getourenv(pip->envv,VARUNDER) ;
+	        cchar	*cp = getourenv(pip->envv,VARUNDER) ;
 	        if (cp != NULL) {
 	            int	rs1 = shellunder(&su,cp) ;
 	            if (rs1 > 0) execfname = su.progename ;
@@ -675,7 +657,7 @@ struct proginfo	*pip ;
 	    const int	nlen = NODENAMELEN ;
 	    char	nbuf[NODENAMELEN + 1] ;
 	    if ((rs = getnodename(nbuf,nlen)) >= 0) {
-		const char	**vpp = &pip->nodename ;
+		cchar	**vpp = &pip->nodename ;
 	        nl = rs ;
 	        rs = proginfo_setentry(pip,vpp,nbuf,nl) ;
 	    }
@@ -749,9 +731,9 @@ int		rlen ;
 
 int proginfo_getenv(pip,np,nl,rpp)
 struct proginfo	*pip ;
-const char	*np ;
+cchar	*np ;
 int		nl ;
-const char	**rpp ;
+cchar	**rpp ;
 {
 	int	rs = SR_NOTFOUND ;
 
@@ -795,7 +777,7 @@ struct proginfo	*pip ;
 	int	rs = SR_OK ;
 	int	cl ;
 
-	const char	*cp ;
+	cchar	*cp ;
 
 
 	if (pip->progdname == NULL) {
@@ -818,7 +800,7 @@ struct proginfo	*pip ;
 
 	if (pip->progname == NULL) {
 	    int		cl ;
-	    const char	*cp ;
+	    cchar	*cp ;
 	    if (pip->progename != NULL) {
 	        if ((cl = sfbasename(pip->progename,-1,&cp)) > 0) {
 	            cl = rmext(cp,cl) ;
