@@ -1,13 +1,14 @@
-/* mint_init */
+/* mint_init SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
-/* initialize MINT ? */
-
+/* initialize MINT? */
+/* version %I% last-modified %G% */
 
 #define	CF_DEBUGS	0
-#define	CF_DEBUG		0
+#define	CF_DEBUG	0
 
-
-/* revision history :
+/* revision history:
 
 	= 00/02/04, Dave Morano
 	I have changed quite a bit with regard to how MINT
@@ -15,9 +16,7 @@
 	isolation of the simulated program from the simulator
 	itself than MINT did.
 
-
 */
-
 
 /******************************************************************************
 
@@ -46,17 +45,21 @@
 
 ******************************************************************************/
 
-
-
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include <sys/ipc.h>
 #include <sys/shm.h>
 #include <sys/utsname.h>
-#include <sys/ctime>
+#include <sys/time.h>
 #include <sys/resource.h>
 #include <ctime>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>		/* |getenv(3c)| */
 #include <cstdio>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<clanguage.h>
+#include	<usysbase.h>
 
 #include	"getfname.h"
 #include	"paramfile.h"
