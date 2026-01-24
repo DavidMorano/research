@@ -1,31 +1,33 @@
-/* bpeval */
+/* bpeval HEADER */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
 
+/* revision history:
+
+	= 1998-11-01, David Morano
+	Originally written for Audix Database Processor (DBP) work.
+
+*/
+
+/* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
 
 #ifndef	BPEVAL_INCLUDE
-#define	BPEVAL_INCLUDE	1
+#define	BPEVAL_INCLUDE
 
 
-
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/param.h>
-
 #include	<vecitem.h>
+#include	<localmisc.h>
 
-#include	"localmisc.h"
-#include	"bpfifo.h"
+#include	<bpfifo.h>
 
-
-
-/* object define */
 
 #define	BPEVAL			struct bpeval_head
 #define	BPEVAL_STATS		struct bpeval_stats
 
-
-
-
-/* the rest of these are not in the loadable modules */
 
 struct bpeval_calls {
 	int	(*init)() ;
@@ -34,26 +36,26 @@ struct bpeval_calls {
 	int	(*update)() ;
 	int	(*stats)() ;
 	int	(*free)() ;
-} ;
+} ; /* end struct */
 
 struct bpeval_params {
 	int	p1, p2, p3, p4 ;
-} ;
+} ; /* end struct */
 
 struct bpeval_stats {
-	struct bpeval_params	p ;	/* predictor parameters */
-	ULONG	lookups ;		/* lookups (in the selection) */
-	ULONG	corrects ;		/* number correct (in the selection) */
-	ULONG	confidence[8] ;		/* density of confidences */
-	ULONG	cc[8] ;			/* density of correct confidences */
-	uint	bits ;			/* memory bits the predictor uses */
+ 	struct bpeval_params	p ;	/* predictor parameters */
+ 	ulong	lookups ;		/* lookups (in the selection) */
+ 	ulong	corrects ;		/* number correct (in the selection) */
+ 	ulong	confidence[8] ;		/* density of confidences */
+ 	ulong	cc[8] ;			/* density of correct confidences */
+ 	uint	bits ;			/* memory bits the predictor uses */
 	char	name[MAXNAMELEN + 1] ;
-} ;
+} ; /* end struct */
 
 struct bpeval_ii {
 	uint	f_pred : 1 ;
 	uint	confidence : 4 ;
-} ;
+} ; /* end struct */
 
 struct bpeval_entry {
 	struct bpeval_calls	call ;
@@ -62,39 +64,35 @@ struct bpeval_entry {
 	int			size ;
 	void			*dlp ;	/* load handle */
 	void			*op ;	/* object pointers */
-} ;
+} ; /* end struct */
 
 struct bpeval_head {
-	unsigned long		magic ;
-	BPFIFO			fifo ;
-	vecitem			bps ;
-	char			*pwd ;
-	char			*dir ;
-	int	rows, delay ;
-	int	bpsel ;
-} ;
+	BPFIFO		fifo ;
+	vecitem		bps ;
+	char		*dir ;
+	uint		magic ;
+	int		rows, delay ;
+	int		bpsel ;		/* "selected" BP (?) */
+} ; /* end struct */
 
+EXTERNC_begin
 
-
-#if	(! defined(BPEVAL_MASTER)) || (BPEVAL_MASTER == 0)
-
-extern int	bpeval_init(BPEVAL *,char *,int,int) ;
-extern int	bpeval_add(BPEVAL *,char *,char *,int,int,int,int) ;
-extern int	bpeval_bpsel(BPEVAL *,char *) ;
-extern int	bpeval_lookup(BPEVAL *,ULONG,ULONG,int) ;
-extern int	bpeval_confidence(BPEVAL *,ULONG,ULONG,int) ;
-extern int	bpeval_outcome(BPEVAL *,ULONG,ULONG,int,int) ;
-extern int	bpeval_update(BPEVAL *,ULONG,ULONG,int) ;
-extern int	bpeval_checkmid(BPEVAL *,ULONG) ;
-extern int	bpeval_checkend(BPEVAL *,ULONG) ;
-extern int	bpeval_zerostats(BPEVAL *) ;
-extern int	bpeval_stats(BPEVAL *,int,BPEVAL_STATS *) ;
+extern int	bpeval_init(BPEVAL *,char *,int,int) noex ;
+extern int	bpeval_add(BPEVAL *,char *,char *,int,int,int,int) noex ;
+extern int	bpeval_bpsel(BPEVAL *,char *) noex ;
+extern int	bpeval_lookup(BPEVAL *,ulong,ulong,int) noex ;
+extern int	bpeval_confidence(BPEVAL *,ulong,ulong,int) noex ;
+extern int	bpeval_outcome(BPEVAL *,ulong,ulong,int,int) noex ;
+extern int	bpeval_update(BPEVAL *,ulong,ulong,int) noex ;
+extern int	bpeval_checkmid(BPEVAL *,ulong) noex ;
+extern int	bpeval_checkend(BPEVAL *,ulong) noex ;
+extern int	bpeval_zerostats(BPEVAL *) noex ;
+extern int	bpeval_stats(BPEVAL *,int,BPEVAL_STATS *) noex ;
 extern int	bpeval_free(BPEVAL *) ;
 
-#endif /* BPEVAL_MASTER */
+EXTERNC_end
 
 
 #endif /* BPEVAL_INCLUDE */
-
 
 
