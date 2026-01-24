@@ -1,58 +1,90 @@
-/* bpeval */
+/* bpeval SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
 /* load a branch predictor dynamically */
+/* version %I% last-modified %G% */
 
-
-#define	CF_DEBUGS	0		/* compile-time debugging */
-#define	CF_SAFE		1
-
+#define	CF_DEBUGS	0		/* non-switchable debug print-outs */
+#define	CF_SAFE		0		/* extra safety */
+#define	CF_DELAYSLOT	0		/* ISA has a delay slot */
 
 /* revision history:
 
-	= 2002-05-01, David Morano
-
+	= 02/05/01, David Morano
 	This object module was originally written (since I am really
 	getting tired of manually integrating new predictors into
 	the code all of the time!).
 
-
 */
 
-/* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
+/* Copyright © 2003-2007 David A­D­ Morano.  All rights reserved. */
 
-/*******************************************************************************
+/******************************************************************************
 
-	This object module allows for branch predictor modules to be
-	loaded dynamically into the tracing tool.  This alleviates
-	having to manually code-in any new branch predictors (which is
-	getting real, real old)!
+  	Object:
+	bpeval
 
+	Description:
+	This object module allows for branch predictor modules to
+	be loaded dynamically into the tracing tool.  This alleviates
+	having to manually code-in any new branch predictors (which
+	is getting real, real old) !
 
-*******************************************************************************/
+	Usage note:
 
+	This module was designed primarily for the MIPS platform
+	and its behavior with delay slots.  It was also designed
+	so that a trace of the MIPS execution could be followed and
+	the outcomes of the branches could be determined from the
+	trace control flow (when a branch is found we look where
+	execution goes).  The problem is that this is severely not
+	easy on an ISA with delayed branches (like MIPS).  Another
+	design idea was to allowed for the delayed update of the
+	branch predictors depending on a specified number of
+	instructions being executed.  This sort of fit in with the
+	problem of handling delay slots so we tried to combine these
+	ideas as best as we could.  Three extra subroutines are
+	provided to handle the delayed predictor updates due to
+	both delay-slot delays and just waiting for some instructions
+	to execute.  These subroutines are:
 
-#define	BPEVAL_MASTER	0
+	bpeval_outcome()		called to record branch outcome
+	bpeval_checkmid()		called in middle of EX cycle
+	bpeval_checkend()		called at end of EX cycle
 
+	Hopefully, this module can be used without the above
+	subroutines, at least that was intended (I think).  The
+	compile-time define 'CF_DELAYSLOT' hopefully makes these
+	subroutines works for those ISAs that do not have delay
+	slots while still allowing for delayed predictor update.
+	Check the code below to make sure that you follow this stuff
+	(I barely do now)! :-)
 
-#include	<envstandards.h>
+*****************************************************************************/
 
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
-#include	<sys/param.h>
 #include	<sys/stat.h>
 #include	<unistd.h>
 #include	<fcntl.h>
 #include	<dlfcn.h>
-#include	<cstdlib>
+#include	<link.h>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>		/* |getenv(3c)| */
 #include	<cstring>
-
-#include	<usystem.h>
-#include	<mallocstuff.h>
+#include	<clanguage.h>
+#include	<usysbase.h>
+#include	<uclibmem.h>
 #include	<localmisc.h>
 
 #include	"bpfifo.h"
 #include	"bpload.h"
 #include	"bpeval.h"
 
+#pragma		GCC dependency		"mod/libutil.ccm"
+
+import libutil ;			/* |lenstr(3u)| */
 
 /* local defines */
 
@@ -78,54 +110,56 @@
 
 /* external subroutines */
 
-extern uint	nextpowtwo(uint) ;
-
-extern int	mkpath2(char *,const char *,const char *) ;
-extern int	flbsi(uint) ;
-
-extern char	*strwcpy(char *,const char *,int) ;
-
 
 /* local structures */
 
 
 /* forward references */
 
+local int filesearch(BPEVAL *,char *,int) noex ;
+
 
 /* local variables */
 
-static const char	*suffixes[] = {
+constexpr cpcchar	suffixes[] = {
 	".so",
 	".o",
 	"",
-	NULL
+	nullptr
 } ;
 
-static const struct bpeval_ii	ii_zero = { 0, 0 } ;
+constexpr bpeval_ii	ii_zero = { 0, 0 } ;
 
 
-/* exported subroutines */
+/* exported variables */
 
 
-int bpeval_init(op,dir,rows,delay)
-BPEVAL		*op ;
-char		dir[] ;
-int		rows, delay ;
-{
+/* export subroutines */
+
+int bpeval_init(NPEVAL *op,char *dir,int rows,int delay) noex {
 	int	rs ;
-	int	size ;
+
+	char	tmpfname[MAXPATHLEN + 1] ;
 
 
-	if (op == NULL)
+	if (op == nullptr)
 	    return SR_FAULT ;
 
-	if (dir == NULL)
+	if (dir == nullptr)
 	    return SR_FAULT ;
 
-	(void) memset(op,0,sizeof(BPEVAL)) ;
+	memclear(op) ; /* dangerous */
 
-	if ((dir != NULL) && (dir[0] != '\0'))
+	if ((dir != nullptr) && (dir[0] != '\0')) {
+
 	    op->dir = mallocstr(dir) ;
+
+		if (op->dir == nullptr) {
+
+			rs = SR_NOMEM ;
+			goto bad0 ;
+		}
+	}
 
 	if (rows < 1)
 	    rows = 1 ;
@@ -134,22 +168,39 @@ int		rows, delay ;
 	    delay = 1 ;
 
 #if	CF_DEBUGS
-	debugprintf("bpeval_init: rows=%d delay=%d\n",rows,delay) ;
+	eprintf("bpeval_init: rows=%d delay=%d\n",rows,delay) ;
 #endif
 
 	op->rows = rows ;
 	op->delay = delay ;
 	op->bpsel = -1 ;
 
-	rs = vecitem_start(&op->bps,5,0) ;
+/* get the present working directory in case we need it later */
+
+	rs = getpwd(tmpfname,MAXPATHLEN) ;
 
 	if (rs < 0)
-	    goto bad1 ;
+		goto bad1 ;
+
+	op->pwd = mallocstrn(tmpfname,rs) ;
+
+	if (op->pwd == nullptr) {
+
+			rs = SR_NOMEM ;
+			goto bad1 ;
+	}
+
+/* continue */
+
+	rs = vecitem_init(&op->bps,5,0) ;
+
+	if (rs < 0)
+	    goto bad2 ;
 
 	rs = bpfifo_init(&op->fifo,(op->delay + 4)) ;
 
 	if (rs < 0)
-	    goto bad2 ;
+	    goto bad3 ;
 
 /* we're out of here */
 
@@ -157,14 +208,16 @@ int		rows, delay ;
 	return rs ;
 
 /* we're out of here */
+bad3:
+	vecitem_free(&op->bps) ;
+
 bad2:
-	vecitem_finish(&op->bps) ;
+	if (op->pwd != nullptr)
+		free(op->pwd) ;
 
 bad1:
-	if (op->dir != NULL) {
-	    uc_free(op->dir) ;
-	    op->dir = NULL ;
-	}
+	if (op->dir != nullptr)
+	    free(op->dir) ;
 
 bad0:
 	return rs ;
@@ -182,19 +235,19 @@ char		name[] ;
 
 
 #if	CF_SAFE
-	if (op == NULL)
+	if (op == nullptr)
 	    return SR_FAULT ;
 
 	if (op->magic != BPEVAL_MAGIC)
 	    return SR_NOTOPEN ;
-#endif /* F_SAFE */
+#endif /* CF_SAFE */
 
-	if ((name == NULL) || (name[0] == '\0'))
+	if ((name == nullptr) || (name[0] == '\0'))
 	    return SR_INVALID ;
 
 	for (i = 0 ; (rs = vecitem_get(&op->bps,i,&ep)) >= 0 ; i += 1) {
 
-	    if (ep == NULL) continue ;
+	    if (ep == nullptr) continue ;
 
 	    if (strcmp(ep->s.name,name) == 0) {
 
@@ -216,13 +269,11 @@ char		name[] ;
 char		fname[] ;
 int		p1, p2, p3, p4 ;
 {
-	struct bpeval_entry	e ;
-
+	struct bpeval_entry	e{} ;
 	struct bpload		*lp ;
-
 	int	rs = SR_BADFMT, i ;
 	int	bl ;
-	int	sl, cl ;
+	int	lfl, sl, cl ;
 	int	rlen ;
 	int	size ;
 
@@ -234,13 +285,13 @@ int		p1, p2, p3, p4 ;
 	void	*symp ;
 
 
-	if (op == NULL)
+	if (op == nullptr)
 	    return SR_FAULT ;
 
 	if (op->magic != BPEVAL_MAGIC)
 	    return SR_NOTOPEN ;
 
-	if (name == NULL)
+	if (name == nullptr)
 	    return SR_FAULT ;
 
 	if (name[0] == '\0')
@@ -250,12 +301,12 @@ int		p1, p2, p3, p4 ;
 
 	bn = name ;
 	bl = -1 ;
-	if (((name == NULL) || (name[0] == '\0')) &&
-	    (fname != NULL) && (fname[0] != '\0')) {
+	if (((name == nullptr) || (name[0] == '\0')) &&
+	    (fname != nullptr) && (fname[0] != '\0')) {
 
 	    bl = sfbasename(fname,-1,&bn) ;
 
-	    if ((cp = strrchr(bn,'.')) != NULL) {
+	    if ((cp = strrchr(bn,'.')) != nullptr) {
 
 	        bl = (cp - bn) ;
 	        strwcpy(bname,bn,bl) ;
@@ -268,12 +319,12 @@ int		p1, p2, p3, p4 ;
 	    bl = strlen(bn) ;
 
 #if	CF_DEBUGS
-	debugprintf("bpeval_add: bn=%t\n",bn,bl) ;
+	eprintf("bpeval_add: bn=%w\n",bn,bl) ;
 #endif
 
 /* construct the file path for the code module */
 
-	if ((fname != NULL) && (fname[0] != '\0')) {
+	if ((fname != nullptr) && (fname[0] != '\0')) {
 
 	    sp = fname ;
 	    sl = strlen(fname) ;
@@ -285,56 +336,51 @@ int		p1, p2, p3, p4 ;
 
 	}
 
+/* searching for file plainly first */
+
+	if (sp[0] != '/') {
+		lfl = mkpath2(loadfname,"./",sp) ;
+	} else {
+		lfl = strwcpy(loadfname,sp,MAXPATHLEN) - loadfname ;
+	}
+
 #if	CF_DEBUGS
-	debugprintf("bpeval_add: before dir sp=%t\n",sp,sl) ;
+	eprintf("bpeval_add: searching regular loadfname=%w\n",
+		loadfname,lfl) ;
 #endif
 
-	if ((sp[0] != '/') &&
-	    (op->dir != NULL) && (op->dir[0] != '\0')) {
+	rs = filesearch(op,loadfname,lfl) ;
 
-	    cp = loadfname ;
-	    cl = mkpath2(loadfname,op->dir,sp) ;
+/* should we search further ? */
 
-	    sp = cp ;
-	    sl = cl ;
+	if ((rs < 0) && (loadfname[0] != '/') &&
+	    (op->dir != nullptr) && (op->dir[0] != '\0')) {
 
-	} /* end if (rooting the file name if necessary) */
+	    lfl = mkpath2(loadfname,op->dir,sp) ;
 
 #if	CF_DEBUGS
-	debugprintf("bpeval_add: after dir sp=%t\n",sp,sl) ;
+	eprintf("bpeval_add: searching dir loadfname=%w\n",
+		loadfname,lfl) ;
 #endif
 
 /* search for the file using the possible suffixes */
 
-	for (i = 0 ; suffixes[i] != NULL ; i += 1) {
+		rs = filesearch(op,loadfname,lfl) ;
 
-	    cl = strlen(suffixes[i]) ;
-
-	    if ((sl + cl) >= MAXPATHLEN)
-	        continue ;
-
-	    strcpy((sp + sl),suffixes[i]) ;
+	} /* end subroutine (missed first pass) */
 
 #if	CF_DEBUGS
-	    debugprintf("bpeval_add: trying sp=%s\n",sp) ;
+	eprintf("bpeval_add: all filesearch() rs=%d\n",rs) ;
 #endif
 
-	    if (perm(sp,-1,-1,NULL,R_OK) >= 0)
-	        break ;
-
-	} /* end for */
-
-	if (suffixes[i] == NULL)
-	    return SR_NOENT ;
+	if (rs < 0)
+		goto bad0 ;
 
 #if	CF_DEBUGS
-	debugprintf("bpeval_add: found sp=%s\n",sp) ;
+	eprintf("bpeval_add: found loadfname=%s\n",loadfname) ;
 #endif
 
 /* do it */
-
-	(void) memset(&e,0,sizeof(struct bpeval_entry)) ;
-
 /* load the name */
 
 	strwcpy(e.s.name,bn,MIN(bl,(MAXNAMELEN - 1))) ;
@@ -348,26 +394,26 @@ int		p1, p2, p3, p4 ;
 
 /* try to open the object module */
 
-	e.dlp = dlopen(sp,RTLD_LAZY | RTLD_LOCAL) ;
+	e.dlp = dlopen(loadfname,RTLD_LAZY | RTLD_LOCAL) ;
 
 #if	CF_DEBUGS
-	if (e.dlp == NULL)
-	    debugprintf("bpeval_add: dlopen() rs=%s\n",dlerror()) ;
+	if (e.dlp == nullptr)
+	    eprintf("bpeval_add: dlopen() rs=%s\n",dlerror()) ;
 #endif
 
-	if (e.dlp == NULL)
+	if (e.dlp == nullptr)
 	    return SR_NOENT ;
 
 #if	CF_DEBUGS
-	debugprintf("bpeval_add: dlsym() bn=%s\n",bn) ;
+	eprintf("bpeval_add: dlsym() bn=%s\n",bn) ;
 #endif
 
 	lp = (struct bpload *) dlsym(e.dlp,bn) ;
 
-	if (lp == NULL) {
+	if (lp == nullptr) {
 
 #if	CF_DEBUGS
-	    debugprintf("bpeval_add: no object description in module\n") ;
+	    eprintf("bpeval_add: no object description in module\n") ;
 #endif
 
 	    rs = SR_INVALID ;
@@ -382,7 +428,7 @@ int		p1, p2, p3, p4 ;
 	rlen = (MAXPATHLEN - 1) - (cp - sp) ;
 
 #if	CF_DEBUGS
-	debugprintf("bpeval_add: get symbols sp=%s\n",sp) ;
+	eprintf("bpeval_add: get symbols sp=%s\n",sp) ;
 #endif
 
 /* init */
@@ -426,19 +472,19 @@ int		p1, p2, p3, p4 ;
 	e.size = lp->size ;
 
 #if	CF_DEBUGS
-	debugprintf("bpeval_add: objsize=%d rows=%d\n",e.size,op->rows) ;
+	eprintf("bpeval_add: objsize=%d rows=%d\n",e.size,op->rows) ;
 #endif
 
 	size = op->rows * e.size ;
 
 #if	CF_DEBUGS
-	debugprintf("bpeval_add: size=%d\n",size) ;
+	eprintf("bpeval_add: size=%d\n",size) ;
 #endif
 
 	rs = uc_malloc(size,&e.op) ;
 
 #if	CF_DEBUGS
-	debugprintf("bpeval_add: uc_malloc() rs=%d\n",rs) ;
+	eprintf("bpeval_add: uc_malloc() rs=%d\n",rs) ;
 #endif
 
 	if (rs < 0)
@@ -468,7 +514,7 @@ int		p1, p2, p3, p4 ;
 
 
 #if	CF_DEBUGS
-	    debugprintf("bpeval_add: <bp>_init() rs=%d\n",rs) ;
+	    eprintf("bpeval_add: <bp>_init() rs=%d\n",rs) ;
 #endif
 
 	    for (j = 0 ; j < i ; j += 1) {
@@ -491,8 +537,8 @@ int		p1, p2, p3, p4 ;
 	if (rs < 0)
 	    goto bad3 ;
 
-/* we're good and we're out of here! */
-
+/* we're good and we're out of here ! */
+ret0:
 	return rs ;
 
 /* bad stuff */
@@ -508,7 +554,7 @@ bad3:
 	}
 
 bad2:
-	uc_free(e.op) ;
+	free(e.op) ;
 
 bad1:
 	dlclose(e.dlp) ;
@@ -529,7 +575,7 @@ BPEVAL		*op ;
 	int	i, j ;
 
 
-	if (op == NULL)
+	if (op == nullptr)
 	    return SR_FAULT ;
 
 	if (op->magic != BPEVAL_MAGIC)
@@ -538,12 +584,12 @@ BPEVAL		*op ;
 
 	for (i = 0 ; vecitem_get(&op->bps,i,&ep) >= 0 ; i += 1) {
 
-	    if (ep == NULL) continue ;
+	    if (ep == nullptr) continue ;
 
-	    if (ep->call.free != NULL) {
+	    if (ep->call.free != nullptr) {
 
 #if	CF_DEBUGS
-	        debugprintf("bpeval_free: bp=%s lu=%u cor=%u\n",
+	        eprintf("bpeval_free: bp=%s lu=%u cor=%u\n",
 	            ep->s.name,ep->s.lookups,ep->s.corrects) ;
 #endif
 
@@ -559,7 +605,7 @@ BPEVAL		*op ;
 
 	    }
 
-	    uc_free(ep->op) ;
+	    free(ep->op) ;
 
 	    dlclose(ep->dlp) ;
 
@@ -567,12 +613,13 @@ BPEVAL		*op ;
 
 	bpfifo_free(&op->fifo) ;
 
-	vecitem_finish(&op->bps) ;
+	vecitem_free(&op->bps) ;
 
-	if (op->dir != NULL) {
-	    uc_free(op->dir) ;
-	    op->dir = NULL ;
-	}
+	if (op->pwd != nullptr)
+	    free(op->pwd) ;
+
+	if (op->dir != nullptr)
+	    free(op->dir) ;
 
 	op->magic = 0 ;
 	return rs ;
@@ -594,26 +641,26 @@ int		f_se ;
 
 
 #if	CF_SAFE
-	if (op == NULL)
+	if (op == nullptr)
 	    return SR_FAULT ;
 
 	if (op->magic != BPEVAL_MAGIC)
 	    return SR_NOTOPEN ;
-#endif /* F_SAFE */
+#endif /* CF_SAFE */
 
 	j = in % op->rows ;
 
 #if	CF_DEBUGS
-	debugprintf("bpeval_lookup: in=%u ia=%08x row=%d\n",
+	eprintf("bpeval_lookup: in=%u ia=%016llx row=%d\n",
 	    in,ia,j) ;
 #endif
 
 	for (i = 0 ; vecitem_get(&op->bps,i,&ep) >= 0 ; i += 1) {
 
-	    if (ep == NULL) continue ;
+	    if (ep == nullptr) continue ;
 
 	    rs = -1 ;
-	    if (ep->call.confidence != NULL) {
+	    if (ep->call.confidence != nullptr) {
 
 	        char	*cop ;
 
@@ -630,11 +677,11 @@ int		f_se ;
 	        c = rs ;
 
 #if	CF_DEBUGS
-	        debugprintf("bpeval_lookup: bp=%s f_pred=%d\n",
+	        eprintf("bpeval_lookup: bp=%s f_pred=%d\n",
 	            ep->s.name,ep->cii.f_pred) ;
 #endif
 
-	    } else if (ep->call.lookup != NULL) {
+	    } else if (ep->call.lookup != nullptr) {
 
 	        char	*cop ;
 
@@ -682,19 +729,19 @@ int		f_se ;
 
 
 #if	CF_SAFE
-	if (op == NULL)
+	if (op == nullptr)
 	    return SR_FAULT ;
 
 	if (op->magic != BPEVAL_MAGIC)
 	    return SR_NOTOPEN ;
-#endif /* F_SAFE */
+#endif /* CF_SAFE */
 
 	j = in % op->rows ;
 	for (i = 0 ; vecitem_get(&op->bps,i,&ep) >= 0 ; i += 1) {
 
-	    if (ep == NULL) continue ;
+	    if (ep == nullptr) continue ;
 
-	    if (ep->call.confidence != NULL) {
+	    if (ep->call.confidence != nullptr) {
 
 	        char	*cop ;
 
@@ -740,17 +787,17 @@ int		f_outcome ;
 
 
 #if	CF_SAFE
-	if (op == NULL)
+	if (op == nullptr)
 	    return SR_FAULT ;
 
 	if (op->magic != BPEVAL_MAGIC)
 	    return SR_NOTOPEN ;
-#endif /* F_SAFE */
+#endif /* CF_SAFE */
 
 	j = in % op->rows ;
 
 #if	CF_DEBUGS
-	debugprintf("bpeval_outcome: in=%u ia=%08x row=%d foc=%d\n",
+	eprintf("bpeval_outcome: in=%u ia=%016llx row=%d foc=%d\n",
 	    in,ia,j,f_outcome) ;
 #endif
 
@@ -760,10 +807,10 @@ int		f_outcome ;
 
 	    for (i = 0 ; vecitem_get(&op->bps,i,&ep) >= 0 ; i += 1) {
 
-	        if (ep == NULL) continue ;
+	        if (ep == nullptr) continue ;
 
 #if	CF_DEBUGS
-	        debugprintf("bpeval_outcome: bp=%s f_pred=%d\n",
+	        eprintf("bpeval_outcome: bp=%s f_pred=%d\n",
 	            ep->s.name,ep->bii.f_pred) ;
 #endif
 
@@ -808,12 +855,12 @@ ULONG		in ;
 
 
 #if	CF_SAFE
-	if (op == NULL)
+	if (op == nullptr)
 	    return SR_FAULT ;
 
 	if (op->magic != BPEVAL_MAGIC)
 	    return SR_NOTOPEN ;
-#endif /* F_SAFE */
+#endif /* CF_SAFE */
 
 	rs = bpfifo_read(&op->fifo,&fin,&fia,&frow,&foutcome) ;
 
@@ -821,7 +868,7 @@ ULONG		in ;
 	if ((rs >= 0) && (lin >= fin)) {
 
 #if	CF_MASTERDEBUG && CF_DEBUGS
-	    debugprintf("bpeval_checkmid: in=%u fin=%llu fia=%08x\n",
+	    eprintf("bpeval_checkmid: in=%u fin=%llu fia=%016llx\n",
 	        in,fin,fia) ;
 #endif
 
@@ -849,83 +896,31 @@ ULONG		in ;
 
 
 #if	CF_SAFE
-	if (op == NULL)
+	if (op == nullptr)
 	    return SR_FAULT ;
 
 	if (op->magic != BPEVAL_MAGIC)
 	    return SR_NOTOPEN ;
-#endif /* F_SAFE */
+#endif /* CF_SAFE */
 
 	for (i = 0 ; vecitem_get(&op->bps,i,&ep) >= 0 ; i += 1) {
 
-	    if (ep == NULL) continue ;
+	    if (ep == nullptr) continue ;
 
+#if	CF_DELAYSLOT
 	    ep->bii = ep->pii ;
 	    ep->pii = ep->cii ;
 	    ep->cii = ii_zero ;
+#else /* CF_DELAYSLOT */
+	    ep->bii = ep->cii ;
+	    ep->cii = ii_zero ;
+#endif /* CF_DELAYSLOT */
 
 	} /* end for */
 
 	return i ;
 }
 /* end subroutine (bpeval_checkend) */
-
-
-/* get the statistics about a particular predictor */
-int bpeval_stats(op,i,rp)
-BPEVAL		*op ;
-int		i ;
-BPEVAL_STATS	*rp ;
-{
-	struct bpeval_entry	*ep ;
-
-	int	rs = SR_OK ;
-
-
-	if (op == NULL)
-	    return SR_FAULT ;
-
-	if (op->magic != BPEVAL_MAGIC)
-	    return SR_NOTOPEN ;
-
-	if (i < 0)
-	    i = op->bpsel ;
-
-	if (i < 0)
-	    return SR_NOENT ;
-
-	rs = vecitem_get(&op->bps,i,&ep) ;
-
-#if	CF_DEBUGS
-	debugprintf("bpeval_stats: i=%d vecitem_get() rs=%d\n",i,rs) ;
-#endif
-
-	if (rs >= 0) {
-
-	    memcpy(rp,&ep->s,sizeof(BPEVAL_STATS)) ;
-
-	    if (ep->call.stats != NULL) {
-
-	        char	*cop ;
-
-
-	        cop = ((char *) ep->op) + (0 * ep->size) ;
-	        rs = (*ep->call.stats)(cop,NULL) ;
-
-#if	CF_DEBUGS
-	        debugprintf("bpeval_stats: call.stats() rs=%d\n",rs) ;
-#endif
-
-	        if (rp != NULL)
-	            rp->bits = rs ;
-
-	    }
-
-	}
-
-	return rs ;
-}
-/* end subroutine (bpeval_stats) */
 
 
 /* update on branch resolution */
@@ -941,19 +936,19 @@ int		f_outcome ;
 
 
 #if	CF_SAFE
-	if (op == NULL)
+	if (op == nullptr)
 	    return SR_FAULT ;
 
 	if (op->magic != BPEVAL_MAGIC)
 	    return SR_NOTOPEN ;
-#endif /* F_SAFE */
+#endif /* CF_SAFE */
 
 	j = in % op->rows ;
 	for (i = 0 ; vecitem_get(&op->bps,i,&ep) >= 0 ; i += 1) {
 
-	    if (ep == NULL) continue ;
+	    if (ep == nullptr) continue ;
 
-	    if (ep->call.update != NULL) {
+	    if (ep->call.update != nullptr) {
 
 	        char	*cop ;
 
@@ -970,9 +965,94 @@ int		f_outcome ;
 /* end subroutine (bpeval_update) */
 
 
+/* get the statistics about a particular predictor */
+int bpeval_stats(op,i,rp)
+BPEVAL		*op ;
+int		i ;
+BPEVAL_STATS	*rp ;
+{
+	struct bpeval_entry	*ep ;
 
-/* INTERNAL SUBROUTINES */
+	int	rs = SR_OK ;
 
+
+	if (op == nullptr)
+	    return SR_FAULT ;
+
+	if (op->magic != BPEVAL_MAGIC)
+	    return SR_NOTOPEN ;
+
+	if (i < 0)
+	    i = op->bpsel ;
+
+	if (i < 0)
+	    return SR_NOENT ;
+
+	rs = vecitem_get(&op->bps,i,&ep) ;
+
+#if	CF_DEBUGS
+	eprintf("bpeval_stats: i=%d vecitem_get() rs=%d\n",i,rs) ;
+#endif
+
+	if (rs >= 0) {
+
+	    memcpy(rp,&ep->s,sizeof(BPEVAL_STATS)) ;
+
+	    if (ep->call.stats != nullptr) {
+
+	        char	*cop ;
+
+
+	        cop = ((char *) ep->op) + (0 * ep->size) ;
+	        rs = (*ep->call.stats)(cop,nullptr) ;
+
+#if	CF_DEBUGS
+	        eprintf("bpeval_stats: call.stats() rs=%d\n",rs) ;
+#endif
+
+	        if (rp != nullptr)
+	            rp->bits = rs ;
+
+	    }
+
+	}
+
+	return rs ;
+}
+/* end subroutine (bpeval_stats) */
+
+
+/* local subroutines */
+
+local int filesearch(BPEVAL *op,cchar *sp,int sl) noex {
+	int	rs ;
+	int	cl ;
+
+#if	CF_DEBUGS
+	    eprintf("bpeval/filesearch: sp(%p) sl=%d\n",sp,sl) ;
+#endif
+
+	for (int i = 0 ; suffixes[i] ; i += 1) {
+
+	    cl = strlen(suffixes[i]) ;
+
+	    if ((sl + cl) >= MAXPATHLEN)
+	        continue ;
+
+	    strcpy((sp + sl),suffixes[i]) ;
+
+#if	CF_DEBUGS
+	    eprintf("bpeval/filesearch: trying sp=%s\n",sp) ;
+#endif
+
+	    if (perm(sp,-1,-1,nullptr,R_OK) >= 0)
+	        break ;
+
+	} /* end for */
+
+	return (suffixes[i] == nullptr) ? SR_NOENT : SR_OK ;
+}
+/* end subroutine (filesearch) */
 
 
 
