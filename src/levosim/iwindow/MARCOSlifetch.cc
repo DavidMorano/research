@@ -1,6 +1,9 @@
-/* lifetch.c */
+/* lifetch SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
 /* Levo Instruction Fetch Unit */
+/* version %I% last-modified %G% */
 
 #define	F_DEBUGS	0		/* non-switchable */
 #define	F_DEBUG		1		/* switchable */
@@ -17,53 +20,45 @@
 #define F_OLDLLB        0        /* Protocol to load LLB 1:OLD, 0: NEW */
 #define F_PERFETCH      1        /* Simulate perfect fetch */
 
-/* revision history :
+/* revision history:
 
 	= xxx, Marcos de Alba
-
 	I first put the beginning of this code together.
 
-
-	= 00/09/22, Dave Morano
-
+	= 2000-09-22, David Morano
 	I helped fix up some pointer bugs
 
-
-	= 00/12/21, Marcos de Alba
-
-	Modified lifetch_init to allocate and release memory for the
-	new buffers.  Extended lifetch_fetch to support several
+	= 2000-12-21, Marcos de Alba
+	Modified |lifetch_init| to allocate and release memory for
+	the new buffers.  Extended |lifetch_fetch| to support several
 	(NUMLBUFFERS) load buffers.
 
+	= 2001-05-29, Marcos de Alba
+	This is a modified version of |lifetch| to simulate perfect
+	fetch the backup of the 'complex' fetch is backed up in
+	'lifetch.c.bak', same applies to its header file.
 
-	= 01/05/29, MARCOS DE ALBA
-
-	THIS IS A MODIFIED VERSION OF lifetch.c TO SIMULATE PERFECT
-	FETCH THE BACKUP OF THE 'COMPLEX' FETCH IS BACKED UP IN
-	lifetch.c.bak, SAME APPLIES TO ITS HEADER FILE.
-
-
-	= 01/07/12, Dave Morano
-
-	I carried forward the ability to get the i-fetch trace filename
-	from the parameterized initialization.  Using a fixed named
-	i-fetch file was becoming problemtatic when working with many
-	different MIPS program at or near the same time !
-
+	= 2001-07-12, David Morano
+	I carried forward the ability to get the i-fetch trace
+	filename from the parameterized initialization.  Using a
+	fixed named i-fetch file was becoming problemtatic when
+	working with many different MIPS program at or near the
+	same time!
 
 */
 
-
-
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include        <assert.h>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>		/* |getenv(3c)| */
 #include	<cstdio>
-
-#include	<usystem.h>
-#include	<bio.h>
+#include	<clanguage.h>
+#include	<usysbase.h>
 #include	<libuc.h>
+#include	<bfile.h>
+#include	<localmisc.h>
 
-#include	"localmisc.h"
 #include	"config.h"
 #include	"defs.h"
 
@@ -192,7 +187,7 @@ LIFETCH_INITARGS  *ap;
   lifp->fsize=lseek(lifp->tracefile->_file,0,SEEK_END);
     
   /* Re-position file descriptor to beginning of trace file */
-  lseek(lifp->tracefile->_file,-lifp->fsize,SEEK_CUR);
+  lseek(lifp->tracefile->_file,(-lifp->fsize),SEEK_CUR);
 
   /* set trace index to end of buffer to force a read from the trace file */
   lifp->traceidx = BUFSIZ;
