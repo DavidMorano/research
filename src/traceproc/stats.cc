@@ -64,14 +64,13 @@
 
 /*******************************************************************************
 
+  	Description:
 	This subroutine performs a number of statistics gathering
-	functions for the trace that it is processing.
-
-	This subroutine also performs the function 'fcount' for the
-	TRACEPROC program when run in 'fcount' mode.
-
-	This code just gathers statistics from traces now (sigh).
-	It used to be a part of LevoSim.
+	functions for the trace that it is processing.  This
+	subroutine also performs the function 'fcount' for the
+	TRACEPROC program when run in 'fcount' mode.  This code
+	just gathers statistics from traces now (sigh).  It used
+	to be a part of LevoSim.
 
 *******************************************************************************/
 
@@ -188,17 +187,12 @@
 
 /* external subroutines */
 
-extern int	sncpy2(char *,int,const char *,const char *) ;
-extern int	matostr(const char **,int,const char *,int) ;
-extern int	headkeymat(const char *,const char *,int) ;
-extern int	fmeanvaral(ulong *,int,double *,double *) ;
-extern int	cfdeci(const char *,int,int *) ;
-
-extern char	*timestr_log(time_t,char *) ;
-
 #if	defined(SOLARIS) && (SOLARIS == 8)
 extern double	sqrt(double) ;
 #endif
+
+
+/* external variables */
 
 
 /* local structures */
@@ -221,7 +215,7 @@ struct instrinfo {
 	uint	f_gskew : 1 ;
 } ;
 
-USTAT {
+struct status {
 	ulong	in ;			/* number of instructions */
 	ulong	cf ;			/* control-flow-change instructions */
 	ulong	cf_ind ;		/* indirect CFC */
@@ -329,34 +323,6 @@ static double	percentll(ulong,ulong) ;
 
 /* local variables */
 
-static const char	*keyopts[] = {
-	"rows",
-	"delay",
-	"confidence",
-	"vpred:rows",
-	"vpred:delay",
-	"vpred:entries",
-	"vpred:stride",
-	"vpred:nops",
-	"yags:rows",
-	"yags:delay",
-	"yags:cpht",
-	"yags:dpht",
-	"tourna:rows",
-	"tourna:delay",
-	"tourna:lbht",
-	"tourna:lpht",
-	"tourna:gpht",
-	"gspag:rows",
-	"gspag:delay",
-	"gspag:lbht",
-	"gspag:gpht",
-	"gskew:rows",
-	"gskew:delay",
-	"gskew:tlen",
-	NULL
-} ;
-
 enum keyopts {
 	keyopt_rows,
 	keyopt_delay,
@@ -385,7 +351,35 @@ enum keyopts {
 	keyopt_overlast
 } ;
 
-static const char	*instrclasses[] = {
+constexpr cpcchar	keyopts[] = {
+	"rows",
+	"delay",
+	"confidence",
+	"vpred:rows",
+	"vpred:delay",
+	"vpred:entries",
+	"vpred:stride",
+	"vpred:nops",
+	"yags:rows",
+	"yags:delay",
+	"yags:cpht",
+	"yags:dpht",
+	"tourna:rows",
+	"tourna:delay",
+	"tourna:lbht",
+	"tourna:lpht",
+	"tourna:gpht",
+	"gspag:rows",
+	"gspag:delay",
+	"gspag:lbht",
+	"gspag:gpht",
+	"gskew:rows",
+	"gskew:delay",
+	"gskew:tlen",
+	NULL
+} ;
+
+constexpr cpcchar	instrclasses[] = {
 	"unused",
 	"brel",
 	"bind",
@@ -402,8 +396,10 @@ static const char	*instrclasses[] = {
 } ;
 
 
-/* exported subroutines */
+/* exported variables */
 
+
+/* exported subroutines */
 
 int stats(pip,mpp,mdp,kop,skipinstr,tfname)
 struct proginfo	*pip ;
