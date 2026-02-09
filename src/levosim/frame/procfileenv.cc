@@ -1,51 +1,48 @@
-/* procfileenv */
+/* procfileenv SUPPORT (levosim-frame) */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
 /* process an environment file */
 /* version %I% last modified %G% */
 
-
 #define	CF_DEBUGS	0
 
+/* revision history:
 
-/* revision history :
-
-	= 94/09/10, Dave Morano
+	= 1994-09-10, Dave Morano
 	This program was originally written.
-
 
 */
 
-
+/* Copyright © 1994 David A­D­ Morano.  All rights reserved. */
+/* Use is subject to license terms. */
 
 /*****************************************************************************
 
-	This subroutine will read (process) an environment file and put
-	all of the environment variables into the string list
-	(supplied).  New environment variables just get added to the
-	list.  Old environment variables already on the list are
-	deleted with a new definition is encountered.
-
-
+  	Description:
+	This subroutine will read (process) an environment file and
+	put all of the environment variables into the string list
+	(supplied).  New environment variables just get added to
+	the list.  Old environment variables already on the list
+	are deleted with a new definition is encountered.
 
 *****************************************************************************/
 
-
-
-
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<unistd.h>
-#include	<cstdlib>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>		/* |getenv(3c)| */
 #include	<cstring>
-
+#include	<clanguage.h>
+#include	<usysbase.h>
 #include	<bio.h>
 #include	<field.h>
 #include	<vecstr.h>
+#include	<vstrxcmp.h>		/* |vstrkeycmp(3uc)| */
 #include	<char.h>
-
-#include	"localmisc.h"
-
-
+#include	<localmisc.h>
 
 
 /* local defines */
@@ -59,26 +56,19 @@
 
 /* external subroutines */
 
-extern int	vstrkeycmp(char **,char **) ;
-
-extern char	*strwcpy(char *,char *,int) ;
-
 
 /* externals variables */
-
-
-/* forward references */
-
-
-/* local global variabes */
 
 
 /* local structures */
 
 
+/* forward references */
+
+
 /* local variables */
 
-static const uchar	fterms[32] = {
+constexpr cpcchar	fterms[] = {
 	0x00, 0x00, 0x00, 0x00,
 	0x09, 0x00, 0x00, 0x20,
 	0x00, 0x00, 0x00, 0x00,
@@ -90,7 +80,10 @@ static const uchar	fterms[32] = {
 } ;
 
 
+/* exported variables */
 
+
+/* exported subroutines */
 
 int procfileenv(programroot,fname,lp)
 char	programroot[] ;
@@ -98,18 +91,14 @@ char	fname[] ;
 VECSTR	*lp ;
 {
 	bfile	file, *fp = &file ;
-
-	FIELD	fsb ;
-
+	field	fsb ;
 	int	len, i, rs ;
-
 	char	linebuf[LINELEN + 1] ;
 	char	buf[BUFLEN + 1], *bp ;
 
 #if	CF_DEBUGS
 	char	outname[MAXPATHLEN + 1] ;
 #endif
-
 
 #if	CF_DEBUGS
 	    eprintf("procfileenv: entered=%s\n",fname) ;
