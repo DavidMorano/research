@@ -1,48 +1,45 @@
-/* procfilepaths */
+/* procfilepaths SUPPORT (leveosim-frame) */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
 /* process a paths file */
 /* version %I% last modified %G% */
 
-
 #define	CF_DEBUGS	0
 
+/* revision history:
 
-/* revision history :
-
-	= 94/09/10, Dave Morano
+	= 1994-09-10, Dave Morano
 	This program was originally written.
-
 
 */
 
-
+/* Copyright © 1994 David A­D­ Morano.  All rights reserved. */
+/* Use is subject to license terms. */
 
 /*****************************************************************************
 
+  	Description:
 	This subroutine will read (process) a file that has
 	directory paths in it.
 
-
-
 *****************************************************************************/
 
-
-
-
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<unistd.h>
-#include	<cstdlib>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>		/* |getenv(3c)| */
 #include	<cstring>
-
+#include	<clanguage.h>
+#include	<usysbase.h>
 #include	<bio.h>
 #include	<field.h>
 #include	<vecstr.h>
+#include	<vstrxcmp.h>		/* |vstrkeycmp(3uc)| */
 #include	<char.h>
-
-#include	"localmisc.h"
-
-
+#include	<localmisc.h>
 
 
 /* local defines */
@@ -54,30 +51,21 @@
 #define	PATHBUFLEN	(30 * MAXPATHLEN)
 
 
-
 /* external subroutines */
-
-extern int	storebuf_buf(char *,int,int,char *,int) ;
-extern int	storebuf_char(char *,int,int,int) ;
-extern int	vstrkeycmp(char **,char **) ;
-extern int	strnvaluecmp(char *,char *,int) ;
 
 
 /* externals variables */
 
 
-/* forward references */
-
-
-/* local global variabes */
-
-
 /* local structures */
+
+
+/* forward references */
 
 
 /* local variables */
 
-static const uchar	fterms[32] = {
+constexpr cpcchar	fterms[] = {
 	0x00, 0x00, 0x00, 0x00,
 	0x09, 0x00, 0x00, 0x00,
 	0x00, 0x00, 0x00, 0x00,
@@ -89,7 +77,10 @@ static const uchar	fterms[32] = {
 } ;
 
 
+/* exported variables */
 
+
+/* exported subroutines */
 
 int procfilepaths(programroot,fname,lp)
 char	programroot[] ;
