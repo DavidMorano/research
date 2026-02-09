@@ -1,8 +1,9 @@
-/* main */
+/* main SUPPORT (leveosim-frame) */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
 /* generic (pretty much) front end program subroutine */
 /* version %I% last modified %G% */
-
 
 #define	CF_DEBUGS	0		/* non-runtime-switchable debugs */
 #define	CF_DEBUG	1		/* runtime-switchable debug prints */
@@ -13,20 +14,15 @@
 #define	CF_NOSIGPIPE	1		/* ignore SIGPIPE? */
 #define	CF_SIGDUMP	1		/* dump signal status */
 
-
-/* revision history :
+/* revision history:
 
 	= 2000-02-15, David Morano
-
-        This program was originally written. Parts were copied from other
-        miscellaneous subroutines.
-
+	This program was originally written. Parts were copied from
+	other miscellaneous subroutines.
 
 	= 2001-03-28, David Morano
-
-        I added a magic number to the 'proginfo' structure so that deep
-        subroutines can check what is happenning!
-
+	I added a magic number to the 'proginfo' structure so that
+	deep subroutines can check what is happenning!
 
 */
 
@@ -34,30 +30,30 @@
 
 /*****************************************************************************
 
+  	Description:
 	This is the outer front end of the LevoSim simulator program.
-
 
 *****************************************************************************/
 
-
+#include	<envstandards.h>	/* ordered first to configure */
+#include	<sys/utsname.h>
+#include	<sys/ucontext.h>
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<sys/stat.h>
-#include	<sys/utsname.h>
-#include	<sys/ucontext.h>
-#include	<climits>
 #include	<netdb.h>
 #include	<unistd.h>
 #include	<fcntl.h>
 #include	<ctime>
-#include	<cstdlib>
-#include	<cstring>
 #include	<cerrno>		/* for signal catching */
-
-#include	<usystem.h>
+#include	<climits>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>		/* |getenv(3c)| */
+#include	<cstring>
+#include	<clanguage.h>
+#include	<usysbase.h>
 #include	<ascii.h>
 #include	<bitops.h>
-#include	<char.h>
 #include	<bio.h>
 #include	<field.h>
 #include	<logfile.h>
@@ -66,13 +62,14 @@
 #include	<varsub.h>
 #include	<storebuf.h>
 #include	<mallocstuff.h>
+#include	<schedvar.h>
+#include	<paramfile.h>
+#include	<getfname.h>
+#include	<vstrxcmp.h>		/* |vstrkeycmp(3uc)| */
+#include	<char.h>
 #include	<exitcodes.h>
+#include	<localmisc.h>
 
-#include	"schedvar.h"
-#include	"paramfile.h"
-#include	"getfname.h"
-
-#include	"localmisc.h"
 #include	"config.h"
 #include	"defs.h"
 #include	"configfile.h"
@@ -107,29 +104,11 @@
 
 /* external subroutines */
 
-extern int	optmatch(const char **,const char *,int) ;
-extern int	vstrkeycmp(char **,char **) ;
-extern int	cfdeci(const char *,int,int *) ;
-extern int	cfdecll(const char *,int,LONG *) ;
-extern int	perm(char *,int,int,int *,int) ;
-extern int	permsched(const char **,VECSTR *,char *,int,char *,int) ;
-extern int	getpwd(char *,int) ;
-extern int	userinfo() ;
-extern int	getnodedomain(char *,char *) ;
-extern int	bopenroot(bfile *,char *,char *,char *,char *,int) ;
-extern int	getfname(char *,char *,int,char *) ;
-extern int	varsub_loadvec(), varsub_loadenv() ;
-extern int	varsub_subbuf(), varsub_merge() ;
 extern int	expander() ;
 extern int	procfilepaths(char *,char *,VECSTR *) ;
 extern int	procfileenv(char *,char *,VECSTR *) ;
 extern int	process(struct proginfo *,const char *,PARAMFILE *,
-			VECSTR *,ULONG,ULONG) ;
-
-extern char	*strwcpy(char *,const char *,int) ;
-extern char	*strbasename(char *) ;
-extern char	*timestr_log(time_t,char *) ;
-extern char	*timestr_elapsed(time_t,char *) ;
+			VECSTR *,ulong,ulong) ;
 
 
 /* external variables */
@@ -291,8 +270,8 @@ int main(int argc,const char **argv,const char **envv)
 
 	time_t	daytime ;
 
-	ULONG	maxclocks = 0, skipinstr = 0 ;
-	ULONG	ullw ;
+	ulong	maxclocks = 0, skipinstr = 0 ;
+	ulong	ullw ;
 
 	int	argr, argl, aol, akl, avl ;
 	int	maxai, pan, npa, kwi, i, j, k ;
