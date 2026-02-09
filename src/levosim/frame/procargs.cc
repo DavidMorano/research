@@ -1,42 +1,41 @@
-/* procargs */
+/* procargs SUPPORT (leveosim-frame) */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
 /* process a program arguments file */
 /* version %I% last modified %G% */
 
-
 #define	CF_DEBUGS	0
-
 
 /* revision history:
 
-	= 94/09/10, Dave Morano
-
+	= 1994-09-10, Dave Morano
 	This program was originally written.
-
 
 */
 
+/* Copyright © 1994 David A­D­ Morano.  All rights reserved. */
+/* Use is subject to license terms. */
 
 /*****************************************************************************
 
+  	Description:
 	This subroutine will read (process) a file with program
 	arguments in it.
 
 *****************************************************************************/
 
-
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<unistd.h>
-#include	<cstdlib>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>		/* |getenv(3c)| */
 #include	<cstring>
-
 #include	<bio.h>
 #include	<field.h>
 #include	<vecstr.h>
-
-#include	"localmisc.h"
-
+#include	<localmisc.h>
 
 
 /* local defines */
@@ -47,12 +46,7 @@
 #define	LINELEN		(2 * MAXPATHLEN)
 
 
-
 /* external subroutines */
-
-extern int	vstrkeycmp(char **,char **) ;
-
-extern char	*strwcpy(char *,const char *,int) ;
 
 
 /* externals variables */
@@ -69,7 +63,7 @@ extern char	*strwcpy(char *,const char *,int) ;
 
 /* local variables */
 
-static const uchar	fterms[32] = {
+constexpr cpcchar	fterms[] = {
 	    0x00, 0x00, 0x00, 0x00,
 	    0x09, 0x00, 0x00, 0x20,
 	    0x00, 0x00, 0x00, 0x00,
@@ -81,24 +75,21 @@ static const uchar	fterms[32] = {
 } ;
 
 
+/* exported variables */
 
 
-
+/* exported subroutines */
 
 int procargs(programroot,fname,lp)
 char	programroot[] ;
 char	fname[] ;
-VECSTR	*lp ;
+vecstr	*lp ;
 {
 	bfile	efile, *fp = &efile ;
-
-	FIELD	fsb ;
-
+	field	fsb ;
 	int	rs, n, len, flen ;
-
 	char	linebuf[LINELEN + 1] ;
 	char	buf[BUFLEN + 1], *bp ;
-
 
 #if	CF_DEBUGS
 	eprintf("procargs: entered fname=%s\n",fname) ;
