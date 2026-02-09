@@ -1,18 +1,16 @@
-/* procargs */
+/* procargs SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
 /* process a program arguments file */
 /* version %I% last modified %G% */
 
-
 #define	CF_DEBUGS	0		/* compile-time debugging */
-
 
 /* revision history:
 
 	= 1998-09-10, David Morano
-
 	This program was originally written.
-
 
 */
 
@@ -20,21 +18,21 @@
 
 /*******************************************************************************
 
+  	Description:
 	This subroutine will read (process) a file with program
 	arguments in it.
 
-
 *******************************************************************************/
 
-
 #include	<envstandards.h>	/* MUST be first to configure */
-
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<unistd.h>
-#include	<cstdlib>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>		/* |getenv(3c)| */
 #include	<cstring>
-
+#include	<clanguage.h>
+#include	<usysbase.h>
 #include	<bfile.h>
 #include	<field.h>
 #include	<vecstr.h>
@@ -57,13 +55,6 @@
 
 /* external subroutines */
 
-extern int	bopenroot(bfile *,const char *,const char *,
-			char *,const char *,mode_t) ;
-
-extern int	vstrkeycmp(char **,char **) ;
-
-extern char	*strwcpy(char *,const char *,int) ;
-
 
 /* external variables */
 
@@ -76,7 +67,7 @@ extern char	*strwcpy(char *,const char *,int) ;
 
 /* local variables */
 
-static const uchar	fterms[32] = {
+constexpr cpcchar	fterms[] = {
 	0x00, 0x00, 0x00, 0x00,
 	0x09, 0x00, 0x00, 0x20,
 	0x00, 0x00, 0x00, 0x00,
@@ -88,28 +79,25 @@ static const uchar	fterms[32] = {
 } ;
 
 
+/* exported variables */
+
+
 /* exported subroutines */
 
-
 int procargs(programroot,fname,lp)
-const char	programroot[] ;
-const char	fname[] ;
+cchar	programroot[] ;
+cchar	fname[] ;
 VECSTR		*lp ;
 {
 	bfile	efile, *efp = &efile ;
-
-	FIELD	fsb ;
-
+	field	fsb ;
 	int	rs ;
 	int	len ;
 	int	fl ;
 	int	n = 0 ;
-
-	const char	*fp ;
-
+	cchar	*fp ;
 	char	linebuf[LINEBUFLEN + 1] ;
 	char	fbuf[FBUFLEN + 1] ;
-
 
 #if	CF_DEBUGS
 	debugprintf("procargs: entered fname=%s\n",fname) ;
