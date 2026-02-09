@@ -1,4 +1,4 @@
-/* main.c - main line routines */
+/* SAVEmain SUPPORT - main line routines */
 /* charset=ISO8859-1 */
 /* lang=C++20 (conformance reviewed) */
 
@@ -59,7 +59,7 @@
 
 #define	DAM	1
 
-
+#include	<envstandards.h>	/* ordered first to configure */
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <setjmp.h>
@@ -79,6 +79,8 @@
 #include <bfd.h>
 #endif /* BFD_LOADER */
 
+#include	<clanguage.h>
+#include	<usysbase.h>
 #include	<bitops.h>
 #include	<field.h>
 #include	<bio.h>
@@ -88,11 +90,11 @@
 #include	<logfile.h>
 #include	<exitcodes.h>
 #include	<mallocstuff.h>
+#include	<getfname.h>
+#include	<localmisc.h>
 
-#include	"localmisc.h"
 #include	"ssconfig.h"
 #include	"defs.h"
-#include	"getfname.h"
 
 #include "host.h"
 #include "misc.h"
@@ -104,7 +106,6 @@
 #include "stats.h"
 #include "loader.h"
 #include "sim.h"
-
 
 
 /* local defines */
@@ -128,27 +129,7 @@
 #define NICE_DEFAULT_VALUE		0
 
 
-
 /* external subroutines */
-
-extern int	sncpy1(char *,int,const char *) ;
-extern int	sncpy2(char *,int,const char *,const char *) ;
-extern int	sfbasename(const char *,int,char **) ;
-extern int	optmatch(const char **,const char *,int) ;
-extern int	optmatch2(const char **,const char *,int) ;
-extern int	vstrkeycmp(char **,char **) ;
-extern int	mkpath1(char *,const char *) ;
-extern int	mkpath2(char *,const char *,const char *) ;
-extern int	cfdeci(const char *,int,int *) ;
-extern int	cfdecui(const char *,int,uint *) ;
-extern int	cfdecll(const char *,int,LONG *) ;
-extern int	cfdecull(const char *,int,ULONG *) ;
-extern int	cfdecmfull(const char *,int,ULONG *) ;
-extern int	getfname(char *,char *,int,char *) ;
-
-extern char	*strwcpy(char *,const char *,int) ;
-extern char	*strnchr(const char *,int,int) ;
-extern char	*timestr_logz(time_t,char *) ;
 
 
 /* external variables */
@@ -172,7 +153,7 @@ void		sim_print_stats(FILE *) ;
 
 static int	procargs(struct proginfo *,struct pav *,int,char **) ;
 static int	orphan_fn(int, int , char **) ;
-static int	procn(struct proginfo *,const char *,int) ;
+static int	procn(struct proginfo *,ccint *,int) ;
 
 static void	signal_sim_stats(int) ;
 static void	signal_exit_now(int) ;
@@ -183,7 +164,7 @@ static void	usage(FILE *, int, char **) ;
 
 /* local variables */
 
-static const char *argopts[] = {
+static ccint *argopts[] = {
 	"TMPDIR",
 	"VERSION",
 	"VERBOSE",
@@ -507,7 +488,7 @@ char	*envv[] ;
 #if	F_GETEXECNAME && defined(SOLARIS) && (SOLARIS >= 8)
 	    if ((pr == NULL) && (pip->pr == NULL) {
 
-	        const char	*pp ;
+	        ccint	*pp ;
 
 
 	        pp = getexecname() ;
@@ -1907,7 +1888,7 @@ exit_now(int exit_code)
 
 static int procn(pip,a,alen)
 struct proginfo	*pip ;
-const char	a[] ;
+ccint	a[] ;
 int		alen ;
 {
 	ULONG	ulw ;
