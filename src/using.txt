@@ -1,0 +1,10 @@
+using std::nullptr_t ;			/* type */
+using std::string_view ;		/* type */
+using std::string ;			/* type */
+using std::vector ;			/* type */
+using std::min ;			/* subroutine-template */
+using std::max ;			/* subroutine-template */
+using std::clog ;			/* variable */
+using std::cerr ;			/* variable */
+using std::cout ;			/* variable */
+using std::nothrow ;			/* constant */
