@@ -1,4 +1,4 @@
-/* main SUPPORT */
+/* findhammocks_main SUPPORT */
 /* charset=ISO8859-1 */
 /* lang=C++20 (conformance reviewed) */
 
@@ -45,6 +45,7 @@
 #include	<userinfo.h>
 #include	<logfile.h>
 #include	<mallocstuff.h>
+#include	<prenvfile.h>		/* LIBPR */
 #include	<exitcodes.h>
 #include	<localmisc.h>
 
@@ -55,18 +56,11 @@
 #include	"lmapprog.h"
 #include	"mipsdis.h"
 
+#pragma		GCC dependency		"mod/libutil.ccm"
+
+import libutil ;			/* |lenstr(3u)| */
 
 /* external subroutines */
-
-extern int	sncpy2(char *,int,const char *,const char *) ;
-extern int	mkpath2(char *,const char *,const char *) ;
-extern int	sfbasename(const char *,int,const char **) ;
-extern int	cfdeci(const char *,int,int *) ;
-extern int	cfdecull(const char *,int,ULONG *) ;
-extern int	cfnumull(const char *,int,ULONG *) ;
-extern int	optmatch(const char **,char *,int) ;
-
-extern char	*strwcpy(char *,const char *,int) ;
 
 
 /* external variables */
@@ -80,19 +74,10 @@ extern int	process(struct proginfo *,LMAPPROG *,MIPSDIS *,char *) ;
 /* forward references */
 
 static int	usage(struct proginfo *) ;
-static int	havefname(struct proginfo* ,const char *,const char *,char *) ;
+static int	havefname(struct proginfo* ,cchar *,cchar *,char *) ;
 
 
 /* local variables */
-
-static const char	*argopts[] = {
-	"VERSION",
-	"DEBUG",
-	"count",
-	"jn",
-	"jobname",
-	NULL
-} ;
 
 enum argopts {
 	argopt_version,
@@ -103,8 +88,12 @@ enum argopts {
 	argopt_overlast
 } ;
 
-static const char	*progmodes[] = {
-	"ssh",
+constexpre cpcchar	argopts[] = {
+	"VERSION",
+	"DEBUG",
+	"count",
+	"jn",
+	"jobname",
 	NULL
 } ;
 
@@ -113,30 +102,8 @@ enum progmodes {
 	progmode_overlast
 } ;
 
-static const char	*dumpopts[] = {
-	"in",
-	"inum",
-	"regs",
-	"regvals",
-	"mems",
-	"memvals",
-	"instr",
-	"instrdis",
-	"dis",
-	"eregs",
-	"emems",
-	"pixie",
-	"rsa",
-	"rsv",
-	"msa",
-	"msv",
-	"mpv",
-	"full",
-	"fulldump",
-	"noerrno",
-	"onemem",
-	"syscalls",
-	"plusinstr",
+constexpr cpcchar	progmodes[] = {
+	"ssh",
 	NULL
 } ;
 
@@ -167,33 +134,50 @@ enum dumpopts {
 	procopt_overlast
 } ;
 
+constexpr cpcchar	dumpopts[] = {
+	"in",
+	"inum",
+	"regs",
+	"regvals",
+	"mems",
+	"memvals",
+	"instr",
+	"instrdis",
+	"dis",
+	"eregs",
+	"emems",
+	"pixie",
+	"rsa",
+	"rsv",
+	"msa",
+	"msv",
+	"mpv",
+	"full",
+	"fulldump",
+	"noerrno",
+	"onemem",
+	"syscalls",
+	"plusinstr",
+	NULL
+} ;
+
+
+/* exported variables */
+
 
 /* exported subroutines */
 
-
-int main(argc,argv,envv)
-int	argc ;
-char	*argv[] ;
-char	*envv[] ;
-{
-	ustat	sb ;
-	struct proginfo	pi, *pip = &pi ;
-
+int main(int argc,mainv argv,mainv envv) {
+	proginfo	pi, *pip = &pi ;
 	PARAMOPT	aparams ;
-
 	LMAPPROG	pm ;
-
 	MIPSDIS		dis ;
-
-	USERINFO	u ;
-
+	userinfo	u ;
 	vecstr		args, exports ;
-
 	bfile		errfile, *efp = &errfile ;
 	bfile		outfile ;
-
+	ustat	sb ;
 	time_t	daytime ;
-
 	int	argr, argl, aol, akl, avl ;
 	int	kwi, npa, i ;
 	int	f_optplus, f_optminus, f_optequal ;
@@ -209,7 +193,7 @@ char	*envv[] ;
 	int	fd_debug = -1 ;
 	int	f ;
 
-	const char	*argp, *aop, *akp, *avp ;
+	cchar	*argp, *aop, *akp, *avp ;
 	char	buf[BUFLEN + 1] ;
 	char	userinfobuf[USERINFO_LEN + 1] ;
 	char	tmpfname[MAXPATHLEN + 1] ;
@@ -220,16 +204,16 @@ char	*envv[] ;
 	char	progenvbuf[MAXPATHLEN + 1] ;
 	char	sshfnamebuf[MAXPATHLEN + 1] ;
 	char	timebuf[TIMEBUFLEN + 1] ;
-	const char	*programroot = NULL ;
-	const char	*progbname = NULL ;	/* base name */
-	const char	*progfname = NULL ;
-	const char	*argsfname = NULL ;
-	const char	*envfname = NULL ;
-	const char	*sshfname = NULL ;
-	const char	*ofname = NULL ;
-	const char	*progmodestr = NULL ;
-	const char	*instrspec = NULL ;
-	const char	*sp, *cp ;
+	cchar	*programroot = NULL ;
+	cchar	*progbname = NULL ;	/* base name */
+	cchar	*progfname = NULL ;
+	cchar	*argsfname = NULL ;
+	cchar	*envfname = NULL ;
+	cchar	*sshfname = NULL ;
+	cchar	*ofname = NULL ;
+	cchar	*progmodestr = NULL ;
+	cchar	*instrspec = NULL ;
+	cchar	*sp, *cp ;
 
 
 	if ((cp = getenv(VARDEBUGFD1)) == NULL)
@@ -1282,23 +1266,16 @@ char	*envv[] ;
 #endif
 
 	if (envfname != NULL) {
-
-	    rs = procenv(pip->programroot,envfname,&exports) ;
+	    rs = prenvfile(pip->programroot,envfname,&exports) ;
 
 		if ((rs < 0) && f_envfile)
 			goto badenvfile ;
 
 #if	CF_DEBUG
 	    if (pip->debuglevel > 1) {
-
-	        debugprintf("main: procenv() rs=%d\n",rs) ;
-
 	        for (i = 0 ; rs = vecstr_get(&exports,i,&cp) >= 0 ; i += 1) {
-
 	            if (cp == NULL) continue ;
-
 	            debugprintf("main: e> %s\n",cp) ;
-
 	        }
 	    }
 #endif /* CF_DEBUG */
@@ -1306,8 +1283,6 @@ char	*envv[] ;
 	} /* end if (user specified environment) */
 
 	} /* end block (arguments) */
-
-
 
 /* map the program file if we have one */
 
@@ -1643,19 +1618,16 @@ struct proginfo	*pip ;
 }
 /* end subroutine (usage) */
 
-
 /* do we have a file with the new extension ? */
 static int havefname(pip,ext,tfname,tmpfname)
 struct proginfo	*pip ;
-const char	ext[] ;
-const char	tfname[] ;
+cchar	ext[] ;
+cchar	tfname[] ;
 char		tmpfname[] ;
 {
 	int	rs, sl ;
-
 	char	*bnp, *dp ;
 	char	*sp ;
-
 
 	rs = SR_NOENT ;
 	if ((tfname == NULL) || (tfname[0] == '\0'))
@@ -1665,19 +1637,16 @@ char		tmpfname[] ;
 
 	dp = strrchr(tfname,'.') ;
 
-	if ((dp != NULL) && (bnp != NULL) && (dp > bnp))
+	if ((dp != NULL) && (bnp != NULL) && (dp > bnp)) {
 	    sp = strwcpy(tmpfname,tfname,(dp - tfname)) ;
 
-	else if ((dp != NULL) && (bnp == NULL))
+	} else if ((dp != NULL) && (bnp == NULL)) {
 	    sp = strwcpy(tmpfname,tfname,(dp - tfname)) ;
-
-	else
+	} else {
 	    sp = strwcpy(tmpfname,tfname,-1) ;
-
+	}
 	if (ext[0] != '\0') {
-
 	    sl = strlen(ext) ;
-
 	    if ((sp + sl + 1 - tmpfname) < (MAXPATHLEN - 1)) {
 
 	        if (ext[0] != '.')
@@ -1697,6 +1666,5 @@ char		tmpfname[] ;
 	return rs ;
 }
 /* end subroutine (havefname) */
-
 
 
