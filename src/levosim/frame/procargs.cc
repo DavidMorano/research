@@ -32,7 +32,7 @@
 #include	<cstddef>		/* |nullptr_t| */
 #include	<cstdlib>		/* |getenv(3c)| */
 #include	<cstring>
-#include	<bio.h>
+#include	<bfile.h>
 #include	<field.h>
 #include	<vecstr.h>
 #include	<localmisc.h>
