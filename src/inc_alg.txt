@@ -1,0 +1,1 @@
+#include	<algorithm>		/* |min(3c++)| + |max(3c++)| */
