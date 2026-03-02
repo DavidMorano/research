@@ -47,7 +47,7 @@
 #include	<paramfile.h>
 #include	<hdb.h>
 #include	<plainq.h>
-#include	<bio.h>
+#include	<bfile.h>
 #include	<mallocstuff.h>
 
 #include	"localmisc.h"
