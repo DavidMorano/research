@@ -64,7 +64,7 @@
 #include	<cstdlib>
 #include	<cstring>
 #include	<usystem.h>
-#include	<bio.h>
+#include	<bfile.h>
 #include	<libuc.h>
 #include	<mkpathx.h>
 #include	<mkfnamex.h>
