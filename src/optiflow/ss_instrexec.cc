@@ -34,7 +34,7 @@
 
 /* some of Dave's libraries */
 
-#include	<bio.h>
+#include	<bfile.h>
 #include	<paramfile.h>
 #include	<mallocstuff.h>
 
