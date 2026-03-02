@@ -34,7 +34,7 @@
 #include <math.h>
 #include <cstdio>
 
-#include	<bio.h>
+#include	<bfile.h>
 #include	<mallocstuff.h>
 
 #include "host.h"
