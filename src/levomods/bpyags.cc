@@ -105,16 +105,23 @@ const levomod_obj	bpbpyags_mod = {
 int bpyags_init(bpyags *op,int chlen,int calen) noex {
 	int		rs = SR_FAULT ;
 	if (op) {
+	    int		npt ;
 	    int		sz ;
 	    memclear(op) ;
 	    /* the choice PHT */
 	    if (chlen <= 2) chlen = BPYAGS_DEFCH ;
-	    op->chlen = nextpowtwo(chlen) ;
+	    {
+	        npt = nextpowtwo(chlen) ;
+	        op->chlen = uint(npt) ;
+	    }
 	    sz = op->chlen * szof(bpyags_pht) ;
 	    if (void *p ; (rs = mem.call(1,sz,&p)) >= 0) {
 	        op->choice = resumelife<bpyags_pht>(p) ;
 	        if (calen <= 2) calen = BPYAGS_DEFCA ;
-	        op->calen = nextpowtwo(calen) ;
+		{
+	            npt = nextpowtwo(calen) ;
+	            op->calen = uint(npt) ;
+		}
 	        sz = op->calen * szof(bpyags_ca) ;
 	        if ((rs = mem.call(1,sz,&p)) >= 0) {
 		    op->taken = resumelife<bpyags_ca>(p) ;
