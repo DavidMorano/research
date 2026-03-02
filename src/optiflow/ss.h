@@ -37,7 +37,7 @@
 
 #include	<sys/types.h>
 
-#include	<bio.h>
+#include	<bfile.h>
 #include	<hdb.h>
 #include	<veclist.h>
 #include	<plainq.h>
