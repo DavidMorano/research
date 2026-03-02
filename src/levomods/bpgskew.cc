@@ -149,14 +149,17 @@ int bpgskew_start(bpgskew *op,int p1,int p2,int p3,int p4) noex {
 	    int		mnum = p1 ;
 	    memclear(op) ;
 	    if (mnum < 0) mnum = BPGSKEW_DEFLEN ;
-	    op->tlen = nextpowtwo(mnum) ;
+	    {
+		cint npt = nextpowtwo(mnum) ;
+	        op->tlen = uint(npt) ;
+	    }
 	    op->tmask = (op->tlen - 1) ;
 	    op->n = flbsi(op->tlen) ;
 	    if (p4 < 0) p4 = BPGSKEW_DEFHIST ;
 	    op->nhist = p4 ;
 	    op->hmask = ((1 << op->nhist) - 1) ;
 	    /* allocate the space */
-	    sz = op->tlen * szof(bpgskew_ba) ;
+	    sz = op->tlen * szof(table_t) ;
 	    if (void *p ; (rs = mem.call(1,sz,&p)) >= 0) {
 	        op->table = resumelife<table_t>(p) ;
 	        if_constexpr (f_allmiddle) {
