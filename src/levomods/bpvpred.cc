@@ -122,13 +122,18 @@ int bpvpred_start(bpvpred *op,int nentry,int nops,int sbits) noex {
 	    int		sz ;
 	    memclear(op) ;
 	    if (nentry <= 0) nentry = BPVPRED_DEFN ;
-	    op->tablen = nextpowtwo(nentry) ;
+	    {
+	        cint npt = nextpowtwo(nentry) ;
+	        op->tablen = uint(npt) ;
+	    }
 	    sz = op->tablen * szof(bpvpred_ent) ;
 	    if (void *p ; (rs = mem.call(1,sz,&p)) >= 0) {
 		op->table = resumelife<bpvpred_ent>(p) ;
 		/* calculate how much to shift the IA (right) */
-		cint n = flbsi(op->tablen) ;
-		op->tagshift = 2 + n ;
+		{
+		    cint n = flbsi(op->tablen) ;
+		    op->tagshift = (2 + n) ;
+		}
 		/* number of operands to predict */
 		if (nops <= 0) nops = 1 ;
 		if (nops > BPVPRED_NOPS) nops = BPVPRED_NOPS ;
