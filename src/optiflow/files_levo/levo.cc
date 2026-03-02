@@ -57,7 +57,7 @@
 #include	<sys/types.h>
 #include	<sys/stat.h>
 
-#include	<bio.h>
+#include	<bfile.h>
 
 #include "levo.h"
 #include "levo-macros-oracle.h"
