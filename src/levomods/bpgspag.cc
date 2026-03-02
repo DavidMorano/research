@@ -108,16 +108,23 @@ const levomod_obj	bpgspag_mod = {
 int bpgspag_start(bpgspag *op,int bhlen,int phlen) noex {
 	int		rs = SR_FAULT ;
 	if (op) {
+	    int npt ;
 	    memclear(op) ;
 	    /* BHT */
 	    if (bhlen < 2) bhlen = GSPAG_DEFBHLEN ;
-	    op->bhlen = nextpowtwo(bhlen) ;
+	    {
+	        npt = nextpowtwo(bhlen) ;
+	        op->bhlen = uint(npt) ;
+	    }
 	    int sz ; sz = op->bhlen * szof(lbht_t) ;
 	    if (void *p ; (rs = mem.call(1,sz,&p)) >= 0) {
 		op->lbht = resumelife<lbht_t>(p) ;
 		/* global PHT */
 		if (phlen < 2) phlen = GSPAG_DEFPHLEN ;
-		op->phlen = nextpowtwo(phlen) ;
+		{
+		    npt = nextpowtwo(phlen) ;
+		    op->phlen = uint(npt) ;
+		}
 		sz = op->phlen * szof(gpht_t) ;
 		if ((rs = mem.call(1,sz,&p)) >= 0) {
 		    op->gpht = resumelife<gpht_t>(p) ;
