@@ -114,11 +114,15 @@ const levomod_obj	bpbptourna_mod = {
 int bptourna_start(bptourna *op,int lhlen,int lplen,int glen) noex {
 	int		rs = SR_FAULT ;
 	if (op) {
+	    int npt ;
 	    int sz ;
 	    memclear(op) ;
 	    /* the choice PHT */
 	    if (glen <= 2) glen = BPTOURNA_DEFGLEN ;
-	    op->glen = nextpowtwo(glen) ;
+	    {
+	        npt = nextpowtwo(glen) ;
+	        op->glen = uint(npt) ;
+	    }
 	    sz = op->glen * szof(uchar) ;
 	    /* choice PHT */
 	    if (char *p ; (rs = mem.call(1,sz,&p)) >= 0) {
@@ -128,13 +132,19 @@ int bptourna_start(bptourna *op,int lhlen,int lplen,int glen) noex {
 		    op->gpht = resumelife<gpht_t>(p) ;
 		    /* local BHT */
 		    if (lhlen <= 2) lhlen = BPTOURNA_DEFLBLEN ;
-		    op->lhlen = nextpowtwo(lhlen) ;
+		    {
+		        npt = nextpowtwo(lhlen) ;
+		        op->lhlen = uint(npt) ;
+		    }
 		    sz = op->lhlen * szof(uint) ;
 		    if ((rs = mem.call(1,sz,&p)) >= 0) {
 		        op->lbht = resumelife<lbht_t>(p) ;
 			/* local PHT */
 			if (lplen <= 2) lplen = BPTOURNA_DEFLPLEN ;
-			op->lplen = nextpowtwo(lplen) ;
+			{
+			    npt = nextpowtwo(lplen) ;
+			    op->lplen = uint(npt) ;
+			}
 			sz = op->lplen * szof(uchar) ;
 			if ((rs = mem.call(1,sz,&p)) >= 0) {
 			    op->lpht = resumelife<lpht_t>(p) ;
