@@ -113,7 +113,7 @@
 #endif
 
 #include	<usystem.h>
-#include	<bio.h>
+#include	<bfile.h>
 #include	<paramfile.h>
 
 #include	"localmisc.h"
