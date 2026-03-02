@@ -1,53 +1,52 @@
-/* lmem */
+/* lmem SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 */
 
 /* top of the Levo memory subsystem */
+/* version %I% last-modified %G% */
 
+#define	CF_DEBUGS	0		/* compile-time only switchable */
+#define	CF_DEBUG	1		/* dynamically switchable */
+#define	CF_SAFE		1		/* safe mode */
 
-#define	F_DEBUGS	0		/* compile-time only switchable */
-#define	F_DEBUG		1		/* dynamically switchable */
-#define	F_SAFE		1		/* safe mode */
+/* revision history:
 
-
-/* revision history :
-
-	= 00/02/15, Dave Morano
-
+	= 2000-02-15, Dave Morano
 	This code was started.
 
-
-	= 00/12/01, Maryam Ashouei
-
+	= 2000-12-01, Maryam Ashouei
 	I took over this code.
 
-
-	= 01/01/20, Dave Morano
-
+	= 2001-01-20, Dave Morano
 	I fix some little interface issues and added the supprt
 	to get parameters from the parameter file.
 
-
 */
 
-
+/* Copyright © 2000,2001 David A­D­ Morano.  All rights reserved. */
+/* Use is subject to license terms. */
 
 /******************************************************************************
 
-	This is the top object for the Levo machine memory subsystem.
+  	Object:
+	lmem
 
+	Description:
+	This is the top object for the Levo machine memory subsystem.
 
 ******************************************************************************/
 
-
-
-
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
-#include	<cstdlib>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>		/* |getenv(3c)| */
 #include	<cstring>
+#include	<clanguage.h>
+#include	<usysbase.h>
+#include	<paramfile.h>
+#include	<cfnum.h>
+#include	<localmisc.h>
 
-#include	<usystem.h>
-
-#include	"localmisc.h"
-#include	"paramfile.h"
 #include	"config.h"
 #include	"defs.h"
 #include	"mintinfo.h"
@@ -60,40 +59,22 @@
 #include	"ldcache.h"		/* Levo d-cache */
 
 
-
 /* local defines */
-
 
 
 /* external subroutines */
 
-extern int	ffbsi(uint), flbsi(uint) ;
-extern int	cfnumui(char *,int,uint *) ;
-extern int	cfnumi(char *,int,int *) ;
+
+/* external variables */
 
 
 /* local structures */
-
 
 
 /* forward references */
 
 
 /* local variables */
-
-static char	*const params[] = {
-        "mem:icachesize",	/* I-cache size */
-        "mem:dcachesize",	/* D-cache size */
-	"mem:icblocksize",	/* I-cache blocksize */
-	"mem:dcblocksize",	/* D-cache blocksize */
-	"mem:icreadck",		/* i-cache read clocks per access */
-	"mem:icwriteck",	/* i-cache write clocks per access */
-	"mem:icreadck",		/* d-cache read clocks per access */
-	"mem:icwriteck",	/* d-cache write clocks per access */
-	"mem:mmreadck",		/* main memory read clocks per access */
-	"mem:mmwriteck",	/* main memory write clocks per access */
-	 NULL,
-};
 
 #define	LMEMPARAM_ICACHESIZE	0
 #define	LMEMPARAM_DCACHESIZE	1
@@ -106,10 +87,25 @@ static char	*const params[] = {
 #define	LMEMPARAM_MMREADCK	8
 #define	LMEMPARAM_MMWRITECK	9
 
+constexpr cpcchar	params[] = {
+        "mem:icachesize",	/* I-cache size */
+        "mem:dcachesize",	/* D-cache size */
+	"mem:icblocksize",	/* I-cache blocksize */
+	"mem:dcblocksize",	/* D-cache blocksize */
+	"mem:icreadck",		/* i-cache read clocks per access */
+	"mem:icwriteck",	/* i-cache write clocks per access */
+	"mem:icreadck",		/* d-cache read clocks per access */
+	"mem:icwriteck",	/* d-cache write clocks per access */
+	"mem:mmreadck",		/* main memory read clocks per access */
+	"mem:mmwriteck",	/* main memory write clocks per access */
+	 nullptr
+} ; /* end array */
 
 
+/* exported variables */
 
 
+/* exported subroutines */
 
 /* initialize this object's internal state or structures */
 int lmem_init(lmp,pip,pfp,mip,lip, lmap)
@@ -138,11 +134,11 @@ LMEM_ARGS	*lmap ;
 	int	rs, i, sl ;
 	char	*cp ;
 
-	if (lmp == NULL)
+	if (lmp == nullptr)
 	  return SR_FAULT ;
 	
 
-#if	F_DEBUG
+#if	CF_DEBUG
 	if (pip->debuglevel > 1)
 	eprintf("lmem_init: entered\n") ;
 #endif
@@ -200,14 +196,14 @@ LMEM_ARGS	*lmap ;
 
 /* fetch some IW specific stuff from the parameter files */
 
-#if	F_DEBUG
+#if	CF_DEBUG
 	if (pip->debuglevel > 3)
 	eprintf("lmem_init: getting parameters\n") ;
 #endif
 
-	for (i = 0 ; params[i] != NULL ; i += 1) {
+	for (i = 0 ; params[i] != nullptr ; i += 1) {
 
-	    if ((sl = paramfile_fetch(pfp,params[i],NULL,&cp)) >= 0) {
+	    if ((sl = paramfile_fetch(pfp,params[i],nullptr,&cp)) >= 0) {
 
 	        switch (i) {
 
@@ -277,7 +273,7 @@ LMEM_ARGS	*lmap ;
 
 	} /* end for (parameters) */
 
-#if	F_DEBUG
+#if	CF_DEBUG
 	if (pip->debuglevel > 3)
 	eprintf("lmem_init: done getting parameter\n") ;
 #endif
@@ -316,7 +312,7 @@ LMEM_ARGS	*lmap ;
 	lmp->ldcache = 
  	  (LDCACHE **) malloc(lmp->interleave * sizeof(LDCACHE *));
 
-#if	F_DEBUG
+#if	CF_DEBUG
 	if (pip->debuglevel > 3)
 	eprintf("lmem_init: LDCACHE=%08lx\n",lmp->ldcache) ;
 #endif
@@ -329,7 +325,7 @@ LMEM_ARGS	*lmap ;
 	lmp->memtest = 
 	  (MEMORYTEST *) malloc(sizeof(MEMORYTEST));
 
-#if	F_DEBUG
+#if	CF_DEBUG
 	if (pip->debuglevel > 3)
 	eprintf("lmem_init: looping\n") ;
 #endif
@@ -338,21 +334,21 @@ LMEM_ARGS	*lmap ;
 
 	  lmp->ldmem[i] = (LDMEM *) malloc(sizeof (LDMEM));
 
-#if	F_DEBUG
+#if	CF_DEBUG
 	if (pip->debuglevel > 3)
 	eprintf("lmem_init: ldmem_init()\n") ;
 #endif
 
 	  rs = ldmem_init(lmp->ldmem[i], pip, pfp,mip, lip, &ldm_param);
 
-#if	F_DEBUG
+#if	CF_DEBUG
 	if (pip->debuglevel > 3)
 	eprintf("lmem_init: ldmem_init() rs=%d\n",rs) ;
 #endif
 
 	  lmp->ldcache[i] = (LDCACHE *) malloc(sizeof(LDCACHE));
 
-#if	F_DEBUG
+#if	CF_DEBUG
 	if (pip->debuglevel > 3)
 	eprintf("lmem_init: LDCACHE(%d)=%08lx ldcache_init() \n",
 		i,lmp->ldcache[i]) ;
@@ -361,14 +357,14 @@ LMEM_ARGS	*lmap ;
 	  ldcache_init(lmp->ldcache[i], pip, mip, lip, lmp->ldmem[i], 
 		       &ldc_param, mbb + i, mfb + i, mwb + i) ;
 
-#if	F_DEBUG
+#if	CF_DEBUG
 	if (pip->debuglevel > 3)
 	eprintf("lmem_init: ldcache_init() rs=%d\n",rs) ;
 #endif
 
 	} /* end for */
 
-#if	F_DEBUG
+#if	CF_DEBUG
 	if (pip->debuglevel > 3)
 	eprintf("lmem_init: done looping\n") ;
 #endif
@@ -396,7 +392,7 @@ LMEM	*lmp ;
 	int	i ;
 
 
-	if (lmp == NULL)
+	if (lmp == nullptr)
 	  return SR_FAULT ;
 
 	pip = lmp->pip ;
@@ -430,30 +426,30 @@ int	phase ;
 	uint newdata;
 
 
-	if (lmp == NULL)
+	if (lmp == nullptr)
 	  return SR_FAULT ;
 
 	pip = lmp->pip ;
 
-#if	F_DEBUG
+#if	CF_DEBUG
 	if (pip->debuglevel > 3)
 	eprintf("lmem_comb: entered\n",rs) ;
 #endif
 
 
-#if	F_SAFE
+#if	CF_SAFE
 	rs1 = lmem_sanitycheck(lmp) ;
 
 	if (rs1 < 0) {
 
-#if	F_DEBUG
+#if	CF_DEBUG
 	if (pip->debuglevel > 3)
 	eprintf("lmem_comb: 0 bad sanity rs=%d\n",rs) ;
 #endif
 
 		return rs1 ;
 	}
-#endif /* F_SAFE */
+#endif /* CF_SAFE */
 
 
 
@@ -475,7 +471,7 @@ int	phase ;
 
 	licache_comb(lmp->licache, phase) ;
 
-#if	F_DEBUG
+#if	CF_DEBUG
 	if (pip->debuglevel > 3)
 	eprintf("lmem_comb: LDCACHE=%08lx\n",lmp->ldcache) ;
 #endif
@@ -484,12 +480,12 @@ int	phase ;
 
 	  rs = ldmem_comb(lmp->ldmem[i], phase);
 
-#if	F_DEBUG
+#if	CF_DEBUG
 	if (pip->debuglevel > 3)
 	eprintf("lmem_comb: ldmem_comb() rs=%d\n",rs) ;
 #endif
 
-#if	F_DEBUG
+#if	CF_DEBUG
 	if (pip->debuglevel > 3)
 	eprintf("lmem_comb: LDCACHE(%d)=%08lx ldcache_comb() \n",
 		i,lmp->ldcache[i]) ;
@@ -497,7 +493,7 @@ int	phase ;
 
 	  rs = ldcache_comb(lmp->ldcache[i], phase);
 
-#if	F_DEBUG
+#if	CF_DEBUG
 	if (pip->debuglevel > 3)
 	eprintf("lmem_comb: ldcache_comb() rs=%d\n",rs) ;
 #endif
@@ -510,19 +506,19 @@ int	phase ;
 	memorytest_comb(lmp->memtest, phase);
 	*/
 
-#if	F_SAFE
+#if	CF_SAFE
 	rs1 = lmem_sanitycheck(lmp) ;
 
 	if (rs1 < 0) {
 
-#if	F_DEBUG
+#if	CF_DEBUG
 	if (pip->debuglevel > 3)
 	eprintf("lmem_comb: 10 bad sanity rs=%d\n",rs) ;
 #endif
 
 		return rs1 ;
 	}
-#endif /* F_SAFE */
+#endif /* CF_SAFE */
 
 
 	return rs ;
@@ -540,25 +536,25 @@ LMEM *lmp;
 	int	rs1 ;
 
 
-	if (lmp == NULL)
+	if (lmp == nullptr)
 	  return SR_FAULT ;
 
 	pip = lmp->pip ;
 
 
-#if	F_SAFE
+#if	CF_SAFE
 	rs1 = lmem_sanitycheck(lmp) ;
 
 	if (rs1 < 0) {
 
-#if	F_DEBUG
+#if	CF_DEBUG
 	if (pip->debuglevel > 3)
 	eprintf("lmem_clock: 0 bad sanity rs=%d\n",rs) ;
 #endif
 
 		return rs1 ;
 	}
-#endif /* F_SAFE */
+#endif /* CF_SAFE */
 
 	for (i = 0; i < lmp->interleave ; i += 1) {
 
@@ -576,19 +572,19 @@ LMEM *lmp;
 	*/
 
 
-#if	F_SAFE
+#if	CF_SAFE
 	rs1 = lmem_sanitycheck(lmp) ;
 
 	if (rs1 < 0) {
 
-#if	F_DEBUG
+#if	CF_DEBUG
 	if (pip->debuglevel > 3)
 	eprintf("lmem_clock: 10 bad sanity rs=%d\n",rs) ;
 #endif
 
 		return rs1 ;
 	}
-#endif /* F_SAFE */
+#endif /* CF_SAFE */
 
 	return rs ;
 }
@@ -601,7 +597,7 @@ LMEM	*lmp ;
 {
 
 
-	if (lmp == NULL)
+	if (lmp == nullptr)
 	  return SR_FAULT ;
 
 	lmp->f.shift = TRUE ;
@@ -619,13 +615,13 @@ LMEM	*lmp ;
 	int	rs, i ;
 
 
-	if (lmp == NULL)
+	if (lmp == nullptr)
 	  return SR_FAULT ;
 
 	pip = lmp->pip ;
 
 
-#if	F_DEBUG
+#if	CF_DEBUG
 	if (pip->debuglevel > 3) {
 	eprintf("lmem_sanitycheck: entered\n") ;
 
