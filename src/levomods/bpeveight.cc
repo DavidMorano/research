@@ -127,8 +127,11 @@ int bpeveight_start(bpeveight *op,int p1,int p2,int p3,int p4) noex {
 	    if (p3 > mnum) mnum = p3 ;
 	    if (p4 > mnum) mnum = p4 ;
 	    if (mnum < 0) mnum = BPEVEIGHT_DEFLEN ;
-	    op->tlen = nextpowtwo(mnum) ;
-	    op->tmask = op->tlen - 1 ;
+	    {
+	        cint npt = nextpowtwo(mnum) ;
+	        op->tlen = uint(npt) ;
+	    }
+	    op->tmask = (op->tlen - 1) ;
 	    /* allocate the space */
 	    sz = op->tlen * szof(bpeveight_ba) ;
 	    if (void *p ; (rs = mem.call(1,sz,&p)) >= 0) {
