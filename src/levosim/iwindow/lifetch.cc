@@ -82,7 +82,7 @@
 #include	<cstdio>
 
 #include	<usystem.h>
-#include	<bio.h>
+#include	<bfile.h>
 #include	<libuc.h>
 
 #include	"localmisc.h"
