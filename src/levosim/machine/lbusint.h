@@ -30,7 +30,7 @@
 
 
 #include	<usystem.h>
-#include	<bio.h>
+#include	<bfile.h>
 
 #include	"misc.h"
 #include	"config.h"
