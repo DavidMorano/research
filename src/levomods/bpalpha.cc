@@ -111,7 +111,7 @@ int bpalpha_start(bpalpha *op,int lhlen,int lplen,int glen) noex {
 	int		rs = SR_FAULT ;
 	if (glen <= 2) glen = BPALPHA_DEFGLEN ;
 	if (op) {
-	    cint	npt = nextpowtwo(glen) ;
+	    int		npt = nextpowtwo(glen) ;
 	    rs = memclear(op) ;
 	    {
 	        int sz = npt * szof(uchar) ;
@@ -121,12 +121,18 @@ int bpalpha_start(bpalpha *op,int lhlen,int lplen,int glen) noex {
 		    if ((rs = mem.call(1,sz,&p)) >= 0) {
 			op->gpht = resumelife<gpht_t>(p) ;
 		        if (lhlen <= 2) lhlen = BPALPHA_DEFLBLEN ;
-			op->lhlen = nextpowtwo(lhlen) ;
+			{
+			    npt = nextpowtwo(lhlen) ;
+			    op->lhlen = uint(npt) ;
+			}
 			sz = op->lhlen * szof(uint) ;
 			if ((rs = mem.call(1,sz,&p)) >= 0) {
 			    op->lbht = resumelife<lbht_t>(p) ;
 			    if (lplen <= 2) lplen = BPALPHA_DEFLPLEN ;
-			    op->lplen = nextpowtwo(lplen) ;
+			    {
+			        npt = nextpowtwo(lplen) ;
+			        op->lplen = uint(npt) ;
+			    }
 			    sz = op->lplen * szof(uchar) ;
 			    if ((rs = mem.call(1,sz,&p)) >= 0) {
 				op->lpht = resumelife<lpht_t>(p) ;
