@@ -1,23 +1,20 @@
-/* opclass */
+/* opclass HEADER */
 
 
 /* revision history:
 
 	= 1998-11-01, David Morano
-
 	Originally written for Audix Database Processor (DBP) work.
-
 
 */
 
 /* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
 
 #ifndef	OPCLASS_INCLUDE
-#define	OPCLASS_INCLUDE		1
+#define	OPCLASS_INCLUDE
 
 
 /*    Class of instructions */
-
 #define OPCLASS_UNUSED	0
 #define OPCLASS_BREL	1
 #define OPCLASS_BIND	2		/* there are none in R3000 or R4000 */
