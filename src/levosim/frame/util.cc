@@ -1,32 +1,31 @@
-/* util */
+/* util SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 */
 
 /* utilities */
 /* version %I% last modified %G% */
 
-
 #define	CF_DEBUGS	0
 
+/* revision history:
 
-/* revision history :
-
-	= 94/09/10, Dave Morano
-
+	= 1994-09-10, Dave Morano
 	This program was originally written.
-
 
 */
 
-
+/* Copyright © 1994 David A­D­ Morano.  All rights reserved. */
+/* Use is subject to license terms. */
 
 /*****************************************************************************
 
-	These are support utility subroutines for the REXD daemon program.
-
+  	Description:
+	These are support utility subroutines for the REXD daemon
+	program.
 
 *****************************************************************************/
 
-
-
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<sys/stat.h>
@@ -36,42 +35,30 @@
 #include	<netdb.h>
 #include	<unistd.h>
 #include	<fcntl.h>
-#include	<cstdlib>
 #include	<ctime>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>		/* |getenv(3c)| */
 #include	<cstring>
-#include	<ctype.h>
-
-#include	<bio.h>
+#include	<clanguage.h>
+#include	<usysbase.h>
+#include	<bfile.h>
 #include	<field.h>
 #include	<logfile.h>
 #include	<userinfo.h>
 #include	<bitops.h>
+#include	<cfdec.h>
 #include	<char.h>
 #include	<varsub.h>
+#include	<localmisc.h>
 
-#include	"localmisc.h"
 #include	"config.h"
 #include	"defs.h"
-
-
 
 
 /* local defines */
 
 
-
 /* external subroutines */
-
-extern int	cfdeci(char *,int,int *) ;
-extern int	substring() ;
-extern int	getpwd() ;
-extern int	userinfo() ;
-extern int	username(char *) ;
-extern int	getnodedomain(char *,char *) ;
-extern int	group_getgid() ;
-
-extern char	*strbasename() ;
-extern char	*timestr_log() ;
 
 
 /* externals variables */
@@ -83,53 +70,36 @@ extern char	*timestr_log() ;
 /* forward references */
 
 
-/* local global variabes */
-
-
 /* local variables */
 
 
+/* exported variables */
 
 
+/* exported subroutines */
 
-int getportnum(s,rp)
-char	s[] ;
-int	*rp ;
-{
-	struct servent	*sep ;
-
+int getportnum(cchar *s,int *rp) {
+	SERVENT	*sep ;
 	int	rs ;
 
-
 	*rp = -1 ;
-	if (isalpha(*s)) {
-
+	if (isalphalatin(*s)) {
 	    sep = getservbyname(s, "tcp") ;
-
 	    if (sep != NULL) {
-
 	        rs = OK ;
 	        *rp = (int) ntohs(sep->s_port) ;
-
-	    } else
+	    } else {
 	        rs = BAD ;
-
-	} else 
+	    }
+	} else  {
 	    rs = cfdeci(s,-1,rp) ;
-
+	}
 	return rs ;
 }
 /* end subroutine (getportnum) */
 
-
-int getarrayint(a,n)
-int	a[] ;
-int	n ;
-{
-
-
+int getarrayint(int *a,int n) {
 	return a[n] ;
 }
-
 
 
