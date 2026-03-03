@@ -1,7 +1,9 @@
-/* fcount */
+/* fcount SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
 /* function-count object */
-
+/* version %I% last-modified %G% */
 
 #define	CF_DEBUGS	0		/* compile-time debugging */
 #define	CF_DEBUGSBIND	0
@@ -9,13 +11,10 @@
 #define	CF_SAFE		0
 #define	CF_NULLENTRY	0
 
-
 /* revision history:
 
 	= 2002-05-01, David Morano
-
 	This object module was created for Levo research.  
-
 
 */
 
@@ -23,18 +22,16 @@
 
 /*******************************************************************************
 
+  	Object:
+	fcount
+
+	Description:
 	This object module implements a function coverage profile
 	counter.
 
-
 *******************************************************************************/
 
-
-#define	FCOUNT_MASTER	0		/* include public declarations */
-
-
-#include	<envstandards.h>
-
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<sys/mman.h>		/* Memory Management */
@@ -42,53 +39,37 @@
 #include	<unistd.h>
 #include	<fcntl.h>
 #include	<elf.h>
-#include	<cstdlib>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>		/* |getenv(3c)| */
 #include	<cstring>
-
-#include	<usystem.h>
-#include	<char.h>
+#include	<clanguage.h>
+#include	<usysbase.h>
+#include	<endian.h>
 #include	<vecitem.h>
 #include	<mallocstuff.h>
+#include	<char.h>
 #include	<localmisc.h>
 
 #include	"fcount.h"
 
+#pragma		GCC dependency		"mod/libutil.ccm"
+
+import libutil ;			/* |lenstr(3u)| */
 
 /* local defines */
 
-#define	FCOUNT_MAGIC	0x23456787
-#define	FCOUNT_DEFFUNCS	300		/* default entries */
-
-#define	MODP2(v,n)	((v) & ((n) - 1))
-
-#ifndef	ENDIAN
-#if	defined(SOLARIS) && defined(__sparc)
-#define	ENDIAN		1
-#else
-#ifdef	_BIG_ENDIAN
-#define	ENDIAN		1
-#endif
-#ifdef	_LITTLE_ENDIAN
-#define	ENDIAN		0
-#endif
-#ifndef	ENDIAN
-#error	"could not determine endianness of this machine"
-#endif
-#endif
-#endif
-
-#ifndef	LINEBUFLEN
-#ifdef	LINE_MAX
-#define	LINEBUFLEN	MAX(LINE_MAX,2048)
-#else
-#define	LINEBUFLEN	2048
-#endif
-#endif
+#define	FC		fcount
+#define	FC_ENT		fcount_ent
 
 
 /* external subroutines */
 
-extern int	readsginm(vecitem *,const char *) ;
+extern "C" {
+    extern int	readsginm(vecitem *,cchar *) noex ;
+}
+
+
+/* external variables */
 
 
 /* local structures */
@@ -97,55 +78,44 @@ extern int	readsginm(vecitem *,const char *) ;
 /* forward references */
 
 #if	(FCOUNT_MASTER != 0)
-int		fcount_get(FCOUNT *,int,FCOUNT_ENTRY **) ;
+int		fcount_get(FCOUNT *,int,FC_ENT **) ;
 #endif
 
-static int	cmpfunc(FCOUNT_ENTRY **, FCOUNT_ENTRY **) ;
-static int	incfunc(FCOUNT_ENTRY **, FCOUNT_ENTRY **) ;
-static int	insfunc(FCOUNT_ENTRY **, FCOUNT_ENTRY **) ;
+local int	cmpfunc(FC_ENT **, FC_ENT **) noex ;
+local int	incfunc(FC_ENT **, FC_ENT **) noex ;
+local int	insfunc(FC_ENT **, FC_ENT **) noex ;
+
+
+/* local variables */
+
+
+/* exported variables */
 
 
 /* exported subroutines */
 
-
-int fcount_init(op,mp,fname)
-FCOUNT		*op ;
-LMAPPROG	*mp ;
-const char	fname[] ;
-{
-	FCOUNT_ENTRY		e, *ep, *pep, *nep ;
-
+int fcount_start(fcount *op,lampprog *mp,cchar *fname) noex {
+	FC_ENT		e, *ep, *pep, *nep ;
 	LMAPPROG_SNCURSOR	cur ;
-
 	Elf32_Sym	*eep ;
 
 	int	rs, rs1 ;
 	int	size ;
 	int	i ;
-
 	char	*namep ;
 	char	*cp ;
 
-
-	if (op == NULL)
-	    return SR_FAULT ;
-
-	if (mp == NULL)
-	    return SR_FAULT ;
+	if (op == NULL) return SR_FAULT ;
+	if (mp == NULL) return SR_FAULT ;
 
 	(void) memset(op,0,sizeof(FCOUNT)) ;
 
-
 	rs = vecitem_start(&op->table,FCOUNT_DEFFUNCS,VECITEM_PSORTED) ;
-
 	if (rs < 0)
 	    goto bad0 ;
 
-
-	(void) memset(&e,0,sizeof(FCOUNT_ENTRY)) ;
-
+	(void) memset(&e,0,sizeof(FC_ENT)) ;
 	lmapprog_sncurbegin(mp,&cur) ;
-
 	while (TRUE) {
 
 	    rs1 = lmapprog_enumsym(mp,&cur,&namep,&eep) ;
@@ -175,7 +145,7 @@ const char	fname[] ;
 
 		rs = SR_NOMEM ;
 		if (e.name != NULL)
-	        	rs = vecitem_add(&op->table,&e,sizeof(FCOUNT_ENTRY)) ;
+	        	rs = vecitem_add(&op->table,&e,sizeof(FC_ENT)) ;
 
 	        if (rs < 0)
 	            break ;
@@ -208,7 +178,6 @@ const char	fname[] ;
 
 	} /* end if */
 
-
 /* OK, make sure they are sorted */
 
 #if	CF_DEBUGS
@@ -231,7 +200,6 @@ const char	fname[] ;
 
 	rs = vecitem_sort(&op->table,cmpfunc) ;
 
-
 /* delete any duplicate entries that also start with an underscore '_' ! */
 
 #if	CF_DEBUGS
@@ -239,9 +207,7 @@ const char	fname[] ;
 #endif
 
 	for (i = 0 ; vecitem_get(&op->table,i,&ep) >= 0 ; i += 1) {
-
 	    int	j, k ;
-
 
 #if	CF_DEBUGS
 	        debugprintf("fcount_init: i=%d ep=%p\n",i,ep) ;
@@ -257,15 +223,11 @@ const char	fname[] ;
 
 	    j = i + 1 ;
 	    while (vecitem_get(&op->table,j,&nep) >= 0) {
-
 		if (nep == NULL) {
-
 			j += 1 ;
 			continue ;
 		}
-
-	        if (ep->ia != nep->ia)
-			break ;
+	        if (ep->ia != nep->ia) break ;
 
 	        k = (ep->name[0] == '_') ? i : j ;
 	        vecitem_del(&op->table,k) ;
@@ -275,17 +237,13 @@ const char	fname[] ;
 			k,nep->name,nep->ia) ;
 #endif
 
-	        if (k == i)
-	            break ;
-
+	        if (k == i) break ;
 	    } /* end while */
-
 	} /* end for */
 
 /* OK, make sure they are sorted */
 
 	rs = vecitem_sort(&op->table,cmpfunc) ;
-
 	if (rs < 0)
 	    goto bad1 ;
 
@@ -293,10 +251,7 @@ const char	fname[] ;
 
 	pep = NULL ;
 	for (i = 0 ; vecitem_get(&op->table,i,&ep) >= 0 ; i += 1) {
-
 	    int	j, k ;
-
-
 	    if (ep == NULL) continue ;
 
 	    if (pep != NULL)
@@ -345,7 +300,7 @@ bad0:
 int fcount_free(op)
 FCOUNT		*op ;
 {
-	FCOUNT_ENTRY	*ep ;
+	FC_ENT	*ep ;
 	int		rs ;
 	int		i ;
 
@@ -385,7 +340,7 @@ FCOUNT		*op ;
 uint		ia ;
 int		type ;
 {
-	FCOUNT_ENTRY	e, *ep ;
+	FC_ENT	e, *ep ;
 
 	int	rs ;
 	int	i ;
@@ -409,7 +364,7 @@ int		type ;
 	if ((op->func_ia > 0) &&
 	    (ia >= op->func_ia) && (ia < (op->func_ia + op->func_size))) {
 
-	    ep = (FCOUNT_ENTRY *) op->table.va[op->func_i] ;
+	    ep = (FC_ENT *) op->table.va[op->func_i] ;
 	    ep->ins += 1 ;
 
 	} else {
@@ -454,7 +409,7 @@ int		type ;
 int fcount_done(op)
 FCOUNT		*op ;
 {
-	FCOUNT_ENTRY	*ep ;
+	FC_ENT	*ep ;
 
 	int	i ;
 
@@ -531,7 +486,7 @@ int		(*userfunc)() ;
 int fcount_get(op,ri,rpp)
 FCOUNT		*op ;
 int		ri ;
-FCOUNT_ENTRY	**rpp ;
+FC_ENT	**rpp ;
 {
 	int	rs ;
 
@@ -666,8 +621,8 @@ FCOUNT_STATS	*rp ;
 
 
 /* sort by function starting IA */
-static int cmpfunc(e1pp,e2pp)
-FCOUNT_ENTRY	**e1pp, **e2pp ;
+local int cmpfunc(e1pp,e2pp)
+FC_ENT	**e1pp, **e2pp ;
 {
 
 
@@ -695,10 +650,10 @@ FCOUNT_ENTRY	**e1pp, **e2pp ;
 
 
 /* sort an IA by if it is before, inside, or after a function */
-static int incfunc(e1pp,e2pp)
-FCOUNT_ENTRY	**e1pp, **e2pp ;
+local int incfunc(e1pp,e2pp)
+FC_ENT	**e1pp, **e2pp ;
 {
-	FCOUNT_ENTRY	*e1p, *e2p ;
+	FC_ENT	*e1p, *e2p ;
 
 	int	rs ;
 
@@ -734,15 +689,10 @@ FCOUNT_ENTRY	**e1pp, **e2pp ;
 }
 /* end subroutine (incfunc) */
 
-
 /* sort by number of instructions */
-static int insfunc(e1pp,e2pp)
-FCOUNT_ENTRY	**e1pp, **e2pp ;
-{
-	FCOUNT_ENTRY	*e1p, *e2p ;
-
+local int insfunc(FC_ENT **e1pp,FC_ENT **e2pp) noex {
+	FC_ENT	*e1p, *e2p ;
 	int	rs ;
-
 
 #if	CF_DEBUGS
 	if ((*e1pp) == NULL)
@@ -761,28 +711,20 @@ FCOUNT_ENTRY	**e1pp, **e2pp ;
 #ifdef	COMMENT
 
 /* read the stupid SGI name-list file */
-static readsgi(lp,fname)
+local int readsgi(lp,fname)
 vecitem		*lp ;
-const char	fname[] ;
+cchar	fname[] ;
 {
-	bfile	nm ;
+	bfile		nm ;
+	field		lf ;
+	int		rs, i, len ;
+	int		wsl, cl ;
+	uchar		terms[32 + 1] ;
+	char		linebuf[LINEBUFLEN + 1] ;
+	char		*sp, *cp ;
 
-	FIELD	lf ;
-
-	int	rs, i, len ;
-	int	sl, cl ;
-
-	uchar	terms[32 + 1] ;
-
-	char	linebuf[LINEBUFLEN + 1] ;
-	char	*sp, *cp ;
-
-
-	if (lp == NULL)
-		return SR_FAULT ;
-
+	if (lp == NULL) return SR_FAULT ;
 	rs = bfile(&nm,fname,"r",0666) ;
-
 	if (rs < 0)
 		return rs ;
 
