@@ -24,7 +24,7 @@
 
 #include	<sys/types.h>
 
-#include	<bio.h>
+#include	<bfile.h>
 
 #include	"misc.h"
 
