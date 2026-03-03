@@ -42,14 +42,14 @@ LIBS +=
 
 OBJ0= exectrace.o
 OBJ1= lmapprog.o
-OBJ2=
-OBJ3=
+OBJ2= sshdb.o
+OBJ3= regstats.o memstats.o
 OBJ4=
 OBJ5=
 OBJ6=
 OBJ7=
 
-OBJA= obj0.o obj1.o
+OBJA= obj0.o obj1.o obj2.o obj3.o
 OBJB= obj4.o obj5.o obj6.o obj7.o
 
 OBJ= obja.o
@@ -153,5 +153,8 @@ objb.o:			$(OBJB)
 
 exectrace.o:		exectrace.cc	exectrace.h		$(INCS)
 lmapprog.o:		lmapprog.cc	lmapprog.h		$(INCS)
+sshdb.o:		sshdb.cc	sshdb.h			$(INCS)
+regstats.o:		regstats.cc	regstats.h		$(INCS)
+memstats.o:		memstats.cc	memstats.h		$(INCS)
 
 
