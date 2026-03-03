@@ -128,7 +128,7 @@
 #endif
 
 #include	<usystem.h>
-#include	<bio.h>
+#include	<bfile.h>
 
 #include	"localmisc.h"
 #include	"paramfile.h"
