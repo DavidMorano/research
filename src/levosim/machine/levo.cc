@@ -1,7 +1,9 @@
-/* levo */
+/* levo SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 */
 
 /* top-level Levo object */
-
+/* version %I% last-modified %G% */
 
 #define	F_DEBUGS	0		/* non-switchable */
 #define	F_DEBUG		0		/* switchable */
@@ -27,58 +29,54 @@
 
 #define	F_MINHEIGHT	1		/* enforce a minumum AS height */
 
+/* revision history:
 
-/* revision history :
-
-	= 00/02/15, Dave Morano
-
+	= 2000-02-15, Dave Morano
 	This code was started.
 
-
-	= 01/07/19, Dave Morano
-
+	= 2001-07-19, Dave Morano
 	I added a call to 'proginfo_levoconf()' to record
 	the summary configuration string someplace.
 
-
-	= 01/08/06, Dave Morano
-
+	= 2001-08-06, Dave Morano
 	I added a parameter to 'levo_init()' to handle the slipping
 	of instructions at start-up.
 
-
 */
 
-
-
+/* Copyright © 2000,2001 David A­D­ Morano.  All rights reserved. */
+/* Use is subject to license terms. */
 
 /******************************************************************************
 
-	This is the top object for the Levo machine.  Under this object
-	all other Levo machine specific objects are eventually
+  	Name:
+	levo
+
+	Description:
+	This is the top object for the Levo machine.  Under this
+	object all other Levo machine specific objects are eventually
 	instantiated.  This object instantiates only the most top
-	level objects.  All other objects making up the machine
-	are instantiated as subobject from the top most ones.
-
-	Our instantiated subobjects are part of our own object state.
-	We will initialize our subobjects our through our own
-	object initialization.
-
+	level objects.  All other objects making up the machine are
+	instantiated as subobject from the top most ones.  Our
+	instantiated subobjects are part of our own object state.
+	We will initialize our subobjects our through our own object
+	initialization.
 
 ******************************************************************************/
 
-
-
-
-#include	<sys/types.h>
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<cstdlib>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>		/* |getenv(3c)| */
 #include	<cstring>
-
-#include	<usystem.h>
+#include	<clanguage.h>
+#include	<usysbase.h>
 #include	<netorder.h>
+#include	<paramfile.h>
+#include	<cfnum.h>
+#include	<nextpowtwo.h>
+#include	<localmisc.h>		/* |COLUMNS| */
 
-#include	"localmisc.h"
-#include	"paramfile.h"
 #include	"config.h"
 #include	"defs.h"
 #include	"lsim.h"		/* simulator information */
@@ -96,23 +94,20 @@
 
 #include	"levo.h"		/* ourselves */
 
+#pragma		GCC dependency		"mod/flbs.ccm"
 
+import flbs ;
 
 /* local defines */
 
-#define	LEVO_MAGIC	0x65544332
 #define	LEVO_MINMODULUS	4
 
 #undef	BUFLEN
-#define	BUFLEN		80
-
+#define	BUFLEN		COLUMNS
 
 
 /* external subroutines */
 
-extern int	cfdecui(char *,int,uint *) ;
-extern int	cfnumui(char *,int,uint *) ;
-extern int	ffbsi(uint), flbsi(uint) ;
 extern int	getnumbuses(uint) ;
 
 
@@ -123,52 +118,26 @@ extern int	getnumbuses(uint) ;
 
 int		levo_shift(LEVO *) ;
 
-static int	levo_sanitycheck(LEVO *) ;
-static int	levo_testinit(LEVO *) ;
-static int	levo_testfree(LEVO *) ;
-static int	levo_testcomb(LEVO *,int) ;
-static int	levo_testclock(LEVO *) ;
-static int	levo_callback(LEVO *,void *) ;
-static int	levo_initmbuses(LEVO *,struct proginfo *) ;
-static int	levo_xmlconfig(LEVO *,XMLINFO *) ;
-static int	levo_xmlout(LEVO *,XMLINFO *) ;
+local int	levo_sanitycheck(LEVO *) ;
+local int	levo_testinit(LEVO *) ;
+local int	levo_testfree(LEVO *) ;
+local int	levo_testcomb(LEVO *,int) ;
+local int	levo_testclock(LEVO *) ;
+local int	levo_callback(LEVO *,void *) ;
+local int	levo_initmbuses(LEVO *,struct proginfo *) ;
+local int	levo_xmlconfig(LEVO *,XMLINFO *) ;
+local int	levo_xmlout(LEVO *,XMLINFO *) ;
 
-static uint	getnextpow(uint) ;
+local int flbsi(int v) noex {
+    	return flbs(v) ;
+}
 
 #ifdef	COMMENT
-static int	bus_freemany(BUS *,int) ;
+local int	bus_freemany(BUS *,int) ;
 #endif
 
 
 /* local data */
-
-static char	*const lparams[] = {
-	    "nsgrows",		/* number of SG rows  */
-	    "nsgcols",		/* number of SG columns */
-	    "nasrpsg",		/* number of ASs high per SG */
-	    "nrfspan",		/* register forwarding bus SG span */
-	    "nrbspan",		/* register backwarding bus SG span */
-	    "npfspan",		/* predicate forwarding bus SG span */
-	    "nmfspan",		/* memory forwarding bus SG span */
-	    "nmbspan",		/* memory backwarding bus SG span */
-	    "nprpas",		/* predicate register sets per AS */
-	    "ifetchwidth",		/* I-fetch bus width in 32-bit words */
-	    "meminter",		/* default memory interleave schedule */
-	    "levo:bustrace",	/* bus trace */
-	    "levo:mastertrace",	/* bus master trace (LBUSINT only) */
-	    "ndeepaths",		/* number of DEE paths to model */
-	    "btrbsize",		/* Branch Tracking Buffer size */
-	    "nloadbufs",		/* number of Levo Load Buffers */
-	    "mfinter",		/* memory forward interleave schedule */
-	    "mbinter",		/* memory backward interleave schedule */
-	    "mwinter",		/* memory write interleave schedule */
-	    "wmfinter",		/* execution window MF interleave schedule */
-	    "wmbinter",		/* execution window MW interleave schedule */
-	    "rfmod",		/* register forwarding (RF) modulus */
-	    "rbmod",		/* register backwarding (RB) modulus */
-	    "pbmod",		/* predicate forwarding (PF) modulus */
-	    NULL
-} ;
 
 #define	LPARAM_NSGROWS		0
 #define	LPARAM_NSGCOLS		1
@@ -195,12 +164,39 @@ static char	*const lparams[] = {
 #define	LPARAM_RBMOD		22
 #define	LPARAM_PFMOD		23
 
+constexpr cpcchar	lparams[] = {
+	    "nsgrows",		/* number of SG rows  */
+	    "nsgcols",		/* number of SG columns */
+	    "nasrpsg",		/* number of ASs high per SG */
+	    "nrfspan",		/* register forwarding bus SG span */
+	    "nrbspan",		/* register backwarding bus SG span */
+	    "npfspan",		/* predicate forwarding bus SG span */
+	    "nmfspan",		/* memory forwarding bus SG span */
+	    "nmbspan",		/* memory backwarding bus SG span */
+	    "nprpas",		/* predicate register sets per AS */
+	    "ifetchwidth",		/* I-fetch bus width in 32-bit words */
+	    "meminter",		/* default memory interleave schedule */
+	    "levo:bustrace",	/* bus trace */
+	    "levo:mastertrace",	/* bus master trace (LBUSINT only) */
+	    "ndeepaths",		/* number of DEE paths to model */
+	    "btrbsize",		/* Branch Tracking Buffer size */
+	    "nloadbufs",		/* number of Levo Load Buffers */
+	    "mfinter",		/* memory forward interleave schedule */
+	    "mbinter",		/* memory backward interleave schedule */
+	    "mwinter",		/* memory write interleave schedule */
+	    "wmfinter",		/* execution window MF interleave schedule */
+	    "wmbinter",		/* execution window MW interleave schedule */
+	    "rfmod",		/* register forwarding (RF) modulus */
+	    "rbmod",		/* register backwarding (RB) modulus */
+	    "pbmod",		/* predicate forwarding (PF) modulus */
+	    nullptr
+} ; /* end array */
 
 
+/* exported variables */
 
 
-
-
+/* exported subroutines */
 
 int levo_init(lp,pip,pfp,mip,smp)
 LEVO			*lp ;
@@ -226,7 +222,7 @@ struct statemips	*smp ;
 	char	*cp ;
 
 
-	if (lp == NULL)
+	if (lp == nullptr)
 	    return SR_FAULT ;
 
 #if	F_DEBUGS
@@ -244,7 +240,7 @@ struct statemips	*smp ;
 
 	(void) memset(lp,0,sizeof(LEVO)) ;
 
-	lp->magic = 0 ;
+	lp->magval = 0 ;
 
 	lp->f.exit = FALSE ;
 
@@ -260,7 +256,7 @@ struct statemips	*smp ;
 #endif
 
 	lp->info.mip = mip ;
-	lp->info.btfp = NULL ;
+	lp->info.btfp = nullptr ;
 
 /* some miscellaneous stuff */
 
@@ -287,7 +283,7 @@ struct statemips	*smp ;
 	lp->info.ifetchwidth = LEVOINFO_IFETCHWIDTH ;
 	lp->info.meminter = LEVOINFO_MEMINTER & (~ 3) ;
 
-	n = getnextpow(LEVOINFO_MODULUS) ;
+	n = nextpowtwo(LEVOINFO_MODULUS) ;
 
 	lp->info.rfmod = n ;
 	lp->info.rbmod = n ;
@@ -312,7 +308,7 @@ struct statemips	*smp ;
 
 /* other (testing) */
 
-	lp->info.btfp = NULL ;
+	lp->info.btfp = nullptr ;
 
 
 /* get the height of the machine (column height in sharing groups) */
@@ -324,9 +320,9 @@ struct statemips	*smp ;
 	    eprintf("levo_init: getting parameters\n") ;
 #endif
 
-	for (i = 0 ; lparams[i] != NULL ; i += 1) {
+	for (i = 0 ; lparams[i] != nullptr ; i += 1) {
 
-	    if ((sl = paramfile_fetch(pfp,lparams[i],NULL,&cp)) >= 0) {
+	    if ((sl = paramfile_fetch(pfp,lparams[i],nullptr,&cp)) >= 0) {
 
 	        switch (i) {
 
@@ -632,8 +628,8 @@ struct statemips	*smp ;
 
 /* the instruction memory buses (fetch request and response) */
 
-	lp->info.ifbp = NULL ;
-	lp->info.irbp = NULL ;
+	lp->info.ifbp = nullptr ;
+	lp->info.irbp = nullptr ;
 
 /* instruction fetch requests */
 
@@ -701,9 +697,9 @@ struct statemips	*smp ;
 
 /* allocate memory buses */
 
-	lp->info.mfbuses = NULL ;
-	lp->info.mbbuses = NULL ;
-	lp->info.mwbuses = NULL ;
+	lp->info.mfbuses = nullptr ;
+	lp->info.mbbuses = nullptr ;
+	lp->info.mwbuses = nullptr ;
 
 #if	F_MBUSES
 
@@ -959,7 +955,7 @@ struct statemips	*smp ;
 			eprintf("levo_init: exiting OK\n") ;
 #endif
 
-	lp->magic = LEVO_MAGIC ;
+	lp->magval = LEVO_MAGIC ;
 	return SR_OK ;
 
 /* bad thins come here */
@@ -1057,17 +1053,17 @@ LEVO	*lp ;
 
 
 #if	F_MASTERDEBUG && F_SAFE
-	if (lp == NULL)
+	if (lp == nullptr)
 	    return SR_FAULT ;
 
-	if ((lp->magic != LEVO_MAGIC) && (lp->magic != 0)) {
+	if ((lp->magval != LEVO_MAGIC) && (lp->magval != 0)) {
 
 	    eprintf("levo_free: bad format\n") ;
 
 	    return SR_BADFMT ;
 	}
 
-	if (lp->magic != LEVO_MAGIC)
+	if (lp->magval != LEVO_MAGIC)
 	    return SR_NOTOPEN ;
 #endif /* F_SAFE */
 
@@ -1082,10 +1078,10 @@ LEVO	*lp ;
 
 /* free up any of that testing stuff */
 
-	if (lip->mtfp != NULL)
+	if (lip->mtfp != nullptr)
 	    (void) bclose(lip->mtfp) ;
 
-	if (lip->btfp != NULL)
+	if (lip->btfp != nullptr)
 	    (void) bclose(lip->btfp) ;
 
 
@@ -1168,7 +1164,7 @@ LEVO	*lp ;
 	    eprintf("levo_free: exiting\n") ;
 #endif
 
-	lp->magic = 0 ;
+	lp->magval = 0 ;
 	return SR_OK ;
 }
 /* end subroutine (levo_free) */
@@ -1188,17 +1184,17 @@ int	phase ;
 
 
 #if	F_MASTERDEBUG && F_SAFE
-	if (lp == NULL)
+	if (lp == nullptr)
 	    return SR_FAULT ;
 
-	if ((lp->magic != LEVO_MAGIC) && (lp->magic != 0)) {
+	if ((lp->magval != LEVO_MAGIC) && (lp->magval != 0)) {
 
 	    eprintf("levo_comb: bad format\n") ;
 
 	    return SR_BADFMT ;
 	}
 
-	if (lp->magic != LEVO_MAGIC)
+	if (lp->magval != LEVO_MAGIC)
 	    return SR_NOTOPEN ;
 #endif /* F_SAFE */
 
@@ -1490,7 +1486,7 @@ int	phase ;
 
 /* write the index file */
 
-	        if (pip->xi.ifname != NULL) {
+	        if (pip->xi.ifname != nullptr) {
 
 	            off_t	xo ;
 
@@ -1564,17 +1560,17 @@ LEVO	*lp ;
 
 
 #if	F_MASTERDEBUG && F_SAFE
-	if (lp == NULL)
+	if (lp == nullptr)
 	    return SR_FAULT ;
 
-	if ((lp->magic != LEVO_MAGIC) && (lp->magic != 0)) {
+	if ((lp->magval != LEVO_MAGIC) && (lp->magval != 0)) {
 
 	    eprintf("levo_clock: bad format\n") ;
 
 	    return SR_BADFMT ;
 	}
 
-	if (lp->magic != LEVO_MAGIC)
+	if (lp->magval != LEVO_MAGIC)
 	    return SR_NOTOPEN ;
 #endif /* F_SAFE */
 
@@ -1720,17 +1716,17 @@ LEVO	*lp ;
 
 
 #if	F_MASTERDEBUG && F_SAFE
-	if (lp == NULL)
+	if (lp == nullptr)
 	    return SR_FAULT ;
 
-	if ((lp->magic != LEVO_MAGIC) && (lp->magic != 0)) {
+	if ((lp->magval != LEVO_MAGIC) && (lp->magval != 0)) {
 
 	    eprintf("levo_shift: bad format\n") ;
 
 	    return SR_BADFMT ;
 	}
 
-	if (lp->magic != LEVO_MAGIC)
+	if (lp->magval != LEVO_MAGIC)
 	    return SR_NOTOPEN ;
 #endif /* F_SAFE */
 
@@ -1892,17 +1888,17 @@ bfile	*fp ;
 
 
 #if	F_MASTERDEBUG && F_SAFE
-	if (lp == NULL)
+	if (lp == nullptr)
 	    return SR_FAULT ;
 
-	if ((lp->magic != LEVO_MAGIC) && (lp->magic != 0)) {
+	if ((lp->magval != LEVO_MAGIC) && (lp->magval != 0)) {
 
 	    eprintf("levo_statistics: bad format\n") ;
 
 	    return SR_BADFMT ;
 	}
 
-	if (lp->magic != LEVO_MAGIC)
+	if (lp->magval != LEVO_MAGIC)
 	    return SR_NOTOPEN ;
 #endif /* F_SAFE */
 
@@ -1988,7 +1984,7 @@ bfile	*fp ;
 
 
 /* XML machine configuration */
-static int levo_xmlconfig(lp,xip)
+local int levo_xmlconfig(lp,xip)
 LEVO	*lp ;
 XMLINFO	*xip ;
 {
@@ -2002,7 +1998,7 @@ XMLINFO	*xip ;
 
 
 #if	F_MASTERDEBUG && F_SAFE
-	if (lp == NULL)
+	if (lp == nullptr)
 	    return SR_FAULT ;
 #endif /* F_SAFE */
 
@@ -2076,7 +2072,7 @@ XMLINFO	*xip ;
 
 
 /* XML state trace */
-static int levo_xmlout(lp,xip)
+local int levo_xmlout(lp,xip)
 LEVO	*lp ;
 XMLINFO	*xip ;
 {
@@ -2088,12 +2084,12 @@ XMLINFO	*xip ;
 
 
 #if	F_MASTERDEBUG && F_SAFE
-	if (lp == NULL)
+	if (lp == nullptr)
 	    return SR_FAULT ;
 
-	if (lp->magic != LEVO_MAGIC) {
+	if (lp->magval != LEVO_MAGIC) {
 
-	    rs = (lp->magic != 0) ? SR_BADFMT : SR_NOTOPEN ;
+	    rs = (lp->magval != 0) ? SR_BADFMT : SR_NOTOPEN ;
 	    return rs ;
 	}
 #endif /* F_SAFE */
@@ -2211,7 +2207,7 @@ XMLINFO	*xip ;
 
 
 /* do some sanity checking */
-static int levo_sanitycheck(lp)
+local int levo_sanitycheck(lp)
 LEVO	*lp ;
 {
 	struct proginfo	*pip ;
@@ -2220,17 +2216,17 @@ LEVO	*lp ;
 
 
 #if	F_MASTERDEBUG && F_SAFE
-	if (lp == NULL)
+	if (lp == nullptr)
 	    return SR_FAULT ;
 
-	if ((lp->magic != LEVO_MAGIC) && (lp->magic != 0)) {
+	if ((lp->magval != LEVO_MAGIC) && (lp->magval != 0)) {
 
 	    eprintf("levo_sanitycheck: bad format\n") ;
 
 	    return SR_BADFMT ;
 	}
 
-	if (lp->magic != LEVO_MAGIC)
+	if (lp->magval != LEVO_MAGIC)
 	    return SR_NOTOPEN ;
 #endif /* F_SAFE */
 
@@ -2278,7 +2274,7 @@ LEVO	*lp ;
 /* end subroutine (levo_sanitycheck) */
 
 
-static int levo_testinit(lp)
+local int levo_testinit(lp)
 LEVO		*lp ;
 {
 	struct proginfo	*pip ;
@@ -2337,7 +2333,7 @@ bad1:
 /* end subroutine (levo_testinit) */
 
 
-static int levo_testfree(lp)
+local int levo_testfree(lp)
 LEVO	*lp ;
 {
 
@@ -2357,7 +2353,7 @@ LEVO	*lp ;
 }
 
 
-static int levo_testcomb(lp,phase)
+local int levo_testcomb(lp,phase)
 LEVO	*lp ;
 int	phase ;
 {
@@ -2463,7 +2459,7 @@ int	phase ;
 /* end subroutine (levo_testcomb) */
 
 
-static int levo_testclock(lp)
+local int levo_testclock(lp)
 LEVO	*lp ;
 {
 	struct proginfo	*pip ;
@@ -2502,7 +2498,7 @@ LEVO	*lp ;
 
 
 /* testing of simulator scheduling */
-static int levo_callback(lp,ap)
+local int levo_callback(lp,ap)
 LEVO	*lp ;
 void	*ap ;
 {
@@ -2530,7 +2526,7 @@ void	*ap ;
 
 
 /* initialize the memory buses */
-static int levo_initmbuses(lp,pip)
+local int levo_initmbuses(lp,pip)
 LEVO		*lp ;
 struct proginfo	*pip ;
 {
@@ -2651,33 +2647,9 @@ bad0:
 }
 /* end subroutine (levo_initmbuses) */
 
-
-/* calculate the next power of 2 */
-uint getnextpow(n)
-uint	n ;
-{
-	uint	mask ;
-
-	int	lb ;
-
-
-	lb = flbsi(n) ;
-
-	if (lb < 1)
-	    return 1 ;
-
-	mask = (1 << lb) - 1 ;
-	if ((n & mask) && (lb < 31))
-	    lb += 1 ;
-
-	return (1 << lb) ;
-}
-/* end subroutine (getnextpow) */
-
-
 #ifndef	COMMENT
 
-static int bus_freemany(busp,n)
+local int bus_freemany(busp,n)
 BUS	*busp ;
 int	n ;
 {
