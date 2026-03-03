@@ -61,30 +61,30 @@ struct memstats_stats {
 	uint	readvars, writevars, tes ;
 	uint	flen, lenden ;
 	uint	pages, groups ;
-} ;
+} ; /* end struct */
 
 struct memstats_te {
 	ulong	read, write ;
-} ;
+} ; /* end struct */
 
 /* tracking page entry */
 struct memstats_tpe {
 	struct memstats_te	*pp ;	/* pointer to page */
 	ulong			page ;	/* page number */
-} ;
+} ; /* end struct */
 
 struct memstats_group {
 	caddr_t		pa ;		/* mapped address */
-} ;
+} ; /* end struct */
 
 struct memstats_curgroup {
 	caddr_t		pa ;
 	int		e ;
-} ;
+} ; /* end struct */
 
 struct memstats_flags {
 	int	started : 1 ;
-} ;
+} ; /* end struct */
 
 struct memstats_head {
 	memstats_curgroup	cg ;	/* current open group */
@@ -110,20 +110,20 @@ struct memstats_head {
 	int		elemoff ;	/* element size offset */
 	struct memstats_flags	f ;
 	char		fname[MAXPATHLEN + 1] ;
-} ;
+} ; /* end struct */
 
 typedef	MEMSTATS	memstats ;
 typedef	MEMSTATS_STATS	memstats_st ;
 
 EXTERNC_begin
 
-extern int	memstats_init(memstats *,char *,int,int,int,int) ;
-extern int	memstats_read(memstats *,ulong,int,ulong,ulong) ;
-extern int	memstats_write(memstats *,ulong,int,ulong,ulong) ;
-extern int	memstats_writedone(memstats *,ulong,int) ;
-extern int	memstats_getstats(memstats *,memstats_st *) ;
-extern int	memstats_storefiles(memstats *,char *,char *,char *) ;
-extern int	memstats_free(memstats *) ;
+extern int	memstats_init(memstats *,char *,int,int,int,int) noex ;
+extern int	memstats_read(memstats *,ulong,int,ulong,ulong) noex ;
+extern int	memstats_write(memstats *,ulong,int,ulong,ulong) noex ;
+extern int	memstats_writedone(memstats *,ulong,int) noex ;
+extern int	memstats_getstats(memstats *,memstats_st *) noex ;
+extern int	memstats_storefiles(memstats *,char *,char *,char *) noex ;
+extern int	memstats_free(memstats *) noex ;
 
 EXTERNC_end
 
