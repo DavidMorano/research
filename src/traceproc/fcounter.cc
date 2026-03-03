@@ -1,11 +1,12 @@
-/* fcounter */
+/* fcounter SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
 /* count instructions in the trace */
-
+/* version %I% last-modified %G% */
 
 #define	CF_DEBUGS	0		/* compile-time debugging */
 #define	CF_DEBUG	1		/* run-time debugging */
-
 
 /* revision history:
 
@@ -18,15 +19,23 @@
 
 /*******************************************************************************
 
+  	Name:
+	fcounter
+
+	Description:
 	This subroutine performs the function 'fcount' for the
 	TRACEPROC program when run in 'fcount' mode.
 
 *******************************************************************************/
 
-#include	<envstandards.h>
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
-#include	<usystem.h>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>		/* |getenv(3c)| */
+#include	<clanguage.h>
+#include	<usysbase.h>
 #include	<mkpathx.h>
+#include	<sncptx.h>
 #include	<strwcpy.h>
 #include	<localmisc.h>
 
@@ -50,8 +59,6 @@
 
 /* external subroutines */
 
-extern int	sncpy2(char *,int,cchar *,cchar *) ;
-
 
 /* external variables */
 
@@ -65,8 +72,10 @@ extern int	sncpy2(char *,int,cchar *,cchar *) ;
 /* local (module-scope static) data */
 
 
-/* exported subroutines */
+/* exported variables */
 
+
+/* exported subroutines */
 
 int fcounter(pip,pmp,dp,tfname)
 struct proginfo	*pip ;
@@ -76,16 +85,12 @@ char		tfname[] ;
 {
 	EXECTRACE		t ;
 	EXECTRACE_ENTRY		e ;
-
 	FCOUNT			funcs ;
-
-	ULONG	trecs = 0 ;
-	ULONG	in = 0 ;
-
-	int	rs, i ;
-
+	ulong	trecs = 0 ;
+	ulong	in = 0 ;
+	int	rs ;
+	int	i ;
 	char	tmpfname[MAXPATHLEN + 1] ;
-
 
 #if	CF_DEBUG
 	if (pip->debuglevel >= 2)
@@ -111,7 +116,6 @@ char		tfname[] ;
 
 	    goto bad0 ;
 	}
-
 
 /* initialize the function counter */
 
@@ -173,13 +177,9 @@ char		tfname[] ;
 	        sncpy2(tmpfname,MAXPATHLEN,pip->jobname,FE_FCOUNTS) ;
 
 	        if ((rs = bopen(&tmpfile,tmpfname,"wct",0666)) >= 0) {
-
 	            FCOUNT_ENTRY	*ep ;
-
 	            double	fn, fd, fpercent ;
-
 			uint	ins, calls ;
-
 
 	                bprintf(&tmpfile,"%12lld %7.3f%% %08x %08x %s\n",
 	                    in,100.0,0,0,"*total*") ;
