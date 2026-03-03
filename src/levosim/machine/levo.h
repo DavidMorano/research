@@ -1,44 +1,32 @@
-/* levo */
+/* levo HEDER */
+/* charset=ISO8859-1 */
+/* lang=C++20 */
 
 /* top Levo machine object */
+/* version %I% last-modified %G% */
 
 
+/* revision history:
 
-/* revision history :
-
-	= 00/02/15, Dave Morano
-
+	= 2000-02-15, Dave Morano
 	This code was started.
 
-
-	= 01/08/06, Dave Morano
-
+	= 2001-08-06, Dave Morano
 	Added parameter to 'levo_init()' for skipping instructions.
-
-
 
 */
 
-
-
+/* Copyright © 2000,2001 David A­D­ Morano.  All rights reserved. */
+/* Use is subject to license terms. */
 
 #ifndef	LEVO_INCLUDE
-#define	LEVO_INCLUDE	1
+#define	LEVO_INCLUDE
 
 
-
-/* object defines */
-
-#define	LEVO	struct levo_head
-
-#ifndef	UINT
-#define	UINT	unsigned int
-#endif
-
-
-
-
-#include	<bio.h>
+#include	<envstandards.h>	/* ordered first to configure */
+#include	<clanguage.h>
+#include	<usysbase.h>
+#include	<bfile.h>
 
 #include	"lsim.h"
 #include	"statemips.h"
@@ -53,6 +41,9 @@
 #include	"bustest.h"		/* testing */
 
 
+#define	LEVO		struct levo_head
+#define	LEVO_FL		struct levo_flags
+#define	LEVO_MAGIC	0x65544332
 
 
 struct levo_state {
@@ -61,47 +52,42 @@ struct levo_state {
 } ;
 
 struct levo_flags {
-	UINT	exit : 1 ;		/* exit indication */
+	uint	exit : 1 ;		/* exit indication */
 } ;
 
 struct levo_head {
-	unsigned long		magic ;
+	proginfo	*pip ;		/* program information */
+	LSIM		*mip ;		/* MINT information */
+	levoinfo	info ;		/* Levo information */
+	levo_state	c, n ;
+	levo_flags	f ;
+	IW		win ;
+	LMEM		memsys ;
+	RFBUS		ifb ;		/* i-fetch requests */
+	LIBUS		irb ;		/* i-fetch responses */
+	BUS		mybus ;		/* testing */
+	BUSMON		testmon ;	/* testing */
+	BUSTEST		testbus ;	/* testing */
+	bfile		btfile ;	/* testing (bus trace) */
+	bfile		mtfile ;	/* testing (master trace) */
+	uint		magval ;
+} ; /* end struct (levo_head) */
 
-	struct proginfo		*pip ;		/* program information */
-	LSIM			*mip ;		/* MINT information */
-	struct levoinfo		info ;		/* Levo information */
+typedef	LEVO		levo ;
+typedef	LEVO_FL		levo_fl ;
 
-	struct levo_state	c, n ;
-	struct levo_flags	f ;
+EXTERNC_begin
 
-	IW			win ;
-	LMEM			memsys ;
-	RFBUS			ifb ;		/* i-fetch requests */
-	LIBUS			irb ;		/* i-fetch responses */
+extern int	levo_init(levo *,proginfo *,
+			paramfile *, LSIM *,statemips *) ;
+extern int	levo_free(levo *) ;
+extern int	levo_comb(levo *,int) ;
+extern int	levo_clock(levo *) ;
+extern int	levo_statfile(levo *,bfile *) ;
 
-	BUS			mybus ;		/* testing */
-	BUSMON			testmon ;	/* testing */
-	BUSTEST			testbus ;	/* testing */
-	bfile			btfile ;	/* testing (bus trace) */
-	bfile			mtfile ;	/* testing (master trace) */
-} ;
-
-
-
-
-#if	(! defined(LEVO_MASTER)) || (LEVO_MASTER == 0)
-
-extern int	levo_init(LEVO *,struct proginfo *,
-			PARAMFILE *, LSIM *, struct statemips *) ;
-extern int	levo_free(LEVO *) ;
-extern int	levo_comb(LEVO *,int) ;
-extern int	levo_clock(LEVO *) ;
-extern int	levo_statfile(LEVO *,bfile *) ;
-
-#endif /* (! defined(LEVO_MASTER)) || (LEVO_MASTER == 0) */
+EXTERNC_end
 
 
 #endif /* LEVO_INCLUDE */
-
 
 
