@@ -2,6 +2,9 @@
 /* charset=ISO8859-1 */
 /* lang=C++20 */
 
+/* maintain register statistics */
+/* last modified %G% version %I% */
+
 
 /* revision history:
 
@@ -16,10 +19,9 @@
 #define	REGSTATS_INCLUDE
 
 
-#include	<envstandards.h>
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<clanguage.h>
 #include	<usysbase.h>
-#include	<localmisc.h>
 
 
 #define	REGSTATS		struct regstats_head
@@ -49,15 +51,15 @@ typedef	REGSTATS_ST	regstats_st ;
 
 EXTERNC_begin
 
-extern int	regstats_init(regstats *,int,int,int) ;
-extern int	regstats_read(regstats *,uint,int,uint,uint) ;
-extern int	regstats_readupdate(regstats *,uint,int,uint,uint) ;
-extern int	regstats_write(regstats *,uint,int,uint,uint) ;
-extern int	regstats_writedone(regstats *,uint,int) ;
-extern int	regstats_getstats(regstats *,regstats_st *) ;
+extern int	regstats_init(regstats *,int,int,int) noex ;
+extern int	regstats_read(regstats *,uint,int,uint,uint) noex ;
+extern int	regstats_readupdate(regstats *,uint,int,uint,uint) noex ;
+extern int	regstats_write(regstats *,uint,int,uint,uint) noex ;
+extern int	regstats_writedone(regstats *,uint,int) noex ;
+extern int	regstats_getstats(regstats *,regstats_st *) noex ;
 extern int	regstats_storefiles(regstats *,
-			char *,char *,char *,char *,char *) ;
-extern int	regstats_free(regstats *) ;
+			char *,char *,char *,char *,char *) noex ;
+extern int	regstats_free(regstats *) noex ;
 
 EXTERNC_end
 
