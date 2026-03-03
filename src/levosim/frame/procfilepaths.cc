@@ -34,7 +34,7 @@
 #include	<cstring>
 #include	<clanguage.h>
 #include	<usysbase.h>
-#include	<bio.h>
+#include	<bfile.h>
 #include	<field.h>
 #include	<vecstr.h>
 #include	<vstrxcmp.h>		/* |vstrkeycmp(3uc)| */
