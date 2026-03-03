@@ -44,7 +44,7 @@ OBJ0= bpalpha.o
 OBJ1= bpeveight.o bpgskew.o
 OBJ2= bpgspag.o bptourna.o
 OBJ3= bpvpred.o bpyags.o
-OBJ4= levomod.o bpssh.o
+OBJ4= levomod.o
 OBJ5= 
 OBJ6= 
 OBJ7= 
@@ -161,6 +161,5 @@ bpvpred.o:		bpvpred.cc	bpvpred.h
 bpyags.o:		bpyags.cc	bpyags.h
 
 levomod.o:		levomod.cc	levomod.h
-bpssh.o:		bpssh.cc	bpssh.h
 
 
