@@ -1,29 +1,41 @@
-/* itype */
+/* itype SUPPORT */
+/* charset=ISO8859-1 */
+/* version %I% last-modified %G% */
 
-
-/* Copyright © 2003-2007 David A­D­ Morano.  All rights reserved. */
-
+/* instruction-type classification */
+/* version %I% last-modified %G% */
 
 #define	CF_DEBUGS	0
 
+/* revision history:
 
+	= 2000-01-07, David A-D- Morano
+	Originally written for Rightcore Network Services.
+
+*/
+
+/* Copyright © 2000 David A­D­ Morano.  All rights reserved. */
+
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/param.h>
-
-#include	<usystem.h>
-#include	<bio.h>
-
-#include	"localmisc.h"
+#include	<clanguage.h>
+#include	<usysbase.h>
+#include	<bfile.h>
+#include	<localmisc.h>
 
 #include	"itype.h"
 #include	"ssnames.h"
 #include	"ssas.h"
 
 
+/* local defines */
 
 
-#define	ITYPE_MAGIC	0x33221158
+/* local namespaces */
 
+
+/* local typedefs */
 
 
 /* external subroutines */
@@ -31,9 +43,22 @@
 extern double	percentll(ULONG,ULONG) ;
 
 
+/* external variables */
 
 
+/* local structures */
 
+
+/* forward references */
+
+
+/* local variables */
+
+
+/* exported variables */
+
+
+/* exported subroutines */
 
 int itype_init(itp)
 ITYPE	*itp ;
@@ -56,12 +81,8 @@ SSAS	*casp ;
 {
 	int	n ;
 
-
-	if (itp == NULL)
-	    return SR_FAULT ;
-
-	if (itp->magic != ITYPE_MAGIC)
-	    return SR_NOTOPEN ;
+	if (itp == NULL) return SR_FAULT ;
+	if (itp->magic != ITYPE_MAGIC) return SR_NOTOPEN ;
 
 	    itp->itype_ins += 1 ;
 
@@ -77,20 +98,20 @@ SSAS	*casp ;
 	        if (casp->n.f.cfsub)
 	            itp->itype_cfsub += 1 ;
 
-	        if (casp->n.f.cfdir)
+	        if (casp->n.f.cfdir) {
 	            itp->itype_cfdir += 1 ;
-
-	        else if (casp->n.f.cfind)
+		} else if (casp->n.f.cfind) {
 	            itp->itype_cfind += 1 ;
+		}
 
 	    } else if (casp->n.f.mem) {
 
 	        itp->itype_mem += 1 ;
-	        if (casp->n.f.memload)
+	        if (casp->n.f.memload) {
 	            itp->itype_memload += 1 ;
-
-	        else if (casp->n.f.memstore)
+		} else if (casp->n.f.memstore) {
 	            itp->itype_memstore += 1 ;
+		}
 
 	    } /* end if */
 
@@ -108,12 +129,8 @@ const char	statsfname[] ;
 	int	rs = SR_OK, i ;
 	int	wlen ;
 
-
-	if (itp == NULL)
-	    return SR_FAULT ;
-
-	if (itp->magic != ITYPE_MAGIC)
-	    return SR_NOTOPEN ;
+	if (itp == NULL) return SR_FAULT ;
+	if (itp->magic != ITYPE_MAGIC) return SR_NOTOPEN ;
 
 	wlen = 0 ;
 	if (statsfname[0] == '\0')
@@ -224,23 +241,12 @@ ret0:
 }
 /* end subroutine (itype_writeout) */
 
-
-int itype_free(itp)
-ITYPE	*itp ;
-{
-
-
-	if (itp == NULL)
-	    return SR_FAULT ;
-
-	if (itp->magic != ITYPE_MAGIC)
-	    return SR_NOTOPEN ;
-
+int itype_finish(itype *itp) noex {
+	if (itp == NULL) return SR_FAULT ;
+	if (itp->magic != ITYPE_MAGIC) return SR_NOTOPEN ;
 	itp->magic = 0 ;
 	return SR_OK ;
-
 }
-/* end subroutine (itype_free) */
-
+/* end subroutine (itype_finish) */
 
 
