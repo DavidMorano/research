@@ -26,7 +26,7 @@
 #include	<sys/types.h>
 #include	<cstring>
 
-#include	<bio.h>
+#include	<bfile.h>
 
 #include	"localmisc.h"
 
