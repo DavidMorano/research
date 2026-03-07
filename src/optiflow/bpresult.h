@@ -8,7 +8,7 @@
 #include	<sys/types.h>
 #include	<time.h>
 
-#include	<bio.h>
+#include	<bfile.h>
 
 #include	"localmisc.h"
 
