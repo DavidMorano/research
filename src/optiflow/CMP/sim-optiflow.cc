@@ -43,7 +43,7 @@
 #include <cstdio>
 #include	<mkpathx.h>
 #include	<strwcpy.h>
-#include	<bio.h>
+#include	<bfile.h>
 #include	<sbuf.h>
 #include	<keyopt.h>
 #include	<paramfile.h>
