@@ -1,4 +1,5 @@
-/* process SUPPORT */
+/* frame_process SUPPORT */
+/* charset=ISO8859-1 */
 /* lang=C++98 */
 
 /* setup for simulation (w/ MINT and otherwise) */
@@ -9,13 +10,15 @@
 #define	CF_MACHINE	1		/* create & run the machine ? */
 #define	CF_MINT		0		/* so we need MINT ? */
 
-/* revision history :
+/* revision history:
 
 	= 2000-02-15, Dave Morano
 	This subroutine was originally written.  Parts were copied
 
 */
 
+/* Copyright © 2000 David A­D­ Morano.  All rights reserved. */
+/* Use is subject to license terms. */
 
 /*****************************************************************************
 
@@ -36,17 +39,20 @@
 #include	<cstddef>		/* |nullptr_t| */
 #include	<cstdlib>
 #include	<cstring>
-#include	<usystem.h>
+#include	<clanguage.h>
+#include	<usysbase.h>
 #include	<vecstr.h>
 #include	<field.h>
 #include	<mkpathx.h>
 #include	<mkfnamex.h>
 #include	<strwcpy.h>
-#include	<bio.h>
+#include	<bfile.h>
 #include	<mallocstuff.h>
 #include	<paramfile.h>
 #include	<getfname.h">
 #include	<timestr.h>
+#include	<prenvfile.h>		/* LIBPR */
+#include	<prognamevar.hh>
 #include	<localmisc.h>
 
 #include	"config.h"
@@ -61,7 +67,6 @@
 #include	"lmipsregs.h"		/* get the reg defs */
 #include	"levo.h"		/* top of machine */
 #include	"xmlinfo.h"		/* XML trace information */
-
 
 
 /* local defines */
@@ -85,14 +90,10 @@
 #endif
 
 
-
 /* external subroutines */
 
-extern int	perm(char *,int,int,int *,int) ;
 extern int	simplesim(struct proginfo *,PARAMFILE *,LSIM *,
-			struct statemips *,SYSCALLS *,ULONG) ;
-
-extern char	*strbasename(char *) ;
+			struct statemips *,SYSCALLS *,ulong) ;
 
 
 /* local structures */
@@ -100,41 +101,20 @@ extern char	*strbasename(char *) ;
 
 /* forward references */
 
-static int	findprog(char *,char *,char * const *,char *) ;
-static int	process_fcount(struct proginfo *, struct statemips *) ;
+local int	findprog(char *,char *,char * const *,char *) ;
+local int	process_fcount(struct proginfo *, struct statemips *) ;
 
 
 /* local variables */
 
-static cchar	*exts[] = {
+constexpr cpcchar	exts[] = {
 	"us5",
 	"s5",
 	"x",
 	"elf",
 	"s5u",
 	"osf",
-	NULL
-} ;
-
-/* program parameters */
-static cchar	*pparams[] = {
-	"stdin",			/* target STDIN file */
-	"stdout",			/* target STDOUT file */
-	"stderr",			/* target STDERR file */
-	"prog:maxclocks",		/* maximum number of clocks */
-	"itrace",			/* instructions trace */
-	"exectrace",			/* execution trace file */
-	"exectraceopts",		/* execution trace options */
-	"xmltrace",			/* XML state trace file */
-	"xmltraceopts",			/* XML state trace options */
-	"sctrace",			/* SystemCall Trace file */
-	"fcount",			/* Function Counts file */
-	"prog:bustrace",		/* bus-trace file */
-	"prog:statistics",		/* statistics file */
-	"prog:sgifstype",		/* SGI FS name */
-	"prog:sgidev",			/* SGI FS device number */
-	"prog:sgifsinfo",		/* file for SGI FS information */
-	NULL
+	nullptr
 } ;
 
 enum pparams {
@@ -157,36 +137,48 @@ enum pparams {
 	pparam_overlast
 } ;
 
+consexpr cpcchar	pparams[] = {
+	"stdin",			/* target STDIN file */
+	"stdout",			/* target STDOUT file */
+	"stderr",			/* target STDERR file */
+	"prog:maxclocks",		/* maximum number of clocks */
+	"itrace",			/* instructions trace */
+	"exectrace",			/* execution trace file */
+	"exectraceopts",		/* execution trace options */
+	"xmltrace",			/* XML state trace file */
+	"xmltraceopts",			/* XML state trace options */
+	"sctrace",			/* SystemCall Trace file */
+	"fcount",			/* Function Counts file */
+	"prog:bustrace",		/* bus-trace file */
+	"prog:statistics",		/* statistics file */
+	"prog:sgifstype",		/* SGI FS name */
+	"prog:sgidev",			/* SGI FS device number */
+	"prog:sgifsinfo",		/* file for SGI FS information */
+	nullptr
+} ;
 
 
+/* exported variables */
 
 
-
+/* exported subroutines */
 
 int process(pip,targetname,pfp,exportv,maxclocks,skipinstr)
 struct proginfo	*pip ;
 char		targetname[] ;
 PARAMFILE	*pfp ;
 vecstr		*exportv ;
-ULONG		maxclocks ;
-ULONG		skipinstr ;
+ulong		maxclocks ;
+ulong		skipinstr ;
 {
 	LSIM	oursim, *mip = &oursim ;
-
 	vecstr	progargs, progenv ;
-
-	struct statemips	sm ;
-
-	FIELD	fsb ;
-
+	statemips	sm ;
+	field	fsb ;
 	SYSCALLS	sc ;
-
 	LEVO	ourmachine ;
-
 	bfile	statfile ;
-
-	ULONG	clocks ;
-
+	ulong	clocks ;
 	time_t	t_start, t_end, t_daytime ;
 	time_t	t_elapsed ;
 
@@ -209,7 +201,7 @@ ULONG		skipinstr ;
 	char	argbuf[MAXPATHLEN + 1] ;
 	char	vbuf[VBUFLEN + 1] ;
 	char	*stdfiles[3] ;
-	char	*fifname = NULL ;
+	char	*fifname = nullptr ;
 	char	*sp ;
 	char	*cp, *cp2 ;
 	char	*op ;
@@ -221,7 +213,7 @@ ULONG		skipinstr ;
 #endif
 
 	for (i = 0 ; i < 3 ; i += 1)
-	    stdfiles[i] = NULL ;
+	    stdfiles[i] = nullptr ;
 
 	etlen = 0 ;
 	xtlen = 0 ;
@@ -247,7 +239,7 @@ ULONG		skipinstr ;
 
 /* the simulated program executable and its arguments */
 
-	vl = paramfile_fetch(pfp,"program",NULL,vbuf,VBUFLEN) ;
+	vl = paramfile_fetch(pfp,"program",nullptr,vbuf,VBUFLEN) ;
 
 	if (vl > 0) {
 
@@ -273,7 +265,7 @@ ULONG		skipinstr ;
 /* do we have arguments in a file ? */
 
 	f_progargs = FALSE ;
-	if ((vl = paramfile_fetch(pfp,"argsfile",NULL,vbuf,VBUFLEN)) > 0) {
+	if ((vl = paramfile_fetch(pfp,"argsfile",nullptr,vbuf,VBUFLEN)) > 0) {
 
 #if	CF_MASTERDEBUG && CF_DEBUG
 	    if (pip->debuglevel >= 4)
@@ -295,12 +287,12 @@ ULONG		skipinstr ;
 /* the simulated program arguments from the parameter file */
 
 	if ((! f_progargs) &&
-	    ((vl = paramfile_fetch(pfp,"args",NULL,vbuf,VBUFLEN)) > 0)) {
+	    ((vl = paramfile_fetch(pfp,"args",nullptr,vbuf,VBUFLEN)) > 0)) {
 
 	    field_init(&fsb,vbuf,vl) ;
 
 	    progargc = 0 ;
-	    while (field_sharg(&fsb,NULL,argbuf,MAXPATHLEN) >= 0) {
+	    while (field_sharg(&fsb,nullptr,argbuf,MAXPATHLEN) >= 0) {
 
 	        if (progargc > 0) {
 
@@ -325,8 +317,7 @@ ULONG		skipinstr ;
 /* what about a special environment file for those "special DBX" cases ? */
 
 	f_progenv = FALSE ;
-	vl = paramfile_fetch(pfp,"env",NULL,vbuf,VBUFLEN) ;
-
+	vl = paramfile_fetch(pfp,"env",nullptr,vbuf,VBUFLEN) ;
 	if (vl > 0) {
 
 #if	CF_MASTERDEBUG && CF_DEBUG
@@ -334,17 +325,14 @@ ULONG		skipinstr ;
 	        eprintf("process: getting special environment, file=%s\n",op) ;
 #endif
 
-	    rs = procenv(pip->programroot,vbuf,&progenv) ;
-
+	    rs = prenvfile(pip->programroot,vbuf,&progenv) ;
 	    if (rs < 0)
 	        bprintf(pip->efp,
 	            "%s: error in environment file (%d) -- continuing\n",
 	            pip->progname,rs) ;
 
 	    f_progenv = (rs >= 0) ;
-
 	} /* end if (getting environment file) */
-
 
 /* OK, now get some program options that we need at this point */
 
@@ -353,10 +341,8 @@ ULONG		skipinstr ;
 	    eprintf("process: getting other program options\n") ;
 #endif
 
-	for (i = 0 ; pparams[i] != NULL ; i += 1) {
-
-	    vl = paramfile_fetch(pfp,pparams[i],NULL,vbuf,VBUFLEN) ;
-
+	for (i = 0 ; pparams[i] != nullptr ; i += 1) {
+	    vl = paramfile_fetch(pfp,pparams[i],nullptr,vbuf,VBUFLEN) ;
 	    if (vl >= 0) {
 
 #if	CF_MASTERDEBUG && CF_DEBUG
@@ -407,7 +393,7 @@ ULONG		skipinstr ;
 	            switch (i) {
 
 	            case pparam_itrace:
-	                if ((vbuf[0] != '\0') && (pip->itfname == NULL))
+	                if ((vbuf[0] != '\0') && (pip->itfname == nullptr))
 	                    pip->itfname = mallocstrn(vbuf,vl) ;
 
 	                break ;
@@ -416,13 +402,13 @@ ULONG		skipinstr ;
 	                break ;
 
 	            case pparam_statistics:
-	                if ((vbuf[0] != '\0') && (pip->statfname == NULL))
+	                if ((vbuf[0] != '\0') && (pip->statfname == nullptr))
 	                    pip->statfname = mallocstrn(vbuf,vl) ;
 
 	                break ;
 
 	            case pparam_exectrace:
-	                if ((vbuf[0] != '\0') && (pip->etfname == NULL)) {
+	                if ((vbuf[0] != '\0') && (pip->etfname == nullptr)) {
 
 	                    f_etfname = TRUE ;
 	                    pip->etfname = mallocstrn(vbuf,vl) ;
@@ -447,7 +433,7 @@ ULONG		skipinstr ;
 	                break ;
 
 	            case pparam_xmltrace:
-	                if ((vbuf[0] != '\0') && (pip->xmlfname == NULL))
+	                if ((vbuf[0] != '\0') && (pip->xmlfname == nullptr))
 	                    pip->xmlfname = mallocstrn(vbuf,vl) ;
 
 	                break ;
@@ -473,13 +459,13 @@ ULONG		skipinstr ;
 	                break ;
 
 	            case pparam_sctrace:
-	                if ((vbuf[0] != '\0') && (pip->sctfname == NULL))
+	                if ((vbuf[0] != '\0') && (pip->sctfname == nullptr))
 	                    pip->sctfname = mallocstrn(vbuf,vl) ;
 
 	                break ;
 
 	            case pparam_fcount:
-	                if ((vbuf[0] != '\0') && (pip->fcfname == NULL))
+	                if ((vbuf[0] != '\0') && (pip->fcfname == nullptr))
 	                    pip->fcfname = mallocstrn(vbuf,vl) ;
 
 	                break ;
@@ -528,7 +514,7 @@ ULONG		skipinstr ;
 /* some other initialization for stuff that we didn't get above */
 
 	if (((pip->sgidev == 0) || (pip->sgifstype[0] == '\0')) &&
-	    (fifname != NULL)) {
+	    (fifname != nullptr)) {
 
 	    bfile	fifile ;
 
@@ -566,19 +552,17 @@ ULONG		skipinstr ;
 
 	} /* end if (needed additional information) */
 
-
 /* do it, initialization */
 
-	if (targetname == NULL) {
+	if (targetname == nullptr) {
 
 	    targetname = targetbuf ;
-	    cp = strbasename(pip->execfname) ;
-
-	    if ((op = strchr(cp,'.')) != NULL)
+	    cp = pip->progname ;
+	    if ((op = strchr(cp,'.')) != nullptr) {
 	        strwcpy(targetbuf,cp,MIN(op - cp,JOBNAMELEN)) ;
-
-	    else
+	    } else {
 	        strwcpy(targetbuf,cp,JOBNAMELEN) ;
+	    }
 
 	} /* end if (there was no targetname) */
 
@@ -667,7 +651,7 @@ ULONG		skipinstr ;
 	    eprintf("process: execfname=%s\n",pip->execfname) ;
 #endif
 
-	rs = mipsdis_init(&pip->dis,NULL,pip->execfname) ;
+	rs = mipsdis_init(&pip->dis,nullptr,pip->execfname) ;
 
 #if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel >= 4)
@@ -770,20 +754,14 @@ ULONG		skipinstr ;
 
 /* initialize for function-call counting */
 
-	    if ((pip->fcfname != NULL) && (pip->fcfname[0] != '\0')) {
-
+	    if ((pip->fcfname != nullptr) && (pip->fcfname[0] != '\0')) {
 	        LMAPPROG	*mpp ;
-
 		char		targetbuf[MAXNAMELEN + 1] ;
-
-
 	        lsim_getpp(mip,&mpp) ;
 
-	    cp = strbasename(pip->execfname) ;
-
-	    if ((op = strchr(cp,'.')) != NULL) {
+	    cp = pip->execname ;
+	    if ((op = strchr(cp,'.')) != nullptr) {
 	        strwcpy(targetbuf,cp,MIN(op - cp,(MAXNAMELEN - 1))) ;
-
 	    } else {
 	        strwcpy(targetbuf,cp,(MAXNAMELEN - 1)) ;
 	    }
@@ -846,7 +824,7 @@ ULONG		skipinstr ;
 
 /* XML output wanted ? */
 
-	    if ((pip->xmlfname != NULL) && (pip->xmlfname[0] != '\0')) {
+	    if ((pip->xmlfname != nullptr) && (pip->xmlfname[0] != '\0')) {
 
 #if	CF_MASTERDEBUG && CF_DEBUG
 	        if (pip->debuglevel >= 4)
@@ -911,7 +889,7 @@ ULONG		skipinstr ;
 
 	        lsim_getclock(mip,&clocks) ;
 
-	        if ((pip->statfname != NULL) && (pip->statfname[0] != '\0') &&
+	        if ((pip->statfname != nullptr) && (pip->statfname[0] != '\0') &&
 	            (bopen(&statfile,pip->statfname,"wct",0666) >= 0)) {
 
 	            time_t	daytime ;
@@ -981,14 +959,14 @@ ULONG		skipinstr ;
 #endif
 
 	            pip->f.statistics = FALSE ;
-	            pip->sfp = NULL ;
+	            pip->sfp = nullptr ;
 
 	            bclose(&statfile) ;
 
 	        } /* end if (statistics file) */
 
 
-	        if (pip->ofp != NULL) {
+	        if (pip->ofp != nullptr) {
 
 	            struct rusage	a ;
 
@@ -1033,7 +1011,7 @@ ULONG		skipinstr ;
 	            sm.in) ;
 #endif
 
-	    if (pip->ofp != NULL) {
+	    if (pip->ofp != nullptr) {
 
 	        bprintf(pip->ofp,"instructions executed %lld\n",
 	            sm.in) ;
@@ -1063,7 +1041,7 @@ ULONG		skipinstr ;
 
 	    if (rs1 >= 0) {
 
-	        if (pip->ofp != NULL) {
+	        if (pip->ofp != nullptr) {
 
 	            bprintf(pip->ofp,"maximum break address=%08x\n",
 	                brkmax) ;
@@ -1097,7 +1075,7 @@ ULONG		skipinstr ;
 
 	    } /* end if */
 
-	    if (pip->ofp != NULL) {
+	    if (pip->ofp != nullptr) {
 
 	        rs1 = syscalls_stats(&sc,&s) ;
 
@@ -1183,32 +1161,32 @@ ret3:
 
 /* free up any allocated stuff */
 
-	if (pip->sctfname != NULL)
+	if (pip->sctfname != nullptr)
 	    free(pip->sctfname) ;
 
-	if (pip->fcfname != NULL)
+	if (pip->fcfname != nullptr)
 	    free(pip->fcfname) ;
 
-	if (pip->statfname != NULL)
+	if (pip->statfname != nullptr)
 	    free(pip->statfname) ;
 
-	if (pip->xmlfname != NULL)
+	if (pip->xmlfname != nullptr)
 	    free(pip->xmlfname) ;
 
-	if ((pip->etfname != NULL) && f_etfname) {
+	if ((pip->etfname != nullptr) && f_etfname) {
 
 	    free(pip->etfname) ;
 
-	    pip->etfname = NULL ;
+	    pip->etfname = nullptr ;
 	}
 
-	if (pip->execfname != NULL)
+	if (pip->execfname != nullptr)
 	    free(pip->execfname) ;
 
 
 /* we're out of here */
 ret2:
-	if (fifname != NULL)
+	if (fifname != nullptr)
 	    free(fifname) ;
 
 ret1:
@@ -1236,7 +1214,7 @@ ret0:
 
 
 /* find the executable */
-static int findprog(pr,name,exts,result)
+local int findprog(pr,name,exts,result)
 char	pr[] ;
 char	name[] ;
 char	*const exts[] ;
@@ -1247,65 +1225,54 @@ char	result[] ;
 	char	*bn, *cp ;
 
 
-	if ((pr == NULL) || (name == NULL))
+	if ((pr == nullptr) || (name == nullptr))
 	    return SR_FAULT ;
 
-	if ((exts == NULL) || (result == NULL))
+	if ((exts == nullptr) || (result == nullptr))
 	    return SR_FAULT ;
 
 	bn = name ;
 	bnlen = -1 ;
-	if ((cp = strrchr(name,'.')) != NULL)
+	if ((cp = strrchr(name,'.')) != nullptr)
 	    bnlen = cp - name ;
 
 	else
 	    bnlen = strlen(name) ;
 
-	for (i = 0 ; exts[i] != NULL ; i += 1) {
+	for (i = 0 ; exts[i] != nullptr ; i += 1) {
 
 	    sl = bufprintf(result,MAXPATHLEN,"%s/bin/%W.%s",
 	        pr,bn,bnlen,exts[i]) ;
 
-	    if (perm(result,-1,-1,NULL,X_OK | R_OK) >= 0)
+	    if (perm(result,-1,-1,nullptr,X_OK | R_OK) >= 0)
 	        break ;
 
 	} /* end for */
 
-	if (exts[i] == NULL)
+	if (exts[i] == nullptr)
 	    return SR_NOTFOUND ;
 
 	return sl ;
 }
 /* end subroutine (findprog) */
 
-
-static int process_fcount(pip,smp)
+local int process_fcount(pip,smp)
 struct proginfo		*pip ;
 struct statemips	*smp ;
 {
 	char	tmpfname[MAXPATHLEN + 1] ;
-
 	int	rs = SR_OK, i ;
 	int	rs1 ;
 
-
-/* function instruction counts */
-
+	/* function instruction counts */
 	    if (pip->f.fcount) {
 	        bfile	tmpfile ;
-
 	        rs = fcount_done(&pip->fc) ;
-
 	        mkfname(tmpfname,pip->jobname,FE_FCOUNTS) ;
-
 	        if ((rs1 = bopen(&tmpfile,tmpfname,"wct",0666)) >= 0) {
-
 	            FCOUNT_ENTRY	*ep ;
-
 	            double	fn, fd, fpercent ;
-
 	            uint	ins, calls ;
-
 
 	            bprintf(&tmpfile,"%12llu %7.3f%% %08x %08x %s\n",
 	                smp->in,100.0,0,0,"*total*") ;
@@ -1323,13 +1290,13 @@ struct statemips	*smp ;
 #if	CF_MASTERDEBUG && CF_DEBUG
 	                if (DEBUGLEVEL(4)) {
 	                    eprintf("stats: i=%d ep=%p\n",i,ep) ;
-	                    if (ep != NULL)
+	                    if (ep != nullptr)
 	                        eprintf("stats: ia=%08x ins=%u n=%s\n",
 	                            ep->ia,ep->ins,ep->name) ;
 	                }
 #endif
 
-	                if (ep == NULL)
+	                if (ep == nullptr)
 	                    continue ;
 
 	                fn = (double) ep->ins ;
@@ -1349,6 +1316,5 @@ struct statemips	*smp ;
 	return rs ;
 }
 /* end subroutine (process_fcount) */
-
 
 
