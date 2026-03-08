@@ -1,6 +1,6 @@
 /* exectrace SUPPORT */
 /* charset=ISO8859-1 */
-/* lang=C++20 (conformance reviewed) */
+/* lang=C++20 */
 
 /* create and read an execution trace */
 /* version %I% last-modified %G% */
@@ -45,7 +45,8 @@
 #include	<cstddef>		/* |nullptr_t| */
 #include	<cstdlib>
 #include	<cstring>
-#include	<usystem.h>
+#include	<clanguage.h>
+#include	<usysbase.h>
 #include	<getxusername.h>
 #include	<getnodedomain.h>
 #include	<bfile.h>
@@ -57,15 +58,18 @@
 
 #include	"exectrace.h"
 
+#pragma		GCC dependency		"mod/libutil.ccm"
+
+import libutil ;			/* |lenstr(3u)| */
 
 /* local defines */
 
 #define	GETDP(type)	(((type) >> EXECTRACE_TBITS) & 15)
 
-#define	ET		EXECTRACE{
+#define	ET		exectrace
+#define	ET_ENT		exectrace_ent
 
 /* modes */
-
 #define	EXECTRACE_MREAD		0
 #define	EXECTRACE_MWRITE	1
 #define	EXECTRACE_MAPPEND	2
@@ -91,19 +95,19 @@
 
 /* forward references */
 
-int 		exectrace_read(EXECTRACE *,EXECTRACE_ENTRY *) ;
+int 		exectrace_read(EXECTRACE *,ET_ENT *) ;
 
-static int	exectrace_readsub(EXECTRACE *,EXECTRACE_ENTRY *,uint) ;
+local int	exectrace_readsub(EXECTRACE *,ET_ENT *,uint) ;
 
 #if	CF_DEBUGS
-extern int	mkhexstr(char *,int,void *,int) ;
+extern int	mkhexstr(char *,int,void *,int) noex ;
 #endif
 #if	CF_DEBUGS
-static int	half(LONG,int) ;
+local int	half(long,int) noex ;
 #endif
 
 #ifdef	COMMENT
-static void	mkmodestr(char *,int) ;
+static void	mkmodestr(char *,int) noex ;
 #endif
 
 
@@ -111,7 +115,7 @@ static void	mkmodestr(char *,int) ;
 
 #if	CF_DEBUGS
 
-static const char	*typenames[] = {
+constexpr cpcchar	typenames[] = {
 	"name",
 	"date",
 	"where",
@@ -127,7 +131,7 @@ static const char	*typenames[] = {
 	"rsv",
 	"msv",
 	"syscall",
-	NULL
+	nullptr
 } ;
 
 #endif /* CF_DEBUGS */
@@ -139,17 +143,17 @@ static const char	*typenames[] = {
 /* exported subroutines */
 
 int exectrace_open(ET *op,cc *filename,cc *accmode,int perm,cc *progname) noex {
-	EXECTRACE_ENTRY	e ;
+	ET_ENT	e ;
 
-	LONG	starttime ;
+	long	starttime ;
 
 	int	rs, rs1 ;
 	int	i, sl ;
 	int	rtype ;
-	int	f_read = FALSE ;
-	int	f_write = FALSE ;
-	int	f_append = FALSE ;
-	int	f_seekable = FALSE ;
+	int	f_read = false ;
+	int	f_write = false ;
+	int	f_append = false ;
+	int	f_seekable = false ;
 
 	char	nodename[NODENAMELEN + 1] ;
 	char	username[USERNAMELEN + 1] ;
@@ -158,18 +162,18 @@ int exectrace_open(ET *op,cc *filename,cc *accmode,int perm,cc *progname) noex {
 	char	*cp ;
 
 
-	if (op == NULL)
+	if (op == nullptr)
 	    return SR_FAULT ;
 
-	if ((filename == NULL) || (accmode == NULL))
+	if ((filename == nullptr) || (accmode == nullptr))
 	    return SR_FAULT ;
 
-	(void) memset(op,0,sizeof(EXECTRACE)) ;
+	memclear(op) ;
 
 /* sanity check */
 
 #if	CF_DEBUGS
-	for (i = 0 ; typenames[i] != NULL ; i += 1) ;
+	for (i = 0 ; typenames[i] != nullptr ; i += 1) ;
 	if (i != EXECTRACE_ROVERLAST)
 	    return SR_BADFMT ;
 #endif /* CF_DEBUGS */
@@ -186,18 +190,18 @@ int exectrace_open(ET *op,cc *filename,cc *accmode,int perm,cc *progname) noex {
 	    switch (accmode[0]) {
 
 	    case 'r':
-	        f_read = TRUE ;
+	        f_read = true ;
 	        *cp++ = 'r' ;
 	        break ;
 
 	    case 'a':
-	        f_append = TRUE ;
+	        f_append = true ;
 	        *cp++ = 'r' ;
 
 /* FALL THROUGH */
 
 	    case 'w':
-	        f_write = TRUE ;
+	        f_write = true ;
 	        *cp++ = 'w' ;
 	        break ;
 
@@ -238,7 +242,7 @@ int exectrace_open(ET *op,cc *filename,cc *accmode,int perm,cc *progname) noex {
 	if (rs < 0)
 	    goto bad0 ;
 
-	rs = bcontrol(&op->tfile,BC_CLOSEONEXEC,TRUE) ;
+	rs = bcontrol(&op->tfile,BC_CLOSEONEXEC,true) ;
 
 	if (rs < 0)
 	    goto bad1 ;
@@ -248,7 +252,7 @@ int exectrace_open(ET *op,cc *filename,cc *accmode,int perm,cc *progname) noex {
 #if	CF_SETBUF
 	if (bseek(&op->tfile,0L,SEEK_CUR) >= 0) {
 
-	    f_seekable = TRUE ;
+	    f_seekable = true ;
 	    bcontrol(&op->tfile,BC_SETBUF,BUFSIZE) ;
 
 	}
@@ -257,9 +261,7 @@ int exectrace_open(ET *op,cc *filename,cc *accmode,int perm,cc *progname) noex {
 /* do some things depending on how we are accessing */
 
 	if (f_read || f_append) {
-
 	    int	len ;
-
 
 #if	CF_DEBUGS
 	    debugprintf("exectrace_open: read/append\n") ;
@@ -329,22 +331,20 @@ int exectrace_open(ET *op,cc *filename,cc *accmode,int perm,cc *progname) noex {
 
 /* make up some nice test arrays for speed */
 
-	    (void) memset(&op->istypeinfo,0,EXECTRACE_ROVERLAST) ;
+	    op->istypeinfo = {} ;
+	    for (i = 0 ; i < EXECTRACE_RCLOCK ; i += 1) {
+	        op->istypeinfo[i] = true ;
+	    }
 
-	    for (i = 0 ; i < EXECTRACE_RCLOCK ; i += 1)
-	        op->istypeinfo[i] = TRUE ;
+	    op->istypesom = {} ;
+	    op->istypesom[EXECTRACE_RIA] = true ;
+	    op->istypesom[EXECTRACE_RSYSCALL] = true ;
+	    op->istypesom[EXECTRACE_RSOM] = true ;
 
-	    (void) memset(&op->istypesom,0,EXECTRACE_ROVERLAST) ;
-
-	    op->istypesom[EXECTRACE_RIA] = TRUE ;
-	    op->istypesom[EXECTRACE_RSYSCALL] = TRUE ;
-	    op->istypesom[EXECTRACE_RSOM] = TRUE ;
-
-	    (void) memset(&op->istypeextra,0,EXECTRACE_ROVERLAST) ;
-
-	    op->istypeextra[EXECTRACE_RREG] = TRUE ;
-	    op->istypeextra[EXECTRACE_RMEM] = TRUE ;
-	    op->istypeextra[EXECTRACE_RIN] = TRUE ;
+	    op->istypeextra = {} ;
+	    op->istypeextra[EXECTRACE_RREG] = true ;
+	    op->istypeextra[EXECTRACE_RMEM] = true ;
+	    op->istypeextra[EXECTRACE_RIN] = true ;
 
 /* start the process off */
 
@@ -377,7 +377,7 @@ int exectrace_open(ET *op,cc *filename,cc *accmode,int perm,cc *progname) noex {
 #endif
 
 	        rs = SR_OK ;
-	        op->f.eof = TRUE ;
+	        op->f.eof = true ;
 
 	    }
 
@@ -392,7 +392,7 @@ int exectrace_open(ET *op,cc *filename,cc *accmode,int perm,cc *progname) noex {
 
 /* write a NAME record */
 
-	    if ((progname != NULL) && (progname[0] != '\0')) {
+	    if ((progname != nullptr) && (progname[0] != '\0')) {
 
 	        bputc(&op->tfile,EXECTRACE_RNAME) ;
 
@@ -407,7 +407,7 @@ int exectrace_open(ET *op,cc *filename,cc *accmode,int perm,cc *progname) noex {
 
 /* write a WHERE record */
 
-	    rs1 = getnodedomain(nodename,NULL) ;
+	    rs1 = getnodedomain(nodename,nullptr) ;
 
 #if	CF_DEBUGS
 	    debugprintf("exectrace_open: getnodedomain() rs=%d\n",rs1) ;
@@ -426,7 +426,7 @@ int exectrace_open(ET *op,cc *filename,cc *accmode,int perm,cc *progname) noex {
 
 /* write a DATE record */
 
-	    starttime = unixtime(NULL) ;
+	    starttime = unixtime(nullptr) ;
 
 	    bputc(&op->tfile,EXECTRACE_RDATE) ;
 
@@ -437,7 +437,7 @@ int exectrace_open(ET *op,cc *filename,cc *accmode,int perm,cc *progname) noex {
 	        starttime,half(starttime,1),half(starttime,0)) ;
 #endif
 
-	    rs = bwrite(&op->tfile,linebuf,sizeof(LONG)) ;
+	    rs = bwrite(&op->tfile,linebuf,szof(long)) ;
 
 	} /* end if (writing but not appending) */
 
@@ -476,7 +476,7 @@ EXECTRACE	*op ;
 	int	rs = SR_OK ;
 
 
-	if (op == NULL)
+	if (op == nullptr)
 	    return SR_FAULT ;
 
 	if (op->magic != EXECTRACE_MAGIC)
@@ -497,7 +497,7 @@ EXECTRACE	*op ;
 /* write out a clock record */
 int exectrace_wclock(op,clock)
 EXECTRACE	*op ;
-ULONG		clock ;
+ulong		clock ;
 {
 	int	rs = SR_OK ;
 
@@ -505,7 +505,7 @@ ULONG		clock ;
 
 
 #if	CF_SAFE
-	if (op == NULL)
+	if (op == nullptr)
 	    return SR_FAULT ;
 
 	if (op->magic != EXECTRACE_MAGIC)
@@ -544,7 +544,7 @@ uint		ia ;
 
 
 #if	CF_SAFE
-	if (op == NULL)
+	if (op == nullptr)
 	    return SR_FAULT ;
 
 	if (op->magic != EXECTRACE_MAGIC)
@@ -615,7 +615,7 @@ uint		n ;
 
 
 #if	CF_SAFE
-	if (op == NULL)
+	if (op == nullptr)
 	    return SR_FAULT ;
 
 	if (op->magic != EXECTRACE_MAGIC)
@@ -653,7 +653,7 @@ uint		n ;
 
 
 #if	CF_SAFE
-	if (op == NULL)
+	if (op == nullptr)
 	    return SR_FAULT ;
 
 	if (op->magic != EXECTRACE_MAGIC)
@@ -683,7 +683,7 @@ uint		n ;
 /* write out an instruction number record */
 int exectrace_win(op,in)
 EXECTRACE	*op ;
-ULONG		in ;
+ulong		in ;
 {
 	int	rs = SR_OK ;
 
@@ -691,7 +691,7 @@ ULONG		in ;
 
 
 #if	CF_SAFE
-	if (op == NULL)
+	if (op == nullptr)
 	    return SR_FAULT ;
 
 	if (op->magic != EXECTRACE_MAGIC)
@@ -731,7 +731,7 @@ uint		a, dv, dp ;
 
 
 #if	CF_SAFE
-	if (op == NULL)
+	if (op == nullptr)
 	    return SR_FAULT ;
 
 	if (op->magic != EXECTRACE_MAGIC)
@@ -777,7 +777,7 @@ uint		a ;
 
 
 #if	CF_SAFE
-	if (op == NULL)
+	if (op == nullptr)
 	    return SR_FAULT ;
 
 	if (op->magic != EXECTRACE_MAGIC)
@@ -824,7 +824,7 @@ uint		a, dv ;
 
 
 #if	CF_SAFE
-	if (op == NULL)
+	if (op == nullptr)
 	    return SR_FAULT ;
 
 	if (op->magic != EXECTRACE_MAGIC)
@@ -869,7 +869,7 @@ uint		a, dv, dp ;
 
 
 #if	CF_SAFE
-	if (op == NULL)
+	if (op == nullptr)
 	    return SR_FAULT ;
 
 	if (op->magic != EXECTRACE_MAGIC)
@@ -915,7 +915,7 @@ uint		a ;
 
 
 #if	CF_SAFE
-	if (op == NULL)
+	if (op == nullptr)
 	    return SR_FAULT ;
 
 	if (op->magic != EXECTRACE_MAGIC)
@@ -959,7 +959,7 @@ uint		a, dv ;
 
 
 #if	CF_SAFE
-	if (op == NULL)
+	if (op == nullptr)
 	    return SR_FAULT ;
 
 	if (op->magic != EXECTRACE_MAGIC)
@@ -1002,13 +1002,13 @@ uint		a, dv ;
 /* read a logical trace record */
 int exectrace_read(op,ep)
 EXECTRACE	*op ;
-EXECTRACE_ENTRY	*ep ;
+ET_ENT	*ep ;
 {
 	int	rs, len ;
 	int	rtype, n ;
-	int	f_clock = FALSE ;
-	int	f_som = FALSE ;
-	int	f_extra = FALSE ;
+	int	f_clock = false ;
+	int	f_som = false ;
+	int	f_extra = false ;
 	int	f_delay ;
 
 #if	CF_FASTCLEAR
@@ -1023,13 +1023,13 @@ EXECTRACE_ENTRY	*ep ;
 #endif
 
 #if	CF_SAFE
-	if (op == NULL)
+	if (op == nullptr)
 	    return SR_FAULT ;
 
 	if (op->magic != EXECTRACE_MAGIC)
 	    return SR_NOTOPEN ;
 
-	if (ep == NULL)
+	if (ep == nullptr)
 	    return SR_FAULT ;
 #endif /* CF_SAFE */
 
@@ -1043,7 +1043,7 @@ EXECTRACE_ENTRY	*ep ;
 	*ebp++ = 0 ;
 	*ebp++ = 0 ;
 #else
-	(void) memset(&ep->f,0,sizeof(struct exectrace_eflags)) ;
+	ep->f = {} ;
 #endif
 
 	if (op->r.type < 0) {
@@ -1089,7 +1089,7 @@ EXECTRACE_ENTRY	*ep ;
 
 
 	n = 0 ;
-	while (TRUE) {
+	while (true) {
 
 	    if (f_clock && (rtype == EXECTRACE_RCLOCK))
 	        break ;
@@ -1114,18 +1114,18 @@ EXECTRACE_ENTRY	*ep ;
 	    switch (rtype) {
 
 	    case EXECTRACE_RCLOCK:
-	        f_clock = TRUE ;
+	        f_clock = true ;
 	        break ;
 
 	    case EXECTRACE_RIA:
 	    case EXECTRACE_RSYSCALL:
 	    case EXECTRACE_RSOM:
-	        f_som = TRUE ;
-	        f_clock = TRUE ;
+	        f_som = true ;
+	        f_clock = true ;
 	        break ;
 
 	    default:
-	        f_som = TRUE ;
+	        f_som = true ;
 
 	    } /* end switch */
 
@@ -1192,7 +1192,7 @@ EXECTRACE	*op ;
 	int	rs ;
 
 
-	if (op == NULL)
+	if (op == nullptr)
 	    return SR_FAULT ;
 
 	if (op->magic != EXECTRACE_MAGIC)
@@ -1219,7 +1219,7 @@ EXECTRACE_INFO	**ipp ;
 {
 
 
-	if (op == NULL)
+	if (op == nullptr)
 	    return SR_FAULT ;
 
 	if (op->magic != EXECTRACE_MAGIC)
@@ -1228,7 +1228,7 @@ EXECTRACE_INFO	**ipp ;
 	if (op->rs < 0)
 	    return op->rs ;
 
-	if (ipp == NULL)
+	if (ipp == nullptr)
 	    return SR_FAULT ;
 
 	*ipp = &op->i ;
@@ -1237,26 +1237,20 @@ EXECTRACE_INFO	**ipp ;
 /* end subroutine (exectrace_getinfo) */
 
 
-
-/* PRIVATE SUBROUTINES */
-
-
+/* private subroutines */
 
 /* read the next sub-record the trace */
-static int exectrace_readsub(op,ep,rtype)
+local int exectrace_readsub(op,ep,rtype)
 EXECTRACE	*op ;
-EXECTRACE_ENTRY	*ep ;
+ET_ENT	*ep ;
 uint		rtype ;
 {
 	uint	ia ;
-
 	int	rs = SR_OK ;
 	int	len, sl ;
 	int	noi ;
-
 	char	linebuf[LINEBUFLEN + 1] ;
 	char	*cp ;
-
 
 #if	CF_DEBUGS
 	{
@@ -1272,22 +1266,17 @@ uint		rtype ;
 	case EXECTRACE_RNAME:
 	case EXECTRACE_RWHERE:
 	    rs = breadline(&op->tfile,linebuf,LINEBUFLEN) ;
-
-	    if (rs < 0)
-	        break ;
-
+	    if (rs < 0) break ;
 	    if (rs == 0) {
-
 	        rs = SR_BADFMT ;
 	        break ;
 	    }
 
 	    len = rs ;
-	    if (linebuf[len - 1] == '\n')
+	    if (linebuf[len - 1] == '\n') {
 	        len -= 1 ;
-
+	    }
 	    switch (rtype) {
-
 	    case EXECTRACE_RNAME:
 	        sl = EXECTRACE_NAMELEN ;
 	        cp = op->i.name ;
@@ -1309,25 +1298,17 @@ uint		rtype ;
 #endif
 
 	        break ;
-
 	    } /* end switch */
-
 	    strwcpy(cp,linebuf,MIN(sl,len)) ;
-
 	    break ;
 
 	case EXECTRACE_RDATE:
-	    rs = bread(&op->tfile,linebuf,sizeof(LONG)) ;
-
-	    if (rs < 0)
-	        break ;
-
+	    rs = bread(&op->tfile,linebuf,szof(long)) ;
+	    if (rs < 0) break ;
 	    if (rs == 0) {
-
 	        rs = SR_BADFMT ;
 	        break ;
 	    }
-
 	    netorder_rll(linebuf,&op->i.date) ;
 
 #if	CF_DEBUGS
@@ -1338,56 +1319,35 @@ uint		rtype ;
 	    break ;
 
 	case EXECTRACE_RCLOCK:
-	    rs = bread(&op->tfile,linebuf,sizeof(LONG)) ;
-
-	    if (rs < 0)
-	        break ;
-
+	    rs = bread(&op->tfile,linebuf,szof(long)) ;
+	    if (rs < 0) break ;
 	    if (rs == 0) {
-
 	        rs = SR_BADFMT ;
 	        break ;
 	    }
-
 	    netorder_rull(linebuf,&op->r.clock) ;
-
-	    if (ep != NULL) {
-
+	    if (ep != nullptr) {
 	        ep->clock = op->r.clock ;
-	        ep->f.clock = TRUE ;
+	        ep->f.clock = true ;
 	    }
-
 	    break ;
 
 	case EXECTRACE_RIA:
 	    if ((op->r.type & 0xF0) == 0) {
-
-	        rs = bread(&op->tfile,linebuf,sizeof(uint)) ;
-
-	        if (rs < 0)
-	            break ;
-
+	        rs = bread(&op->tfile,linebuf,szof(uint)) ;
+	        if (rs < 0) break ;
 	        if (rs == 0) {
-
 	            rs = SR_BADFMT ;
 	            break ;
 	        }
-
 	        netorder_ruint(linebuf,&ia) ;
-
 	    } else {
-
 	        uint	inc ;
-
-
 	        inc = (op->r.type >> 4) & 15 ;
 	        ia = op->ia_last + inc ;
-
 	    } /* end if (which variety) */
-
-	    if (ep != NULL) {
-
-	        ep->f.ia = TRUE ;
+	    if (ep != nullptr) {
+	        ep->f.ia = true ;
 	        ep->ia = ia ;
 
 #if	CF_DEBUGS
@@ -1409,20 +1369,14 @@ uint		rtype ;
 	    break ;
 
 	case EXECTRACE_RSOM:
-	    rs = bread(&op->tfile,linebuf,sizeof(uint)) ;
-
-	    if (rs < 0)
-	        break ;
-
+	    rs = bread(&op->tfile,linebuf,szof(uint)) ;
+	    if (rs < 0) break ;
 	    if (rs == 0) {
-
 	        rs = SR_BADFMT ;
 	        break ;
 	    }
-
-	    if (ep != NULL) {
-
-	        ep->f.som = TRUE ;
+	    if (ep != nullptr) {
+	        ep->f.som = true ;
 	        netorder_ruint(linebuf,&ep->som) ;
 
 #if	CF_DEBUGS
@@ -1430,24 +1384,16 @@ uint		rtype ;
 #endif
 
 	    }
-
 	    break ;
-
 	case EXECTRACE_RSYSCALL:
-	    rs = bread(&op->tfile,linebuf,sizeof(uint)) ;
-
-	    if (rs < 0)
-	        break ;
-
+	    rs = bread(&op->tfile,linebuf,szof(uint)) ;
+	    if (rs < 0) break ;
 	    if (rs == 0) {
-
 	        rs = SR_BADFMT ;
 	        break ;
 	    }
-
-	    if (ep != NULL) {
-
-	        ep->f.sc = TRUE ;
+	    if (ep != nullptr) {
+	        ep->f.sc = true ;
 	        netorder_ruint(linebuf,&ep->sc) ;
 
 #if	CF_DEBUGS
@@ -1455,65 +1401,41 @@ uint		rtype ;
 #endif
 
 	    }
-
 	    break ;
-
 	case EXECTRACE_RIN:
-	    rs = bread(&op->tfile,linebuf,sizeof(ULONG)) ;
-
-	    if (rs < 0)
-	        break ;
-
+	    rs = bread(&op->tfile,linebuf,szof(ulong)) ;
+	    if (rs < 0) break ;
 	    if (rs == 0) {
-
 	        rs = SR_BADFMT ;
 	        break ;
 	    }
-
 	    netorder_rull(linebuf,&op->r.in) ;
 
 #if	CF_DEBUGS
 	    debugprintf("exectrace_readsub: in=%lld\n",op->r.in) ;
 #endif
 
-	    if (ep != NULL) {
-
+	    if (ep != nullptr) {
 	        ep->in = op->r.in ;
-	        ep->f.in = TRUE ;
-
+	        ep->f.in = true ;
 	    }
-
 	    if (! op->f.in) {
-
 	        op->i.in = op->r.in ;
-	        op->f.in = TRUE ;
-
+	        op->f.in = true ;
 	    }
-
 	    break ;
 
 	case EXECTRACE_RREG:
-	    len = sizeof(char) + sizeof(uint) ;
+	    len = szof(char) + szof(uint) ;
 	    rs = bread(&op->tfile,linebuf,len) ;
-
-#if	CF_DEBUGS
-	    debugprintf("exectrace_readsub: bread() len=%d rs=%d\n",len,rs) ;
-#endif
-
-	    if (rs < 0)
-	        break ;
-
+	    if (rs < 0) break ;
 	    if (rs < len) {
-
 	        rs = SR_BADFMT ;
 	        break ;
 	    }
-
-	    if (ep != NULL) {
-
+	    if (ep != nullptr) {
 	        noi = ep->f.reg ;
 	        if (noi < EXECTRACE_NREG) {
-
 	            ep->reg[noi].a = linebuf[0] & 0xff ;
 	            ep->reg[noi].dp = EXECTRACE_DPALL ;
 	            netorder_ruint(linebuf + 1,&ep->reg[noi].dv) ;
@@ -1527,41 +1449,28 @@ uint		rtype ;
 
 	            ep->f.reg += 1 ;
 	        }
-
 	    }
-
 	    break ;
 
 	case EXECTRACE_RRSA:
 	case EXECTRACE_RRSV:
 	    switch (rtype) {
-
 	    case EXECTRACE_RRSA:
-	        len = sizeof(char) ;
+	        len = szof(char) ;
 	        break ;
-
 	    case EXECTRACE_RRSV:
-	        len = sizeof(char) + sizeof(int) ;
+	        len = szof(char) + szof(int) ;
 	        break ;
-
 	    } /* end switch */
-
 	    rs = bread(&op->tfile,linebuf,len) ;
-
-	    if (rs < 0)
-	        break ;
-
+	    if (rs < 0) break ;
 	    if (rs < len) {
-
 	        rs = SR_BADFMT ;
 	        break ;
 	    }
-
-	    if (ep != NULL) {
-
+	    if (ep != nullptr) {
 	        noi = ep->f.sreg ;
 	        if (noi < EXECTRACE_NREG) {
-
 	            ep->sreg[noi].a = linebuf[0] & 0xff ;
 	            ep->sreg[noi].dp = 0 ;
 	            ep->sreg[noi].dv = 0 ;
@@ -1580,35 +1489,24 @@ uint		rtype ;
 #endif
 
 	            ep->f.sreg += 1 ;
-
 	        } /* end if (place to store) */
-
 	    } /* end if (have store entry) */
-
 	    break ;
 
 	case EXECTRACE_RMEM:
-	    len = 2 * sizeof(uint) ;
+	    len = 2 * szof(uint) ;
 	    rs = bread(&op->tfile,linebuf,len) ;
-
-	    if (rs < 0)
-	        break ;
-
+	    if (rs < 0) break ;
 	    if (rs < len) {
-
 	        rs = SR_BADFMT ;
 	        break ;
 	    }
-
-	    if (ep != NULL) {
-
+	    if (ep != nullptr) {
 	        noi = ep->f.mem ;
 	        if (noi < EXECTRACE_NMEM) {
-
 	            ep->mem[noi].dp = (op->r.type >> EXECTRACE_TBITS) & 15 ;
 	            netorder_ruint(linebuf,&ep->mem[noi].a) ;
-
-	            netorder_ruint(linebuf + sizeof(uint),&ep->mem[noi].dv) ;
+	            netorder_ruint(linebuf + szof(uint),&ep->mem[noi].dv) ;
 
 #if	CF_DEBUGS
 	            debugprintf("exectrace_readsub: ma=%08x rv=%08x dp=%d\n",
@@ -1618,50 +1516,33 @@ uint		rtype ;
 #endif
 
 	            ep->f.mem += 1 ;
-
 	        } /* end if (place to store) */
-
 	    } /* end if (have store entry) */
-
 	    break ;
-
 	case EXECTRACE_RMSA:
 	case EXECTRACE_RMSV:
 	    switch (rtype) {
-
 	    case EXECTRACE_RMSA:
-	        len = sizeof(int) ;
+	        len = szof(int) ;
 	        break ;
-
 	    case EXECTRACE_RMSV:
-	        len = sizeof(int) + sizeof(int) ;
+	        len = szof(int) + szof(int) ;
 	        break ;
-
 	    } /* end switch */
-
 	    rs = bread(&op->tfile,linebuf,len) ;
-
-	    if (rs < 0)
-	        break ;
-
+	    if (rs < 0) break ;
 	    if (rs < len) {
-
 	        rs = SR_BADFMT ;
 	        break ;
 	    }
-
-	    if (ep != NULL) {
-
+	    if (ep != nullptr) {
 	        noi = ep->f.smem ;
 	        if (noi < EXECTRACE_NMEM) {
-
 	            ep->smem[noi].dp = GETDP(op->r.type) ;
 	            netorder_ruint(linebuf,&ep->smem[noi].a) ;
-
 	            if (rtype == EXECTRACE_RMSV) {
-
 	                ep->smem[noi].dp = 15 ;
-	                netorder_ruint(linebuf + sizeof(uint),
+	                netorder_ruint(linebuf + szof(uint),
 	                    &ep->smem[noi].dv) ;
 
 	            }
@@ -1674,11 +1555,8 @@ uint		rtype ;
 #endif
 
 	            ep->f.smem += 1 ;
-
 	        } /* end if (place to store) */
-
 	    } /* end if (have store entry) */
-
 	    break ;
 
 	default:
@@ -1712,21 +1590,21 @@ static void mkmodestr(buf,mode)
 char	buf[] ;
 int	mode ;
 {
-	int	f_read = FALSE ;
-	int	f_write = FALSE ;
+	int	f_read = false ;
+	int	f_write = false ;
 
 	char	*cp = buf ;
 
 
 	if ((mode & O_RDONLY) == O_RDONLY) {
 
-	    f_read = TRUE ;
+	    f_read = true ;
 	    *cp++ = 'r' ;
 	}
 
 	if ((mode & O_WRONLY) == O_WRONLY) {
 
-	    f_write = TRUE ;
+	    f_write = true ;
 	    *cp++ = 'w' ;
 	}
 
@@ -1734,13 +1612,13 @@ int	mode ;
 
 	    if (! f_write) {
 
-	        f_write = TRUE ;
+	        f_write = true ;
 	        *cp++ = 'w' ;
 	    }
 
 	    if (! f_read) {
 
-	        f_read = TRUE ;
+	        f_read = true ;
 	        *cp++ = 'r' ;
 	    }
 	}
@@ -1760,7 +1638,7 @@ int	mode ;
 
 #ifdef	COMMENT
 
-static int istypeinfo(type)
+local int istypeinfo(type)
 int	type ;
 {
 
@@ -1770,24 +1648,24 @@ int	type ;
 /* end subroutine (istypeinfo) */
 
 
-static int istypeextra(type)
+local int istypeextra(type)
 int	type ;
 {
 
 
 	if ((type & EXECTRACE_TMASK) == EXECTRACE_RREG)
-	    return TRUE ;
+	    return true ;
 
 	if ((type & EXECTRACE_TMASK) == EXECTRACE_RMEM)
-	    return TRUE ;
+	    return true ;
 
 	if ((type & EXECTRACE_TMASK) == EXECTRACE_RIN)
-	    return TRUE ;
+	    return true ;
 
 	if ((type & EXECTRACE_TMASK) == EXECTRACE_RREGDUMP)
-	    return TRUE ;
+	    return true ;
 
-	return FALSE ;
+	return false ;
 }
 /* end subroutine (istypeextra) */
 
@@ -1796,27 +1674,19 @@ int	type ;
 
 #if	CF_DEBUGS
 
-static int half(v,w)
-LONG	v ;
-int	w ;
-{
-	LONG	lw ;
-
+local int half(long v,int w) noex {
+	long	lw ;
 	int	iw ;
-
-
-	if (w == 0)
+	if (w == 0) {
 	    lw = (v & 0xffffffff) ;
-
-	else
+	} else {
 	    lw = (v >> 32) & 0xffffffff ;
-
+	}
 	iw = (int) lw ;
 	return iw ;
 }
 /* end subroutine (half) */
 
 #endif /* CF_DEBUGS */
-
 
 
