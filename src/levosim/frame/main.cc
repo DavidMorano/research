@@ -1,4 +1,4 @@
-/* main SUPPORT (leveosim-frame) */
+/* frame_main SUPPORT (leveosim-frame) */
 /* charset=ISO8859-1 */
 /* lang=C++20 (conformance reviewed) */
 
@@ -54,7 +54,7 @@
 #include	<usysbase.h>
 #include	<ascii.h>
 #include	<bitops.h>
-#include	<bio.h>
+#include	<bfile.h>
 #include	<field.h>
 #include	<logfile.h>
 #include	<vecstr.h>
@@ -66,6 +66,7 @@
 #include	<paramfile.h>
 #include	<getfname.h>
 #include	<vstrxcmp.h>		/* |vstrkeycmp(3uc)| */
+#include	<prognamevar.hh>
 #include	<char.h>
 #include	<exitcodes.h>
 #include	<localmisc.h>
@@ -239,28 +240,23 @@ int	f_exit ;
 int	f_pipe ;
 
 
+/* exported variables */
+
+
 /* exported subroutines */
 
-
-int main(int argc,const char **argv,const char **envv)
-{
+int main(int argc,mainv argv,mainv envv) {
+    	prognamevar	progname(argc,argv,envv) ;
 	bfile		errfile, *efp = &errfile ;
 	bfile		logfile ;
 	bfile		pidfile ;
 	bfile		btfile ;
-
-	USTAT		sb ;
-
-	struct proginfo		g, *pip = &g ;
-
-	struct userinfo		u ;
-
-	CONFIGFILE		cf ;
-
-	PARAMFILE		pfile ;
-
+	ustat		sb ;
+	proginfo	g, *pip = &g ;
+	userinfo	u ;
+	CONFIGFILE	cf ;
+	PARAMFILE	pfile ;
 	vecstr		defines, unsets, exports ;
-
 	SCHEDVAR	svars ;
 
 #ifdef	COMMENT
@@ -332,7 +328,7 @@ int main(int argc,const char **argv,const char **envv)
 	pip->version = VERSION ;
 	pip->envv = envv ;
 	pip->arg0 = argv[0] ;
-	pip->progname = strbasename(argv[0]) ;
+	pip->progname = progname ;
 
 #if	CF_DEBUGS
 	eprintf("main: progname=%s\n",pip->progname) ;
@@ -2087,26 +2083,16 @@ int main(int argc,const char **argv,const char **envv)
 
 #if	CF_MASTERDEBUG && CF_DEBUG
 	    if (pip->debuglevel > 1) {
-
-		PARAMFILE_ENTRY		pe ;
-
+		paramfile_ent		pe ;
 		int	vl ;
-
 		char	pebuf[PEBUFLEN + 1] ;
 		char	vbuf[VBUFLEN + 1] ;
 
-
 	        if (pip->f.params) {
-
-	            PARAMFILE_CURSOR	cur ;
-
-
-/* enumeration of raw entries */
-
+	            paramfile_cur	cur ;
+		    /* enumeration of raw entries */
 	            eprintf("main: parameter enum \n") ;
-
-	            paramfile_cursorinit(&pfile,&cur) ;
-
+	            paramfile_curbegin(&pfile,&cur) ;
 	            for (i = 0 ; 
 			paramfile_curenum(&pfile,&cur,&pe,pebuf,PEBUFLEN) >= 0 ; 
 	                i += 1) {
@@ -2116,12 +2102,9 @@ int main(int argc,const char **argv,const char **envv)
 	                        pe.key, pe.orig) ;
 
 	            } /* end for */
-
-	            paramfile_cursorfree(&pfile,&cur) ;
-
+	            paramfile_curend(&pfile,&cur) ;
 
 	            vl = paramfile_fetch(&pfile,"pcs",NULL,vbuf,VBUFLEN) ;
-
 	            if (vl >= 0)
 	                eprintf("main: PF pcs=%w\n",vbuf,vl) ;
 
