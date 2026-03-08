@@ -44,7 +44,7 @@
 #include	<ctype.h>
 
 #include	<usystem.h>
-#include	<bio.h>
+#include	<bfile.h>
 #include	<field.h>
 #include	<vecitem.h>
 #include	<vecstr.h>
