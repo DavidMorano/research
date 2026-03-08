@@ -24,7 +24,7 @@
 #include	<usystem.h>
 #include	<logfile.h>
 #include	<vecstr.h>
-#include	<bio.h>
+#include	<bfile.h>
 
 #include	"misc.h"
 #include	"traceinfo.h"
