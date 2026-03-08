@@ -14,7 +14,7 @@
 
 #include	<usystem.h>
 #include	<hdb.h>
-#include	<bio.h>
+#include	<bfile.h>
 
 #include	"localmisc.h"
 
