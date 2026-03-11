@@ -34,6 +34,7 @@
 #include	<usysbase.h>
 #include	<localmisc.h>
 
+#include	<levomod.h>
 
 /* local defines */
 
@@ -48,6 +49,14 @@
 #define	NB_XOR	(4 * NB_NAND)
 
 
+/* imported namespaces */
+
+using levomod::flbs ;			/* subroutine */
+
+
+/* local typedefs */
+
+
 /* external subroutines */
 
 
@@ -56,7 +65,7 @@
 
 /* forward references */
 
-local int	costbpred(int) ;
+local int	costbpred(int) noex ;
 
 
 /* local variables */
@@ -92,7 +101,7 @@ int main(int argc,mainv argv) {
 
 /* local subroutines */
 
-local int costbpred(int a) {
+local int costbpred(int a) noex {
 	int	nand = 4 ;
 	int	cs, cd, cc, cm, csh, ci, ca ;
 	int	h, j, k, s, p ;
