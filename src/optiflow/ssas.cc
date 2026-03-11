@@ -1,7 +1,9 @@
-/* ssas */
+/* ssas SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 */
 
 /* Levo Active Station */
-
+/* version %I% last-modified %G% */
 
 #define	CF_DEBUGS	0		/* non-switchable debugging */
 #define	CF_DEBUG	0		/* switchable debugging */
@@ -17,83 +19,67 @@
 #define	CF_EXECTIMEROBJ	0		/* use EXECTIMER object */
 #define	CF_ISRES	1		/* track IS residency */
 
-
 /* revision history:
 
-	= 00/02/04, Dave Morano
-
+	= 2000-02-04, Dave Morano
 	Module was originally written for the LEVO simulator LEVOSIM.
 
-
-	= 03/04/17, Dave Morano
-
+	= 2003-04-17, Dave Morano
 	I wiped most all of the stuff that was here both before and
 	after Alireza (Khalafi) took over the code.  There are no
 	buses and I completely abandoned the "event packet" scheme
 	that Alireza had (it was a huge memory hog also and bore
 	no resemblance to any actual hardware implementaion either).
-
 	See below for the new strategy of how this who code executes.
-
 
 */
 
-/* Copyright © 2003-2007 David A­D­ Morano.  All rights reserved. */
+/* Copyright © 2000,2003 David A­D­ Morano.  All rights reserved. */
 
 /**************************************************************************
 
+  	Name:
+
+	Description:
 	This module provides the functions for a Levo Active Station.
 
-
 	Phase 0:
-
-	We do any private initialization for the current clock period.
-	No external module will try to give us any stimulus in this
-	phase.
-
+	We do any private initialization for the current clock
+	period.  No external module will try to give us any stimulus
+	in this phase.
 
 	Phase 1:
-
 	+ We may be asked whether we are ready to commit.  The
 	commitment decision is based on current state.
-
 	+ We may get loaded with an instruction and optional operands.
-
 	+ All ASes exchange their current operands.
 
-
 	Phase 2:
-
 	+ We calculate whether we need to re-execute anything.  The
 	execution will occur in the next clock if one is needed.
 
-
 	Phase 3:
-
 	+ All executions are done (initiated by the SSPE module).
 	+ We request any operands that were not already satisfied above.
 
-
 	Phase 4:
-
-	+ we get loaded here !
-	+ We handle any shifting that we might have been directed to do.
-
+	+ we get loaded here!
+	+ We handle any shifting that we might have been directed
+	to do.
 
 **************************************************************************/
 
-
-#define	SSAS_MASTER	1
-
-
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
+#include	<cstddef>
 #include	<cstdlib>
 #include	<cstring>
-
-#include	<usystem.h>
+#include	<clanguage.h>
+#include	<usysbase.h>
 #include	<bfile.h>
+#include	<findbit.h>
+#include	<localmisc.h>
 
-#include	"localmisc.h"
 #include	"ssconfig.h"
 #include	"defs.h"
 #include	"ss.h"
@@ -110,7 +96,9 @@
 #include	<dmalloc.h>
 #endif
 
+#pragma		GCC dependency		"mod/libutil.ccm"
 
+import libutil ;			/* |lenstr(3u)| */
 
 /* local defines */
 
@@ -125,15 +113,15 @@
 #define	INSTRDISLEN	100
 
 
-
 /* external subroutines */
 
-extern int	ffbsi(uint) ;
-extern int	getinterleave(uint,uint) ;
-extern int	getnumbuses(uint) ;
-extern int	seqok(uint,uint,uint) ;
-extern int	dcache_latency(struct proginfo *,SS *,
-			CHECKER *,ULONG,int) ;
+extenr "C" {
+    extern int	getinterleave(uint,uint) noex ;
+    extern int	getnumbuses(uint) noex ;
+    extern int	seqok(uint,uint,uint) noex ;
+    extern int	dcache_latency(struct proginfo *,SS *,
+			CHECKER *,ULONG,int) noex ;
+}
 
 
 /* forward references */
