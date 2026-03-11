@@ -1,57 +1,56 @@
-/* sspe */
+/* sspe SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 */
 
 /* processing element resource allocator */
-
+/* version %I% last-modified %G% */
 
 #define	CF_DEBUGS	0
 #define	CF_DEBUG	0		/* switchable debugging */
 #define	CF_SAFE		0		/* safe mode */
 #define	CF_LPE		0		/* what is this now ? */
 
-
 /* revision history:
 
-	= 00/02/04, Dave Morano
-
+	= 2000-02-04, Dave Morano
 	Module was originally written for the LEVO simulator LEVOSIM.
 
-
-	= 03/11/07, Dave Morano
-
+	= 2003-11-07, Dave Morano
 	This code was borrowed from the AS code but is pretty much
 	hacked to pieces from that.  Really just the skeleton of
 	the AS code was used.
 
-
 */
 
-/* Copyright © 2003-2007 David A­D­ Morano.  All rights reserved. */
+/* Copyright © 2000,2003 David A­D­ Morano.  All rights reserved. */
 
 /**************************************************************************
 
-	This code module provides the resource allocation function for
-	the ASes.  As AS will call 'sspe_getfu()' to try to get
-	(reserve) a functional unit for its execution.  If the return
-	value is non-zero positive, then it has the unit.  If the
-	return is 0, then no more units were available in the
-	requesting clock cycle.  If the return is negative, then it is
-	a programming bug because the AS asked for an invalid function
-	unit.
+  	Name:
 
+	Description:
+	This code module provides the resource allocation function
+	for the ASes.  As AS will call 'sspe_getfu()' to try to get
+	(reserve) a functional unit for its execution.  If the
+	return value is non-zero positive, then it has the unit.
+	If the return is 0, then no more units were available in
+	the requesting clock cycle.  If the return is negative,
+	then it is a programming bug because the AS asked for an
+	invalid function unit.
 
 **************************************************************************/
 
-
-#define	SSPE_MASTER	0
-
-
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
+#include	<cstddef>
+#include	<cstdlib>
 #include	<cstdlib>
 #include	<cstring>
+#include	<clanguage.h>
+#include	<usysbase.h>
+#include	<findbit.h>
+#include	<localmisc.h>
 
-#include	<usystem.h>
-
-#include	"localmisc.h"
 #include	"ssconfig.h"
 #include	"defs.h"
 #include	"ss.h"
@@ -69,7 +68,6 @@
 #endif
 
 
-
 /* local defines */
 
 #define	SSPE_MAGIC	0x09189887
@@ -83,30 +81,30 @@
 #define	INSTRDISLEN	100
 
 
-
 /* external subroutines */
 
-extern int	ffbsi(uint) ;
-extern int	getnumbuses(uint) ;
+extern "C" {
+    extern int	getnumbuses(uint) noex ;
+}
 
 
 /* forward references */
 
-static int	sspe_loadcnums(SSPE *,struct ssinfo *) ;
-static int	sspe_loaddefs(SSPE *,struct proginfo *,struct ssinfo *) ;
-static int	sspe_finish(SSPE *,struct proginfo *,struct ssinfo *) ;
-static int	sspe_combstart(SSPE *,struct proginfo *,struct ssinfo *) ;
-static int	sspe_combend(SSPE *,struct proginfo *,struct ssinfo *) ;
-static int	sspe_furesults(SSPE *,struct proginfo *,struct ssinfo *) ;
-static int	sspe_handleshift(SSPE *,struct proginfo *,struct ssinfo *) ;
+local int	sspe_loadcnums(SSPE *,struct ssinfo *) ;
+local int	sspe_loaddefs(SSPE *,struct proginfo *,struct ssinfo *) ;
+local int	sspe_finish(SSPE *,struct proginfo *,struct ssinfo *) ;
+local int	sspe_combstart(SSPE *,struct proginfo *,struct ssinfo *) ;
+local int	sspe_combend(SSPE *,struct proginfo *,struct ssinfo *) ;
+local int	sspe_furesults(SSPE *,struct proginfo *,struct ssinfo *) ;
+local int	sspe_handleshift(SSPE *,struct proginfo *,struct ssinfo *) ;
 
 #ifdef	COMMENT
-static int	sspe_xmloutreg(SSPE *,XMLINFO *,struct proginfo *,
+local int	sspe_xmloutreg(SSPE *,XMLINFO *,struct proginfo *,
 			struct sspe_reg *,char *) ;
 #endif /* COMMENT */
 
 #if	(CF_MASTERDEBUG && CF_DEBUG) || F_XML
-static int	mkttbuf(char *,int) ;
+local int	mkttbuf(char *,int) ;
 #endif
 
 /* local variables */
@@ -1127,7 +1125,7 @@ SSPE		*op ;
 
 
 /* get the FU results and call back to the ASes */
-static int sspe_furesults(op,pip,lip)
+local int sspe_furesults(op,pip,lip)
 SSPE		*op ;
 struct proginfo	*pip ;
 struct ssinfo	*lip ;
@@ -1217,7 +1215,7 @@ struct ssinfo	*lip ;
 /* end subroutine (sspe_furesults) */
 
 
-static int sspe_loaddefs(op,pip,lip)
+local int sspe_loaddefs(op,pip,lip)
 SSPE		*op ;
 struct proginfo	*pip ;
 struct ssinfo	*lip ;
@@ -1240,7 +1238,7 @@ struct ssinfo	*lip ;
 /* end subroutine (sspe_loaddefs) */
 
 
-static int sspe_finish(op,pip,lip)
+local int sspe_finish(op,pip,lip)
 SSPE		*op ;
 struct proginfo	*pip ;
 struct ssinfo	*lip ;
@@ -1302,7 +1300,7 @@ struct ssinfo	*lip ;
 
 #ifdef	COMMENT
 
-static int sspe_loadcnums(op,lip)
+local int sspe_loadcnums(op,lip)
 SSPE		*op ;
 struct ssinfo	*lip ;
 {
@@ -1350,7 +1348,7 @@ struct ssinfo	*lip ;
 
 
 /* handle a machine shift operation ! */
-static int sspe_handleshift(op,pip,lip)
+local int sspe_handleshift(op,pip,lip)
 SSPE		*op ;
 struct proginfo	*pip ;
 struct ssinfo	*lip ;
@@ -1369,7 +1367,7 @@ struct ssinfo	*lip ;
 /* end subroutine (sspe_handleshift) */
 
 
-static int sspe_combstart(op,pip,lip)
+local int sspe_combstart(op,pip,lip)
 SSPE		*op ;
 struct proginfo	*pip ;
 struct ssinfo	*lip ;
@@ -1385,15 +1383,13 @@ struct ssinfo	*lip ;
 }
 /* end subroutine (sspe_combstart) */
 
-
-static int sspe_combend(op,pip,lip)
+local int sspe_combend(op,pip,lip)
 SSPE		*op ;
 struct proginfo	*pip ;
 struct ssinfo	*lip ;
 {
 
 	int	rs = SR_OK ;
-
 
 #if	CF_MASTERDEBUG && CF_DEBUG && 0
 	if (DEBUGLEVEL(4))
@@ -1404,29 +1400,23 @@ struct ssinfo	*lip ;
 }
 /* end subroutine (sspe_combend) */
 
-
 #if	(CF_MASTERDEBUG && CF_DEBUG) || F_XML
 
-static int mkttbuf(buf,tt)
+local int mkttbuf(buf,tt)
 char	buf[] ;
 int	tt ;
 {
 	int	rs ;
-
-
 	if (tt < SSPE_DISPLAYTT) {
-
 	    buf[0] = '-' ;
 	    buf[1] = '\0' ;
 	    rs = 2 ;
-
-	} else
+	} else {
 	    rs = ctdeci(buf,-1,tt) ;
-
+	}
 	return rs ;
 }
 
 #endif /* CF_DEBUG */
-
 
 
