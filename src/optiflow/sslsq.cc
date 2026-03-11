@@ -1,7 +1,9 @@
-/* sslsq */
+/* sslsq SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 */
 
 /* load-store queue */
-
+/* version %I% last-modified %G% */
 
 #define	CF_DEBUG	0		/* switchable debugging */
 #define	CF_SAFE		1		/* safe mode */
@@ -9,31 +11,28 @@
 #define	CF_INSTREXEC	1
 #define	CF_SCREWMEM	0		/* memory alignment crap ? */
 
-
 /* revision history:
 
-	= 00/02/04, Dave Morano
-
+	= 2000-02-04, Dave Morano
 	Module was originally written for the LEVO simulator LEVOSIM.
 
-
-	= 03/04/17, Dave Morano
-
+	= 2003-04-17, Dave Morano
 	I wiped most all of the stuff that was here both before and
 	after Alireza (Khalafi) took over the code.  There are no
 	buses and I completely abandoned the "event packet" scheme
 	that Alireza had (it was a huge memory hog also and bore
 	no resemblance to any actual hardware implementaion either).
-
 	See below for the new strategy of how this who code executes.
-
 
 */
 
-/* Copyright © 2003-2007 David A­D­ Morano.  All rights reserved. */
+/* Copyright © 2000,2003 David A­D­ Morano.  All rights reserved. */
 
 /**************************************************************************
 
+  	Name:
+
+	Description:
 	This module provides the load-store-queue function.
 	It also stores pending read requests that are outstanding
 	in the memory system hierarchy.
@@ -63,20 +62,18 @@
 	marked as needing export and it eventually gets broadcast back
 	to the ASes, including any that requested it.
 
-
 **************************************************************************/
 
-
-#define	SSLSQ_MASTER	1
-
-
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
+#include	<cstddef>
 #include	<cstdlib>
 #include	<cstring>
+#include	<clanguage.h>
+#include	<usysbase.h>
+#include	<findbit.h>
+#include	<localmisc.h>
 
-#include	<usystem.h>
-
-#include	"localmisc.h"
 #include	"ssconfig.h"
 #include	"defs.h"
 #include	"ss.h"
@@ -93,7 +90,9 @@
 #include	<dmalloc.h>
 #endif
 
+#pragma		GCC dependency		"mod/libutil.ccm"
 
+import libutil ;			/* |lenstr(3u)| */
 
 /* local defines */
 
@@ -119,13 +118,13 @@
 #endif
 
 
-
 /* external subroutines */
 
-extern int	ffbsi(uint) ;
-extern int	getinterleave(uint,uint) ;
-extern int	getnumbuses(uint) ;
-extern int	seqok(uint,uint,uint) ;
+extenr "C" {
+    extern int	getinterleave(uint,uint) noex ;
+    extern int	getnumbuses(uint) noex ;
+    extern int	seqok(uint,uint,uint) noex ;
+}
 
 
 /* forward references */
@@ -147,9 +146,10 @@ static int	mkttbuf(char *,int) ;
 #endif
 
 
+/* exported variables */
 
 
-
+/* exported subroutines */
 
 int sslsq_init(op,pip,mip,lip,ap)
 SSLSQ		*op ;
@@ -158,56 +158,43 @@ SS		*mip ;
 struct ssinfo	*lip ;
 SSLSQ_INITARGS	*ap ;
 {
-	int	rs = SR_OK, i ;
+	int	rs = SR_OK ;
 	int	size ;
 	int	n ;
-
+	int	i ;
 
 	if (op == NULL)
 	    return SR_FAULT ;
 
-	(void) memset(op,0,sizeof(SSLSQ)) ;
-
+	memclear(op) ;
 	op->magic = 0 ;
-
-#ifdef	OPTIONAL
-	(void) memset(&op->f,0,sizeof(struct sslsq_flags)) ;
-#endif
-
+	op->f = {} ;
 	op->pip = pip ;
 	op->mip = mip ;
 	op->lip = lip ;
 
-	if (ap != NULL) {
-
-/* register forwarding type */
-
+	if (ap) {
+	   /* register forwarding type */
 	    op->rftype = MIN(ap->rftype,1) ;
-
 	    op->nwrites = ap->nwrites ;
 	    op->nreads = ap->nreads ;
 	}
 
-
 /* fix up any bad arguments */
 
 	n = (lip->iwsize * 2) ;
-	if (op->nwrites < n)
+	if (op->nwrites < n) {
 	    op->nwrites = n ;
-
+	}
 	n = (lip->iwsize * 2) ;
-	if (op->nreads < n)
+	if (op->nreads < n) {
 	    op->nreads = n ;
-
+	}
 
 /* zero all machine state */
 
-#ifdef	OPTIONAL
-	(void) memset(&op->c,0,sizeof(struct sslsq_state)) ;
-
-	(void) memset(&op->n,0,sizeof(struct sslsq_state)) ;
-#endif
-
+	op->c = {} ;
+	op->n = {} ;
 
 /* allocate data structures */
 
@@ -225,8 +212,7 @@ SSLSQ_INITARGS	*ap ;
 	if (rs < 0)
 	    goto bad0 ;
 
-	memset(op->a.writes,0,size) ;
-
+	memclear(op->a.writes,size) ;
 	op->n.writes = op->a.writes + 0 ;
 	op->c.writes = op->a.writes + op->nwrites ;
 
@@ -238,8 +224,7 @@ SSLSQ_INITARGS	*ap ;
 	if (rs < 0)
 	    goto bad1 ;
 
-	memset(op->a.reads,0,size) ;
-
+	memclear(op->a.reads,size) ;
 	op->n.reads = op->a.reads + 0 ;
 	op->c.reads = op->a.reads + op->nreads ;
 
@@ -672,7 +657,7 @@ uint		size ;
 
 	    if (i < op->nreads) {
 
-	        memset(&op->n.reads[i],0,sizeof(struct sslsq_slot)) ;
+	        memclear(&op->n.reads[i],szof(struct sslsq_slot)) ;
 
 	        op->n.reads[i].fg.a = a ;
 	        op->n.reads[i].fg.size = size ;
@@ -1204,33 +1189,23 @@ int		wset ;
 /* do the write slots */
 
 	for (i = 0 ; i < op->nwrites ; i += 1) {
-
 	    wsp = op->n.writes + i ;
-	    memset(&wsp->set,0,sizeof(struct sslsq_rflags)) ;
-
-	    memset(&wsp->clr,0,sizeof(struct sslsq_rflags)) ;
-
+	    wsp->set = {} ;
+	    wsp->clr = {} ;
 	    oop = &wsp->fg ;
-	    memset(&oop->set,0,sizeof(struct operand_flags)) ;
-
-	    memset(&oop->clr,0,sizeof(struct operand_flags)) ;
-
+	    oop->set = {} ;
+	    oop->clr = {} ;
 	} /* end for */
 
 /* do the read slots */
 
 	for (i = 0 ; i < op->nreads ; i += 1) {
-
 	    rsp = op->n.reads + i ;
-	    memset(&rsp->set,0,sizeof(struct sslsq_rflags)) ;
-
-	    memset(&rsp->clr,0,sizeof(struct sslsq_rflags)) ;
-
+	    rsp->set = {} ;
+	    rsp->clr = {} ;
 	    oop = &rsp->fg ;
-	    memset(&oop->set,0,sizeof(struct operand_flags)) ;
-
-	    memset(&oop->clr,0,sizeof(struct operand_flags)) ;
-
+	    oop->set = {} ;
+	    oop->clr = {} ;
 	} /* end for */
 
 	return rs ;
