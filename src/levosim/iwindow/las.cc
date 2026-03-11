@@ -1,132 +1,104 @@
-/* las */
+/* las SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 */
 
 /* Levo Active Station */
+/* version %I% last-modified %G% */
 
+#define	CF_DEBUGS	0		/* non-switchable debugging */
+#define	CF_DEBUG	1		/* switchable debugging */
+#define	CF_FPRINTF	1		/* print to STDOUT */
+#define CF_LASDETAILS	1		/* show LAS Bus interface details */
+#define CF_LASDETAILS2	1		/* show LAS Bus interface details */
+#define CF_LASDETAILS3	0		/* show LAS Bus interface details */
+#define	CF_STDIOFLUSH	1		/* flush stdout ? */
+#define	CF_SAFE		1		/* safe mode */
+#define	CF_SAFE2	0		/* more safe */
+#define	CF_SAFEFUNC	0		/* extra-extra safe ? */
+#define	CF_RBBHACK	1		/* Dave's REG backwarding bus hack */
+#define	CF_RFBHACK	1		/* Dave's RFB snoop hack */
+#define	CF_CHECKSUM	0		/* please turn this **ON** ! */
+#define	CF_SANITYSUBOBJ	0		/* sanity check */
+#define	CF_SANITYOURSELF 1		/* sanity check */
+#define	CF_SANITYSTATE	1		/* sanity check */
+#define	CF_BADBADHACK	1		/* please get rid of this !! */
+#define	CF_EXTRASNOOP	1		/* use the extra snoop rule ? */
+#define PERCF_FETCH	1		/* perfect fetching */
+#define	CF_NODST3	1		/* no DST3 yet */
+#define	CF_XML		1		/* supprt for XML state output */
 
-#define	F_DEBUGS	0		/* non-switchable debugging */
-#define	F_DEBUG		1		/* switchable debugging */
-#define	F_FPRINTF	1		/* print to STDOUT */
-#define F_LASDETAILS	1		/* show LAS Bus interface details */
-#define F_LASDETAILS2	1		/* show LAS Bus interface details */
-#define F_LASDETAILS3	0		/* show LAS Bus interface details */
-#define	F_STDIOFLUSH	1		/* flush stdout ? */
-#define	F_SAFE		1		/* safe mode */
-#define	F_SAFE2		0		/* more safe */
-#define	F_SAFEFUNC	0		/* extra-extra safe ? */
-#define	F_RBBHACK	1		/* Dave's REG backwarding bus hack */
-#define	F_RFBHACK	1		/* Dave's RFB snoop hack */
-#define	F_CHECKSUM	0		/* please turn this **ON** ! */
-#define	F_SANITYSUBOBJ	0		/* sanity check */
-#define	F_SANITYOURSELF	1		/* sanity check */
-#define	F_SANITYSTATE	1		/* sanity check */
-#define	F_BADBADHACK	1		/* please get rid of this !! */
-#define	F_EXTRASNOOP	1		/* use the extra snoop rule ? */
-#define PERF_FETCH	1		/* perfect fetching */
-#define	F_NODST3	1		/* no DST3 yet */
-#define	F_XML		1		/* supprt for XML state output */
+/* revision history:
 
-
-/* revision history :
-
-	= 00/02/04, Dave Morano
-
+	= 2000-02-04, David Morano
 	Module was originally written for the LEVO simulator LEVOSIM.
 
-
-	= 00/06/15, Alireza Khalafi
-
+	= 2000-06-15, Alireza Khalafi
 	I took over this code for Levo IV.
 
-
-	= 00/07/17, Dave Morano
-
+	= 2000-07-17, David Morano
 	I integrated the code into an initial runnable build package.
 	I also added code for handling most all the buses that come
 	to as AS.
 
-
-	= 00/10/03, Dave Morano
-
-	+ I changed the way some buses come into the LAS object.  This
-	was necessary because many of the buses coming into the
-	i-window are different than before due to the introduction of
-	the Levo Memory (Write) Queue object into the machine.  
-
+	= 2000-10-03, David Morano
+	+ I changed the way some buses come into the LAS object.
+	This was necessary because many of the buses coming into
+	the i-window are different than before due to the introduction
+	of the Levo Memory (Write) Queue object into the machine.
 	+ There was also a bug with the check for failure from some
 	'malloc()' calls but as it turned out it was not causing a
 	problem on the current OS !  I fixed the 'malloc()' problems
 	and also fixed up some broken cleanup code in the case when
-	something in initialization failed (again this was not generally
-	a real problem at all).
+	something in initialization failed (again this was not
+	generally a real problem at all).
 
-
-	= 01/01/10, Dave Morano
-
+	= 2001-01-10, David Morano
 	I updated the code for doing machine "shifts" !
 
-
-	= 01/01/16, Dave Morano
-
-	I updated the code by adding the 'las_commitinfo()' subroutine.
+	= 2001-01-16, David Morano
+	I updated the code by adding the |las_commitinfo()| subroutine.
 	This was needed to privide additional information back to
 	the execution window control logic for control flow changes
 	that occur that go 'out of the window'.
 
-
-	= 01/03/13, Dave Morano
-
+	= 2001-03-13, David Morano
 	I just made a very small change to snoop one less bus for
 	the group of Register Forwarding Buses that have been given
 	to us.  This prevents the same register update from reaching
 	us through two different paths.  This is now a bad thing
-	so we want to avoid it !
+	so we want to avoid it!
 
+	= 2001-03-30, David Morano
+	I instrumented this code in order to find the bad LPE bug
+	that was causing our recent crashes.
 
-	= 01/03/30, Dave Morano
-
-	I instrumented this code in order to find the bad LPE bug that
-	was causing our recent crashes.
-
-
-	= 01/05/14, Dave Morano
-
+	= 2001-05-14, David Morano
 	I fixed a stray write bug that had to do with the number
 	of cancelling predicates that we were getting from a load.
 	The code was overwriting the end of the allocated array
 	to hold the predicates.
 
+	- 2001-05-15, David Morano
+	I added some code to prevent transactions from looping
+	around the machine which can happen without active prevention
+	when bus spans of more than '1' are configured.
 
-	= 01/05/15, Dave Morano
-
-	I added some code to prevent transactions from looping around
-	the machine which can happen without active prevention when
-	bus spans of more than '1' are configured.
-
-
-	= 01/05/17, Dave Morano
-
+	- 2001-05-17, David Morano
 	I added an extra snooping rule to prevent duplicate
-	transactions from being snarfed and processed.  These can occur
-	when the machine is confired with a register forwarding bus
-	span greater than one.
+	transactions from being snarfed and processed.  These can
+	occur when the machine is confired with a register forwarding
+	bus span greater than one.
 
-
-	= 01/05/31, Dave Morano
-
+	- 2001-05-31, David Morano
 	I tried to fix up the 'las_commitinfo()' subroutine to
 	provide the correct indication of whether the instruction
 	was enabled or not.
 
-
-	= 01/09/26, Dave Morano
-
+	= 2001-09-26, David Morano
 	I added some code to support the XML state trace.
 
-
-	= 02/01/17, Dave Morano
-
-	I added :
-
+	= 2002-01-17, David Morano
+	I added:
 	+ path
 	+ tt
 	+ opclass
@@ -143,6 +115,49 @@
 	I do not know if it fixes anything for the better.  Probably
 	not but at least they are now in a known state.
 
+*/
+
+/* Copyright © 2000,2001 David A­D­ Morano.  All rights reserved. */
+/* Use is subject to license terms. */
+
+/**************************************************************************
+
+  	Name:
+	las
+
+	Description:
+	This module provides the functions for a Levo Active Station.
+
+	Operational note:
+	The register forwarding bus and predicate forwarding bus are
+	both wired alike to us and we snoop them proceeding backwards
+	from where we are in the bus array.  For a forwarding span
+	of N, we snoop :
+
+	+ ourselves (that is, our own bus)
+	+ N buses previous to ourselves (modulo the total number of buses)
+
+	This is a total of (N + 1) buses to be snooped for a span of N.
+
+	Backwarding buses are wired differently than forwarding buses
+	but it isn't as bad as it might seem from looking at the
+	connectivity pattern in the IW object !  The whole machine is
+	SG-view centric and so this makes looking at the buses from
+	within an SG (like us) easier to understand.  Anyway, the rule
+	is that we snoop:
+
+	+ ourselves (of course)
+	+ (N - 1) buses that are previous to us
+
+	This is a total of N backwarding buses being snooped for a span
+	of N.  As it turns out, in spite of the weirdo bus connectivity
+	arrangement of backwarding buses, it is almost similar to the
+	old (before we got smarter) arrangement.  David Morano actually
+	worked this out to this extent to make our life easier!
+
+	I do not know if it fixes anything for the better.  Probably
+	not but at least they are now in a known state.
+
 	When an AS first gets loaded with a MIPS load type instructions,
 	it tries to make a request on the memory-backwarding-bus with
 	a garbage memory address.  The garbage memory address will now
@@ -153,23 +168,27 @@
 	make its first memory request with that calculated address.
 	The address might still be wrong (welcome to Levo) but at least
 	it is better than pure random (which is what was happenning
-	previously) !
-
+	previously)!
 
 */
 
+/* Copyright © 2000,2001,2002 David A­D­ Morano.  All rights reserved. */
+/* Use is subject to license terms. */
 
+/*******************************************************************************
 
-/**************************************************************************
+  	Name:
+	las
 
+	Description:
 	This module provides the functions for a Levo Active Station.
 
-	Operational note :
+	Operational note:
 
 	The register forwarding bus and predicate forwarding bus are
 	both wired alike to us and we snoop them proceeding backwards
 	from where we are in the bus array.  For a forwarding span
-	of N, we snoop :
+	of N, we snoop:
 
 	+ ourselves (that is, our own bus)
 	+ N buses previous to ourselves (modulo the total number of buses)
@@ -189,25 +208,23 @@
 	This is a total of N backwarding buses being snooped for a span
 	of N.  As it turns out, in spite of the weirdo bus connectivity
 	arrangement of backwarding buses, it is almost similar to the
-	old (before we got smarter) arrangement.  Dave Morano actually
+	old (before we got smarter) arrangement.  David Morano actually
 	worked this out to this extent to make our life easier !
 
+*******************************************************************************/
 
-**************************************************************************/
-
-
-#define	LAS_MASTER		1
-
-
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
-#include	<cstdlib>
-#include	<cstring>
 #include	<assert.h>
+#include	<cstddef>
+#include	<cstdlib>
 #include	<cstdio>
+#include	<cstring>
+#include	<clanguage.h>
+#include	<usysbase.h>
+#include	<findbit.h>
+#include	<localmisc.h>
 
-#include	<usystem.h>
-
-#include	"localmisc.h"
 #include	"config.h"
 #include	"defs.h"
 #include	"lsim.h"
@@ -231,7 +248,9 @@
 #include	<dmalloc.h>
 #endif
 
+#pragma		GCC dependency		"mod/libutil.ccm"
 
+import libutil ;			/* |lenstr(3u)| */
 
 /* local defines */
 
@@ -246,66 +265,66 @@
 #define	INSTRDISLEN	100
 
 
-
 /* external subroutines */
 
-extern int	ffbsi(uint) ;
-extern int	getinterleave(uint,uint) ;
-extern int	getnumbuses(uint) ;
-extern int	seqok(uint,uint,uint) ;
+extenr "C" {
+    extern int	getinterleave(uint,uint) noex ;
+    extern int	getnumbuses(uint) noex ;
+    extern int	seqok(uint,uint,uint) noex ;
+}
 
 
 /* forward references */
 
-static int      busintgrp_shift(struct busintgrp *,
+local int      busintgrp_shift(struct busintgrp *,
 			struct proginfo *, struct levoinfo *) ;
-static int	busintgrp_init(struct busintgrp *,
+local int	busintgrp_init(struct busintgrp *,
 			struct proginfo *, struct levoinfo *, 
 			BUS *,int,int,int,int,int,int) ;
-static int	busintgrp_free(struct busintgrp *) ;
-static int      busintgrp_sanitycheck(struct busintgrp *,
+local int	busintgrp_free(struct busintgrp *) ;
+local int      busintgrp_sanitycheck(struct busintgrp *,
 			struct proginfo *,struct levoinfo *) ;
 
-static int	RFWB_interface(LAS *,struct proginfo *,struct levoinfo *) ;
-static int	RBWB_interface(LAS *,struct proginfo *,struct levoinfo *) ;
-static int	PFWB_interface(LAS *,struct proginfo *,struct levoinfo *) ;
-static int	MFWB_interface(LAS *,struct proginfo *,struct levoinfo *) ;
-static int	MBWB_interface(LAS *,struct proginfo *,struct levoinfo *) ;
-static int	PE_interface(LAS *,struct proginfo *,struct levoinfo *) ;
-static int	snoop_RFWB_interface(LAS *,
+local int	RFWB_interface(LAS *,struct proginfo *,struct levoinfo *) ;
+local int	RBWB_interface(LAS *,struct proginfo *,struct levoinfo *) ;
+local int	PFWB_interface(LAS *,struct proginfo *,struct levoinfo *) ;
+local int	MFWB_interface(LAS *,struct proginfo *,struct levoinfo *) ;
+local int	MBWB_interface(LAS *,struct proginfo *,struct levoinfo *) ;
+local int	PE_interface(LAS *,struct proginfo *,struct levoinfo *) ;
+local int	snoop_RFWB_interface(LAS *,
 			struct proginfo *,struct levoinfo *) ;
-static int	snoop_RBWB_interface(LAS *,
+local int	snoop_RBWB_interface(LAS *,
 			struct proginfo *,struct levoinfo *) ;
-static int	snoop_PFWB_interface(LAS *,
+local int	snoop_PFWB_interface(LAS *,
 			struct proginfo *,struct levoinfo *) ;
-static int	snoop_MFWB_interface(LAS *,
+local int	snoop_MFWB_interface(LAS *,
 			struct proginfo *,struct levoinfo *) ;
-static int	snoop_MBWB_interface(LAS *,
+local int	snoop_MBWB_interface(LAS *,
 			struct proginfo *,struct levoinfo *) ;
-static int	AS_logic(LAS *,struct proginfo *,struct levoinfo *) ;
-static int	las_predicate_logic(LAS *);
-static int	las_handleshift(LAS *,struct proginfo *,struct levoinfo *) ;
-static int	las_readrfbuses(LAS *,struct proginfo *,struct levoinfo *,
+local int	AS_logic(LAS *,struct proginfo *,struct levoinfo *) ;
+local int	las_predicate_logic(LAS *);
+local int	las_handleshift(LAS *,struct proginfo *,struct levoinfo *) ;
+local int	las_readrfbuses(LAS *,struct proginfo *,struct levoinfo *,
 			LBUSINT *,int) ;
-static int	las_doshift(LAS *,struct proginfo *,struct levoinfo *,
+local int	las_doshift(LAS *,struct proginfo *,struct levoinfo *,
 			int,int,int *) ;
-static int	PE_checkresult(LAS *,struct proginfo *) ;
-static int	las_checkdst3(LAS *,struct proginfo *) ;
-static int	las_loadalireg(LAS *,struct las_reg *) ;
-static int	send_packet(LAS *,struct las_packet *,las_storage,uint,int) ;
-static int	las_print_et(LAS *,int,int,int) ;
-static int	las_print_asid(LAS *) ;
-static int	las_print(LAS *) ;
-static int	las_xmloutreg(LAS *,XMLINFO *,struct proginfo *,
+local int	PE_checkresult(LAS *,struct proginfo *) ;
+local int	las_checkdst3(LAS *,struct proginfo *) ;
+local int	las_loadalireg(LAS *,struct las_reg *) ;
+local int	send_packet(LAS *,struct las_packet *,las_storage,uint,int) ;
+local int	las_print_et(LAS *,int,int,int) ;
+local int	las_print_asid(LAS *) ;
+local int	las_print(LAS *) ;
+local int	las_xmloutreg(LAS *,XMLINFO *,struct proginfo *,
 			struct las_reg *,char *) ;
 
-static int	fill_packet(struct las_packet *,LFLOWGROUP *) ;
-static int	read_packet(struct las_packet *,LFLOWGROUP *) ;
-static int	las_print_pred_regs(struct pred_regs *) ;
-static int	las_print_register(const char *, struct las_reg) ;
+local int	fill_packet(struct las_packet *,LFLOWGROUP *) ;
+local int	read_packet(struct las_packet *,LFLOWGROUP *) ;
+local int	las_print_pred_regs(struct pred_regs *) ;
+local int	las_print_register(const char *, struct las_reg) ;
 
-#if	F_FPRINTF || (F_MASTERDEBUG && F_DEBUG) || F_XML
-static int	mkttbuf(char *,int) ;
+#if	CF_FPRINTF || (CF_MASTERDEBUG && CF_DEBUG) || CF_XML
+local int	mkttbuf(char *,int) ;
 #endif
 
 
@@ -332,6 +351,11 @@ static int	mkttbuf(char *,int) ;
 ****/
 
 
+/* exported variables */
+
+
+/* exported subroutines */
+
 int las_init(lasp,pip,mip,lip,ap)
 LAS		*lasp ;
 struct proginfo	*pip ;
@@ -340,30 +364,22 @@ struct levoinfo	*lip ;
 LAS_INITARGS	*ap ;
 {
 	BUS	*busp ;
-
 	int	rs, i, j, k ;
 	int	n, size ;
 	int	npred ;
 	int	maxspan ;
 
+	if ((lasp == nullptr) || (ap == nullptr)) return SR_FAULT ;
 
-	if ((lasp == NULL) || (ap == NULL))
-		return SR_FAULT ;
-
-#if	(! defined(OPTIONAL)) /* ? */
-	(void) memset(lasp,0,sizeof(LAS)) ;
-#endif
-
+	memclear(lasp) ;
 	lasp->magic = 0 ;
-	(void) memset(&lasp->f,0,sizeof(struct las_flags)) ;
-
+	lasp->f = {} ;
 	lasp->pip = pip ;
 	lasp->mip = mip ;
 	lasp->lip = lip ;
-
 	lasp->asid = ap->asid ;		/* our ID */
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1)
 	eprintf("las_init: LAS=%08lx ASID=%d\n",lasp,ap->asid) ;
 #endif
@@ -391,7 +407,6 @@ LAS_INITARGS	*ap ;
 	lasp->mfwb_intleave = ap->mfinter ;		/* bits for MFB */
 	lasp->mbwb_intleave = ap->mbinter ;		/* bits for MBB */
 
-
 /* our physical AS row is here in element 'lasp->asrow' ! */
 
 	lasp->naspcol = lip->totalrows ;
@@ -409,10 +424,8 @@ LAS_INITARGS	*ap ;
 
 /* zero all machine state */
 
-	(void) memset(&lasp->c,0,sizeof(struct las_state)) ;
-
-	(void) memset(&lasp->n,0,sizeof(struct las_state)) ;
-
+	lasp->c = {} ;
+	lasp->n = {} ;
 	lasp->c.mem.latesttt = lasp->n.mem.latesttt = INT_MIN ;
 	lasp->c.asstate = lasp->n.asstate = UNUSED ;
 
@@ -429,7 +442,7 @@ LAS_INITARGS	*ap ;
 
 /* allocate the predicate register resources */
 
-	size = 2 * npred * sizeof(struct las_reg) ;
+	size = 2 * npred * szof(struct las_reg) ;
 	rs = uc_malloc(size,&lasp->c.pregs.cpin) ;
 
 	if (rs < 0)
@@ -437,7 +450,7 @@ LAS_INITARGS	*ap ;
 
 	lasp->n.pregs.cpin = lasp->c.pregs.cpin + npred ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1)
 	    eprintf(
 		"las_init: npred=%d c_pregs_cpin=%08lx n_pregs_cpin=%08lx\n",
@@ -455,21 +468,21 @@ LAS_INITARGS	*ap ;
 
 /* register forwarding */
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1) {
 		eprintf("las_init: RFB(0)=%08lx span=%d\n",ap->rfbuses,
 			lip->nrfspan) ;
 	}
 #endif
 
-#if	F_RFBHACK
+#if	CF_RFBHACK
 	n = MAX(lip->nrfspan,1) ;	/* new way */
 #else
 	n = lip->nrfspan + 1 ;		/* old way */
 #endif
 
 	rs = busintgrp_init(&lasp->rfwbus,pip,lip,
-	    ap->rfbuses,FALSE,ap->rfbi,lip->nsg,n,ap->busid,RFWB) ;
+	    ap->rfbuses,false,ap->rfbi,lip->nsg,n,ap->busid,RFWB) ;
 
 	if (rs < 0)
 	    goto bad1 ;
@@ -479,20 +492,20 @@ LAS_INITARGS	*ap ;
 
 /* register backwarding */
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1)
 		eprintf("las_init: RBB(0)=%08lx span=%d\n",ap->rbbuses,
 			lip->nrbspan) ;
 #endif
 
-#if	F_RBBHACK
+#if	CF_RBBHACK
 	n = MAX(lip->nrbspan,1) ;	/* new way */
 #else
 	n = lip->nrbspan + 1 ;		/* old way */
 #endif
 
 	rs = busintgrp_init(&lasp->rbwbus,pip,lip,
-	    ap->rbbuses,TRUE,ap->rbbi,lip->nsg,n,ap->busid,RBWB) ;
+	    ap->rbbuses,true,ap->rbbi,lip->nsg,n,ap->busid,RBWB) ;
 
 	if (rs < 0)
 	    goto bad2 ;
@@ -502,7 +515,7 @@ LAS_INITARGS	*ap ;
 
 /* predicate forwarding */
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1)
 		eprintf("las_init: PFB(0)=%08lx span=%d\n",ap->pfbuses,
 			lip->npfspan) ;
@@ -510,7 +523,7 @@ LAS_INITARGS	*ap ;
 
 	n = lip->npfspan + 1 ;
 	rs = busintgrp_init(&lasp->pfwbus,pip,lip,
-	    ap->pfbuses,FALSE,ap->pfbi,lip->nsg,n,ap->busid,PFWB) ;
+	    ap->pfbuses,false,ap->pfbi,lip->nsg,n,ap->busid,PFWB) ;
 
 	if (rs < 0)
 	    goto bad3 ;
@@ -520,7 +533,7 @@ LAS_INITARGS	*ap ;
 
 /* memory forwarding */
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1)
 	eprintf("las_init: MFB(0)=%08lx\n",ap->mfbuses) ;
 #endif
@@ -528,7 +541,7 @@ LAS_INITARGS	*ap ;
 	n = getnumbuses(ap->mfinter) ;
 
 	busp = ap->mfbuses ;
-	rs = busintgrp_init(&lasp->mfwbus,pip,lip,busp,TRUE,0,n,n,
+	rs = busintgrp_init(&lasp->mfwbus,pip,lip,busp,true,0,n,n,
 		ap->busid,MFWB) ;
 
 	if (rs < 0)
@@ -536,7 +549,7 @@ LAS_INITARGS	*ap ;
 
 /* memory backwarding */
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1)
 	eprintf("las_init: MBB(0)=%08lx\n",ap->mbbuses) ;
 #endif
@@ -544,7 +557,7 @@ LAS_INITARGS	*ap ;
 	n = getnumbuses(ap->mbinter) ;
 
 	busp = ap->mbbuses ;
-	rs = busintgrp_init(&lasp->mbwbus,pip,lip,busp,TRUE,0,n,n,
+	rs = busintgrp_init(&lasp->mbwbus,pip,lip,busp,true,0,n,n,
 		ap->busid,MBWB) ;
 
 	if (rs < 0)
@@ -553,37 +566,32 @@ LAS_INITARGS	*ap ;
 
 /* allocate some temporary bus read register buffer */
 
-	size = maxspan * sizeof(struct las_busreg) ;
+	size = maxspan * szof(struct las_busreg) ;
 	rs = uc_malloc(size,&lasp->busregs) ;
 
 	if (rs < 0)
 		goto bad5 ;
 
-	(void) memset(lasp->busregs,0,size) ;
-
+	memclear(lasp->busregs,size) ;
 
 /* OK, clear out the event table for starters */
 
 	for (i = 0 ; i < NCOMMANDS ; i += 1) {
-
 	    for (j = 0 ; j < NBUSES ; j += 1) {
-
-		for (k = 0 ; k < NSTORAGES ; k += 1)
-		    lasp->c.event_table[i][j][k].valid = FALSE ;
-
+		for (k = 0 ; k < NSTORAGES ; k += 1) {
+		    lasp->c.event_table[i][j][k].valid = false ;
+		}
 	    }
-
 	} /* end for */
-
 
 /* checksum */
 
-#if	F_MASTERDEBUG && F_SAFE
-	d_checkcalc(&lasp->c,sizeof(struct las_state),&lasp->c.checksum) ;
+#if	CF_MASTERDEBUG && CF_SAFE
+	d_checkcalc(&lasp->c,szof(struct las_state),&lasp->c.checksum) ;
 #endif
 
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1)
 	eprintf("las_init: exiting rs=%d\n",rs) ;
 #endif
@@ -594,10 +602,9 @@ LAS_INITARGS	*ap ;
 /* bad things */
 bad6:
 
-#ifdef	COMMENT
-	if (lasp->busregs != NULL)
+	if (lasp->busregs) {
 		free(lasp->busregs) ;
-#endif
+	}
 
 bad5:
 	busintgrp_free(&lasp->mfwbus) ;
@@ -612,8 +619,9 @@ bad2:
 	busintgrp_free(&lasp->rfwbus) ;
 
 bad1:
-	if (lasp->c.pregs.cpin != NULL)
+	if (lasp->c.pregs.cpin) {
 		free(lasp->c.pregs.cpin) ;
+	}
 
 bad0:
 	return rs ;
@@ -626,14 +634,11 @@ int las_free(lasp)
 LAS	*lasp ;
 {
 	struct proginfo		*pip ;
-
 	int	rs = SR_OK ;
 
+	if (lasp == nullptr) return SR_FAULT ;
 
-	if (lasp == NULL)
-	    return SR_FAULT ;
-
-#if	F_MASTERDEBUG && F_SAFE
+#if	CF_MASTERDEBUG && CF_SAFE
 	if ((lasp->magic != LAS_MAGIC) && (lasp->magic != 0)) {
 
 		eprintf("las_free: LAS=%08lx bad magic\n",lasp) ;
@@ -643,11 +648,11 @@ LAS	*lasp ;
 
 	if (lasp->magic != LAS_MAGIC)
 		return SR_NOTOPEN ;
-#endif /* F_SAFE */
+#endif /* CF_SAFE */
 
 	pip = lasp->pip ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 3) {
 	eprintf("las_free: ASID=%d LAS=%08lx\n",
 		lasp->asid,lasp) ;
@@ -657,28 +662,28 @@ LAS	*lasp ;
 
 	busintgrp_free(&lasp->mbwbus) ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 3)
 	eprintf("las_free: 2 bus-int-groups\n") ;
 #endif
 
 	busintgrp_free(&lasp->mfwbus) ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 3)
 	eprintf("las_free: RF bus-int-groups\n") ;
 #endif
 
 	busintgrp_free(&lasp->rfwbus) ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 3)
 	eprintf("las_free: RB bus-int-groups\n") ;
 #endif
 
 	rs = busintgrp_free(&lasp->rbwbus) ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 3) {
 	eprintf("las_free: RB rs=%d\n",rs) ;
 	eprintf("las_free: PF bus-int-groups\n") ;
@@ -687,15 +692,16 @@ LAS	*lasp ;
 
 	busintgrp_free(&lasp->pfwbus) ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 3)
 	eprintf("las_free: cancelling predicates\n") ;
 #endif
 
-	if (lasp->c.pregs.cpin != NULL)
+	if (lasp->c.pregs.cpin) {
 		free(lasp->c.pregs.cpin) ;
+	}
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 3)
 	eprintf("las_free: exiting rs=%d\n",rs) ;
 #endif
@@ -711,24 +717,18 @@ int las_comb(lasp,phase)
 LAS	*lasp ;
 int	phase ;
 {
-	struct proginfo		*pip ;
-
 	LSIM			*mip ;
-
+	struct proginfo		*pip ;
 	struct levoinfo		*lip ;
-
 	struct busintgrp	*bigp ;
-
-	ULONG	clock ;
-
-	int	rs = SR_OK, i ;
+	ulong	clock ;
+	int	rs = SR_OK ;
 	int	rs1 ;
+	int	i ;
 
+	if (lasp == nullptr) return SR_FAULT ;
 
-	if (lasp == NULL)
-		return SR_FAULT ;
-
-#if	F_MASTERDEBUG && F_SAFE
+#if	CF_MASTERDEBUG && CF_SAFE
 	if ((lasp->magic != LAS_MAGIC) && (lasp->magic != 0)) {
 
 		eprintf("las_comb: LAS=%08lx bad magic\n",lasp) ;
@@ -738,49 +738,44 @@ int	phase ;
 
 	if (lasp->magic != LAS_MAGIC)
 		return SR_NOTOPEN ;
-#endif /* F_SAFE */
+#endif /* CF_SAFE */
 
 	pip = lasp->pip ;
 	mip = lasp->mip ;
 	lip = lasp->lip ;		/* need for some number computation */
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 3)
 	eprintf("las_comb: entered ck=%lld ph=%d TT=%d\n",
 		mip->clock,phase,lasp->c.tt) ;
 #endif
 
-#if	F_MASTERDEBUG && F_SAFE2
+#if	CF_MASTERDEBUG && CF_SAFE2
 	rs = las_sanitycheck(lasp) ;
 
 	if (rs < 0) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1)
 	eprintf("las_comb: 0 bad sanity LAS=%08lx\n",lasp) ;
 #endif
 
 		return rs ;
 	}
-#endif /* F_SAFE2 */
+#endif /* CF_SAFE2 */
 
-#if	F_SAFEFUNC
-	if (lasp->sanity.func != NULL) {
-
+#if	CF_SAFEFUNC
+	if (lasp->sanity.func) {
 	rs1 = (*lasp->sanity.func)(lasp->sanity.arg) ;
-
 	if (rs1 < 0) {
-
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1)
 	eprintf("las_comb: 0 bad sanityfunc LAS=%08lx\n",lasp) ;
 #endif
-
 		return rs1 ;
 	}
 	}
-#endif /* F_SAFEFUNC */
-
+#endif /* CF_SAFEFUNC */
 
 /* 'lbusint's for RFBes for a span */
 
@@ -791,7 +786,7 @@ int	phase ;
 
 		if (rs < 0) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1)
 	eprintf("las_comb: i=%d RFB=%08lx bad rs=%d\n",
 		i,(bigp->head + i),rs) ;
@@ -802,19 +797,19 @@ int	phase ;
 
 	}
 
-#if	F_MASTERDEBUG && F_SAFE2
+#if	CF_MASTERDEBUG && CF_SAFE2
 	rs = las_sanitycheck(lasp) ;
 
 	if (rs < 0) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1)
 	eprintf("las_comb: 1 bad sanity LAS=%08lx\n",lasp) ;
 #endif
 
 		return rs ;
 	}
-#endif /* F_SAFE2 */
+#endif /* CF_SAFE2 */
 
 /* 'lbusint's for RBBes for a span */
 
@@ -825,7 +820,7 @@ int	phase ;
 
 		if (rs < 0) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1)
 	eprintf("las_comb: i=%d RBB-%08lx bad rs=%d\n",
 		i,(bigp->head + i),rs) ;
@@ -836,19 +831,19 @@ int	phase ;
 
 	}
 
-#if	F_MASTERDEBUG && F_SAFE2
+#if	CF_MASTERDEBUG && CF_SAFE2
 	rs = las_sanitycheck(lasp) ;
 
 	if (rs < 0) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1)
 	eprintf("las_comb: 2 bad sanity LAS=%08lx\n",lasp) ;
 #endif
 
 		return rs ;
 	}
-#endif /* F_SAFE2 */
+#endif /* CF_SAFE2 */
 
 /* 'lbusint's for predicate buses for a span */
 
@@ -859,7 +854,7 @@ int	phase ;
 
 		if (rs < 0) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1)
 	eprintf("las_comb: i=%d PFB=%08lx bad rs=%d\n",
 		i,(bigp->head + i),rs) ;
@@ -873,19 +868,19 @@ int	phase ;
 	if (rs < 0)
 		return rs ;
 
-#if	F_MASTERDEBUG && F_SAFE2
+#if	CF_MASTERDEBUG && CF_SAFE2
 	rs = las_sanitycheck(lasp) ;
 
 	if (rs < 0) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1)
 	eprintf("las_comb: 3 bad sanity LAS=%08lx\n",lasp) ;
 #endif
 
 		return rs ;
 	}
-#endif /* F_SAFE2 */
+#endif /* CF_SAFE2 */
 
 /* 'lbusint's for memory buses */
 
@@ -896,7 +891,7 @@ int	phase ;
 
 		if (rs < 0) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1)
 	eprintf("las_comb: i=%d MFB=%08lx bad rs=%d\n",
 		i,(bigp->head + i),rs) ;
@@ -907,19 +902,19 @@ int	phase ;
 
 	}
 
-#if	F_MASTERDEBUG && F_SAFE2
+#if	CF_MASTERDEBUG && CF_SAFE2
 	rs = las_sanitycheck(lasp) ;
 
 	if (rs < 0) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1)
 	eprintf("las_comb: 3b bad sanity LAS=%08lx\n",lasp) ;
 #endif
 
 		return rs ;
 	}
-#endif /* F_SAFE2 */
+#endif /* CF_SAFE2 */
 
 	bigp = &lasp->mbwbus ;
 	for (i = 0 ; i < bigp->num ; i += 1) {
@@ -928,7 +923,7 @@ int	phase ;
 
 		if (rs < 0) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1)
 	eprintf("las_comb: i=%d MBB=%08lx bad rs=%d\n",
 		i,(bigp->head + i),rs) ;
@@ -939,36 +934,32 @@ int	phase ;
 
 	}
 
-#if	F_MASTERDEBUG && F_SAFE2
+#if	CF_MASTERDEBUG && CF_SAFE2
 	rs = las_sanitycheck(lasp) ;
 
 	if (rs < 0) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1)
 	eprintf("las_comb: 5 bad sanity LAS=%08lx\n",lasp) ;
 #endif
 
 		return rs ;
 	}
-#endif /* F_SAFE2 */
+#endif /* CF_SAFE2 */
 
-#if	F_SAFEFUNC
-	if (lasp->sanity.func != NULL) {
-
+#if	CF_SAFEFUNC
+	if (lasp->sanity.func) {
 	rs1 = (*lasp->sanity.func)(lasp->sanity.arg) ;
-
 	if (rs1 < 0) {
-
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1)
 	eprintf("las_comb: 5 bad sanityfunc LAS=%08lx\n",lasp) ;
 #endif
-
 		return rs1 ;
 	}
 	}
-#endif /* F_SAFEFUNC */
+#endif /* CF_SAFEFUNC */
 
 
 /* one more time ! */
@@ -977,7 +968,7 @@ int	phase ;
 
 	if (rs < 0) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1)
 	eprintf("las_comb: 1 checkdst3() rs=%d\n",rs) ;
 #endif
@@ -992,7 +983,7 @@ int	phase ;
 
 	case 0:
 
-#if	F_FPRINTF
+#if	CF_FPRINTF
 	clock = 0 ;
 	lsim_getclock(lasp->mip,&clock) ;
 
@@ -1000,12 +991,12 @@ int	phase ;
 
 	printf("CLOCK ===== %lld\n",clock) ;
 
-#if	F_STDIOFLUSH
+#if	CF_STDIOFLUSH
 	fflush(stdout) ;
 #endif
 
 	}
-#endif /* F_FPRINTF */
+#endif /* CF_FPRINTF */
 
 /* do something for real */
 
@@ -1013,7 +1004,7 @@ int	phase ;
 
 		if (rs < 0) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1)
 	eprintf("las_comb: 2 checkdst3() rs=%d\n",rs) ;
 #endif
@@ -1033,7 +1024,7 @@ int	phase ;
 
 		if (rs < 0) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1)
 	eprintf("las_comb: 3 checkdst3() rs=%d\n",rs) ;
 #endif
@@ -1052,7 +1043,7 @@ int	phase ;
 
 		if (rs < 0) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1)
 	eprintf("las_comb: 4 checkdst3() rs=%d\n",rs) ;
 #endif
@@ -1069,36 +1060,31 @@ int	phase ;
 	if (rs < 0)
 		return rs ;
 
-#if	F_SAFEFUNC
-	if (lasp->sanity.func != NULL) {
-
+#if	CF_SAFEFUNC
+	if (lasp->sanity.func) {
 	rs1 = (*lasp->sanity.func)(lasp->sanity.arg) ;
-
 	if (rs1 < 0) {
-
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1)
 	eprintf("las_comb: 6 bad sanityfunc LAS=%08lx\n",lasp) ;
 #endif
-
 		return rs1 ;
 	}
 	}
-#endif /* F_SAFEFUNC */
+#endif /* CF_SAFEFUNC */
 
-#if	F_MASTERDEBUG && F_SAFE2
+#if	CF_MASTERDEBUG && CF_SAFE2
 	rs = las_sanitycheck(lasp) ;
-
 	if (rs < 0) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1)
 	eprintf("las_comb: 6 bad sanity LAS=%08lx\n",lasp) ;
 #endif
 
 		return rs ;
 	}
-#endif /* F_SAFE2 */
+#endif /* CF_SAFE2 */
 
 
 	return rs ;
@@ -1111,21 +1097,15 @@ int las_clock(lasp)
 LAS	*lasp ;
 {
 	struct proginfo		*pip ;
-
 	struct levoinfo		*lip ;
-
 	struct busintgrp	*bigp ;
-
 	struct las_reg		*regp;
-
 	int	rs ;
 	int	ret;
 	int	i,j,k,ll ;
 
-
-#if	F_MASTERDEBUG && F_SAFE
-	if (lasp == NULL)
-		return SR_FAULT ;
+#if	CF_MASTERDEBUG && CF_SAFE
+	if (lasp == nullptr) return SR_FAULT ;
 
 	if ((lasp->magic != LAS_MAGIC) && (lasp->magic != 0)) {
 
@@ -1136,13 +1116,13 @@ LAS	*lasp ;
 
 	if (lasp->magic != LAS_MAGIC)
 		return SR_NOTOPEN ;
-#endif /* F_SAFE */
+#endif /* CF_SAFE */
 
 	pip = lasp->pip ;
 
 
-#if	F_MASTERDEBUG && (F_SAFE && F_CHECKSUM)
-	rs = d_checkverify(&lasp->c,sizeof(struct las_state),
+#if	CF_MASTERDEBUG && (CF_SAFE && CF_CHECKSUM)
+	rs = d_checkverify(&lasp->c,szof(struct las_state),
 	    &lasp->c.checksum) ;
 
 	if (rs < 0) {
@@ -1152,7 +1132,7 @@ LAS	*lasp ;
 
 	    return SR_BADFMT ;
 	}
-#endif /* F_SAFE */
+#endif /* CF_SAFE */
 
 
 /* transition ourself */
@@ -1173,7 +1153,7 @@ LAS	*lasp ;
 		lasp->c.pregs.cpin[ll] = lasp->n.pregs.cpin[ll];
 #else
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1)
 	    eprintf(
 		"las_clock: npred=%d c_pregs_cpin=%08lx n_pregs_cpin=%08lx\n",
@@ -1186,8 +1166,8 @@ LAS	*lasp ;
 #endif /* COMMENT_BADBUG */
 
 
-#if	F_MASTERDEBUG && F_SAFE
-	d_checkcalc(&lasp->c,sizeof(struct las_state),&lasp->c.checksum) ;
+#if	CF_MASTERDEBUG && CF_SAFE
+	d_checkcalc(&lasp->c,szof(struct las_state),&lasp->c.checksum) ;
 #endif
 
 
@@ -1302,15 +1282,12 @@ int las_shift(lasp)
 LAS	*lasp ;
 {
 	struct proginfo	*pip ;
-
 	struct levoinfo	*lip ;
+	int	rs = SR_OK ;
+	int	i ;
 
-	int	rs = SR_OK, i ;
-
-
-#if	F_MASTERDEBUG && F_SAFE
-	if (lasp == NULL)
-		return SR_FAULT ;
+#if	CF_MASTERDEBUG && CF_SAFE
+	if (lasp == nullptr) return SR_FAULT ;
 
 	if ((lasp->magic != LAS_MAGIC) && (lasp->magic != 0)) {
 
@@ -1321,7 +1298,7 @@ LAS	*lasp ;
 
 	if (lasp->magic != LAS_MAGIC)
 		return SR_NOTOPEN ;
-#endif /* F_SAFE */
+#endif /* CF_SAFE */
 
 	pip = lasp->pip ;
 	lip = lasp->lip ;
@@ -1332,7 +1309,7 @@ LAS	*lasp ;
 
 /* register forwarding */
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1) {
 	eprintf("las_shift: RFB\n") ;
 	}
@@ -1345,7 +1322,7 @@ LAS	*lasp ;
 
 /* register backwarding */
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1)
 	eprintf("las_shift: RBB\n") ;
 #endif
@@ -1357,7 +1334,7 @@ LAS	*lasp ;
 
 /* predicate forwarding */
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1)
 	eprintf("las_shift: PFB\n") ;
 #endif
@@ -1370,7 +1347,7 @@ LAS	*lasp ;
 
 /* memory forwarding */
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1)
 	eprintf("las_shift: MFB\n") ;
 #endif
@@ -1382,7 +1359,7 @@ LAS	*lasp ;
 
 /* memory backwarding */
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1)
 	eprintf("las_shift: MBB\n") ;
 #endif
@@ -1395,7 +1372,7 @@ LAS	*lasp ;
 
 /* finally "do" us */
 
-	lasp->f.shift = TRUE ;
+	lasp->f.shift = true ;
 
 bad5:
 bad4:
@@ -1413,26 +1390,21 @@ LAS	*lasp ;
 uint	*iap ;
 {
 	struct proginfo	*pip ;
-
 	int	rs = SR_OK ;
 
-
-#if	F_MASTERDEBUG && F_SAFE
-	if (lasp == NULL)
-		return SR_FAULT ;
+#if	CF_MASTERDEBUG && CF_SAFE
+	if (lasp == nullptr) return SR_FAULT ;
 
 	if ((lasp->magic != LAS_MAGIC) && (lasp->magic != 0)) {
-
 		eprintf("las_getia: LAS=%08lx bad magic\n",lasp) ;
-
 		return SR_BADFMT ;
 	}
 
 	if (lasp->magic != LAS_MAGIC)
 		return SR_NOTOPEN ;
-#endif /* F_SAFE */
+#endif /* CF_SAFE */
 
-	if (iap == NULL)
+	if (iap == nullptr)
 		return SR_FAULT ;
 
 	if (lasp->c.asstate == UNUSED)
@@ -1460,8 +1432,8 @@ int	f_invert;
 	int	rs ;
 
 
-#if	F_MASTERDEBUG && F_SAFE
-	if (lasp == NULL)
+#if	CF_MASTERDEBUG && CF_SAFE
+	if (lasp == nullptr)
 		return SR_FAULT ;
 
 	if ((lasp->magic != LAS_MAGIC) && (lasp->magic != 0)) {
@@ -1473,7 +1445,7 @@ int	f_invert;
 
 	if (lasp->magic != LAS_MAGIC)
 		return SR_NOTOPEN ;
-#endif /* F_SAFE */
+#endif /* CF_SAFE */
 
 	rs = las_load(lasp,llbp,index,path) ;	
 
@@ -1491,8 +1463,8 @@ LAS * lasp;
 {
 
 
-#if	F_MASTERDEBUG && F_SAFE
-	if (lasp == NULL)
+#if	CF_MASTERDEBUG && CF_SAFE
+	if (lasp == nullptr)
 		return SR_FAULT ;
 
 	if ((lasp->magic != LAS_MAGIC) && (lasp->magic != 0)) {
@@ -1504,7 +1476,7 @@ LAS * lasp;
 
 	if (lasp->magic != LAS_MAGIC)
 		return SR_NOTOPEN ;
-#endif /* F_SAFE */
+#endif /* CF_SAFE */
 
 	lasp->n.asstate = UNUSED;
 	return SR_OK;
@@ -1521,7 +1493,7 @@ int	f_invert ;
 {
 
 
-	if (lasp == NULL)
+	if (lasp == nullptr)
 		return SR_FAULT ;
 
 
@@ -1553,8 +1525,8 @@ int	path ;
 	int	f_constvalid ;
 
 
-#if	F_MASTERDEBUG && F_SAFE
-	if (lasp == NULL)
+#if	CF_MASTERDEBUG && CF_SAFE
+	if (lasp == nullptr)
 		return SR_FAULT ;
 
 	if ((lasp->magic != LAS_MAGIC) && (lasp->magic != 0)) {
@@ -1566,93 +1538,78 @@ int	path ;
 
 	if (lasp->magic != LAS_MAGIC)
 		return SR_NOTOPEN ;
-#endif /* F_SAFE */
+#endif /* CF_SAFE */
 
 	pip = lasp->pip ;
 	lip = lasp->lip ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 4)
 	eprintf("las_load: LAS=%08lx index=%d path=%d\n",
 		lasp,index,path) ;
 #endif
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 4)
 	    eprintf(
 		"las_load: npred=%d c_pregs_cpin=%08lx n_pregs_cpin=%08lx\n",
 		lasp->npred,lasp->c.pregs.cpin,lasp->n.pregs.cpin) ;
 #endif
 
-#if	F_SAFEFUNC
-	if (lasp->sanity.func != NULL) {
-
+#if	CF_SAFEFUNC
+	if (lasp->sanity.func) {
 	rs1 = (*lasp->sanity.func)(lasp->sanity.arg) ;
-
 	if (rs1 < 0) {
-
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1)
 	eprintf("las_load: 0 bad sanityfunc LAS=%08lx\n",lasp) ;
 #endif
-
 		return rs1 ;
 	}
 	}
-#endif /* F_SAFEFUNC */
-
+#endif /* CF_SAFEFUNC */
 
 /*
 	if (lasp->c.asstate != UNUSED)
 		return 0;
 */
 
-/* Dave Morano, 01/05/14 -- this is not a good programming practice ! */
+/* David Morano, 01/05/14 -- this is not a good programming practice ! */
 
-	(void) memset(&lasp->n,0,sizeof(struct las_state)) ;
-
+	lasp->n = {} ;
 	lasp->n.pregs.cpin = lasp->c.pregs.cpin + lasp->npred ;
 
 /* end of bad programming practice ! */
 
-
-#if	F_SAFEFUNC
-	if (lasp->sanity.func != NULL) {
-
+#if	CF_SAFEFUNC
+	if (lasp->sanity.func) {
 	rs1 = (*lasp->sanity.func)(lasp->sanity.arg) ;
-
 	if (rs1 < 0) {
-
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1)
 	eprintf("las_load: 1 bad sanityfunc LAS=%08lx\n",lasp) ;
 #endif
-
 		return rs1 ;
 	}
 	}
-#endif /* F_SAFEFUNC */
+#endif /* CF_SAFEFUNC */
 
 /* load some easy stuff first */
 
 	(void) llb_instrinfo(llbp,index,&ii) ;
 
-#if	F_SAFEFUNC
-	if (lasp->sanity.func != NULL) {
-
+#if	CF_SAFEFUNC
+	if (lasp->sanity.func) {
 	rs1 = (*lasp->sanity.func)(lasp->sanity.arg) ;
-
 	if (rs1 < 0) {
-
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1)
 	eprintf("las_load: 1a bad sanityfunc LAS=%08lx\n",lasp) ;
 #endif
-
 		return rs1 ;
 	}
 	}
-#endif /* F_SAFEFUNC */
+#endif /* CF_SAFEFUNC */
 
 	lasp->n.ia = ii.ia ;
 	lasp->n.instr = ii.instr ;
@@ -1660,48 +1617,40 @@ int	path ;
 	lasp->n.oopexec = ii.opexec ;
 	lasp->n.oopclass = ii.opclass ;
 
-#if	F_SAFEFUNC
-	if (lasp->sanity.func != NULL) {
-
+#if	CF_SAFEFUNC
+	if (lasp->sanity.func) {
 	rs1 = (*lasp->sanity.func)(lasp->sanity.arg) ;
-
 	if (rs1 < 0) {
-
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1)
 	eprintf("las_load: 2 bad sanityfunc LAS=%08lx\n",lasp) ;
 #endif
-
 		return rs1 ;
 	}
 	}
-#endif /* F_SAFEFUNC */
+#endif /* CF_SAFEFUNC */
 
 /* load the hard stuff */
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 4)
 	eprintf("las_load: c_pregs_cpin=%08lx n_pregs_cpin=%08lx\n",
 		lasp->c.pregs.cpin,lasp->n.pregs.cpin) ;
 #endif
 
 
-#if	F_SAFEFUNC
-	if (lasp->sanity.func != NULL) {
-
+#if	CF_SAFEFUNC
+	if (lasp->sanity.func) {
 	rs1 = (*lasp->sanity.func)(lasp->sanity.arg) ;
-
 	if (rs1 < 0) {
-
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1)
 	eprintf("las_load: 3 bad sanityfunc LAS=%08lx\n",lasp) ;
 #endif
-
 		return rs1 ;
 	}
 	}
-#endif /* F_SAFEFUNC */
+#endif /* CF_SAFEFUNC */
 
 	lasp->n.pe_tnumb = -1 ;
 
@@ -1727,94 +1676,78 @@ int	path ;
 
 	lasp->n.cnst.valid = f_constvalid ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 4) {
 		eprintf("las_load: opexec=%08x oopexec=%08x\n",
 			lasp->n.opexec,lasp->n.oopexec) ;
 	}
 #endif
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 4) {
 		if (lasp->n.dst3.a != -1)
 		eprintf("las_load: DST3 required for execution\n") ;
 	}
 #endif
 
-#if	F_NODST3
-	(void) memset(&lasp->n.dst3,0,sizeof(struct las_reg)) ;
+#if	CF_NODST3
+	lasp->n.dst3 = {} ;
 	lasp->n.dst3.a = -1 ;
 #endif
 
-#if	F_SAFEFUNC
-	if (lasp->sanity.func != NULL) {
-
+#if	CF_SAFEFUNC
+	if (lasp->sanity.func) {
 	rs1 = (*lasp->sanity.func)(lasp->sanity.arg) ;
-
 	if (rs1 < 0) {
-
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1)
 	eprintf("las_load: 4 bad sanityfunc LAS=%08lx\n",lasp) ;
 #endif
-
 		return rs1 ;
 	}
 	}
-#endif /* F_SAFEFUNC */
+#endif /* CF_SAFEFUNC */
 
 	if (lasp->n.src1.a == 0) lasp->n.src1.val = 0;
-
 	if (lasp->n.src2.a == 0) lasp->n.src2.val = 0;
-
 	if (lasp->n.src3.a == 0) lasp->n.src3.val = 0;
-
 	if (lasp->n.src4.a == 0) lasp->n.src4.val = 0;
-
 	if (lasp->n.src5.a == 0) lasp->n.src5.val = 0;
-
 	if (lasp->n.dst1.a == 0) lasp->n.dst1.val = 0;
-
 	if (lasp->n.dst2.a == 0) lasp->n.dst2.val = 0;
-
 	if (lasp->n.dst3.a == 0) lasp->n.dst3.val = 0;
-
 	if (ret == SR_OK) {
-
 		lasp->n.pI = 1;
-		lasp->n.f_regfileread = FALSE ;	/* schedule a read */
+		lasp->n.f_regfileread = false ;	/* schedule a read */
 		lasp->n.asstate = WAIT_NRC;
+	} else {
+		return 0 ;
+	}
 
-	} else
-		return 0;
-
-	if (lasp->n.opclass == INSTR_UNUSED)
+	if (lasp->n.opclass == INSTR_UNUSED) {
 		lasp->n.asstate = UNUSED;
+	}
 
 /* sanity check */
 
-#if	F_SAFEFUNC
-	if (lasp->sanity.func != NULL) {
-
+#if	CF_SAFEFUNC
+	if (lasp->sanity.func) {
 	rs1 = (*lasp->sanity.func)(lasp->sanity.arg) ;
-
 	if (rs1 < 0) {
-
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1)
 	eprintf("las_load: 5 bad sanityfunc LAS=%08lx\n",lasp) ;
 #endif
-
 		return rs1 ;
 	}
 	}
-#endif /* F_SAFEFUNC */
+#endif /* CF_SAFEFUNC */
 
 /* what about the input predicates ? */
 
 	n = lasp->n.pregs.num_of_cpin_regs ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 4)
 	eprintf("las_load: max npred=%d input predicates n=%d\n", 
 		lasp->npred,n) ;
@@ -1830,39 +1763,30 @@ int	path ;
 
 /* we have some input predicates */
 
-#if	F_SAFEFUNC
-	if (lasp->sanity.func != NULL) {
-
+#if	CF_SAFEFUNC
+	if (lasp->sanity.func) {
 	rs1 = (*lasp->sanity.func)(lasp->sanity.arg) ;
-
 	if (rs1 < 0) {
-
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1)
 	eprintf("las_load: 6 bad sanityfunc LAS=%08lx\n",lasp) ;
 #endif
-
 		return rs1 ;
 	}
 	}
-#endif /* F_SAFEFUNC */
+#endif /* CF_SAFEFUNC */
 
-		for (i=0;i<lasp->n.pregs.num_of_cpin_regs; i += 1) {
-
+		for (i=0 ; i<lasp->n.pregs.num_of_cpin_regs ; i += 1) {
 			lasp->n.pregs.cpin[i].a = cpins[i];
 			lasp->n.pregs.cpin[i].val = cpinsv[i];
 			lasp->n.pregs.cpin[i].latesttt = INT_MIN;
-
 		} /* end for */
 
-#if	F_SAFEFUNC
-	if (lasp->sanity.func != NULL) {
-
+#if	CF_SAFEFUNC
+	if (lasp->sanity.func) {
 	rs1 = (*lasp->sanity.func)(lasp->sanity.arg) ;
-
 	if (rs1 < 0) {
-
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1)
 	eprintf("las_load: 7 bad sanityfunc LAS=%08lx\n",lasp) ;
 #endif
@@ -1870,11 +1794,11 @@ int	path ;
 		return rs1 ;
 	}
 	}
-#endif /* F_SAFEFUNC */
+#endif /* CF_SAFEFUNC */
 
 	} else {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 4)
 	eprintf("las_load: we do not have any input predicates n=0\n") ;
 #endif
@@ -1885,22 +1809,19 @@ int	path ;
 
 /* sanity check */
 
-#if	F_SAFEFUNC
-	if (lasp->sanity.func != NULL) {
-
+#if	CF_SAFEFUNC
+	if (lasp->sanity.func) {
 	rs1 = (*lasp->sanity.func)(lasp->sanity.arg) ;
-
 	if (rs1 < 0) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1)
 	eprintf("las_load: 9 bad sanityfunc LAS=%08lx\n",lasp) ;
 #endif
-
 		return rs1 ;
 	}
 	}
-#endif /* F_SAFEFUNC */
+#endif /* CF_SAFEFUNC */
 
 /* assign the TT */
 
@@ -1929,42 +1850,38 @@ int	path ;
 
 /* very bad thing to do, messed up the pipelining of loads ! */
 
-#if	F_BADBADHACK
-	lasp -> c.pregs.pout.val = -2;
+#if	CF_BADBADHACK
+	lasp -> c.pregs.pout.val = -2 ;
 #endif
 
 /* OK */
 
-	lasp -> n.pregs.pout.val = -2;
+	lasp -> n.pregs.pout.val = -2 ;
 
 /* very bad thing to do, messed up the pipelining of loads ! */
 
-#if	F_BADBADHACK
-	lasp -> c.pregs.cpout.val = -2; 
+#if	CF_BADBADHACK
+	lasp -> c.pregs.cpout.val = -2 ; 
 #endif
 
 /* OK */
 
-	lasp -> n.pregs.cpout.val = -2; 
+	lasp -> n.pregs.cpout.val = -2 ; 
 
 /* sanity check */
 
-#if	F_SAFEFUNC
-	if (lasp->sanity.func != NULL) {
-
+#if	CF_SAFEFUNC
+	if (lasp->sanity.func) {
 	rs1 = (*lasp->sanity.func)(lasp->sanity.arg) ;
-
 	if (rs1 < 0) {
-
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1)
 	eprintf("las_load: 12 bad sanityfunc LAS=%08lx\n",lasp) ;
 #endif
-
 		return rs1 ;
 	}
 	}
-#endif /* F_SAFEFUNC */
+#endif /* CF_SAFEFUNC */
 
 
 	return 0 ;
@@ -1989,8 +1906,8 @@ LAS * lasp ;
 	int	n, mi ;
 
 
-#if	F_MASTERDEBUG && F_SAFE
-	if (lasp == NULL)
+#if	CF_MASTERDEBUG && CF_SAFE
+	if (lasp == nullptr)
 		return SR_FAULT ;
 
 	if ((lasp->magic != LAS_MAGIC) && (lasp->magic != 0)) {
@@ -2002,7 +1919,7 @@ LAS * lasp ;
 
 	if (lasp->magic != LAS_MAGIC)
 		return SR_NOTOPEN ;
-#endif /* F_SAFE */
+#endif /* CF_SAFE */
 
 	pip = lasp->pip ;
 	lip = lasp->lip ;
@@ -2032,7 +1949,7 @@ LAS * lasp ;
 
 	if (! commit) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 2)
 	eprintf("las_readycommit: waiting for instruction execution tn=%d\n",
 		lasp->c.pe_tnumb) ;
@@ -2051,7 +1968,7 @@ LAS * lasp ;
 
 	if (! commit) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 2)
 	eprintf("las_readycommit: waiting for special PFB\n") ;
 #endif
@@ -2087,7 +2004,7 @@ LAS * lasp ;
 
 	if (! commit) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 2)
 	eprintf("las_readycommit: waiting for event table %d:%d:%d\n",
 		i,j,k) ;
@@ -2103,7 +2020,7 @@ LAS * lasp ;
 
 	if (! commit) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 2)
 	eprintf("las_readycommit: waiting for PE result\n") ;
 #endif
@@ -2117,7 +2034,7 @@ LAS * lasp ;
 
 	lbp = lasp->rfwbus.outbus ;
 
-#if	F_MASTERDEBUG && F_DEBUG && 0
+#if	CF_MASTERDEBUG && CF_DEBUG && 0
 	if (pip->debuglevel > 4)
 	eprintf("las_readycommit: RFB LBUSINT=%08lx\n",lbp) ;
 #endif
@@ -2132,7 +2049,7 @@ LAS * lasp ;
 
 	if (! commit) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 2)
 	eprintf("las_readycommit: waiting for RFB LBUSINT=%08lx\n",lbp) ;
 #endif
@@ -2144,7 +2061,7 @@ LAS * lasp ;
 
 	lbp = lasp->rbwbus.outbus ;
 
-#if	F_MASTERDEBUG && F_DEBUG && 0
+#if	CF_MASTERDEBUG && CF_DEBUG && 0
 	if (pip->debuglevel > 4)
 	eprintf("las_readycommit: RBB LBUSINT=%08lx\n",lbp) ;
 #endif
@@ -2159,7 +2076,7 @@ LAS * lasp ;
 
 	if (! commit) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 2)
 	eprintf("las_readycommit: waiting for RBB LBUSINT=%08lx\n",lbp) ;
 #endif
@@ -2171,7 +2088,7 @@ LAS * lasp ;
 
 	lbp = lasp->pfwbus.outbus ;
 
-#if	F_MASTERDEBUG && F_DEBUG && 0
+#if	CF_MASTERDEBUG && CF_DEBUG && 0
 	if (pip->debuglevel > 4)
 	eprintf("las_readycommit: PFB LBUSINT=%08lx\n",lbp) ;
 #endif
@@ -2186,7 +2103,7 @@ LAS * lasp ;
 
 	if (! commit) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 2)
 	eprintf("las_readycommit: waiting for PFB LBUSINT=%08lx\n",lbp) ;
 #endif
@@ -2203,7 +2120,7 @@ LAS * lasp ;
 
 		lbp = lasp->mfwbus.outbus + mi ;
 
-#if	F_MASTERDEBUG && F_DEBUG && 0
+#if	CF_MASTERDEBUG && CF_DEBUG && 0
 	if (pip->debuglevel > 4)
 	eprintf("las_readycommit: MFB LBUSINT=%08lx mi=%d\n",
 		lbp,mi) ;
@@ -2219,7 +2136,7 @@ LAS * lasp ;
 
 	if (! commit) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 2)
 	eprintf("las_readycommit: waiting for MFB LBUSINT=%08lx mi=%d\n",
 		lbp,mi) ;
@@ -2232,7 +2149,7 @@ LAS * lasp ;
 
 		lbp = lasp->mbwbus.outbus + mi ;
 
-#if	F_MASTERDEBUG && F_DEBUG && 0
+#if	CF_MASTERDEBUG && CF_DEBUG && 0
 	if (pip->debuglevel > 4)
 	eprintf("las_readycommit: MBB LBUSINT=%08lx mi=%d\n",
 		lbp,mi) ;
@@ -2247,7 +2164,7 @@ LAS * lasp ;
 
 	if (! commit) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 2)
 	eprintf("las_readycommit: waiting for MBB LBUSINT=%08lx mi=%d\n",
 		lbp,mi) ;
@@ -2270,7 +2187,7 @@ LAS * lasp ;
 /* bad stuff comes here */
 badbusint:
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 4)
 	eprintf("las_readycommit: bad LBUSINT=%08lx rs=%d\n",
 		lbp,rs) ;
@@ -2278,7 +2195,7 @@ badbusint:
 
 ret:
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 2)
 	eprintf("las_readycommit: id=%d exiting astt=%d rs=%d\n",
 		lasp->asid,lasp->c.tt,rs) ;
@@ -2298,11 +2215,11 @@ LAS_COMMITINFO	*ip ;
 
 	int	rs = SR_OK ;
 	int	i ;
-	int	f_enable = FALSE ;
+	int	f_enable = false ;
 
 
-#if	F_MASTERDEBUG && F_SAFE
-	if (lasp == NULL)
+#if	CF_MASTERDEBUG && CF_SAFE
+	if (lasp == nullptr)
 		return SR_FAULT ;
 
 	if ((lasp->magic != LAS_MAGIC) && (lasp->magic != 0)) {
@@ -2314,15 +2231,14 @@ LAS_COMMITINFO	*ip ;
 
 	if (lasp->magic != LAS_MAGIC)
 		return SR_NOTOPEN ;
-#endif /* F_SAFE */
+#endif /* CF_SAFE */
 
-	if (ip == NULL)
-		return SR_FAULT ;
+	if (ip == nullptr) return SR_FAULT ;
 
 	pip = lasp->pip ;
-	(void) memset(ip,0,sizeof(struct las_commitinfo)) ;
+	memclear(ip) ;
 
-/* get the instruction class used by Dave in the execution window */
+/* get the instruction class used by David in the execution window */
 
 	ip->ia = 0 ;
 	ip->iclass = 0 ;
@@ -2339,10 +2255,9 @@ LAS_COMMITINFO	*ip ;
 	ip->iclass = las_used(lasp) ;		/* Dave-style i-class */
 
 /* is this instruction enabled */
+/* domain predicate? */
 
-/* domain predicate ? */
-
-	ip->f_enabled = (lasp->c.pregs.pin.val) ? 1 : 0 ;
+	ip->f_enabled = !!(lasp->c.pregs.pin.val) ;
 
 /* branch target predicates */
 
@@ -2353,19 +2268,19 @@ LAS_COMMITINFO	*ip ;
 
 	} /* end if (determining if we were enabled) */
 
-#if	PERF_FETCH
+#if	PERCF_FETCH
 		ip->f_enabled = lasp->c.pI ;
 #endif
 
 /* do we have a control flow change type of instruction ? */
 
-	ip->f_cf = FALSE ;
+	ip->f_cf = false ;
 	if ((lasp->c.opclass == INSTR_BREL) || 
 		(lasp->c.opclass == INSTR_JREL) ||
 	   	(lasp->c.opclass == INSTR_JIND)) {
 
 		rs = 1 ;
-		ip->f_cf = TRUE ;
+		ip->f_cf = true ;
 		ip->f_taken = lasp->c.bcond ; 
 		ip->ta = (ip->f_taken) ? lasp->c.cnst.val : (ip->ia + 8) ; 
 
@@ -2379,7 +2294,7 @@ LAS_COMMITINFO	*ip ;
 
 ****/
 
-#if	F_MASTERDEBUG && F_SAFE && 0
+#if	CF_MASTERDEBUG && CF_SAFE && 0
 	if (! ip->f_cf) {
 
 	    int	f ;
@@ -2404,7 +2319,7 @@ LAS_COMMITINFO	*ip ;
 	    }
 
 	}
-#endif /* F_DEBUG */
+#endif /* CF_DEBUG */
 
 	return rs ;
 }
@@ -2425,8 +2340,8 @@ uint	*iap ;
 	int i;
 
 
-#if	F_MASTERDEBUG && F_SAFE
-	if (lasp == NULL)
+#if	CF_MASTERDEBUG && CF_SAFE
+	if (lasp == nullptr)
 		return SR_FAULT ;
 
 	if ((lasp->magic != LAS_MAGIC) && (lasp->magic != 0)) {
@@ -2438,11 +2353,11 @@ uint	*iap ;
 
 	if (lasp->magic != LAS_MAGIC)
 		return SR_NOTOPEN ;
-#endif /* F_SAFE */
+#endif /* CF_SAFE */
 
 /* entered */
 
-#if	F_FPRINTF
+#if	CF_FPRINTF
 	las_print(lasp);
 #endif
 
@@ -2470,7 +2385,7 @@ uint	*iap ;
 		*ipval = lasp->c.pI ;
 	}
 		
-#if	PERF_FETCH
+#if	PERCF_FETCH
 		*ipval = lasp->c.pI;
 #endif
 
@@ -2511,7 +2426,7 @@ uint	*iap ;
 		lwq_store(lasp->lwqp, (lasp->c.mem.a & 0xfffffffc),
 			lasp->c.mem.val,lasp->c.tt, lasp->asrow,lasp->c.dp);
 
-	lasp->n.f_regfileread = FALSE ;
+	lasp->n.f_regfileread = false ;
 	return rs ;
 }
 /* end subroutine (las_commit) */
@@ -2528,8 +2443,8 @@ LAS	*lasp ;
 	int	rs = SR_OK, i ;
 
 
-#if	F_MASTERDEBUG && F_SAFE
-	if (lasp == NULL)
+#if	CF_MASTERDEBUG && CF_SAFE
+	if (lasp == nullptr)
 		return SR_FAULT ;
 
 	if ((lasp->magic != LAS_MAGIC) && (lasp->magic != 0)) {
@@ -2542,15 +2457,15 @@ LAS	*lasp ;
 
 	if (lasp->magic != LAS_MAGIC)
 		return SR_NOTOPEN ;
-#endif /* F_SAFE */
+#endif /* CF_SAFE */
 
 	pip = lasp->pip ;
 	lip = lasp->lip ;
 
 
-#if	F_SANITYSTATE && F_CHECKSUM
+#if	CF_SANITYSTATE && CF_CHECKSUM
 
-	rs = d_checkverify(&lasp->c,sizeof(struct las_state),
+	rs = d_checkverify(&lasp->c,szof(struct las_state),
 	    &lasp->c.checksum) ;
 
 	if (rs < 0) {
@@ -2561,12 +2476,12 @@ LAS	*lasp ;
 	    return SR_BADFMT ;
 	}
 
-#endif /* F_SANITYSTATE */
+#endif /* CF_SANITYSTATE */
 
 
 /* check all of our subobjects */
 
-#if	F_SANITYSUBOBJ
+#if	CF_SANITYSUBOBJ
 
 /* register forwarding */
 
@@ -2574,7 +2489,7 @@ LAS	*lasp ;
 
 	if (rs < 0) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1) {
 	eprintf("las_sanitycheck: RFB bad rs=%d\n",rs) ;
 	}
@@ -2589,7 +2504,7 @@ LAS	*lasp ;
 
 	if (rs < 0) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1) {
 	eprintf("las_sanitycheck: RBB bad rs=%d\n",rs) ;
 	}
@@ -2604,7 +2519,7 @@ LAS	*lasp ;
 
 	if (rs < 0) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1) {
 	eprintf("las_sanitycheck: PFB bad rs=%d\n",rs) ;
 	}
@@ -2619,7 +2534,7 @@ LAS	*lasp ;
 
 	if (rs < 0) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1) {
 	eprintf("las_sanitycheck: MFB bad rs=%d\n",rs) ;
 	}
@@ -2634,7 +2549,7 @@ LAS	*lasp ;
 
 	if (rs < 0) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1) {
 	eprintf("las_sanitycheck: MBB bad rs=%d\n",rs) ;
 	}
@@ -2643,12 +2558,12 @@ LAS	*lasp ;
 		goto bad5 ;
 	}
 
-#endif /* F_SANITYSUBOBJ */
+#endif /* CF_SANITYSUBOBJ */
 
 
 /* check ourself */
 
-#if	F_SANITYOURSELF
+#if	CF_SANITYOURSELF
 
 /* check the opexec value for corruption */
 
@@ -2656,7 +2571,7 @@ LAS	*lasp ;
 
 	if (rs < 0) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1) {
 	    eprintf(
 		"las_sanitycheck: opexec bad opexec=%08x oopexec=%08x rs=%d\n",
@@ -2673,7 +2588,7 @@ LAS	*lasp ;
 
 	if (rs < 0) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1) {
 	    eprintf(
 		"las_sanitycheck: 5 las_checkdst3() bad rs=%d\n",
@@ -2684,7 +2599,7 @@ LAS	*lasp ;
 		goto bad7 ;
 	}
 
-#endif /* F_SANITYOURSELF */
+#endif /* CF_SANITYOURSELF */
 
 
 
@@ -2756,11 +2671,11 @@ XMLINFO	*xip ;
 	        if (rs < 0)
 	            strcpy(instrdis,"unknown") ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 3)
 	        eprintf("las_xmlout: ia=%08x instr=%08x %s\n",
 	            lasp->c.ia,lasp->c.instr,instrdis) ;
-#endif /* F_DEBUG */
+#endif /* CF_DEBUG */
 
 	bprintf(&xip->xmlfile,"<instrdis>%s</instrdis>\n",
 		instrdis) ;
@@ -2860,7 +2775,7 @@ XMLINFO	*xip ;
 
 
 /* handle a machine shift operation ! */
-static int las_handleshift(lasp,pip,lip)
+local int las_handleshift(lasp,pip,lip)
 LAS		*lasp ;
 struct proginfo	*pip ;
 struct levoinfo	*lip ;
@@ -2873,7 +2788,7 @@ struct levoinfo	*lip ;
 	if (! lasp->f.shift)
 		return SR_OK ;
 
-	lasp->f.shift = FALSE ;
+	lasp->f.shift = false ;
 	totalrows = lip->totalrows ;
 	tt_test = INT_MIN + totalrows ;
 
@@ -2966,7 +2881,7 @@ struct levoinfo	*lip ;
 
 
 /* so a shift on one value */
-static int las_doshift(lasp,pip,lip,tt_test,tr,ap)
+local int las_doshift(lasp,pip,lip,tt_test,tr,ap)
 LAS		*lasp ;
 struct proginfo	*pip ;
 struct levoinfo	*lip ;
@@ -2987,12 +2902,12 @@ int		*ap ;
 
 
 /* initialize a bus interface group */
-static int busintgrp_init(bigp,pip,lip,buses,f_fwd,bi,m,n,busid,idtype)
+local int busintgrp_init(bigp,pip,lip,buses,f_fwd,bi,m,n,busid,idtype)
 struct busintgrp	*bigp ;
 struct proginfo		*pip ;
 struct levoinfo		*lip ;
 BUS			*buses ;
-int			f_fwd ;		/* TRUE for a BACKWARDING bus ! */
+int			f_fwd ;		/* true for a BACKWARDING bus ! */
 int			bi, m, n ;
 int			busid ;
 int			idtype;
@@ -3002,7 +2917,7 @@ int			idtype;
 	int	badi ;
 
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1) {
 	eprintf("las/busintgrp_init: n=%d bi=%d\n",n,bi) ;
 	eprintf(
@@ -3011,27 +2926,27 @@ int			idtype;
 #endif
 
 	bigp->pip = pip ;
-	bigp->head = NULL ;
-	bigp->outbus = NULL ;
+	bigp->head = nullptr ;
+	bigp->outbus = nullptr ;
 	bigp->f_fwd = f_fwd ;
 	bigp->bi = bi ;
 	bigp->modulus = m ;
 	bigp->num = n ;
 
-	size = bigp->num * sizeof(LBUSINT) ;
+	size = bigp->num * szof(LBUSINT) ;
 	rs = uc_malloc(size,&bigp->head) ;
 
 	if (rs < 0)
 	    goto bad0 ;
 
-	(void) memset(bigp->head,0,size) ;
+	memclear(bigp->head,size) ;
 
 /* we start the bus numbering with our primary bus (if that has meaning) */
 
 	bigp->outbus = bigp->head ;
 	for (i = 0 ; i < bigp->num ; i += 1) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1)
 	eprintf("las/busintgrp_init: i=%d BUS=%08lx bi=%d LBUSINT=%08lx\n",
 		i,(buses + bi),bi,bigp->head + i) ;
@@ -3071,47 +2986,38 @@ bad0:
 
 
 /* free up a bus interface group */
-static int busintgrp_free(bigp)
+local int busintgrp_free(bigp)
 struct busintgrp	*bigp ;
 {
-	int	rs = SR_OK, i ;
+	int	rs = SR_OK ;
 	int	rs1 ;
 
-
-	for (i = 0 ; i < bigp->num ; i += 1) {
-
+	for (int i = 0 ; i < bigp->num ; i += 1) {
 	    rs1 = lbusint_free(bigp->head + i) ;
-
-		if ((rs1 < 0) && (rs >= 0))
+		if ((rs1 < 0) && (rs >= 0)) {
 			rs = rs1 ;
-
+		}
 	}
 
 	free(bigp->head) ;
 
-	bigp->head = NULL ;
-	bigp->outbus = NULL ;
+	bigp->head = nullptr ;
+	bigp->outbus = nullptr ;
 	return rs ;
 }
 /* end subroutine (busintgrp_free) */
 
-
 /* shift a bus interface group */
-static int busintgrp_shift(bigp,pip,lip)
+local int busintgrp_shift(bigp,pip,lip)
 struct busintgrp	*bigp ;
 struct proginfo		*pip ;
 struct levoinfo		*lip ;
 {
-	int	rs = SR_OK, i ;
+	int	rs = SR_OK ;
 
-
-	for (i = 0 ; i < bigp->num ; i += 1) {
-
+	for (int i = 0 ; i < bigp->num ; i += 1) {
 	    rs = lbusint_shift(bigp->head + i) ;
-
-		if (rs < 0)
-			break ;
-
+		if (rs < 0) break ;
 	} /* end for */
 
 	return rs ;
@@ -3120,7 +3026,7 @@ struct levoinfo		*lip ;
 
 
 /* sanitycheck the bus-int-groups */
-static int busintgrp_sanitycheck(bigp,pip,lip)
+local int busintgrp_sanitycheck(bigp,pip,lip)
 struct busintgrp	*bigp ;
 struct proginfo		*pip ;
 struct levoinfo		*lip ;
@@ -3136,7 +3042,7 @@ struct levoinfo		*lip ;
 
 		if (rs < 0) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1) {
 	eprintf("las/busintgrp_sanitycheck: i=%d LBUSINT=%08lx bad rs=%d\n",
 		i,(bigp->head + i),rs) ;
@@ -3155,7 +3061,7 @@ struct levoinfo		*lip ;
 
 
 /* do the main part of the AS combinatorial logic */
-static int AS_logic(lasp,pip,lip)
+local int AS_logic(lasp,pip,lip)
 LAS 		*lasp ;
 struct proginfo	*pip ;
 struct levoinfo	*lip ;
@@ -3202,27 +3108,27 @@ struct levoinfo	*lip ;
 		if (lasp->c.src1.a != -1)
 		send_packet(lasp, 
 			&lasp->n.event_table[REQ_VALUE][RBWB][SRC1], 
-			SRC1,LFLOWGROUP_TSTORE,FALSE) ;
+			SRC1,LFLOWGROUP_TSTORE,false) ;
 
 		if (lasp->c.src2.a != -1)
 		send_packet(lasp, 
 			&lasp->n.event_table[REQ_VALUE][RBWB][SRC2], 
-			SRC2,LFLOWGROUP_TSTORE,FALSE) ;
+			SRC2,LFLOWGROUP_TSTORE,false) ;
 
 		if (lasp->c.src3.a != -1)
 		send_packet(lasp, 
 			&lasp->n.event_table[REQ_VALUE][RBWB][SRC3], 
-			SRC3,LFLOWGROUP_TSTORE,FALSE) ;
+			SRC3,LFLOWGROUP_TSTORE,false) ;
 
 		if (lasp->c.src4.a != -1)
 		send_packet(lasp, 
 			&lasp->n.event_table[REQ_VALUE][RBWB][SRC4], 
-			SRC4,LFLOWGROUP_TSTORE,FALSE) ;
+			SRC4,LFLOWGROUP_TSTORE,false) ;
 
 		if (lasp->c.src5.a != -1)
 		send_packet(lasp, 
 			&lasp->n.event_table[REQ_VALUE][RBWB][SRC5], 
-			SRC5,LFLOWGROUP_TSTORE,FALSE) ;
+			SRC5,LFLOWGROUP_TSTORE,false) ;
 
 
 /* extra requests for relay forwarding */
@@ -3232,21 +3138,21 @@ struct levoinfo	*lip ;
 		if (lasp->c.dst1.a != -1)
 		send_packet(lasp, 
 			&lasp->n.event_table[REQ_VALUE][RBWB][DST1], 
-			DST1,LFLOWGROUP_TSTORE,FALSE) ;
+			DST1,LFLOWGROUP_TSTORE,false) ;
 
 		if (lasp->c.dst2.a != -1)
 		send_packet(lasp, 
 			&lasp->n.event_table[REQ_VALUE][RBWB][DST2], 
-			DST2,LFLOWGROUP_TSTORE,FALSE) ;
+			DST2,LFLOWGROUP_TSTORE,false) ;
 
 		if (lasp->c.dst3.a != -1)
 		send_packet(lasp, 
 			&lasp->n.event_table[REQ_VALUE][RBWB][DST3], 
-			DST3,LFLOWGROUP_TSTORE,FALSE) ;
+			DST3,LFLOWGROUP_TSTORE,false) ;
 
 		} /* end if (relay forwarding) */
 
-		lasp->n.f_regfileread = TRUE ;
+		lasp->n.f_regfileread = true ;
 
 		return 0;
 
@@ -3255,7 +3161,7 @@ struct levoinfo	*lip ;
 
 /* do we need to do some PE stuff ? */
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel >= 5)
 	eprintf("las/AS_logic: PE stuff ?\n") ;
 #endif
@@ -3283,9 +3189,9 @@ struct levoinfo	*lip ;
 		if (lasp->c.dst1.a > 0)
 			send_packet(lasp, 
 			&lasp->n.event_table[SEND_VALUE][RFWB][DST1],
-			DST1,LFLOWGROUP_TSTORE,FALSE) ;
+			DST1,LFLOWGROUP_TSTORE,false) ;
 
-		lasp->n.event_table[EXEC_ALU][PE][DST1].valid = FALSE ;
+		lasp->n.event_table[EXEC_ALU][PE][DST1].valid = false ;
 	}
 
 
@@ -3295,9 +3201,9 @@ struct levoinfo	*lip ;
 		if(lasp->c.dst2.a > 0)
 			send_packet(lasp, 
 			&lasp->n.event_table[SEND_VALUE][RFWB][DST2],
-			DST2,LFLOWGROUP_TSTORE,FALSE) ;
+			DST2,LFLOWGROUP_TSTORE,false) ;
 
-		lasp->n.event_table[EXEC_ALU][PE][DST2].valid = FALSE ;
+		lasp->n.event_table[EXEC_ALU][PE][DST2].valid = false ;
 	}
 
 
@@ -3307,9 +3213,9 @@ struct levoinfo	*lip ;
 		if(lasp->c.dst3.a > 0)
 			send_packet(lasp, 
 			&lasp->n.event_table[SEND_VALUE][RFWB][DST3],
-			DST3,LFLOWGROUP_TSTORE,FALSE) ;
+			DST3,LFLOWGROUP_TSTORE,false) ;
 
-		lasp->n.event_table[EXEC_ALU][PE][DST3].valid = FALSE ;
+		lasp->n.event_table[EXEC_ALU][PE][DST3].valid = false ;
 	}
 
 
@@ -3319,18 +3225,18 @@ struct levoinfo	*lip ;
 
 		send_packet(lasp, 
 			&lasp->n.event_table[SEND_NULLIFY][MFWB][MEM], 
-			MEM,LFLOWGROUP_TNULLIFY,FALSE) ;
+			MEM,LFLOWGROUP_TNULLIFY,false) ;
 
 		lasp->n.event_table[SEND_NULLIFY][MFWB][MEM].a = 
 			lasp->c.old_mem.a; 
 
-#if	F_BADBADHACK
+#if	CF_BADBADHACK
 		lasp->c.old_mem.a = lasp->c.mem.a; /* hack, sorry!! */
 #endif
 
 		lasp->n.old_mem.a = lasp->c.mem.a;
 
-		lasp->n.event_table[RECV_NULLIFY][PE][MEM].valid = FALSE ;
+		lasp->n.event_table[RECV_NULLIFY][PE][MEM].valid = false ;
 	}
 
 
@@ -3339,9 +3245,9 @@ struct levoinfo	*lip ;
 
 		send_packet(lasp, 
 			&lasp->n.event_table[SEND_VALUE][MFWB][MEM],
-			MEM,LFLOWGROUP_TSTORE,FALSE) ;
+			MEM,LFLOWGROUP_TSTORE,false) ;
 
-		lasp->n.event_table[EXEC_ST][PE][MEM].valid = FALSE ;
+		lasp->n.event_table[EXEC_ST][PE][MEM].valid = false ;
 	}
 
 
@@ -3351,9 +3257,9 @@ struct levoinfo	*lip ;
 		lasp->n.mem.latesttt = INT_MIN;
 		send_packet(lasp, 
 			&lasp->n.event_table[REQ_VALUE][MBWB][MEM],
-			MEM,LFLOWGROUP_TSTORE,FALSE) ;
+			MEM,LFLOWGROUP_TSTORE,false) ;
 
-		lasp->n.event_table[EXEC_LD][PE][MEM].valid = FALSE ;
+		lasp->n.event_table[EXEC_LD][PE][MEM].valid = false ;
 	}
 
 	pp = &lasp->c.event_table[EXEC_BR][PE][BCOND];
@@ -3362,9 +3268,9 @@ struct levoinfo	*lip ;
 		if (lasp->c.opexec == LEXECOP_JAL) 
 			send_packet(lasp, 
 			&lasp->n.event_table[SEND_VALUE][RFWB][DST1],
-			DST1,LFLOWGROUP_TSTORE,FALSE) ;
+			DST1,LFLOWGROUP_TSTORE,false) ;
 
-		lasp->n.event_table[EXEC_BR][PE][BCOND].valid = FALSE ;
+		lasp->n.event_table[EXEC_BR][PE][BCOND].valid = false ;
 	}
 
 
@@ -3375,22 +3281,22 @@ struct levoinfo	*lip ;
 
 		send_packet(lasp, 
 		&lasp->n.event_table[REQ_VALUE][RBWB][SRC1],
-		SRC1,LFLOWGROUP_TSTORE,FALSE) ;
+		SRC1,LFLOWGROUP_TSTORE,false) ;
 
-#if	F_BADBADHACK
+#if	CF_BADBADHACK
 		lasp->c.src1.latesttt = INT_MIN;
 #endif
 
 		lasp->n.src1.latesttt = INT_MIN;
 
-		lasp->n.event_table[RECV_NULLIFY][RFWB][SRC1].valid = FALSE ;
+		lasp->n.event_table[RECV_NULLIFY][RFWB][SRC1].valid = false ;
 		lasp->wait4src1 = 1;
 	}
 
 	pp = &lasp->c.event_table[RECV_VALUE][RFWB][SRC1];
 	if (pp->valid) {
 
-#if	F_BADBADHACK
+#if	CF_BADBADHACK
 		lasp->c.src1.latesttt = pp->tt;
 #endif
 
@@ -3398,15 +3304,15 @@ struct levoinfo	*lip ;
 		if(pp->d != lasp->c.src1.val) 
 			lasp->n.re_exec_inst = 1;
 
-#if	F_BADBADHACK
+#if	CF_BADBADHACK
 		lasp->c.src1.val = pp->d;
 #endif
 
 		lasp->n.src1.val = pp->d;
 		lasp->wait4src1 = 0;
 
-		lasp->n.event_table[WAITON_VALUE][RFWB][SRC1].valid = FALSE ;
-		lasp->n.event_table[RECV_VALUE][RFWB][SRC1].valid = FALSE ;
+		lasp->n.event_table[WAITON_VALUE][RFWB][SRC1].valid = false ;
+		lasp->n.event_table[RECV_VALUE][RFWB][SRC1].valid = false ;
 	}
 
 
@@ -3417,22 +3323,22 @@ struct levoinfo	*lip ;
 
 		send_packet(lasp, 
 			&lasp->n.event_table[REQ_VALUE][RBWB][SRC2],
-			SRC2,LFLOWGROUP_TSTORE,FALSE) ;
+			SRC2,LFLOWGROUP_TSTORE,false) ;
 
-#if	F_BADBADHACK
+#if	CF_BADBADHACK
 		lasp->c.src2.latesttt = INT_MIN;
 #endif
 
 		lasp->n.src2.latesttt = INT_MIN;
 
 		lasp->wait4src2 = 1;
-		lasp->n.event_table[RECV_NULLIFY][RFWB][SRC2].valid = FALSE ;
+		lasp->n.event_table[RECV_NULLIFY][RFWB][SRC2].valid = false ;
 	}
 
 	pp = &lasp->c.event_table[RECV_VALUE][RFWB][SRC2];
 	if (pp->valid) {
 
-#if	F_BADBADHACK
+#if	CF_BADBADHACK
 		lasp->c.src2.latesttt = pp->tt;
 #endif
 
@@ -3441,16 +3347,16 @@ struct levoinfo	*lip ;
 		if (pp->d != lasp->c.src2.val) 
 			lasp->n.re_exec_inst = 1;
 
-#if	F_BADBADHACK
+#if	CF_BADBADHACK
 		lasp->c.src2.val = pp->d;
 #endif
 
 		lasp->n.src2.val = pp->d;
 		lasp->wait4src2 = 0;
 
-		lasp->n.event_table[WAITON_VALUE][RFWB][SRC2].valid = FALSE ;
+		lasp->n.event_table[WAITON_VALUE][RFWB][SRC2].valid = false ;
 
-		lasp->n.event_table[RECV_VALUE][RFWB][SRC2].valid = FALSE ;
+		lasp->n.event_table[RECV_VALUE][RFWB][SRC2].valid = false ;
 
 	} /* end if */
 
@@ -3462,22 +3368,22 @@ struct levoinfo	*lip ;
 
 		send_packet(lasp, 
 			&lasp->n.event_table[REQ_VALUE][RBWB][SRC3],
-			SRC3,LFLOWGROUP_TSTORE,FALSE) ;
+			SRC3,LFLOWGROUP_TSTORE,false) ;
 
-#if	F_BADBADHACK
+#if	CF_BADBADHACK
 		lasp->c.src3.latesttt = INT_MIN;
 #endif
 
 		lasp->n.src3.latesttt = INT_MIN;
 
 		lasp->wait4src3 = 1;
-		lasp->n.event_table[RECV_NULLIFY][RFWB][SRC3].valid = FALSE ;
+		lasp->n.event_table[RECV_NULLIFY][RFWB][SRC3].valid = false ;
 	}
 
 	pp = &lasp->c.event_table[RECV_VALUE][RFWB][SRC3];
 	if (pp->valid) {
 
-#if	F_BADBADHACK
+#if	CF_BADBADHACK
 		lasp->c.src3.latesttt = pp->tt;
 #endif
 
@@ -3486,16 +3392,16 @@ struct levoinfo	*lip ;
 		if (pp->d != lasp->c.src3.val) 
 			lasp->n.re_exec_inst = 1;
 
-#if	F_BADBADHACK
+#if	CF_BADBADHACK
 		lasp->c.src3.val = pp->d;
 #endif
 
 		lasp->n.src3.val = pp->d;
 		lasp->wait4src3 = 0;
 
-		lasp->n.event_table[WAITON_VALUE][RFWB][SRC3].valid = FALSE ;
+		lasp->n.event_table[WAITON_VALUE][RFWB][SRC3].valid = false ;
 
-		lasp->n.event_table[RECV_VALUE][RFWB][SRC3].valid = FALSE ;
+		lasp->n.event_table[RECV_VALUE][RFWB][SRC3].valid = false ;
 
 	} /* end if */
 
@@ -3507,21 +3413,21 @@ struct levoinfo	*lip ;
 
 		send_packet(lasp, 
 			&lasp->n.event_table[REQ_VALUE][RBWB][SRC4],
-			SRC4,LFLOWGROUP_TSTORE,FALSE) ;
+			SRC4,LFLOWGROUP_TSTORE,false) ;
 
-#if	F_BADBADHACK
+#if	CF_BADBADHACK
 		lasp->c.src4.latesttt = INT_MIN;
 #endif
 
 		lasp->n.src4.latesttt = INT_MIN;
 		lasp->wait4src4 = 1;
-		lasp->n.event_table[RECV_NULLIFY][RFWB][SRC4].valid = FALSE ;
+		lasp->n.event_table[RECV_NULLIFY][RFWB][SRC4].valid = false ;
 	}
 
 	pp = &lasp->c.event_table[RECV_VALUE][RFWB][SRC4];
 	if (pp->valid) {
 
-#if	F_BADBADHACK
+#if	CF_BADBADHACK
 		lasp->c.src4.latesttt = pp->tt;
 #endif
 
@@ -3531,7 +3437,7 @@ struct levoinfo	*lip ;
 		if (pp->d != lasp->c.src4.val) 
 			lasp->n.re_exec_inst = 1;
 
-#if	F_BADBADHACK
+#if	CF_BADBADHACK
 		lasp->c.src4.val = pp->d;
 #endif
 
@@ -3539,9 +3445,9 @@ struct levoinfo	*lip ;
 		lasp->wait4src4 = 0;
 
 
-		lasp->n.event_table[WAITON_VALUE][RFWB][SRC4].valid = FALSE ;
+		lasp->n.event_table[WAITON_VALUE][RFWB][SRC4].valid = false ;
 
-		lasp->n.event_table[RECV_VALUE][RFWB][SRC4].valid = FALSE ;
+		lasp->n.event_table[RECV_VALUE][RFWB][SRC4].valid = false ;
 
 	} /* end if */
 
@@ -3553,21 +3459,21 @@ struct levoinfo	*lip ;
 
 		send_packet(lasp, 
 			&lasp->n.event_table[REQ_VALUE][RBWB][SRC5],
-			SRC5,LFLOWGROUP_TSTORE,FALSE) ;
+			SRC5,LFLOWGROUP_TSTORE,false) ;
 
-#if	F_BADBADHACK
+#if	CF_BADBADHACK
 		lasp->c.src5.latesttt = INT_MIN;
 #endif
 
 		lasp->n.src5.latesttt = INT_MIN;
 		lasp->wait4src5 = 1;
-		lasp->n.event_table[RECV_NULLIFY][RFWB][SRC5].valid = FALSE ;
+		lasp->n.event_table[RECV_NULLIFY][RFWB][SRC5].valid = false ;
 	}
 
 	pp = &lasp->c.event_table[RECV_VALUE][RFWB][SRC5];
 	if (pp->valid) {
 
-#if	F_BADBADHACK
+#if	CF_BADBADHACK
 		lasp->c.src5.latesttt = pp->tt;
 #endif
 
@@ -3577,7 +3483,7 @@ struct levoinfo	*lip ;
 		if (pp->d != lasp->c.src5.val) 
 			lasp->n.re_exec_inst = 1;
 
-#if	F_BADBADHACK
+#if	CF_BADBADHACK
 		lasp->c.src5.val = pp->d;
 #endif
 
@@ -3585,9 +3491,9 @@ struct levoinfo	*lip ;
 		lasp->wait4src5 = 0;
 
 
-		lasp->n.event_table[WAITON_VALUE][RFWB][SRC5].valid = FALSE ;
+		lasp->n.event_table[WAITON_VALUE][RFWB][SRC5].valid = false ;
 
-		lasp->n.event_table[RECV_VALUE][RFWB][SRC5].valid = FALSE ;
+		lasp->n.event_table[RECV_VALUE][RFWB][SRC5].valid = false ;
 
 	} /* end if */
 
@@ -3599,21 +3505,21 @@ struct levoinfo	*lip ;
 
 		if (lasp->c.opclass != INSTR_LOAD) {
 
-#if	F_BADBADHACK
+#if	CF_BADBADHACK
 			lasp->c.dst1.latesttt = pp->tt;
 #endif
 
 			lasp->n.dst1.latesttt = pp->tt;
 
-#if	F_BADBADHACK
+#if	CF_BADBADHACK
 			lasp->c.dst1.oldd = pp->d;
 #endif
 
 			lasp->n.dst1.oldd = pp->d;
 		}
 
-		lasp->n.event_table[WAITON_VALUE][RFWB][DST1].valid = FALSE ;
-		lasp->n.event_table[RECV_VALUE][RFWB][DST1].valid = FALSE ;
+		lasp->n.event_table[WAITON_VALUE][RFWB][DST1].valid = false ;
+		lasp->n.event_table[RECV_VALUE][RFWB][DST1].valid = false ;
 	}
 
 
@@ -3622,21 +3528,21 @@ struct levoinfo	*lip ;
 
 		if (lasp->c.opclass != INSTR_LOAD) {
 
-#if	F_BADBADHACK
+#if	CF_BADBADHACK
 			lasp->c.dst2.latesttt = pp->tt;
 #endif
 
 			lasp->n.dst2.latesttt = pp->tt;
 
-#if	F_BADBADHACK
+#if	CF_BADBADHACK
 			lasp->c.dst2.oldd = pp->d;
 #endif
 
 			lasp->n.dst2.oldd = pp->d;
 		}
 
-		lasp->n.event_table[RECV_VALUE][RFWB][DST2].valid = FALSE ;
-		lasp->n.event_table[WAITON_VALUE][RFWB][DST2].valid = FALSE ;
+		lasp->n.event_table[RECV_VALUE][RFWB][DST2].valid = false ;
+		lasp->n.event_table[WAITON_VALUE][RFWB][DST2].valid = false ;
 	}
 
 
@@ -3645,21 +3551,21 @@ struct levoinfo	*lip ;
 
 		if (lasp->c.opclass != INSTR_LOAD) {
 
-#if	F_BADBADHACK
+#if	CF_BADBADHACK
 			lasp->c.dst3.latesttt = pp->tt;
 #endif
 
 			lasp->n.dst3.latesttt = pp->tt;
 
-#if	F_BADBADHACK
+#if	CF_BADBADHACK
 			lasp->c.dst3.oldd = pp->d;
 #endif
 
 			lasp->n.dst3.oldd = pp->d;
 		}
 
-		lasp->n.event_table[RECV_VALUE][RFWB][DST3].valid = FALSE ;
-		lasp->n.event_table[WAITON_VALUE][RFWB][DST3].valid = FALSE ;
+		lasp->n.event_table[RECV_VALUE][RFWB][DST3].valid = false ;
+		lasp->n.event_table[WAITON_VALUE][RFWB][DST3].valid = false ;
 	}
 
 
@@ -3673,11 +3579,11 @@ struct levoinfo	*lip ;
 
 			send_packet(lasp, 
 			&lasp->n.event_table[SEND_VALUE][RFWB][DST1],
-			DST1,LFLOWGROUP_TSTORE,TRUE) ;
+			DST1,LFLOWGROUP_TSTORE,true) ;
 
 		} /* end if */
 
-		lasp->n.event_table[RECV_REQ_VALUE][RBWB][DST1].valid = FALSE ;
+		lasp->n.event_table[RECV_REQ_VALUE][RBWB][DST1].valid = false ;
 
 	} /* end if (receive a request for DST1) */
 
@@ -3690,9 +3596,9 @@ struct levoinfo	*lip ;
 		if (lasp->c.dst2.a > 0)
 			send_packet(lasp, 
 				&lasp->n.event_table[SEND_VALUE][RFWB][DST2],
-				DST2,LFLOWGROUP_TSTORE,TRUE) ;
+				DST2,LFLOWGROUP_TSTORE,true) ;
 
-		lasp->n.event_table[RECV_REQ_VALUE][RBWB][DST2].valid = FALSE ;
+		lasp->n.event_table[RECV_REQ_VALUE][RBWB][DST2].valid = false ;
 
 	} /* end if (receive a request for DST2) */
 
@@ -3705,9 +3611,9 @@ struct levoinfo	*lip ;
 		if (lasp->c.dst2.a > 0)
 			send_packet(lasp, 
 				&lasp->n.event_table[SEND_VALUE][RFWB][DST3],
-				DST3,LFLOWGROUP_TSTORE,TRUE) ;
+				DST3,LFLOWGROUP_TSTORE,true) ;
 
-		lasp->n.event_table[RECV_REQ_VALUE][RBWB][DST3].valid = FALSE ;
+		lasp->n.event_table[RECV_REQ_VALUE][RBWB][DST3].valid = false ;
 
 	} /* end if (receive a request for DST3) */
 
@@ -3721,18 +3627,18 @@ struct levoinfo	*lip ;
 
 			send_packet(lasp, 
 			&lasp->n.event_table[REQ_VALUE][MBWB][MEM],
-			MEM,LFLOWGROUP_TSTORE,FALSE) ;
+			MEM,LFLOWGROUP_TSTORE,false) ;
 
 			/*lasp->n.wait_ack_on_mfwb = LAS_LOAD_WATCHDOG; */
 
-#if	F_BADBADHACK
+#if	CF_BADBADHACK
 			lasp->c.mem.latesttt = INT_MIN;
 #endif
 
 			lasp->n.mem.latesttt = INT_MIN;
 		}
 
-		lasp->n.event_table[RECV_NULLIFY][MFWB][MEM].valid = FALSE ;
+		lasp->n.event_table[RECV_NULLIFY][MFWB][MEM].valid = false ;
 
 	} /* end if (receive NULLIFY on MEM) */
 
@@ -3745,10 +3651,10 @@ struct levoinfo	*lip ;
 		if (lasp->c.dst1.a > 0)
 			send_packet(lasp, 
 				&lasp->n.event_table[SEND_VALUE][RFWB][DST1],
-				DST1,LFLOWGROUP_TSTORE,FALSE) ;
+				DST1,LFLOWGROUP_TSTORE,false) ;
 
-		lasp->n.event_table[RECV_VALUE][MFWB][MEM].valid = FALSE ;
-		lasp->n.event_table[WAITON_VALUE][MFWB][MEM].valid = FALSE ;
+		lasp->n.event_table[RECV_VALUE][MFWB][MEM].valid = false ;
+		lasp->n.event_table[WAITON_VALUE][MFWB][MEM].valid = false ;
 	}
 
 
@@ -3759,9 +3665,9 @@ struct levoinfo	*lip ;
 
 		send_packet(lasp, 
 			&lasp->n.event_table[SEND_VALUE][MFWB][MEM],
-			MEM,LFLOWGROUP_TSTORE,TRUE) ;
+			MEM,LFLOWGROUP_TSTORE,true) ;
 
-		lasp->n.event_table[RECV_REQ_VALUE][MBWB][MEM].valid = FALSE ;
+		lasp->n.event_table[RECV_REQ_VALUE][MBWB][MEM].valid = false ;
 	}
 
 
@@ -3823,7 +3729,7 @@ snoop_lab:
 /* end subroutine (AS_logic) */
 
 
-static int 
+local int 
 RFWB_interface(lasp,pip,lip)
 LAS		*lasp ;
 struct proginfo	*pip ;
@@ -3850,9 +3756,9 @@ struct levoinfo	*lip ;
 
 	    if (ret >= 0) {
 
-		lasp->n.event_table[SEND_VALUE][RFWB][OLDDST1].valid = FALSE ;
+		lasp->n.event_table[SEND_VALUE][RFWB][OLDDST1].valid = false ;
 
-#if	F_FPRINTF && F_LASDETAILS
+#if	CF_FPRINTF && CF_LASDETAILS
 		las_print_asid(lasp);
 		printf("successfully sent old dst1 on RFWB at %d; reg(%d)\n", 
 			lasp->asid,wr.addr);
@@ -3863,7 +3769,7 @@ struct levoinfo	*lip ;
 
 		} else {
 
-#if	F_FPRINTF && F_LASDETAILS
+#if	CF_FPRINTF && CF_LASDETAILS
 		las_print_asid(lasp);
 			printf("unsuccessful sending old dst1 on RFWB at %d\n", 
 				lasp->asid);
@@ -3886,9 +3792,9 @@ struct levoinfo	*lip ;
 
 	    if (ret >= 0) {
 
-		lasp->n.event_table[SEND_VALUE][RFWB][OLDDST2].valid = FALSE ;
+		lasp->n.event_table[SEND_VALUE][RFWB][OLDDST2].valid = false ;
 
-#if	F_FPRINTF && F_LASDETAILS
+#if	CF_FPRINTF && CF_LASDETAILS
 		las_print_asid(lasp);
 		printf("successfully sent old dst2 on RFWB at %d; reg(%d)\n", 
 			lasp->asid,wr.addr);
@@ -3899,7 +3805,7 @@ struct levoinfo	*lip ;
 
 		} else {
 
-#if	F_FPRINTF && F_LASDETAILS
+#if	CF_FPRINTF && CF_LASDETAILS
 		las_print_asid(lasp);
 			printf("unsuccessful sending old dst2 on RFWB at %d\n", 
 				lasp->asid);
@@ -3922,9 +3828,9 @@ struct levoinfo	*lip ;
 
 	    if (ret >= 0) {
 
-		lasp->n.event_table[SEND_NULLIFY][RFWB][DST1].valid = FALSE ;
+		lasp->n.event_table[SEND_NULLIFY][RFWB][DST1].valid = false ;
 
-#if	F_FPRINTF && F_LASDETAILS
+#if	CF_FPRINTF && CF_LASDETAILS
 		las_print_asid(lasp);
 		printf("successfully sent nullify on RFWB at %d; reg(%d)\n", 
 			lasp->asid,wr.addr);
@@ -3935,7 +3841,7 @@ struct levoinfo	*lip ;
 
 		} else {
 
-#if	F_FPRINTF && F_LASDETAILS
+#if	CF_FPRINTF && CF_LASDETAILS
 		las_print_asid(lasp);
 			printf("unsuccessful sending nulify on RFWB at %d\n", 
 				lasp->asid);
@@ -3958,9 +3864,9 @@ struct levoinfo	*lip ;
 
 	    if (ret >= 0) {
 
-		lasp->n.event_table[SEND_NULLIFY][RFWB][DST2].valid = FALSE ;
+		lasp->n.event_table[SEND_NULLIFY][RFWB][DST2].valid = false ;
 
-#if	F_FPRINTF && F_LASDETAILS
+#if	CF_FPRINTF && CF_LASDETAILS
 		las_print_asid(lasp);
 		printf("successfully sent nullify on RFWB at %d; reg(%d)\n", 
 			lasp->asid,wr.addr);
@@ -3971,7 +3877,7 @@ struct levoinfo	*lip ;
 
 		} else {
 
-#if	F_FPRINTF && F_LASDETAILS
+#if	CF_FPRINTF && CF_LASDETAILS
 		las_print_asid(lasp);
 			printf("unsuccessful sending nulify on RFWB at %d\n", 
 				lasp->asid);
@@ -3998,9 +3904,9 @@ struct levoinfo	*lip ;
 
 		if (ret >= 0) {
 
-		    lasp->n.event_table[SEND_VALUE][RFWB][DST1].valid = FALSE ;
+		    lasp->n.event_table[SEND_VALUE][RFWB][DST1].valid = false ;
 
-#if	F_FPRINTF && F_LASDETAILS
+#if	CF_FPRINTF && CF_LASDETAILS
 			las_print_asid(lasp);
 			printf(
 			    "successful write to RFWB at %d; reg(%d)=0x%x\n",
@@ -4012,7 +3918,7 @@ struct levoinfo	*lip ;
 
 		} else {
 
-#if	F_FPRINTF && F_LASDETAILS
+#if	CF_FPRINTF && CF_LASDETAILS
 			las_print_asid(lasp);
 			printf("unsuccessful write to RFWB at %d\n", 
 				lasp->asid);
@@ -4036,9 +3942,9 @@ struct levoinfo	*lip ;
 
 		if (ret >= 0) {
 
-		    lasp->n.event_table[SEND_VALUE][RFWB][DST2].valid = FALSE ;
+		    lasp->n.event_table[SEND_VALUE][RFWB][DST2].valid = false ;
 
-#if	F_FPRINTF && F_LASDETAILS
+#if	CF_FPRINTF && CF_LASDETAILS
 			las_print_asid(lasp);
 			printf(
 			    "successful write to RFWB at %d; reg(%d)=0x%x\n",
@@ -4050,7 +3956,7 @@ struct levoinfo	*lip ;
 
 		} else {
 
-#if	F_FPRINTF && F_LASDETAILS
+#if	CF_FPRINTF && CF_LASDETAILS
 			las_print_asid(lasp);
 			printf("unsuccessful write to RFWB at %d\n", 
 				lasp->asid);
@@ -4065,7 +3971,7 @@ struct levoinfo	*lip ;
 /* end subroutine (RFWB_interface) */
 
 
-static int 
+local int 
 RBWB_interface(lasp,pip,lip)
 LAS		*lasp ;
 struct proginfo	*pip ;
@@ -4086,7 +3992,7 @@ struct levoinfo	*lip ;
 	pp = &lasp->c.event_table[REQ_VALUE][RBWB][SRC1];
 	if (pp->valid) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 2)
 	eprintf("las/RBWB_interface: SRC1 was valid\n") ;
 #endif
@@ -4095,7 +4001,7 @@ struct levoinfo	*lip ;
 
 		if (wr.addr == 0) {
 
-		    lasp->n.event_table[REQ_VALUE][RBWB][SRC1].valid = FALSE ;
+		    lasp->n.event_table[REQ_VALUE][RBWB][SRC1].valid = false ;
 			return 0;
 		}
 
@@ -4106,11 +4012,11 @@ struct levoinfo	*lip ;
 
 		if (ret >= 0) {
 
-		    lasp->n.event_table[REQ_VALUE][RBWB][SRC1].valid= FALSE ;
+		    lasp->n.event_table[REQ_VALUE][RBWB][SRC1].valid= false ;
 		    lasp->n.event_table[WAITON_VALUE][RFWB][SRC1].valid = 
-			FALSE & 1;
+			false & 1;
 
-#if	F_FPRINTF && F_LASDETAILS
+#if	CF_FPRINTF && CF_LASDETAILS
 			las_print_asid(lasp);
 			printf("successful write to RBWB at %d; reg(%d)\n", 
 				lasp->asid,wr.addr);
@@ -4121,7 +4027,7 @@ struct levoinfo	*lip ;
 
 		} else {
 
-#if	F_FPRINTF && F_LASDETAILS
+#if	CF_FPRINTF && CF_LASDETAILS
 			las_print_asid(lasp);
 			printf("unsuccessful write to RBWB at %d\n", 
 				lasp->asid);
@@ -4135,7 +4041,7 @@ struct levoinfo	*lip ;
 	pp = &lasp->c.event_table[REQ_VALUE][RBWB][SRC2];
 	if (pp->valid) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 2)
 	eprintf("las/RBWB_interface: SRC2 was valid\n") ;
 #endif
@@ -4143,7 +4049,7 @@ struct levoinfo	*lip ;
 
 		if (wr.addr == 0) {
 
-		    lasp->n.event_table[REQ_VALUE][RBWB][SRC2].valid = FALSE ;
+		    lasp->n.event_table[REQ_VALUE][RBWB][SRC2].valid = false ;
 			return 0;
 		}
 
@@ -4155,10 +4061,10 @@ struct levoinfo	*lip ;
 		if (ret >= 0) {
 
 		    lasp->n.event_table[WAITON_VALUE][RFWB][SRC2].valid = 
-			FALSE & 1;
-		    lasp->n.event_table[REQ_VALUE][RBWB][SRC2].valid = FALSE ;
+			false & 1;
+		    lasp->n.event_table[REQ_VALUE][RBWB][SRC2].valid = false ;
 
-#if	F_FPRINTF && F_LASDETAILS
+#if	CF_FPRINTF && CF_LASDETAILS
 			las_print_asid(lasp);
 			printf("successful write to RBWB at %d; reg(%d)\n", 
 				lasp->asid,wr.addr);
@@ -4169,7 +4075,7 @@ struct levoinfo	*lip ;
 
 		} else {
 
-#if	F_FPRINTF && F_LASDETAILS
+#if	CF_FPRINTF && CF_LASDETAILS
 			las_print_asid(lasp);
 			printf("unsuccessful write to RBWB at %d\n", 
 				lasp->asid);
@@ -4183,7 +4089,7 @@ struct levoinfo	*lip ;
 	pp = &lasp->c.event_table[REQ_VALUE][RBWB][DST1];
 	if (pp->valid) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 2)
 	eprintf("las/RBWB_interface: DST1 was valid\n") ;
 #endif
@@ -4192,7 +4098,7 @@ struct levoinfo	*lip ;
 
 		if (wr.addr == 0) {
 
-		    lasp->n.event_table[REQ_VALUE][RBWB][DST1].valid = FALSE ;
+		    lasp->n.event_table[REQ_VALUE][RBWB][DST1].valid = false ;
 			return 0;
 		}
 
@@ -4203,11 +4109,11 @@ struct levoinfo	*lip ;
 
 		if (ret >= 0) {
 
-		    lasp->n.event_table[REQ_VALUE][RBWB][DST1].valid = FALSE ;
+		    lasp->n.event_table[REQ_VALUE][RBWB][DST1].valid = false ;
 		    lasp->n.event_table[WAITON_VALUE][RFWB][DST1].valid = 
-			FALSE & 1;
+			false & 1;
 
-#if	F_FPRINTF && F_LASDETAILS
+#if	CF_FPRINTF && CF_LASDETAILS
 			las_print_asid(lasp);
 			printf("successful write to RBWB at %d; reg(%d)\n", 
 				lasp->asid,wr.addr);
@@ -4218,7 +4124,7 @@ struct levoinfo	*lip ;
 
 		} else {
 
-#if	F_FPRINTF && F_LASDETAILS
+#if	CF_FPRINTF && CF_LASDETAILS
 			las_print_asid(lasp);
 			printf("unsuccessful write to RBWB at %d\n", 
 				lasp->asid);
@@ -4232,7 +4138,7 @@ struct levoinfo	*lip ;
 	pp = &lasp->c.event_table[REQ_VALUE][RBWB][DST2];
 	if (pp->valid) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 2)
 	eprintf("las/RBWB_interface: DST2 was valid\n") ;
 #endif
@@ -4241,7 +4147,7 @@ struct levoinfo	*lip ;
 
 		if (wr.addr == 0) {
 
-		    lasp->n.event_table[REQ_VALUE][RBWB][DST2].valid = FALSE ;
+		    lasp->n.event_table[REQ_VALUE][RBWB][DST2].valid = false ;
 			return 0;
 		}
 
@@ -4252,11 +4158,11 @@ struct levoinfo	*lip ;
 
 		if (ret >= 0) {
 
-		    lasp->n.event_table[REQ_VALUE][RBWB][DST2].valid = FALSE ;
+		    lasp->n.event_table[REQ_VALUE][RBWB][DST2].valid = false ;
 		    lasp->n.event_table[WAITON_VALUE][RFWB][DST2].valid = 
-				FALSE & 1 ;
+				false & 1 ;
 
-#if	F_FPRINTF && F_LASDETAILS
+#if	CF_FPRINTF && CF_LASDETAILS
 			las_print_asid(lasp);
 			printf("successful write to RBWB at %d; reg(%d)\n", 
 				lasp->asid,wr.addr);
@@ -4267,7 +4173,7 @@ struct levoinfo	*lip ;
 
 		} else {
 
-#if	F_FPRINTF && F_LASDETAILS
+#if	CF_FPRINTF && CF_LASDETAILS
 			las_print_asid(lasp);
 			printf("unsuccessful write to RBWB at %d\n", 
 				lasp->asid);
@@ -4282,7 +4188,7 @@ struct levoinfo	*lip ;
 /* end subroutine (RBWB_interface) */
 
 
-static int 
+local int 
 PFWB_interface(lasp,pip,lip)
 LAS		*lasp ;
 struct proginfo	*pip ;
@@ -4318,7 +4224,7 @@ struct levoinfo	*lip ;
 
 		lasp->n.fw_pred_on_pfwb = 0 ; /* changed from n to c */
 
-#if	F_FPRINTF && F_LASDETAILS
+#if	CF_FPRINTF && CF_LASDETAILS
 		las_print_asid(lasp);
 		printf("successful write to PFWB at %d, pout(%d)=%d\n", 
 			lasp->asid, lasp->c.pregs.pout.a,wr.dv);
@@ -4326,7 +4232,7 @@ struct levoinfo	*lip ;
 
 	    } else {
 
-#if	F_FPRINTF && F_LASDETAILS
+#if	CF_FPRINTF && CF_LASDETAILS
 		las_print_asid(lasp);
 		printf("unsuccessful write to PFWB at %d\n", lasp->asid);
 #endif
@@ -4339,7 +4245,7 @@ struct levoinfo	*lip ;
 /* end subroutine (PFWB_interface) */
 
 
-static int 
+local int 
 MFWB_interface(lasp,pip,lip)
 LAS		*lasp ;
 struct proginfo	*pip ;
@@ -4369,9 +4275,9 @@ struct levoinfo	*lip ;
 
 	    if (ret >= 0) {
 
-		lasp->n.event_table[SEND_NULLIFY][MFWB][MEM].valid = FALSE ;
+		lasp->n.event_table[SEND_NULLIFY][MFWB][MEM].valid = false ;
 
-#if	F_FPRINTF && F_LASDETAILS
+#if	CF_FPRINTF && CF_LASDETAILS
 		las_print_asid(lasp);
 		printf("successfully sent nullify on MFWB at %d; mem(0x%x)\n", 
 			lasp->asid,wr.addr);
@@ -4379,7 +4285,7 @@ struct levoinfo	*lip ;
 
 	    } else {
 
-#if	F_FPRINTF && F_LASDETAILS
+#if	CF_FPRINTF && CF_LASDETAILS
 		las_print_asid(lasp);
 		printf("unsuccessful in sending nulify on MFWB at %d\n", 
 			lasp->asid);
@@ -4407,9 +4313,9 @@ struct levoinfo	*lip ;
 
 		if (ret >= 0) {
 
-		    lasp->n.event_table[SEND_VALUE][MFWB][MEM].valid = FALSE ;
+		    lasp->n.event_table[SEND_VALUE][MFWB][MEM].valid = false ;
 
-#if	F_FPRINTF && F_LASDETAILS
+#if	CF_FPRINTF && CF_LASDETAILS
 			las_print_asid(lasp);
 			printf("successful write to MFWB at %d; "
 				"mem(0x%x)=0x%x\n", 
@@ -4418,7 +4324,7 @@ struct levoinfo	*lip ;
 
 		} else  {
 
-#if	F_FPRINTF && F_LASDETAILS
+#if	CF_FPRINTF && CF_LASDETAILS
 			las_print_asid(lasp);
 			printf("unsuccessful write to MFWB at %d\n", 
 				lasp->asid);
@@ -4434,7 +4340,7 @@ struct levoinfo	*lip ;
 
 
 /* memory backwarding bus operations */
-static int MBWB_interface(lasp,pip,lip)
+local int MBWB_interface(lasp,pip,lip)
 LAS		*lasp ;
 struct proginfo	*pip ;
 struct levoinfo	*lip ;
@@ -4456,22 +4362,18 @@ struct levoinfo	*lip ;
 		pp->a = lasp->c.mem.a;
 		read_packet(pp, &wr);
 
-#if	F_SAFEFUNC
-	if (lasp->sanity.func != NULL) {
-
+#if	CF_SAFEFUNC
+	if (lasp->sanity.func) {
 	rs1 = (*lasp->sanity.func)(lasp->sanity.arg) ;
-
 	if (rs1 < 0) {
-
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1)
 	eprintf("las/MBWB_interface: 2 bad sanityfunc LAS=%08lx\n",lasp) ;
 #endif
-
 		return rs1 ;
 	}
 	}
-#endif /* F_SAFEFUNC */
+#endif /* CF_SAFEFUNC */
 
 		wr.addr &= 0xfffffffc ;
 		wr.ott = lasp->c.tt ;	/* originator's time-tag */
@@ -4481,49 +4383,41 @@ struct levoinfo	*lip ;
 		busintp = lasp->mbwbus.head + mi ;
 	    ret = lbusint_write(busintp, lasp->buspriority,&wr) ;
 
-#if	F_SAFEFUNC
-	if (lasp->sanity.func != NULL) {
-
+#if	CF_SAFEFUNC
+	if (lasp->sanity.func) {
 	rs1 = (*lasp->sanity.func)(lasp->sanity.arg) ;
-
 	if (rs1 < 0) {
-
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1)
 	eprintf("las/MBWB_interface: 3 bad sanityfunc LAS=%08lx\n",lasp) ;
 #endif
-
 		return rs1 ;
 	}
 	}
-#endif /* F_SAFEFUNC */
+#endif /* CF_SAFEFUNC */
 
 	    if (ret >= 0) {
 
-		lasp->n.event_table[REQ_VALUE][MBWB][MEM].valid = FALSE ;
+		lasp->n.event_table[REQ_VALUE][MBWB][MEM].valid = false ;
 		lasp->n.event_table[WAITON_VALUE][MFWB][MEM].valid = 
-			FALSE & 1;
+			false & 1;
 
 		/*lasp -> n.wait_ack_on_mfwb = LAS_LOAD_WATCHDOG; */
 
-#if	F_SAFEFUNC
-	if (lasp->sanity.func != NULL) {
-
+#if	CF_SAFEFUNC
+	if (lasp->sanity.func) {
 	rs1 = (*lasp->sanity.func)(lasp->sanity.arg) ;
-
 	if (rs1 < 0) {
-
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1)
 	eprintf("las/MBWB_interface: 3 bad sanityfunc LAS=%08lx\n",lasp) ;
 #endif
-
 		return rs1 ;
 	}
 	}
-#endif /* F_SAFEFUNC */
+#endif /* CF_SAFEFUNC */
 
-#if	F_FPRINTF && F_LASDETAILS
+#if	CF_FPRINTF && CF_LASDETAILS
 		las_print_asid(lasp);
 		printf("successful write to MBWB at %d; mem(0x%x)\n", 
 			lasp->asid,wr.addr);
@@ -4531,7 +4425,7 @@ struct levoinfo	*lip ;
 
 	    } else {
 
-#if	F_FPRINTF && F_LASDETAILS
+#if	CF_FPRINTF && CF_LASDETAILS
 		las_print_asid(lasp);
 		printf("unsuccessful write to MBWB at %d\n", 
 			lasp->asid);
@@ -4547,7 +4441,7 @@ struct levoinfo	*lip ;
 
 
 /* interface to send things to a PE */
-static int PE_interface(lasp,pip,lip)
+local int PE_interface(lasp,pip,lip)
 LAS		*lasp ;
 struct proginfo	*pip ;
 struct levoinfo	*lip ;
@@ -4559,13 +4453,13 @@ struct levoinfo	*lip ;
 
 	if ((lasp->c.re_exec_inst == 1) && (lasp->c.pI == 1)) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	    if (pip->debuglevel > 2)
 		eprintf("las/PE_interface: id=%d LPE=%08lx need exe\n",
 			lasp->asid,lasp->lpes) ;
 #endif
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 		if (pip->debuglevel > 2) {
 			if (lasp->c.dst3.a != -1)
 			eprintf("las/PE_interface: need to exe w/ DST3\n") ;
@@ -4592,7 +4486,7 @@ struct levoinfo	*lip ;
 
 		if (rs == SR_OK) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 		if (pip->debuglevel > 2)
 			eprintf("las/PE_interface: id=%d LPE=%08lx tn=%d\n",
 			lasp->asid,lasp->lpes,lasp->c.pe_tnumb) ;
@@ -4602,7 +4496,7 @@ struct levoinfo	*lip ;
 
 		} else {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 		if (pip->debuglevel > 2) {
 
 			eprintf("las/PE_interface: id=%d LPE=%08lx\n",
@@ -4624,7 +4518,7 @@ struct levoinfo	*lip ;
 /* end subroutine (PE_interface) */
 
 
-static int snoop_RFWB_interface(lasp,pip,lip)
+local int snoop_RFWB_interface(lasp,pip,lip)
 LAS		*lasp ;
 struct proginfo	*pip ;
 struct levoinfo	*lip ;
@@ -4647,7 +4541,7 @@ struct levoinfo	*lip ;
 	int	sgtt ;
 
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 2)
 	    eprintf("las_srfb: id=%d astt=%d path=%d\n",
 			lasp->asid,lasp->c.tt,lasp->c.path) ;
@@ -4692,7 +4586,7 @@ struct levoinfo	*lip ;
 
 /* source 1 (src1) */
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 2)
 	    eprintf(
                 "las_srfb: SRC1 existing a=%d latesttt=%d tt=%d:%d tr=%d\n",
@@ -4702,13 +4596,13 @@ struct levoinfo	*lip ;
 			lasp->c.src1.trans) ;
 #endif
 
-		f_match = TRUE ;
+		f_match = true ;
 		f_match = f_match && (rd.path == lasp->c.path) ;
 		f_match = f_match && (rd.addr == lasp->c.src1.a) ;
 		/*    f_match = f_match && (rd.d != lasp->c.src1.val) ; */
 		f_match = f_match && (rd.tt < lasp->c.tt) ;
 
-#if	F_EXTRASNOOP
+#if	CF_EXTRASNOOP
 		if (lasp->c.src1.trans != LFLOWGROUP_TNULLIFY)
 			f_match = f_match && (rd.tt >= lasp->c.src1.tt) ;
 #else
@@ -4717,10 +4611,10 @@ struct levoinfo	*lip ;
 
 		f_match = f_match && (rd.tt >= lastttsrc1);
 
-#if	F_EXTRASNOOP
+#if	CF_EXTRASNOOP
 		if (f_match) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 2)
 	    eprintf("las_srfb: SRC1 partial match\n") ;
 #endif
@@ -4732,9 +4626,9 @@ struct levoinfo	*lip ;
 				(rd.seq + 1) & lasp->rfmodmask ;
 
 			else
-			    f_match = FALSE ;
+			    f_match = false ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 2)
 	    eprintf("las_srfb: extrasnoop=%d\n",f_match) ;
 #endif
@@ -4744,11 +4638,11 @@ struct levoinfo	*lip ;
 				(rd.seq + 1) & lasp->rfmodmask ;
 
 		} /* end if (sequence check) */
-#endif /* F_EXTRASNOOP */
+#endif /* CF_EXTRASNOOP */
 
 		if (f_match) {
 
-#if	F_FPRINTF && F_LASDETAILS2
+#if	CF_FPRINTF && CF_LASDETAILS2
 		fprintf(stdout,
 		     "las_srfb: id=%d astt=%d SRC1 tr=%d p=%d tt=%d:%d "
 			"a=%d dp=%d dv=%08x\n",
@@ -4767,7 +4661,7 @@ struct levoinfo	*lip ;
 			&lasp->n.event_table[RECV_NULLIFY][RFWB][SRC1], 
 			&rd);
 
-#if	F_FPRINTF && F_LASDETAILS
+#if	CF_FPRINTF && CF_LASDETAILS
 		las_print_asid(lasp);
 		printf("Snoop on RFWB at %d, Nullify from tt=%d; src1(%d)\n", 
 			lasp->asid, rd.tt,lasp->c.src1.a);
@@ -4775,7 +4669,7 @@ struct levoinfo	*lip ;
 
 		} else {
 
-#if	F_FPRINTF && F_LASDETAILS
+#if	CF_FPRINTF && CF_LASDETAILS
 		las_print_asid(lasp);
 		printf(
 		    "Snoop on RFWB at %d, data from tt=%d; src1(%d)=0x%x\n",
@@ -4786,18 +4680,18 @@ struct levoinfo	*lip ;
 					&rd);
 
 		    lasp->n.event_table[RECV_NULLIFY][RFWB][SRC1].valid = 
-				FALSE ;
+				false ;
 
 		/* to fix the problem with multiple span that dave had */
 		    lasp->n.event_table[REQ_VALUE][RBWB][SRC1].valid = 
-			FALSE ;
+			false ;
 
 		}
 	    }
 
 /* source 2 (src2) */
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 2)
 	    eprintf(
                 "las_srfb: SRC2 existing a=%d latesttt=%d tt=%d:%d\n",
@@ -4806,13 +4700,13 @@ struct levoinfo	*lip ;
 			lasp->c.src2.tt,lasp->c.src2.frseq) ;
 #endif
 
-		f_match = TRUE ;
+		f_match = true ;
 		f_match = f_match && (rd.path == lasp->c.path) ;
 		f_match = f_match && (rd.addr == lasp->c.src2.a) ;
 		/*    f_match = f_match && (rd.d != lasp->c.src2.val) ; */
 		f_match = f_match && (rd.tt < lasp->c.tt) ;
 
-#if	F_EXTRASNOOP
+#if	CF_EXTRASNOOP
 		if (lasp->c.src2.trans != LFLOWGROUP_TNULLIFY)
 			f_match = f_match && (rd.tt >= lasp->c.src2.tt) ;
 #else
@@ -4821,7 +4715,7 @@ struct levoinfo	*lip ;
 
 		f_match = f_match && (rd.tt >= lastttsrc2);
 
-#if	F_EXTRASNOOP
+#if	CF_EXTRASNOOP
 		if (f_match) {
 
 		    if (rd.tt == lasp->c.src2.tt) {
@@ -4831,9 +4725,9 @@ struct levoinfo	*lip ;
 				(rd.seq + 1) & lasp->rfmodmask ;
 
 			else
-			    f_match = FALSE ;
+			    f_match = false ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 2)
 	    eprintf("las_srfb: extrasnoop=%d\n",f_match) ;
 #endif
@@ -4843,11 +4737,11 @@ struct levoinfo	*lip ;
 				(rd.seq + 1) & lasp->rfmodmask ;
 
 		} /* end if (sequence check) */
-#endif /* F_EXTRASNOOP */
+#endif /* CF_EXTRASNOOP */
 
 		if (f_match) {
 
-#if	F_FPRINTF && F_LASDETAILS2
+#if	CF_FPRINTF && CF_LASDETAILS2
 		fprintf(stdout,
 		     "las_srfb: id=%d astt=%d SRC2 tr=%d p=%d tt=%d:%d "
 			"a=%d dp=%d dv=%08x\n",
@@ -4862,7 +4756,7 @@ struct levoinfo	*lip ;
 		    lastttsrc2 = rd.tt;
 		    if (rd.trans == LFLOWGROUP_TNULLIFY) {
 
-#if	F_FPRINTF && F_LASDETAILS
+#if	CF_FPRINTF && CF_LASDETAILS
 		las_print_asid(lasp);
 		printf("Snoop on RFWB at %d, Nullify from tt=%d; src2(%d)\n",
 			lasp->asid, rd.tt,lasp->c.src2.a);
@@ -4873,7 +4767,7 @@ struct levoinfo	*lip ;
 
 		} else {
 
-#if	F_FPRINTF && F_LASDETAILS
+#if	CF_FPRINTF && CF_LASDETAILS
 		las_print_asid(lasp);
 		printf("Snoop on RFWB at %d, data from tt=%d; src2(%d)=0x%x\n",
 			 lasp->asid, rd.tt,lasp->c.src2.a,rd.dv);
@@ -4883,17 +4777,17 @@ struct levoinfo	*lip ;
 			&rd);
 
 		    lasp->n.event_table[RECV_NULLIFY][RFWB][SRC2].valid = 
-				FALSE ;
+				false ;
 
 		/* to fix the problem with multiple span that dave had */
-		    lasp->n.event_table[REQ_VALUE][RBWB][SRC2].valid = FALSE ;
+		    lasp->n.event_table[REQ_VALUE][RBWB][SRC2].valid = false ;
 
 		}
 	    }
 
 /* source 3 (src3) */
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 2)
 	    eprintf(
                 "las_srfb: SRC3 existing a=%d latesttt=%d tt=%d:%d\n",
@@ -4902,13 +4796,13 @@ struct levoinfo	*lip ;
 			lasp->c.src3.tt,lasp->c.src3.frseq) ;
 #endif
 
-		f_match = TRUE ;
+		f_match = true ;
 		f_match = f_match && (rd.path == lasp->c.path) ;
 		f_match = f_match && (rd.addr == lasp->c.src3.a) ;
 		/*    f_match = f_match && (rd.d != lasp->c.src3.val) ; */
 		f_match = f_match && (rd.tt < lasp->c.tt) ;
 
-#if	F_EXTRASNOOP
+#if	CF_EXTRASNOOP
 		if (lasp->c.src3.trans != LFLOWGROUP_TNULLIFY)
 			f_match = f_match && (rd.tt >= lasp->c.src3.tt) ;
 #else
@@ -4917,7 +4811,7 @@ struct levoinfo	*lip ;
 
 		f_match = f_match && (rd.tt >= lastttsrc3);
 
-#if	F_EXTRASNOOP
+#if	CF_EXTRASNOOP
 		if (f_match) {
 
 		    if (rd.tt == lasp->c.src3.tt) {
@@ -4927,9 +4821,9 @@ struct levoinfo	*lip ;
 				(rd.seq + 1) & lasp->rfmodmask ;
 
 			else
-			    f_match = FALSE ;
+			    f_match = false ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 2)
 	    eprintf("las_srfb: extrasnoop=%d\n",f_match) ;
 #endif
@@ -4939,11 +4833,11 @@ struct levoinfo	*lip ;
 				(rd.seq + 1) & lasp->rfmodmask ;
 
 		} /* end if (sequence check) */
-#endif /* F_EXTRASNOOP */
+#endif /* CF_EXTRASNOOP */
 
 		if (f_match) {
 
-#if	F_FPRINTF && F_LASDETAILS2
+#if	CF_FPRINTF && CF_LASDETAILS2
 		fprintf(stdout,
 		     "las_srfb: id=%d astt=%d SRC3 tr=%d p=%d tt=%d:%d "
 			"a=%d dp=%d dv=%08x\n",
@@ -4958,7 +4852,7 @@ struct levoinfo	*lip ;
 		    lastttsrc3 = rd.tt;
 		    if (rd.trans == LFLOWGROUP_TNULLIFY) {
 
-#if	F_FPRINTF && F_LASDETAILS
+#if	CF_FPRINTF && CF_LASDETAILS
 		las_print_asid(lasp);
 		printf("Snoop on RFWB at %d, Nullify from tt=%d; src3(%d)\n",
 			lasp->asid, rd.tt,lasp->c.src3.a);
@@ -4969,7 +4863,7 @@ struct levoinfo	*lip ;
 
 		} else {
 
-#if	F_FPRINTF && F_LASDETAILS
+#if	CF_FPRINTF && CF_LASDETAILS
 		las_print_asid(lasp);
 		printf("Snoop on RFWB at %d, data from tt=%d; src3(%d)=0x%x\n",
 			 lasp->asid, rd.tt,lasp->c.src3.a,rd.dv);
@@ -4979,17 +4873,17 @@ struct levoinfo	*lip ;
 			&rd);
 
 		    lasp->n.event_table[RECV_NULLIFY][RFWB][SRC3].valid = 
-				FALSE ;
+				false ;
 
 		/* to fix the problem with multiple span that dave had */
-		    lasp->n.event_table[REQ_VALUE][RBWB][SRC3].valid = FALSE ;
+		    lasp->n.event_table[REQ_VALUE][RBWB][SRC3].valid = false ;
 
 		}
 	    }
 
 /* source 4 (src4) */
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 2)
 	    eprintf(
                 "las_srfb: SRC4 existing a=%d latesttt=%d tt=%d:%d\n",
@@ -4998,13 +4892,13 @@ struct levoinfo	*lip ;
 			lasp->c.src4.tt,lasp->c.src4.frseq) ;
 #endif
 
-		f_match = TRUE ;
+		f_match = true ;
 		f_match = f_match && (rd.path == lasp->c.path) ;
 		f_match = f_match && (rd.addr == lasp->c.src4.a) ;
 		/*    f_match = f_match && (rd.d != lasp->c.src4.val) ; */
 		f_match = f_match && (rd.tt < lasp->c.tt) ;
 
-#if	F_EXTRASNOOP
+#if	CF_EXTRASNOOP
 		if (lasp->c.src4.trans != LFLOWGROUP_TNULLIFY)
 			f_match = f_match && (rd.tt >= lasp->c.src4.tt) ;
 #else
@@ -5013,7 +4907,7 @@ struct levoinfo	*lip ;
 
 		f_match = f_match && (rd.tt >= lastttsrc4);
 
-#if	F_EXTRASNOOP
+#if	CF_EXTRASNOOP
 		if (f_match) {
 
 		    if (rd.tt == lasp->c.src4.tt) {
@@ -5023,9 +4917,9 @@ struct levoinfo	*lip ;
 				(rd.seq + 1) & lasp->rfmodmask ;
 
 			else
-			    f_match = FALSE ;
+			    f_match = false ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 2)
 	    eprintf("las_srfb: extrasnoop=%d\n",f_match) ;
 #endif
@@ -5035,11 +4929,11 @@ struct levoinfo	*lip ;
 				(rd.seq + 1) & lasp->rfmodmask ;
 
 		} /* end if (sequence check) */
-#endif /* F_EXTRASNOOP */
+#endif /* CF_EXTRASNOOP */
 
 		if (f_match) {
 
-#if	F_FPRINTF && F_LASDETAILS2
+#if	CF_FPRINTF && CF_LASDETAILS2
 		fprintf(stdout,
 		     "las_srfb: id=%d astt=%d SRC4 tr=%d p=%d tt=%d:%d "
 			"a=%d dp=%d dv=%08x\n",
@@ -5054,7 +4948,7 @@ struct levoinfo	*lip ;
 		    lastttsrc4 = rd.tt;
 		    if (rd.trans == LFLOWGROUP_TNULLIFY) {
 
-#if	F_FPRINTF && F_LASDETAILS
+#if	CF_FPRINTF && CF_LASDETAILS
 		las_print_asid(lasp);
 		printf("Snoop on RFWB at %d, Nullify from tt=%d; src4(%d)\n",
 			lasp->asid, rd.tt,lasp->c.src4.a);
@@ -5065,7 +4959,7 @@ struct levoinfo	*lip ;
 
 		} else {
 
-#if	F_FPRINTF && F_LASDETAILS
+#if	CF_FPRINTF && CF_LASDETAILS
 		las_print_asid(lasp);
 		printf("Snoop on RFWB at %d, data from tt=%d; src4(%d)=0x%x\n",
 			 lasp->asid, rd.tt,lasp->c.src4.a,rd.dv);
@@ -5075,17 +4969,17 @@ struct levoinfo	*lip ;
 			&rd);
 
 		    lasp->n.event_table[RECV_NULLIFY][RFWB][SRC4].valid = 
-				FALSE ;
+				false ;
 
 		/* to fix the problem with multiple span that dave had */
-		    lasp->n.event_table[REQ_VALUE][RBWB][SRC4].valid = FALSE ;
+		    lasp->n.event_table[REQ_VALUE][RBWB][SRC4].valid = false ;
 
 		}
 	    }
 
 /* source 5 (src5) */
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 2)
 	    eprintf(
                 "las_srfb: SRC5 existing a=%d latesttt=%d tt=%d:%d\n",
@@ -5094,13 +4988,13 @@ struct levoinfo	*lip ;
 			lasp->c.src5.tt,lasp->c.src5.frseq) ;
 #endif
 
-		f_match = TRUE ;
+		f_match = true ;
 		f_match = f_match && (rd.path == lasp->c.path) ;
 		f_match = f_match && (rd.addr == lasp->c.src5.a) ;
 		/*    f_match = f_match && (rd.d != lasp->c.src5.val) ; */
 		f_match = f_match && (rd.tt < lasp->c.tt) ;
 
-#if	F_EXTRASNOOP
+#if	CF_EXTRASNOOP
 		if (lasp->c.src5.trans != LFLOWGROUP_TNULLIFY)
 			f_match = f_match && (rd.tt >= lasp->c.src5.tt) ;
 #else
@@ -5109,7 +5003,7 @@ struct levoinfo	*lip ;
 
 		f_match = f_match && (rd.tt >= lastttsrc5);
 
-#if	F_EXTRASNOOP
+#if	CF_EXTRASNOOP
 		if (f_match) {
 
 		    if (rd.tt == lasp->c.src5.tt) {
@@ -5119,9 +5013,9 @@ struct levoinfo	*lip ;
 				(rd.seq + 1) & lasp->rfmodmask ;
 
 			else
-			    f_match = FALSE ;
+			    f_match = false ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 2)
 	    eprintf("las_srfb: extrasnoop=%d\n",f_match) ;
 #endif
@@ -5131,11 +5025,11 @@ struct levoinfo	*lip ;
 				(rd.seq + 1) & lasp->rfmodmask ;
 
 		} /* end if (sequence check) */
-#endif /* F_EXTRASNOOP */
+#endif /* CF_EXTRASNOOP */
 
 		if (f_match) {
 
-#if	F_FPRINTF && F_LASDETAILS2
+#if	CF_FPRINTF && CF_LASDETAILS2
 		fprintf(stdout,
 		     "las_srfb: id=%d astt=%d SRC5 tr=%d p=%d tt=%d:%d "
 			"a=%d dp=%d dv=%08x\n",
@@ -5150,7 +5044,7 @@ struct levoinfo	*lip ;
 		    lastttsrc5 = rd.tt;
 		    if (rd.trans == LFLOWGROUP_TNULLIFY) {
 
-#if	F_FPRINTF && F_LASDETAILS
+#if	CF_FPRINTF && CF_LASDETAILS
 		las_print_asid(lasp);
 		printf("Snoop on RFWB at %d, Nullify from tt=%d; src5(%d)\n",
 			lasp->asid, rd.tt,lasp->c.src5.a);
@@ -5161,7 +5055,7 @@ struct levoinfo	*lip ;
 
 		} else {
 
-#if	F_FPRINTF && F_LASDETAILS
+#if	CF_FPRINTF && CF_LASDETAILS
 		las_print_asid(lasp);
 		printf("Snoop on RFWB at %d, data from tt=%d; src5(%d)=0x%x\n",
 			 lasp->asid, rd.tt,lasp->c.src5.a,rd.dv);
@@ -5171,17 +5065,17 @@ struct levoinfo	*lip ;
 			&rd);
 
 		    lasp->n.event_table[RECV_NULLIFY][RFWB][SRC5].valid = 
-				FALSE ;
+				false ;
 
 		/* to fix the problem with multiple span that dave had */
-		    lasp->n.event_table[REQ_VALUE][RBWB][SRC5].valid = FALSE ;
+		    lasp->n.event_table[REQ_VALUE][RBWB][SRC5].valid = false ;
 
 		}
 	    }
 
 /* destination 1 (dst1) */
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 2)
 	    eprintf(
                 "las_srfb: DST1 existing a=%d latesttt=%d tt=%d:%d\n",
@@ -5190,13 +5084,13 @@ struct levoinfo	*lip ;
 			lasp->c.dst1.tt,lasp->c.dst1.frseq) ;
 #endif
 
-		f_match = TRUE ;
+		f_match = true ;
 		f_match = f_match && (rd.path == lasp->c.path) ;
 		f_match = f_match && (rd.addr == lasp->c.dst1.a) ;
 		/*    f_match = f_match && (rd.d != lasp->c.dst1.val) ; */
 		f_match = f_match && (rd.tt < lasp->c.tt) ;
 
-#if	F_EXTRASNOOP
+#if	CF_EXTRASNOOP
 		if (lasp->c.dst1.trans != LFLOWGROUP_TNULLIFY)
 			f_match = f_match && (rd.tt >= lasp->c.dst1.tt) ;
 #else
@@ -5205,7 +5099,7 @@ struct levoinfo	*lip ;
 
 		f_match = f_match && (rd.tt >= lastttdst1);
 
-#if	F_EXTRASNOOP
+#if	CF_EXTRASNOOP
 		if (f_match) {
 
 		    if (rd.tt == lasp->c.dst1.tt) {
@@ -5215,9 +5109,9 @@ struct levoinfo	*lip ;
 				(rd.seq + 1) & lasp->rfmodmask ;
 
 			else
-			    f_match = FALSE ;
+			    f_match = false ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 2)
 	    eprintf("las_srfb: extrasnoop=%d\n",f_match) ;
 #endif
@@ -5227,11 +5121,11 @@ struct levoinfo	*lip ;
 				(rd.seq + 1) & lasp->rfmodmask ;
 
 		} /* end if (sequence check) */
-#endif /* F_EXTRASNOOP */
+#endif /* CF_EXTRASNOOP */
 
 		if (f_match) {
 
-#if	F_FPRINTF && F_LASDETAILS2
+#if	CF_FPRINTF && CF_LASDETAILS2
 		fprintf(stdout,
 		     "las_srfb: id=%d astt=%d DST1 tr=%d p=%d tt=%d:%d "
 			"a=%d dp=%d dv=%08x\n",
@@ -5250,7 +5144,7 @@ struct levoinfo	*lip ;
 
 		    lastttdst1 = rd.tt;
 
-#if	F_FPRINTF && F_LASDETAILS
+#if	CF_FPRINTF && CF_LASDETAILS
 		las_print_asid(lasp);
 		printf("Snoop on RFWB at %d, data from tt=%d; dst(%d)=0x%x\n",
 			lasp->asid, rd.tt,lasp->c.dst1.a,rd.dv);
@@ -5262,7 +5156,7 @@ struct levoinfo	*lip ;
 
 /* destination 2 (dst2) */
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 2)
 	    eprintf(
                 "las_srfb: DST2 existing a=%d latesttt=%d tt=%d:%d\n",
@@ -5271,13 +5165,13 @@ struct levoinfo	*lip ;
 			lasp->c.dst2.tt,lasp->c.dst2.frseq) ;
 #endif
 
-		f_match = TRUE ;
+		f_match = true ;
 		f_match = f_match && (rd.path == lasp->c.path) ;
 		f_match = f_match && (rd.addr == lasp->c.dst2.a) ;
 		/*    f_match = f_match && (rd.d != lasp->c.dst2.val) ; */
 		f_match = f_match && (rd.tt < lasp->c.tt) ;
 
-#if	F_EXTRASNOOP
+#if	CF_EXTRASNOOP
 		if (lasp->c.dst2.trans != LFLOWGROUP_TNULLIFY)
 			f_match = f_match && (rd.tt >= lasp->c.dst2.tt) ;
 #else
@@ -5286,7 +5180,7 @@ struct levoinfo	*lip ;
 
 		f_match = f_match && (rd.tt >= lastttdst2);
 
-#if	F_EXTRASNOOP
+#if	CF_EXTRASNOOP
 		if (f_match) {
 
 		    if (rd.tt == lasp->c.dst2.tt) {
@@ -5296,9 +5190,9 @@ struct levoinfo	*lip ;
 				(rd.seq + 1) & lasp->rfmodmask ;
 
 			else
-			    f_match = FALSE ;
+			    f_match = false ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 2)
 	    eprintf("las_srfb: extrasnoop=%d\n",f_match) ;
 #endif
@@ -5308,11 +5202,11 @@ struct levoinfo	*lip ;
 				(rd.seq + 1) & lasp->rfmodmask ;
 
 		} /* end if (sequence check) */
-#endif /* F_EXTRASNOOP */
+#endif /* CF_EXTRASNOOP */
 
 		if (f_match) {
 
-#if	F_FPRINTF && F_LASDETAILS2
+#if	CF_FPRINTF && CF_LASDETAILS2
 		fprintf(stdout,
 		     "las_srfb: id=%d astt=%d DST2 tr=%d p=%d tt=%d:%d "
 			"a=%d dp=%d dv=%08x\n",
@@ -5331,7 +5225,7 @@ struct levoinfo	*lip ;
 
 		    lastttdst2 = rd.tt;
 
-#if	F_FPRINTF && F_LASDETAILS
+#if	CF_FPRINTF && CF_LASDETAILS
 		las_print_asid(lasp);
 		printf("Snoop on RFWB at %d, data from tt=%d; dst(%d)=0x%x\n",
 			lasp->asid, rd.tt,lasp->c.dst1.a,rd.dv);
@@ -5344,7 +5238,7 @@ struct levoinfo	*lip ;
 
 /* destination 3 (dst3) */
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 2)
 	    eprintf(
                 "las_srfb: DST3 existing a=%d latesttt=%d tt=%d:%d\n",
@@ -5353,13 +5247,13 @@ struct levoinfo	*lip ;
 			lasp->c.dst3.tt,lasp->c.dst3.frseq) ;
 #endif
 
-		f_match = TRUE ;
+		f_match = true ;
 		f_match = f_match && (rd.path == lasp->c.path) ;
 		f_match = f_match && (rd.addr == lasp->c.dst3.a) ;
 		/*    f_match = f_match && (rd.d != lasp->c.dst3.val) ; */
 		f_match = f_match && (rd.tt < lasp->c.tt) ;
 
-#if	F_EXTRASNOOP
+#if	CF_EXTRASNOOP
 		if (lasp->c.dst3.trans != LFLOWGROUP_TNULLIFY)
 			f_match = f_match && (rd.tt >= lasp->c.dst3.tt) ;
 #else
@@ -5368,7 +5262,7 @@ struct levoinfo	*lip ;
 
 		f_match = f_match && (rd.tt >= lastttdst3);
 
-#if	F_EXTRASNOOP
+#if	CF_EXTRASNOOP
 		if (f_match) {
 
 		    if (rd.tt == lasp->c.dst3.tt) {
@@ -5378,9 +5272,9 @@ struct levoinfo	*lip ;
 				(rd.seq + 1) & lasp->rfmodmask ;
 
 			else
-			    f_match = FALSE ;
+			    f_match = false ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 2)
 	    eprintf("las_srfb: extrasnoop=%d\n",f_match) ;
 #endif
@@ -5390,11 +5284,11 @@ struct levoinfo	*lip ;
 				(rd.seq + 1) & lasp->rfmodmask ;
 
 		} /* end if (sequence check) */
-#endif /* F_EXTRASNOOP */
+#endif /* CF_EXTRASNOOP */
 
 		if (f_match) {
 
-#if	F_FPRINTF && F_LASDETAILS2
+#if	CF_FPRINTF && CF_LASDETAILS2
 		fprintf(stdout,
 		     "las_srfb: id=%d astt=%d DST3 tr=%d p=%d tt=%d:%d "
 			"a=%d dp=%d dv=%08x\n",
@@ -5413,7 +5307,7 @@ struct levoinfo	*lip ;
 
 		    lastttdst3 = rd.tt;
 
-#if	F_FPRINTF && F_LASDETAILS
+#if	CF_FPRINTF && CF_LASDETAILS
 		las_print_asid(lasp);
 		printf("Snoop on RFWB at %d, data from tt=%d; dst(%d)=0x%x\n",
 			lasp->asid, rd.tt,lasp->c.dst1.a,rd.dv);
@@ -5477,7 +5371,7 @@ struct levoinfo	*lip ;
 
 /* destination 1 */
 
-		f_match = TRUE ;
+		f_match = true ;
 		f_match = f_match && (rd.path == lasp->c.path) ;
 		f_match = f_match && (rd.addr == lasp->c.dst1.a) ;
 		/*    f_match = f_match && (rd.d != lasp->c.dst1.val) ; */
@@ -5490,7 +5384,7 @@ struct levoinfo	*lip ;
 		    fill_packet(
 			&lasp->n.event_table[RECV_REQ_VALUE][RBWB][DST1],&rd);
 
-#if	F_FPRINTF && F_LASDETAILS
+#if	CF_FPRINTF && CF_LASDETAILS
 			las_print_asid(lasp);
 		    printf("Snoop on RBWB at %d, data from tt=%d;reg(%d)\n", 
 			lasp->asid, rd.tt,rd.addr);
@@ -5500,7 +5394,7 @@ struct levoinfo	*lip ;
 		
 /* destination 2 */
 
-		f_match = TRUE ;
+		f_match = true ;
 		f_match = f_match && (rd.path == lasp->c.path) ;
 		f_match = f_match && (rd.addr == lasp->c.dst2.a) ;
 		/*    f_match = f_match && (rd.d != lasp->c.dst2.val) ; */
@@ -5513,7 +5407,7 @@ struct levoinfo	*lip ;
 		    fill_packet(
 			&lasp->n.event_table[RECV_REQ_VALUE][RBWB][DST2],&rd);
 
-#if	F_FPRINTF && F_LASDETAILS
+#if	CF_FPRINTF && CF_LASDETAILS
 			las_print_asid(lasp);
 		    printf("Snoop on RBWB at %d, data from tt=%d;reg(%d)\n",
 			lasp->asid, rd.tt,rd.addr);
@@ -5523,7 +5417,7 @@ struct levoinfo	*lip ;
 
 /* destination 3 */
 
-		f_match = TRUE ;
+		f_match = true ;
 		f_match = f_match && (rd.path == lasp->c.path) ;
 		f_match = f_match && (rd.addr == lasp->c.dst3.a) ;
 		/*    f_match = f_match && (rd.d != lasp->c.dst3.val) ; */
@@ -5536,7 +5430,7 @@ struct levoinfo	*lip ;
 		    fill_packet(
 			&lasp->n.event_table[RECV_REQ_VALUE][RBWB][DST3],&rd);
 
-#if	F_FPRINTF && F_LASDETAILS
+#if	CF_FPRINTF && CF_LASDETAILS
 			las_print_asid(lasp);
 		    printf("Snoop on RBWB at %d, data from tt=%d;reg(%d)\n",
 			lasp->asid, rd.tt,rd.addr);
@@ -5561,7 +5455,7 @@ struct levoinfo	*lip ;
 
 
 /* snoop the BP bus, save results in the snooped register */
-static int 
+local int 
 snoop_PFWB_interface(lasp,pip,lip)
 LAS		*lasp ;
 struct proginfo	*pip ;
@@ -5590,7 +5484,7 @@ struct levoinfo	*lip ;
 	    if ((rs > 0) && (rd.ftt <= lasp->c.tt)) {
 
 			lasp->n.pregs.pin.latesttt = lasp->c.pregs.pin.latesttt;
-			f_match = TRUE ;
+			f_match = true ;
 			f_match = f_match && (rd.path == lasp->c.path) ;
 			f_match = f_match && (rd.addr == lasp->c.pregs.pin.a) ;
 			/*    f_match = f_match && (rd.d != lasp->c.pregs.pin.val) ; */
@@ -5601,7 +5495,7 @@ struct levoinfo	*lip ;
 			    lasp->n.pregs.pin.latesttt = rd.tt ;
 			    lasp->n.pregs.pin.val = rd.dv & 1 ;
 
-#if	F_FPRINTF && F_LASDETAILS
+#if	CF_FPRINTF && CF_LASDETAILS
 			    las_print_asid(lasp);
 			    printf("Snoop on PFWB at %d, "
 				"data from tt=%d; pin(%d)=0x%x\n", 
@@ -5614,7 +5508,7 @@ struct levoinfo	*lip ;
 			for (l=0; l < lasp->c.pregs.num_of_cpin_regs; ++l) {
 
 				lasp->n.pregs.cpin[l].latesttt = lasp->n.pregs.cpin[l].latesttt;
-				f_match = TRUE ;
+				f_match = true ;
 				f_match = f_match && (rd.path == lasp->c.path) ;
 				f_match = f_match && (rd.addr == lasp->c.pregs.cpin[l].a) ;
 				/*    f_match = f_match && (rd.d != lasp->c.pregs.cpin[l].val) ; */
@@ -5626,7 +5520,7 @@ struct levoinfo	*lip ;
 				    lasp->n.pregs.cpin[l].latesttt = rd.tt ;
 				    lasp->n.pregs.cpin[l].val = rd.dv & 2 ? 1 : 0;
 
-#if	F_FPRINTF && F_LASDETAILS
+#if	CF_FPRINTF && CF_LASDETAILS
 				    las_print_asid(lasp);
 				    printf("Snoop on PFWB at %d, "
 				"data from tt=%d; cpin[%d](%d)=0x%x\n", 
@@ -5655,7 +5549,7 @@ struct levoinfo	*lip ;
 
 
 /* snoop the memory forwarding buses */
-static int snoop_MFWB_interface(lasp,pip,lip)
+local int snoop_MFWB_interface(lasp,pip,lip)
 LAS		*lasp ;
 struct proginfo	*pip ;
 struct levoinfo	*lip ;
@@ -5681,7 +5575,7 @@ struct levoinfo	*lip ;
 
 	busintp = lasp->mfwbus.head + mi ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 2) {
 	    eprintf(
 	        "las/snoop_MFWB_interface: snooping addr=%08x bi=%d\n",
@@ -5690,11 +5584,11 @@ struct levoinfo	*lip ;
 	        "las/snoop_MFWB_interface: reading LBUSINT=%08lx\n",
 	        busintp) ;
 	}
-#endif /* F_DEBUG */
+#endif /* CF_DEBUG */
 
 	if (lbusint_read(busintp, &rd) > 0) {
 
-	    f_match = TRUE ;
+	    f_match = true ;
 	    f_match = f_match && (rd.path == lasp->c.path) ;
 	    f_match = f_match && (rd.addr == (lasp->c.mem.a & 0xfffffffc)) ;
 /* f_match = f_match && (rd.d != lasp->c.mem.val) ; */
@@ -5704,7 +5598,7 @@ struct levoinfo	*lip ;
 	    if (f_match &&
 	        (lasp->c.opclass == INSTR_LOAD)) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	        if (pip->debuglevel > 2)
 	            eprintf(
 	                "las/snoop_MFWB_interface: load read dv=%08x\n",rd.dv) ;
@@ -5712,7 +5606,7 @@ struct levoinfo	*lip ;
 
 	        if (rd.trans == LFLOWGROUP_TNULLIFY) {
 
-#if	F_FPRINTF && F_LASDETAILS
+#if	CF_FPRINTF && CF_LASDETAILS
 	            las_print_asid(lasp) ;
 
 	            printf("Received Nulify on MFWB at %d, "
@@ -5729,7 +5623,7 @@ struct levoinfo	*lip ;
 	            int	boundary ;
 
 
-#if	F_FPRINTF && F_LASDETAILS
+#if	CF_FPRINTF && CF_LASDETAILS
 	            las_print_asid(lasp) ;
 
 	            printf("Snoop on MFWB at %d, data from tt=%d;"
@@ -5740,7 +5634,7 @@ struct levoinfo	*lip ;
 	            lasp->n.mem.latesttt = rd.tt ;
 	            boundary = lasp->c.mem.a & 3 ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	            if (pip->debuglevel > 2)
 	                eprintf(
 	                    "las/snoop_MFWB_interface: a=%08x boundary=%d\n",
@@ -5922,7 +5816,7 @@ struct levoinfo	*lip ;
 
 	            } /* end switch */
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	            if (pip->debuglevel > 2)
 	                eprintf(
 	                    "las/snoop_MFWB_interface: DST dv=%08x\n",
@@ -5944,7 +5838,7 @@ struct levoinfo	*lip ;
 /* end subroutine (snoop_MFWB_interface) */
 
 
-static int snoop_MBWB_interface(lasp,pip,lip)
+local int snoop_MBWB_interface(lasp,pip,lip)
 LAS		*lasp ;
 struct proginfo	*pip ;
 struct levoinfo	*lip ;
@@ -5971,7 +5865,7 @@ struct levoinfo	*lip ;
 
 	if (lbusint_read(busintp, &rd) > 0) {
 
-	    f_match = TRUE ;
+	    f_match = true ;
 	    f_match = f_match && (rd.path == lasp->c.path) ;
 	    f_match = f_match && (rd.addr == (lasp->c.mem.a & 0xfffffffc)) ;
 	    /*    f_match = f_match && (rd.d != lasp->c.mem.val) ; */
@@ -5983,7 +5877,7 @@ struct levoinfo	*lip ;
 			&lasp->n.event_table[RECV_REQ_VALUE][MBWB][MEM],
 			&rd);
 
-#if	F_FPRINTF && F_LASDETAILS
+#if	CF_FPRINTF && CF_LASDETAILS
 		las_print_asid(lasp);
 
 		    fprintf(stdout,
@@ -6001,7 +5895,7 @@ struct levoinfo	*lip ;
 
 
 /* check for results coming back from a PE */
-static int PE_checkresult(lasp,pip)
+local int PE_checkresult(lasp,pip)
 struct proginfo	*pip ;
 LAS		*lasp ;
 {
@@ -6016,7 +5910,7 @@ LAS		*lasp ;
 	if (lasp->c.pe_tnumb == -1)
 		return rs ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 2)
 		eprintf("las/PE_checkresult: LPE=%08lx checking tn=%d\n",
 			lasp->lpes,lasp->c.pe_tnumb) ;
@@ -6024,7 +5918,7 @@ LAS		*lasp ;
 
 	ret = lpe_isexecuted(lasp->lpes, &ip, lasp->c.pe_tnumb) ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 2) {
 
 		if (ret == SR_INPROGRESS)
@@ -6034,29 +5928,29 @@ LAS		*lasp ;
 		eprintf("las/PE_checkresult: lpe_isexecuted() rs=%d\n",
 			ret) ;
 	}
-#endif /* F_DEBUG */
+#endif /* CF_DEBUG */
 
 	if (ret == SR_OK) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 2)
 		eprintf("las/PE_checkresult: executed tn=%d\n",
 			lasp->lpes,lasp->c.pe_tnumb) ;
 #endif
 
-#if	F_MASTERDEBUG && F_SAFE2
+#if	CF_MASTERDEBUG && CF_SAFE2
 	rs = las_sanitycheck(lasp) ;
 
 	if (rs < 0) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1)
 	eprintf("las/PE_checkresult: 0 bad sanity LAS=%08lx\n",lasp) ;
 #endif
 
 		return rs ;
 	}
-#endif /* F_SAFE2 */
+#endif /* CF_SAFE2 */
 
 		lasp->n.pe_tnumb = -1;
 		if (lasp->c.dst1.a == 0)
@@ -6078,7 +5972,7 @@ LAS		*lasp ;
 
 			lasp->n.dst3.val = ip.dst3 ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 2)
 		eprintf("las/PE_checkresult: DST3 updated value\n") ;
 #endif
@@ -6098,12 +5992,12 @@ LAS		*lasp ;
 			fill_packet(&lasp->n.event_table[EXEC_ALU][PE][DST1], 
 					&rd);
 
-#if	F_MASTERDEBUG && F_SAFE2
+#if	CF_MASTERDEBUG && CF_SAFE2
 	rs = las_sanitycheck(lasp) ;
 
 	if (rs < 0) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1)
 	eprintf("las/PE_checkresult: 1 bad sanity LAS=%08lx rs=%d\n",
 		lasp,rs) ;
@@ -6111,7 +6005,7 @@ LAS		*lasp ;
 
 		return rs ;
 	}
-#endif /* F_SAFE2 */
+#endif /* CF_SAFE2 */
 
 			if (lasp->c.dst2.a != -1) {
 
@@ -6123,12 +6017,12 @@ LAS		*lasp ;
 
 			} /* end if (destination 2) */
 
-#if	F_MASTERDEBUG && F_SAFE2
+#if	CF_MASTERDEBUG && CF_SAFE2
 	rs = las_sanitycheck(lasp) ;
 
 	if (rs < 0) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1)
 	eprintf("las/PE_checkresult: 2 bad sanity LAS=%08lx rs=%d\n",
 		lasp,rs) ;
@@ -6136,7 +6030,7 @@ LAS		*lasp ;
 
 		return rs ;
 	}
-#endif /* F_SAFE2 */
+#endif /* CF_SAFE2 */
 
 			if (lasp->c.dst3.a != -1) {
 
@@ -6146,19 +6040,19 @@ LAS		*lasp ;
 				&lasp->n.event_table[EXEC_ALU][PE][DST3], 
 					&rd);
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 2)
 		eprintf("las/PE_checkresult: filled packet on DST3\n") ;
 #endif
 
 			} /* end if (destination 3) */
 
-#if	F_MASTERDEBUG && F_SAFE2
+#if	CF_MASTERDEBUG && CF_SAFE2
 	rs = las_sanitycheck(lasp) ;
 
 	if (rs < 0) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1)
 	eprintf("las/PE_checkresult: 3a bad sanity LAS=%08lx rs=%d\n",
 		lasp,rs) ;
@@ -6166,7 +6060,7 @@ LAS		*lasp ;
 
 		return rs ;
 	}
-#endif /* F_SAFE2 */
+#endif /* CF_SAFE2 */
 
 		} else if (lasp->c.opclass == INSTR_STORE) {
 
@@ -6182,12 +6076,12 @@ LAS		*lasp ;
 
 				/*lasp->n.send_nulify_on_mfwb = 1; */
 
-#if	F_MASTERDEBUG && F_SAFE2
+#if	CF_MASTERDEBUG && CF_SAFE2
 	rs = las_sanitycheck(lasp) ;
 
 	if (rs < 0) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1)
 	eprintf("las/PE_checkresult: 4 bad sanity LAS=%08lx rs=%d\n",
 		lasp,rs) ;
@@ -6195,7 +6089,7 @@ LAS		*lasp ;
 
 		return rs ;
 	}
-#endif /* F_SAFE2 */
+#endif /* CF_SAFE2 */
 
 			} /* end if (memory thing) */
 
@@ -6345,12 +6239,12 @@ LAS		*lasp ;
 
 			} /* end switch (opexec) */
 
-#if	F_MASTERDEBUG && F_SAFE2
+#if	CF_MASTERDEBUG && CF_SAFE2
 	rs = las_sanitycheck(lasp) ;
 
 	if (rs < 0) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1)
 	eprintf("las/PE_checkresult: 10 bad sanity LAS=%08lx rs=%d\n",
 		lasp,rs) ;
@@ -6358,19 +6252,19 @@ LAS		*lasp ;
 
 		return rs ;
 	}
-#endif /* F_SAFE2 */
+#endif /* CF_SAFE2 */
 
 			rd.dv = lasp->n.mem.val;
 			rd.dp = lasp->n.dp;
 			fill_packet(&lasp->n.event_table[EXEC_ST][PE][MEM], 
 				&rd);
 
-#if	F_MASTERDEBUG && F_SAFE2
+#if	CF_MASTERDEBUG && CF_SAFE2
 	rs = las_sanitycheck(lasp) ;
 
 	if (rs < 0) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1)
 	eprintf("las/PE_checkresult: 11 bad sanity LAS=%08lx rs=%d\n",
 		lasp,rs) ;
@@ -6378,7 +6272,7 @@ LAS		*lasp ;
 
 		return rs ;
 	}
-#endif /* F_SAFE2 */
+#endif /* CF_SAFE2 */
 
 		} else if (lasp->c.opclass == INSTR_LOAD) {
 
@@ -6387,12 +6281,12 @@ LAS		*lasp ;
 				&rd);
 			/*lasp->n.fw_mem_on_mbwb = 1; */
 
-#if	F_MASTERDEBUG && F_SAFE2
+#if	CF_MASTERDEBUG && CF_SAFE2
 	rs = las_sanitycheck(lasp) ;
 
 	if (rs < 0) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1)
 	eprintf("las/PE_checkresult: 12 bad sanity LAS=%08lx rs=%d\n",
 		lasp,rs) ;
@@ -6400,7 +6294,7 @@ LAS		*lasp ;
 
 		return rs ;
 	}
-#endif /* F_SAFE2 */
+#endif /* CF_SAFE2 */
 
 		} else if ((lasp->c.opclass == INSTR_BREL) || 
 			(lasp->c.opclass == INSTR_JREL) ||
@@ -6419,12 +6313,12 @@ LAS		*lasp ;
 				lasp->n.cnst.val = lasp->c.src1.val;
 			}
 
-#if	F_MASTERDEBUG && F_SAFE2
+#if	CF_MASTERDEBUG && CF_SAFE2
 	rs = las_sanitycheck(lasp) ;
 
 	if (rs < 0) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1)
 	eprintf("las/PE_checkresult: 13 bad sanity LAS=%08lx rs=%d\n",
 		lasp,rs) ;
@@ -6432,7 +6326,7 @@ LAS		*lasp ;
 
 		return rs ;
 	}
-#endif /* F_SAFE2 */
+#endif /* CF_SAFE2 */
 
 		} /* end if (control-flow-change) */
 
@@ -6440,7 +6334,7 @@ LAS		*lasp ;
 
 		rs = SR_OK ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1)
 	eprintf("las/PE_checkresult: execution in progress tn=%d\n",
 			lasp->c.pe_tnumb) ;
@@ -6450,7 +6344,7 @@ LAS		*lasp ;
 
 		rs = ret ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1)
 	eprintf("las/PE_checkresult: execution bad rs=%d\n",
 			rs) ;
@@ -6480,7 +6374,7 @@ LAS	*lasp;
 	int i;
 
 
-#if	PERF_FETCH
+#if	PERCF_FETCH
 
 lasp -> c.pregs.pin.val = lasp -> n.pregs.pin.val = 1; 
 lasp->c.pI = lasp->n.pI = 1;
@@ -6520,7 +6414,7 @@ if (lasp->c.pI)
 
 			send_packet(lasp, 
 				&lasp->n.event_table[SEND_NULLIFY][MFWB][MEM],
-				MEM,LFLOWGROUP_TNULLIFY,FALSE) ;
+				MEM,LFLOWGROUP_TNULLIFY,false) ;
 
 		} else {
 
@@ -6531,14 +6425,14 @@ if (lasp->c.pI)
 			if (lasp->rftype == RFTYPE_RELAY)
 				send_packet(lasp, 
 				&lasp->n.event_table[SEND_VALUE][RFWB][OLDDST1],
-				OLDDST1,LFLOWGROUP_TSTORE,FALSE) ;
+				OLDDST1,LFLOWGROUP_TSTORE,false) ;
 
 /* NULLIFY forwarding */
 
 			else if (lasp->rftype == RFTYPE_NULLIFY)
 				send_packet(lasp, 
 				&lasp->n.event_table[SEND_NULLIFY][RFWB][DST1],
-				DST1,LFLOWGROUP_TNULLIFY,FALSE) ;
+				DST1,LFLOWGROUP_TNULLIFY,false) ;
 
 
 			}
@@ -6550,14 +6444,14 @@ if (lasp->c.pI)
 			if (lasp->rftype == RFTYPE_RELAY)
 				send_packet(lasp, 
 				&lasp->n.event_table[SEND_VALUE][RFWB][OLDDST2],
-				OLDDST2,LFLOWGROUP_TSTORE,FALSE) ;
+				OLDDST2,LFLOWGROUP_TSTORE,false) ;
 
 /* NULLIFY forwarding */
 
 			else if (lasp->rftype == RFTYPE_NULLIFY)
 				send_packet(lasp, 
 				&lasp->n.event_table[SEND_NULLIFY][RFWB][DST2],
-				DST2,LFLOWGROUP_TNULLIFY,FALSE) ;
+				DST2,LFLOWGROUP_TNULLIFY,false) ;
 
 			}
 		}
@@ -6596,7 +6490,7 @@ if (lasp->c.pI)
 
 
 /* check the bus read registers */
-static int las_readrfbuses(lasp,pip,lip,busintp,n)
+local int las_readrfbuses(lasp,pip,lip,busintp,n)
 LAS		*lasp ;
 struct proginfo	*pip ;
 struct levoinfo	*lip ;
@@ -6608,7 +6502,7 @@ int		n ;
 
 	int	rs, i, j ;
 
-#if	F_FPRINTF || (F_MASTERDEBUG && F_DEBUG)
+#if	CF_FPRINTF || (CF_MASTERDEBUG && CF_DEBUG)
 	char	ttbuf[40] ;
 #endif
 
@@ -6621,7 +6515,7 @@ int		n ;
 	    lasp->busregs[i].f_v = ((rs > 0) && 
 		(fgp->ftt <= lasp->c.tt) && (fgp->tt < lasp->c.tt)) ;
 
-#if	F_FPRINTF && F_LASDETAILS3
+#if	CF_FPRINTF && CF_LASDETAILS3
 		if (lasp->busregs[i].f_v)
 		fprintf(stdout,
 		     "las_readrfbuses: id=%d astt=%d "
@@ -6633,7 +6527,7 @@ int		n ;
 			fgp->addr,fgp->dp,fgp->dv) ;
 #endif
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if ((pip->debuglevel > 4) && lasp->busregs[i].f_v) {
 		eprintf("las_readrfbuses: id=%d astt=%d "
 			"tr=%d p=%d tt=%d:%d "
@@ -6647,7 +6541,7 @@ int		n ;
 
 	} /* end for */
 
-#if	F_EXTRASNOOP
+#if	CF_EXTRASNOOP
 
 /* perform the sequence checking on like-transactions */
 
@@ -6698,9 +6592,9 @@ int		n ;
 
 	            if (j != besti) {
 
-	                lasp->busregs[j].f_v = FALSE ;
+	                lasp->busregs[j].f_v = false ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	        if (pip->debuglevel > 1) {
 
 	        mkttbuf(ttbuf,tfgp->tt) ;
@@ -6720,7 +6614,7 @@ int		n ;
 	                tfgp->dv) ;
 
 	        }
-#endif /* F_DEBUG */
+#endif /* CF_DEBUG */
 
 			}
 
@@ -6734,7 +6628,7 @@ int		n ;
 
 	} /* end for */
 
-#endif /* F_EXTRASNOOP */
+#endif /* CF_EXTRASNOOP */
 
 	return SR_OK ;
 }
@@ -6742,14 +6636,14 @@ int		n ;
 
 
 /* fill up a packet */
-static int
+local int
 fill_packet(pp, rd)
 struct las_packet * pp;
 LFLOWGROUP * rd;
 {
 
 
-	pp->valid = TRUE ;
+	pp->valid = true ;
 	pp->trans = rd->trans;
 	pp->a = rd->addr;
 	pp->d = rd->dv;
@@ -6764,7 +6658,7 @@ LFLOWGROUP * rd;
 
 
 /* send a packet (to where ? :-) */
-static int send_packet(lasp, pp, stor, trans,f_resp)
+local int send_packet(lasp, pp, stor, trans,f_resp)
 LAS	*lasp ;
 struct las_packet * pp;
 las_storage stor;
@@ -6773,7 +6667,7 @@ int	f_resp ;
 {
 
 
-	pp->valid = TRUE ;
+	pp->valid = true ;
 	pp->tt = lasp->c.tt;
 	pp->pathid = lasp->c.path;
 	pp->trans = trans;
@@ -6852,7 +6746,7 @@ int	f_resp ;
 /* end subroutine (send_packet) */
 
 
-static int
+local int
 read_packet(pp, wr)
 struct las_packet * pp;
 LFLOWGROUP * wr;
@@ -6875,9 +6769,9 @@ LFLOWGROUP * wr;
 /* end subroutine (read_packet) */
 
 
-#if	F_FPRINTF || (F_MASTERDEBUG && F_DEBUG) || F_XML
+#if	CF_FPRINTF || (CF_MASTERDEBUG && CF_DEBUG) || CF_XML
 
-static int mkttbuf(buf,tt)
+local int mkttbuf(buf,tt)
 char	buf[] ;
 int	tt ;
 {
@@ -6896,10 +6790,10 @@ int	tt ;
 	return rs ;
 }
 
-#endif /* F_DEBUG */
+#endif /* CF_DEBUG */
 
 
-static int
+local int
 las_print(lasp) 
 LAS  *lasp;
 {
@@ -6938,7 +6832,7 @@ las_print_pred_regs(&lasp->c.pregs);
 }
 
 
-static int
+local int
 las_print_register(name,reg)
 const char * name;
 struct las_reg  reg;
@@ -6956,7 +6850,7 @@ struct las_reg  reg;
 }
 
 
-static int
+local int
 las_print_pred_regs(struct pred_regs *prp) 
 {
 
@@ -6968,33 +6862,30 @@ printf("pout(%d)=%d, cpout(%d)=%d\n",
 }
 
 
-static int
+local int
 las_print_asid(lasp)
 LAS *lasp;
 {
-	ULONG clock ;
-
-
+	ulong clock ;
 	lsim_getclock(lasp->mip,&clock) ;
-
 	printf("C%lld,ASID%d,TT%d,FA0x%x=>",
 		clock,lasp->asid,lasp->c.tt,lasp->c.faddr);
-
 	return 0 ;
 }
 
 
-static int
+local int
 las_print_et(lasp, i, j, k) 
 LAS * lasp;
 int i,j,k;
 {
 	struct las_packet * pp;
 
-
-	/*for(i=0; i< sizeof(las_command); ++i)
-		for(j=0; j< sizeof(las_command); ++j)
-			for(k=0; k< sizeof(las_command); ++k) { */
+#ifdef	COMMENT
+	/*for(i=0; i< szof(las_command); ++i)
+		for(j=0; j< szof(las_command); ++j)
+			for(k=0; k< szof(las_command); ++k) { */
+#endif /* COMMENT */
 
 	pp = &lasp->c.event_table[i][j][k];
 	printf("event table valid=%d\n", pp->valid);
@@ -7009,7 +6900,7 @@ gdb(void) {
 }
 
 
-static int las_checkdst3(lasp,pip)
+local int las_checkdst3(lasp,pip)
 LAS		*lasp ;
 struct proginfo	*pip ;
 {
@@ -7024,7 +6915,7 @@ struct proginfo	*pip ;
 
 		if (lasp->c.event_table[i][j][DST3].valid) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1)
 	eprintf("las_checkdst3: current state is non-zero !\n") ;
 #endif
@@ -7035,7 +6926,7 @@ struct proginfo	*pip ;
 
 		if (lasp->n.event_table[i][j][DST3].valid) {
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1)
 	eprintf("las_checkdst3: next state is non-zero !\n") ;
 #endif
@@ -7051,7 +6942,7 @@ struct proginfo	*pip ;
 
 	}
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel > 1) {
 	if (rs < 0)
 		eprintf("las_checkdst3: non-zero !\n") ;
@@ -7063,7 +6954,7 @@ struct proginfo	*pip ;
 /* end subroutine (las_checkdst3) */
 
 
-static int las_loadalireg(lasp,rp)
+local int las_loadalireg(lasp,rp)
 LAS		*lasp ;
 struct las_reg	*rp ;
 {
@@ -7077,7 +6968,7 @@ struct las_reg	*rp ;
 
 		alirgf_getval(lasp->rgfp,rp->a,&rp->val) ;
 
-#if	F_MASTERDEBUG && F_DEBUG
+#if	CF_MASTERDEBUG && CF_DEBUG
 	if (pip->debuglevel >= 5)
 		eprintf("las_loadalireg: asid=%d a=%08x dv=%08x\n",
 			lasp->asid,rp->a,rp->val) ;
@@ -7088,6 +6979,5 @@ struct las_reg	*rp ;
 	return 0 ;
 }
 /* end subroutine (las_loadalireg) */
-
 
 
