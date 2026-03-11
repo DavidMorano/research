@@ -75,6 +75,7 @@
 #include	<paramfile.h>
 #include	<cfnum.h>
 #include	<nextpowtwo.h>
+#include	<findbit.h>
 #include	<localmisc.h>		/* |COLUMNS| */
 
 #include	"config.h"
@@ -94,9 +95,9 @@
 
 #include	"levo.h"		/* ourselves */
 
-#pragma		GCC dependency		"mod/flbs.ccm"
+#pragma		GCC dependency		"mod/libutil.ccm"
 
-import flbs ;
+import libutil ;			/* |lenstr(3u)| */
 
 /* local defines */
 
@@ -108,7 +109,9 @@ import flbs ;
 
 /* external subroutines */
 
-extern int	getnumbuses(uint) ;
+extern "C" {
+    extern int	getnumbuses(uint) noex ;
+}
 
 
 /* local structures */
@@ -116,24 +119,20 @@ extern int	getnumbuses(uint) ;
 
 /* forward references */
 
-int		levo_shift(LEVO *) ;
+int		levo_shift(LEVO *) noex ;
 
-local int	levo_sanitycheck(LEVO *) ;
-local int	levo_testinit(LEVO *) ;
-local int	levo_testfree(LEVO *) ;
-local int	levo_testcomb(LEVO *,int) ;
-local int	levo_testclock(LEVO *) ;
-local int	levo_callback(LEVO *,void *) ;
-local int	levo_initmbuses(LEVO *,struct proginfo *) ;
-local int	levo_xmlconfig(LEVO *,XMLINFO *) ;
-local int	levo_xmlout(LEVO *,XMLINFO *) ;
-
-local int flbsi(int v) noex {
-    	return flbs(v) ;
-}
+local int	levo_sanitycheck(LEVO *) noex ;
+local int	levo_testinit(LEVO *) noex ;
+local int	levo_testfree(LEVO *) noex ;
+local int	levo_testcomb(LEVO *,int) noex ;
+local int	levo_testclock(LEVO *) noex ;
+local int	levo_callback(LEVO *,void *) noex ;
+local int	levo_initmbuses(LEVO *,proginfo *) noex ;
+local int	levo_xmlconfig(LEVO *,XMLINFO *) noex ;
+local int	levo_xmlout(LEVO *,XMLINFO *) noex ;
 
 #ifdef	COMMENT
-local int	bus_freemany(BUS *,int) ;
+local int	bus_freemany(BUS *,int) noex ;
 #endif
 
 
@@ -235,19 +234,14 @@ struct statemips	*smp ;
 	btfname[0] = '\0' ;
 	mtfname[0] = '\0' ;
 
-
 /* object initialization */
 
-	(void) memset(lp,0,sizeof(LEVO)) ;
-
+	memclear(lp) ;
 	lp->magval = 0 ;
-
-	lp->f.exit = FALSE ;
-
+	lp->f.exit = false ;
 	lp->pip = pip ;
 	lp->mip = mip ;
 	lip = &lp->info ;
-
 
 /* 'levoinfo' struct initialization */
 
@@ -291,20 +285,20 @@ struct statemips	*smp ;
 
 /* memory interleave schedules */
 
-	f_meminter = FALSE ;
+	f_meminter = false ;
 
 	lp->info.mfinter = lp->info.meminter ;
 	lp->info.mbinter = lp->info.meminter ;
 	lp->info.mwinter = lp->info.meminter ;
 
-	f_mfinter = f_mbinter = f_mwinter = FALSE ;
+	f_mfinter = f_mbinter = f_mwinter = false ;
 
 /* execution window memory interleave schedules */
 
 	lp->info.wmfinter = lp->info.meminter ;
 	lp->info.wmbinter = lp->info.meminter ;
 
-	f_wmfinter = f_wmbinter = FALSE ;
+	f_wmfinter = f_wmbinter = false ;
 
 /* other (testing) */
 
@@ -394,7 +388,7 @@ struct statemips	*smp ;
 
 	                case LPARAM_MEMINTER:
 	                    lip->meminter = uv & (~ 3) ;
-	                    f_meminter = TRUE ;
+	                    f_meminter = true ;
 	                    break ;
 
 	                case LPARAM_NDEEPATHS:
@@ -411,27 +405,27 @@ struct statemips	*smp ;
 
 	                case LPARAM_MFINTER:
 	                    lip->mfinter = uv & (~ 3) ;
-	                    f_mfinter = TRUE ;
+	                    f_mfinter = true ;
 	                    break ;
 
 	                case LPARAM_MBINTER:
 	                    lip->mbinter = uv & (~ 3) ;
-	                    f_mbinter = TRUE ;
+	                    f_mbinter = true ;
 	                    break ;
 
 	                case LPARAM_MWINTER:
 	                    lip->mwinter = uv & (~ 3) ;
-	                    f_mwinter = TRUE ;
+	                    f_mwinter = true ;
 	                    break ;
 
 	                case LPARAM_WMFINTER:
 	                    lip->wmfinter = uv & (~ 3) ;
-	                    f_wmfinter = TRUE ;
+	                    f_wmfinter = true ;
 	                    break ;
 
 	                case LPARAM_WMBINTER:
 	                    lip->wmbinter = uv & (~ 3) ;
-	                    f_wmbinter = TRUE ;
+	                    f_wmbinter = true ;
 	                    break ;
 
 	                case LPARAM_RFMOD:
@@ -1180,7 +1174,7 @@ int	phase ;
 	LSIM		*mip ;
 
 	int	rs = SR_OK, rs1, i ;
-	int	f_exit = FALSE ;
+	int	f_exit = false ;
 
 
 #if	F_MASTERDEBUG && F_SAFE
