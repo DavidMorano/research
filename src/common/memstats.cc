@@ -125,10 +125,6 @@ local int memstats_allocpage(MEMSTATS *,struct memstats_te **) ;
 
 local int	writearray(cchar *,ulong *,int) ;
 
-local int flbsi(int v) noex {
-    	return flbs(v) ;
-}
-
 #ifdef	COMMENT
 local uint	ourhash(hdb_dat *) ;
 #endif
