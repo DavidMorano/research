@@ -66,24 +66,20 @@
 
 
 	Phase 4:
-
 	+ We handle any shifting that we might have been directed to do.
-
-
 
 **************************************************************************/
 
-
-#define	SSREG_MASTER	1
-
-
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
+#include	<cstddef>
 #include	<cstdlib>
 #include	<cstring>
+#include	<clanguage.h>
+#include	<usysbase.h>
+#include	<findbit.h>
+#include	<localmisc.h>
 
-#include	<usystem.h>
-
-#include	"localmisc.h"
 #include	"ssconfig.h"
 #include	"defs.h"
 #include	"ss.h"
@@ -101,7 +97,9 @@
 #include	<dmalloc.h>
 #endif
 
+#pragma		GCC dependency		"mod/libutil.ccm"
 
+import libutil ;			/* |lenstr(3u)| */
 
 /* local defines */
 
@@ -116,10 +114,8 @@
 #define	INSTRDISLEN	100
 
 
-
 /* external subroutines */
 
-extern int	ffbsi(uint) ;
 extern int	getinterleave(uint,uint) ;
 extern int	getnumbuses(uint) ;
 extern int	seqok(uint,uint,uint) ;
