@@ -1,8 +1,0 @@
-template<typename ... Args>
-local inline int nodesfile_magic(nodesfile *op,Args ... args) noex {
-	int		rs = SR_FAULT ;
-	if (op && (args && ...)) {
-	    rs = (op->magval == NODESFILE_MAGIC) ? SR_OK : SR_NOTOPEN ;
-	}
-	return rs ;
-} /* end subroutine (nodesfile_magic) */
