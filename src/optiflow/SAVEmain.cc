@@ -83,7 +83,7 @@
 #include	<usysbase.h>
 #include	<bitops.h>
 #include	<field.h>
-#include	<bio.h>
+#include	<bfile.h>
 #include	<vecstr.h>
 #include	<paramfile.h>
 #include	<userinfo.h>
