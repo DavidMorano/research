@@ -65,7 +65,7 @@
 
 /* some of Dave's libraries */
 
-#include	<bio.h>
+#include	<bfile.h>
 #include	<mallocstuff.h>
 
 /* simple scalar stuff */
