@@ -1,7 +1,9 @@
-/* ssiw */
+/* ssiw SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
 /* OpTiFlow execution (issue) window */
-
+/* version %I% last-modified %G% */
 
 #define	CF_DEBUGS	0		/* non-switched debugging */
 #define	CF_DEBUG	0		/* switched debugging */
@@ -22,59 +24,46 @@
 #define	CF_SSLSQ	0		/* use SSLSQ */
 #define	CF_NDIPATCH	0		/* faster */
 
-
 /* revision history:
 
-	= 00/02/15, Dave Morano
-
+	= 2000-02-15, Dave Morano
 	This code was started.
 
-
-	= 00/09/18, Dave Morano
-
+	= 2000-09-18, Dave Morano
 	I added the LBTRB object.
 
-
-	= 00/09/28, Dave Morano
-
+	= 2000-09-28, Dave Morano
 	Unfortunately much of this code with regard to initialization
 	has to change!  The memory buses that are created and
 	initialized in the LEVO object no longer are the same buses
-	that go to the ASes.  This was expected anyway eventually so it
-	may as well happen now.  New memory buses are created and
-	initialized within the SSIW for use by the ASes.  Also all
-	register and predicate buses are not entirely local to the LT
-	also.  The LEVO object creates memory buses for use between
-	the memory subsystem and the i-window.  Those buses are now
-	made out of RFBUS objects while the memory buses that go
-	to the ASes (here in this code) are still made out of BUS
-	objects.
+	that go to the ASes.  This was expected anyway eventually
+	so it may as well happen now.  New memory buses are created
+	and initialized within the SSIW for use by the ASes.  Also
+	all register and predicate buses are not entirely local to
+	the LT also.  The LEVO object creates memory buses for use
+	between the memory subsystem and the i-window.  Those buses
+	are now made out of RFBUS objects while the memory buses
+	that go to the ASes (here in this code) are still made out
+	of BUS objects.
 
-
-	= 00/12/30, Dave Morano
-
+	= 2000-12-30, Dave Morano
 	Alireza found one problem with mutliple Sharing Groups not
-	working.  This code was not calling the '_comb()' or '_clock()'
-	methods of all of the LPE object!  Only the first LPE object
-	was being handled correctly.  I fixed it simply with a loop to
-	get all of them that are configured.
+	working.  This code was not calling the |_comb()| or
+	|_clock()| methods of all of the LPE object!  Only the first
+	LPE object was being handled correctly.  I fixed it simply
+	with a loop to get all of them that are configured.
 
-
-	= 01/02/20, Dave Morano
-
+	= 2001-02-20, Dave Morano
 	I am just marking this version as the latest.  I fixed some
 	REGFILTER manipulation issues that had to do with invalidation
 	of register values and I put some extra debug prints in this
 	version.
 
-
-	= 03/07/02, Dave Morano
-
-	I'm just getting around to putting a comment here.
+	= 2003-07-02, Dave Morano
+	I am just getting around to putting a comment here.
 	I brought this over a few months ago but am just now
 	doing detailed hacks to try to make it work in the S-S
 	framework.
-
 
 */
 
@@ -82,41 +71,37 @@
 
 /******************************************************************************
 
-	Levo Instruction Window
+  	Name:
 
+	Description:
+	= Levo Instruction Window
 	This is the top of the i-window for the Levo machine.
 
-
 	Design notes:
-
-	The indication of the shift to all of the machine will occur in
-	phase 2.  Is this OK??
-
+	The indication of the shift to all of the machine will occur
+	in phase 2.  Is this OK?
 
 ******************************************************************************/
 
-
-#define	SSIW_MASTER	1
-
-
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/mman.h>
 #include	<unistd.h>
 #include	<fcntl.h>
+#include	<cmath>
+#include	<cassert>
+#include	<climits>
+#include	<cstddef>
 #include	<cstdlib>
-#include	<cstring>
-#include	<math.h>
-#include	<assert.h>
-
-#if	CF_FPRINTF
 #include	<cstdio>
-#endif
-
-#include	<usystem.h>
+#include	<cstring>
+#include	<clanguage.h>
+#include	<usysbase.h>
+#include	<uclibsubs.h>
 #include	<bfile.h>
 #include	<paramfile.h>
+#include	<localmisc.h>
 
-#include	"localmisc.h"
 #include	"ssconfig.h"
 #include	"defs.h"
 
@@ -143,7 +128,6 @@
 #endif
 
 
-
 /* local defines */
 
 #define	SSIW_MAGIC		0x91818273
@@ -165,10 +149,6 @@
 /* external subroutines */
 
 double		percentll(ULONG,ULONG) ;
-
-extern int	mkpath2(char *,const char *,const char *) ;
-extern int	mkfnamesuf(char *,const char *,const char *) ;
-extern int	densitystati(uint *,int,double *,double *) ;
 
 extern int	setregval(struct regs_t *,int,ULONG) ;
 extern int	getregval(struct regs_t *,int,ULONG *) ;
@@ -214,10 +194,10 @@ static int	ssiw_checkdispatch(SSIW *,struct proginfo *,
 /* local variables */
 
 
+/* exported variables */
 
 
-
-
+/* exported subroutines */
 
 int ssiw_init(wp,pip,mip,lip,ap)
 SSIW		*wp ;
