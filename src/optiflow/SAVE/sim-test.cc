@@ -1,12 +1,13 @@
-/* sim-test */
+/* sim-test SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
 /* sim-test.c - sample functional simulator implementation */
+/* version %I% last-modified %G% */
 
-
-#define	F_DEBUGS	1		/* debug print-outs */
-#define	F_TRACE		0		/* debug trace */
-#define	F_FAKE		0		/* use fake until we get real */
-
+#define	CF_DEBUGS	1		/* debug print-outs */
+#define	CF_TRACE	0		/* debug trace */
+#define	CF_FAKE		0		/* use fake until we get real */
 
 /* SimpleScalar(TM) Tool Suite
  * Copyright (C) 1994-2001 by Todd M. Austin, Ph.D. and SimpleScalar, LLC.
@@ -57,11 +58,19 @@
  * Copyright (C) 1994-2001 by Todd M. Austin, Ph.D. and SimpleScalar, LLC.
  */
 
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
-#include <cstdlib>
-#include <cstring>
-#include <math.h>
-#include <cstdio>
+#include	<climits>
+#include	<cstddef>
+#include	<cstdlib>
+#include	<cstdio>
+#include	<cstring>
+#include	<math>
+#include	<clanguage.h>
+#include	<usysbase.h>
+#include	<uclibsubs.h>
+#include	<paramfile.h>
+#include	<localmisc.h>
 
 /* some of Dave's libraries */
 
@@ -84,8 +93,6 @@
 
 /* from 'main' */
 
-#include	"paramfile.h"
-#include	"localmisc.h"
 #include	"ssconfig.h"
 #include	"defs.h"
 
@@ -97,7 +104,6 @@
 #include	"ssiw.h"
 #include	"ssas.h"
 #include	"machstate.h"
-
 
 
 /* local defines (not Simple-Scalar) */
@@ -605,10 +611,10 @@ void sim_main(void)
 
 	fprintf(stderr, "sim: ** starting functional simulation **\n") ;
 
-#if	F_FAKE
+#if	CF_FAKE
 	n = INT_MAX ;
 	rs = sim_perf(gp,n) ;
-#else /* F_FAKE */
+#else /* CF_FAKE */
 	{
 		struct machstate	ms ;
 
@@ -663,7 +669,7 @@ void sim_main(void)
 	ssclocking_free(&clocker) ;
 
 	} /* end block */
-#endif /* F_FAKE */
+#endif /* CF_FAKE */
 
 /* VOIDRETURN */
 
@@ -892,16 +898,16 @@ uint		ninstr ;
 	    asp->n.f.taken = asp->n.f.cfcond &&
 	        (regs.regs_NPC != (regs.regs_PC + sizeof(md_inst_t))) ;
 
-	    if (asp->n.f.cfind && (flags & F_INDIRJMP))
+	    if (asp->n.f.cfind && (flags & CF_INDIRJMP))
 	        g.s.weird += 1 ;
 
-	    if (flags & F_MEM) {
+	    if (flags & CF_MEM) {
 
 	        g.s.mem += 1 ;
-	        if (flags & F_LOAD) {
+	        if (flags & CF_LOAD) {
 
 	            g.s.memreads += 1 ;
-	            if (flags & F_STORE)
+	            if (flags & CF_STORE)
 	                g.s.weird += 1 ;
 
 	        } else
@@ -927,7 +933,7 @@ uint		ninstr ;
 	    if (asp->n.f.cfcond)
 	        g.s.cfcond += 1 ;
 
-#if	F_TRACE
+#if	CF_TRACE
 	    g_asdump(&g,(cas + wi)) ;
 #endif
 
@@ -953,10 +959,10 @@ uint		ninstr ;
 /* fflush(stderr); */
 	    }
 
-	    if (MD_OP_FLAGS(op) & F_MEM)
+	    if (MD_OP_FLAGS(op) & CF_MEM)
 	    {
 	        sim_num_refs++ ;
-	        if (MD_OP_FLAGS(op) & F_STORE)
+	        if (MD_OP_FLAGS(op) & CF_STORE)
 	            is_write = TRUE ;
 	    }
 
@@ -1219,16 +1225,16 @@ uint		ninstr ;
 	    asp->n.f.taken = asp->n.f.cfcond &&
 	        (regs.regs_NPC != (regs.regs_PC + sizeof(md_inst_t))) ;
 
-	    if (asp->n.f.cfind && (flags & F_INDIRJMP))
+	    if (asp->n.f.cfind && (flags & CF_INDIRJMP))
 	        g.s.weird += 1 ;
 
-	    if (flags & F_MEM) {
+	    if (flags & CF_MEM) {
 
 	        g.s.mem += 1 ;
-	        if (flags & F_LOAD) {
+	        if (flags & CF_LOAD) {
 
 	            g.s.memreads += 1 ;
-	            if (flags & F_STORE)
+	            if (flags & CF_STORE)
 	                g.s.weird += 1 ;
 
 	        } else
@@ -1254,7 +1260,7 @@ uint		ninstr ;
 	    if (asp->n.f.cfcond)
 	        g.s.cfcond += 1 ;
 
-#if	F_TRACE
+#if	CF_TRACE
 	    g_asdump(&g,(cas + wi)) ;
 #endif
 
@@ -1280,10 +1286,10 @@ uint		ninstr ;
 /* fflush(stderr); */
 	    }
 
-	    if (MD_OP_FLAGS(op) & F_MEM)
+	    if (MD_OP_FLAGS(op) & CF_MEM)
 	    {
 	        sim_num_refs++ ;
-	        if (MD_OP_FLAGS(op) & F_STORE)
+	        if (MD_OP_FLAGS(op) & CF_STORE)
 	            is_write = TRUE ;
 	    }
 
@@ -1595,16 +1601,16 @@ uint		n ;
 	    asp->n.f.taken = asp->n.f.cfcond &&
 	        (regs.regs_NPC != (regs.regs_PC + sizeof(md_inst_t))) ;
 
-	    if (asp->n.f.cfind && (flags & F_INDIRJMP))
+	    if (asp->n.f.cfind && (flags & CF_INDIRJMP))
 	        g.s.weird += 1 ;
 
-	    if (flags & F_MEM) {
+	    if (flags & CF_MEM) {
 
 	        g.s.mem += 1 ;
-	        if (flags & F_LOAD) {
+	        if (flags & CF_LOAD) {
 
 	            g.s.memreads += 1 ;
-	            if (flags & F_STORE)
+	            if (flags & CF_STORE)
 	                g.s.weird += 1 ;
 
 	        } else
@@ -1630,7 +1636,7 @@ uint		n ;
 	    if (asp->n.f.cfcond)
 	        g.s.cfcond += 1 ;
 
-#if	F_TRACE
+#if	CF_TRACE
 	    g_asdump(&g,(cas + wi)) ;
 #endif
 
@@ -1656,10 +1662,10 @@ uint		n ;
 /* fflush(stderr); */
 	    }
 
-	    if (MD_OP_FLAGS(op) & F_MEM)
+	    if (MD_OP_FLAGS(op) & CF_MEM)
 	    {
 	        sim_num_refs++ ;
-	        if (MD_OP_FLAGS(op) & F_STORE)
+	        if (MD_OP_FLAGS(op) & CF_STORE)
 	            is_write = TRUE ;
 	    }
 
@@ -1705,7 +1711,7 @@ int	i1, i2, i3 ;
 	int		oi ;
 
 
-#if	F_TRACE
+#if	CF_TRACE
 	bprintf(&g.tfile,"i1=%d i2=%d i3=%d o1=%d o2=%d\n",
 	    i1,i2,i3,o1,o2) ;
 #endif
@@ -1737,10 +1743,10 @@ int	i1, i2, i3 ;
 
 /* some miscellaneous stuff that we can determine */
 
-	asp->n.f.cf = (flags & F_CTRL) || (flags & F_FPCOND) ;
-	asp->n.f.cfcond = (flags & F_COND) || (flags & F_FPCOND) ;
-	asp->n.f.cfind = (flags & F_INDIRJMP) ;
-	asp->n.f.cfsub = (flags & F_CALL) || (flags & F_TRAP) ;
+	asp->n.f.cf = (flags & CF_CTRL) || (flags & CF_FPCOND) ;
+	asp->n.f.cfcond = (flags & CF_COND) || (flags & CF_FPCOND) ;
+	asp->n.f.cfind = (flags & CF_INDIRJMP) ;
+	asp->n.f.cfsub = (flags & CF_CALL) || (flags & CF_TRAP) ;
 
 	return 0 ;
 }
@@ -1787,7 +1793,7 @@ ULONG	pv, v ;
 	int	i ;
 
 
-#if	F_TRACE
+#if	CF_TRACE
 	bprintf(&g.tfile,"mem a=%016llx size=%d pv=%016llx\n",
 	    a,size,pv) ;
 #endif
@@ -1841,7 +1847,7 @@ ULONG	pv ;
 	int	i ;
 
 
-#if	F_TRACE
+#if	CF_TRACE
 	bprintf(&g.tfile,"mem a=%016llx size=%d pv=%016llx\n",
 	    a,size,pv) ;
 #endif
