@@ -1,7 +1,9 @@
-/* sim-optiflow */
+/* sim-optiflow SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
 /* sim-test.c - sample functional simulator implementation */
-
+/* version %I% last-modified %G% */
 
 #define	CF_DEBUGS	0		/* debug print-outs */
 #define	CF_DEBUG	1		/* switchable debug print-outs */
@@ -18,15 +20,15 @@
 #define	CF_CHEAPRETIRE	1		/* use cheap-retirement method */
 #define	CF_WRITEDONE	0		/* close off writes for stats? */
 
-
 /******************************************************************************
 
+  	Name:
 	This is the main code module for implementing the OpTiFlow
-	simulator.  This file is loosely modeled after similar files that
-	implement simulators such as 'sim-outorder' and 'sim-mase'.
-	Most of the gooko (SimpleScalar interfacing) subroutines
-	are purposely put into this file to try to keep them (gooko
-	subroutines) in the same place.
+	simulator.  This file is loosely modeled after similar files
+	that implement simulators such as 'sim-outorder' and
+	'sim-mase'.  Most of the gooko (SimpleScalar interfacing)
+	subroutines are purposely put into this file to try to keep
+	them (gooko subroutines) in the same place.
 
 	Important note:
 	Do NOT turn on the "define" option above named CF_WRITEDONE!
@@ -36,11 +38,13 @@
 
 #include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
-#include <cstdlib>
-#include <cstring>
-#include <math.h>
-#include <assert.h>
-#include <cstdio>
+#include	<climits>
+#include	<cstddef>
+#include	<cstdlib>
+#include	<cstdio>
+#include	<cstring>
+#include	<cmath>
+#include	<assert.h>
 #include	<mkpathx.h>
 #include	<strwcpy.h>
 #include	<bfile.h>
@@ -49,6 +53,7 @@
 #include	<paramfile.h>
 #include	<field.h>
 #include	<mallocstuff.h>
+#include	<localmisc.h>
 
 /* simple scalar stuff */
 
@@ -92,7 +97,6 @@
 #include	"ssnames.h"
 #include	"bpeval.h"
 #include	"bpresult.h"
-
 
 
 /* local defines (not Simple-Scalar) */
@@ -172,24 +176,14 @@
 #endif /* TARGET_PISA */
 
 
-
 /* external subroutines */
 
 extern double	percentll(ULONG,ULONG) ;
 
 extern uint	nextpowtwo(uint) ;
 
-extern int	mkfnamesuf(char *,const char *,const char *) ;
-extern int	sfsub(const char *,int,const char *,char **) ;
-extern int	cfdeci(const char *,int,int *) ;
-extern int	cfdecui(const char *,int,int *) ;
-extern int	cfdecull(const char *,int,ULONG *) ;
-extern int	cfdecmfull(const char *,int,ULONG *) ;
-extern int	cfnumui(const char *,int,uint *) ;
-extern int	densitystatll(ULONG *,int,double *,double *) ;
 extern int	procsimpoint(struct proginfo *,LONG *) ;
 
-extern char	*strnchr(const char *,int,int) ;
 extern char	*strsimpoint(char *,ULONG) ;
 
 
