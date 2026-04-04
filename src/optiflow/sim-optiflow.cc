@@ -1,4 +1,5 @@
 /* sim-optiflow SUPPORT */
+/* charset=ISO8859-1 */
 /* lang=C++98 */
 
 /* sim-test.c - sample functional simulator implementation */
@@ -43,12 +44,15 @@
 #include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/param.h>
-#include	<cmath>
 #include	<cassert>
+#include	<climits>
 #include	<cstddef>		/* |nullptr_t| */
 #include	<cstdlib>
 #include	<cstdio>
 #include	<cstring>
+#include	<cmath>
+#include	<clanguage.h>
+#include	<usysbase.h>
 #include	<mkpathx.h>
 #include	<mkfnamex.h>
 #include	<strwcpy.h>
