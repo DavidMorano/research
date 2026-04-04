@@ -1,4 +1,9 @@
-/* levo-opts */
+/* levo-opts SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
+
+/* part of LevoSim */
+/* version %I% last-modified %G% */
 
 
 /* levo-opts.c - sim-levo options and statistics */
@@ -55,6 +60,15 @@
  * Copyright (C) 2000-2001 by The Regents of The University of Michigan.
  * Copyright (C) 1994-2001 by Todd M. Austin, Ph.D. and SimpleScalar, LLC.
  */
+
+
+#include	<envstandards.h>	/* ordered first to configure */
+#include	<climits>
+#include	<cstddef>
+#include	<cstdlib>
+#include	<clanguage.h>
+#include	<usysbase.h>
+#include	<localmisc.h>
 
 #include "levo.h"
 
