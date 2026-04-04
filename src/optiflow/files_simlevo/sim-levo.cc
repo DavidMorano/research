@@ -1,4 +1,9 @@
-/* sim-levo */
+/* sim-levo SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
+
+/* part of LevoSim */
+/* version %I% last-modified %G% */
 
 
 /* SimpleScalar(TM) Tool Suite
@@ -50,12 +55,18 @@
  * Copyright (C) 1994-2001 by Todd M. Austin, Ph.D. and SimpleScalar, LLC.
  */
 
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
-#include <cstdlib>
-#include <math.h>
-#include <assert.h>
-#include <csignal>
-#include <cstdio>
+#include	<csignal>
+#include	<climits>
+#include	<cstddef>
+#include	<cstdlib>
+#include	<cstdio>
+#include	<cmath>
+#include	<assert.h>
+#include	<clanguage.h>
+#include	<usysbase.h>
+#include	<localmisc.h>
 
 #include "host.h"
 #include "misc.h"
@@ -76,8 +87,9 @@
 #include "sim.h"
 
 
-/* some extra stuff (DAM) */
+/* local defines */
 
+/* some extra stuff (DAM) */
 #ifndef	ULONG
 #if	defined(SOLARIS) || (defined(HAVE_LONGLONG) && (HAVE_LONGLONG == 1))
 #define	ULONG	unsigned long long
@@ -87,7 +99,6 @@
 #endif /* ALPHA */
 #endif /* HAVE_LONGLONG */
 #endif /* ULONG */
-
 
 
 /*
