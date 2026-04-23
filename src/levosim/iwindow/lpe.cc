@@ -1,7 +1,9 @@
-/* lpe */
+/* lpe SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
 /* Levo Processing Element */
-
+/* version %I% last-modified %G% */
 
 #define	F_DEBUGS	0
 #define	F_DEBUG		1		/* switchable debug print-outs */
@@ -11,28 +13,20 @@
 #define	F_FPRINTF	1		/* fprintf() ? */
 #define	F_SRC5		1		/* we have 5 source input operands ? */
 
+/* revision history:
 
-/* revision history :
-
-	= 00/02/04, Dave Morano
-
+	= 2000-02-04, Dave Morano
 	Module was originally written.
 
-
-	= 00/06/04, Alireza Khalafi
-
+	= 2000-06-04, Alireza Khalafi
 	I took over this code at the beginning of Levo IV.
 
-
-	= 01/03/31, Dave Morano
-
-	I fixed a bad bug that was causing crashes.  The bug was that
-	there was a fixed size of the 'waitlist' and 'delvlist'
+	= 2001-03-31, Dave Morano
+	I fixed a bad bug that was causing crashes.  The bug was
+	that there was a fixed size of the 'waitlist' and 'delvlist'
 	arrays.
 
-
-	= 01/06/22, Dave Morano
-
+	= 2001-06-22, Dave Morano
 	I created the compile-time flag 'F_IGNOREFAULTS' so that the
 	rest of the simulator will ignore any instruction faults for
 	now.  This was needed because the AS unit does not properly do
@@ -42,11 +36,8 @@
 	problem when the speculation of instrcutions (presumably the
 	cause of the fault) comes to an end and commitment approaches.
 
-
-	= 01/09/26, Dave Morano
-
+	= 2001-09-26, Dave Morano
 	Added stuff for an XML output state trace.
-
 
 */
 
@@ -54,27 +45,30 @@
 	reset the tracknumbr at column load time 
 */
 
+/* Copyright © 2000-2001 David A­D­ Morano.  All rights reserved. */
+/* Use is subject to license terms. */
 
 /**************************************************************************
 
-	This object module provides the functions for a Levo Processing
-	Element.
+  	Name:
 
+	Description:
+	This object module provides the functions for a Levo
+	Processing Element.
 
 **************************************************************************/
 
-
-#define	LPE_MASTER	0
-
-
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
+#include	<climits>
+#include	<cstddef>
 #include	<cstdlib>
 #include	<cstring>
 #include	<assert.h>
+#include	<clanguage.h>
+#include	<usysbase.h>
+#include	<localmisc.h>
 
-#include	<usystem.h>
-
-#include	"localmisc.h"
 #include	"config.h"
 #include	"defs.h"
 #include	"lsim.h"
@@ -87,11 +81,9 @@
 #include	"lexec.h"
 
 
-
 /* local defines */
 
 #define	LPE_MAGIC	0x85731895
-
 
 
 /* external subroutines */
@@ -106,7 +98,10 @@ static int	lpe_exec(LPE *,struct proginfo *,struct lpe_waitlist *) ;
 
 
 
+/* exported variables */
 
+
+/* exported subroutines */
 
 int lpe_init(lpep,pip,mip,lip)
 LPE		*lpep ;
