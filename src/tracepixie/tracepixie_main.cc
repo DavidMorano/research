@@ -128,7 +128,7 @@ int main(int argc,mainv argv,mainv envv) {
     	prognamevar	progname(argc,argv,envv) ;
 	ustat		sb ;
 	proginfo	pi, *pip = &pi ;
-	PARAMOPT	opts ;
+	paramopt	opts ;
 	vecstr		args, exports ;
 	bfile		errfile, *efp = &errfile ;
 	bfile		outfile ;
@@ -682,7 +682,7 @@ int main(int argc,mainv argv,mainv envv) {
 /* option parsing */
 
 	{
-	    PARAMOPT_CUR	c ;
+	    paramopt_cur	c ;
 
 	    int	spc = 0 ;
 
