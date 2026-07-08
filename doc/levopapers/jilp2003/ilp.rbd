@@ -1,0 +1,70 @@
+
+
+%T Instruction-Level Parallel Processors
+%A H.C. Torng
+%A Stamatis Vassiliadis
+%I IEEE Computer Society press
+%C Los Alamitos, CA
+%D 1995
+%K ILP instruction level parallelism
+%X this is THE book on ILP
+%B ISBN 0-8186-6527-0 (paper)
+%L QA 76.58 T67
+%X IEEE Catalog Number EH0398-8
+
+%T Reducing branch misprediction penalties via dynamic control independence
+detection
+%A Y. Chou
+%A J. Fung
+%A J. Shen
+%J International Conference on Supercomputing
+%D June 1999
+%K instruction level parallelism
+%X 
+%B
+%L
+%X
+
+%T Dynamic hammock predication for non-predicated instruction set
+architectures
+%A A. Kalauser
+%A T. Austin
+%A D. Grunwald
+%I
+%J PACT
+%C
+%D October 1998
+%K instruction level parallelism
+%X
+%B
+%L
+%X
+
+%T SIMP: A Novel High-Speed Single-Processor Architecture
+%A K. Murakami
+%A N. Irie
+%A M. Kuga
+%A S. Tomita
+%I
+%C
+%J 16th International Symposium on Computer Architecture (ISCA)
+%P 78-85
+%D May 1989
+%K instruction level parallelism
+%X
+%B
+
+%A A.K. Uht
+%A D.A.D. Morano
+%A A. Khalafi
+%A D.R. Kaeli
+%T Levo -- A Scalable Processor With High IPC
+%J The Journal of Instruction-Level Parallelism
+%D August 2003 
+%U http://www.jilp.org/vol5
+%K instruction level parallelism
+%Q uht2003scalable
+%V 1
+%N
+
+
