@@ -38,7 +38,7 @@
 #define LDECODE		struct ldecode_head
 
 
-#include	<envstandards.h>
+#include	<envstandards.h>	/* ordered first to configure */
 
 #include	<sys/types.h>
 
