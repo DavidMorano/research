@@ -1237,7 +1237,7 @@ bad9:
 
 	    hdb_curbegin(&mpp->pagetable,&cur) ;
 
-	    while (hdb_enum(&mpp->pagetable,&cur,&key,&value) >= 0) {
+	    while (hdb_curenum(&mpp->pagetable,&cur,&key,&value) >= 0) {
 
 	        ptep = (LMAPPROG_PTE *) value.buf ;
 
@@ -1365,7 +1365,7 @@ LMAPPROG	*mpp ;
 
 	    hdb_curbegin(&mpp->pagetable,&cur) ;
 
-	    while (hdb_enum(&mpp->pagetable,&cur,&key,&value) >= 0) {
+	    while (hdb_curenum(&mpp->pagetable,&cur,&key,&value) >= 0) {
 
 	        ptep = (LMAPPROG_PTE *) value.buf ;
 
@@ -2427,7 +2427,7 @@ Elf32_Sym		**sepp ;
 
 	pip = mpp->pip ;
 
-	rs = hdb_enum(&mpp->symbols,cp,&key,&value) ;
+	rs = hdb_curenum(&mpp->symbols,cp,&key,&value) ;
 	if (rs < 0) {
 	    rs = SR_NOTFOUND ;
 	    goto ret0 ;
@@ -3014,7 +3014,7 @@ LMAPPROG	*mpp ;
 
 	hdb_curbegin(&mpp->symbols,&cur) ;
 
-	while (hdb_enum(&mpp->symbols,&cur,&key,&value) >= 0) {
+	while (hdb_curenum(&mpp->symbols,&cur,&key,&value) >= 0) {
 
 	    sep = (LMAPPROG_SYMBOL *) value.buf ;
 
