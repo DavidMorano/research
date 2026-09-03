@@ -5,8 +5,7 @@
 /* compare execution traces */
 /* last modified %G% version %I% */
 
-#define	CF_DEBUGS	0		/* debug print-outs (non-switchable) */
-#define	CF_DEBUG	0		/* debug print-outs switchable */
+#define	CF_DEBUG	0		/* debug print-outs (non-switchable) */
 
 /* revision history:
 
@@ -28,26 +27,27 @@
 **************************************************************************/
 
 #include	<envstandards.h>	/* must be ordered first to configure */
-#include	<sys/types.h>
-#include	<sys/param.h>
-#include	<sys/stat.h>
-#include	<sys/utsname.h>
-#include	<unistd.h>
-#include	<fcntl.h>
-#include	<ctime>
-#include	<cstddef>		/* |nullptr_t| */
-#include	<cstdlib>
-#include	<cstring>
-#include	<usystem.h>
-#include	<vecstr.h>
-#include	<bfile.h>
-#include	<paramopt.h>
-#include	<userinfo.h>
-#include	<logfile.h>
-#include	<mallocstuff.h>
+#include	<sys/types.h>		/* POSIX® */
+#include	<sys/param.h>		/* POSIX® */
+#include	<sys/stat.h>		/* POSIX® */
+#include	<sys/utsname.h>		/* POSIX® */
+#include	<unistd.h>		/* POSIX® */
+#include	<fcntl.h>		/* POSIX® */
+#include	<ctime>			/* CSTD */
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<cstring>		/* CSTD */
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<vecstr.h>		/* LIBUC */
+#include	<paramopt.h>		/* LIBUC */
+#include	<userinfo.h>		/* LIBUC */
+#include	<logfile.h>		/* LIBUC */
+#include	<mallocstuff.h>		/* LIBUC */
+#include	<exitcodes.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU */
+#include	<bfile.h>		/* LIBB */
 #include	<prenvfile.h>		/* LIBPR */
-#include	<exitcodes.h>
-#include	<localmisc.h>
 
 #include	"getfname.h"
 #include	"exectrace.h"
@@ -73,8 +73,8 @@ extern int	process(struct proginfo *,LMAPPROG *,MIPSDIS *,char *) ;
 
 /* forward references */
 
-static int	usage(struct proginfo *) ;
-static int	havefname(struct proginfo* ,cchar *,cchar *,char *) ;
+local int	usage(struct proginfo *) noex ;
+local int	havefname(struct proginfo* ,cchar *,cchar *,char *) noex ;
 
 
 /* local variables */
@@ -86,7 +86,7 @@ enum argopts {
 	argopt_jn,
 	argopt_jobname,
 	argopt_overlast
-} ;
+} ; /* end enum */
 
 constexpre cpcchar	argopts[] = {
 	"VERSION",
@@ -94,18 +94,18 @@ constexpre cpcchar	argopts[] = {
 	"count",
 	"jn",
 	"jobname",
-	NULL
-} ;
+	nullptr
+} ; /* end array */
 
 enum progmodes {
 	progmode_ssh,
 	progmode_overlast
-} ;
+} ; /* end enum */
 
 constexpr cpcchar	progmodes[] = {
 	"ssh",
-	NULL
-} ;
+	nullptr
+} ; /* end array */
 
 enum dumpopts {
 	procopt_in,
@@ -132,7 +132,7 @@ enum dumpopts {
 	procopt_syscalls,
 	procopt_plusinstr,
 	procopt_overlast
-} ;
+} ; /* end enum */
 
 constexpr cpcchar	dumpopts[] = {
 	"in",
@@ -158,8 +158,8 @@ constexpr cpcchar	dumpopts[] = {
 	"onemem",
 	"syscalls",
 	"plusinstr",
-	NULL
-} ;
+	nullptr
+} ; /* end array */
 
 
 /* exported variables */
@@ -169,7 +169,7 @@ constexpr cpcchar	dumpopts[] = {
 
 int main(int argc,mainv argv,mainv envv) {
 	proginfo	pi, *pip = &pi ;
-	PARAMOPT	aparams ;
+	paramopt	aparams ;
 	LMAPPROG	pm ;
 	MIPSDIS		dis ;
 	userinfo	u ;
@@ -204,25 +204,25 @@ int main(int argc,mainv argv,mainv envv) {
 	char	progenvbuf[MAXPATHLEN + 1] ;
 	char	sshfnamebuf[MAXPATHLEN + 1] ;
 	char	timebuf[TIMEBUFLEN + 1] ;
-	cchar	*programroot = NULL ;
-	cchar	*progbname = NULL ;	/* base name */
-	cchar	*progfname = NULL ;
-	cchar	*argsfname = NULL ;
-	cchar	*envfname = NULL ;
-	cchar	*sshfname = NULL ;
-	cchar	*ofname = NULL ;
-	cchar	*progmodestr = NULL ;
-	cchar	*instrspec = NULL ;
+	cchar	*programroot = nullptr ;
+	cchar	*progbname = nullptr ;	/* base name */
+	cchar	*progfname = nullptr ;
+	cchar	*argsfname = nullptr ;
+	cchar	*envfname = nullptr ;
+	cchar	*sshfname = nullptr ;
+	cchar	*ofname = nullptr ;
+	cchar	*progmodestr = nullptr ;
+	cchar	*instrspec = nullptr ;
 	cchar	*sp, *cp ;
 
 
-	if ((cp = getenv(VARDEBUGFD1)) == NULL)
+	if ((cp = getenv(VARDEBUGFD1)) == nullptr)
 	        cp = getenv(VARDEBUGFD2) ;
 
-	if (cp == NULL)
+	if (cp == nullptr)
 	    cp = getenv(VARDEBUGFD3) ;
 
-	if ((cp != NULL) &&
+	if ((cp != nullptr) &&
 	    (cfdeci(cp,-1,&fd_debug) >= 0))
 	    debugsetfd(fd_debug) ;
 
@@ -241,26 +241,26 @@ int main(int argc,mainv argv,mainv envv) {
 
 /* early things to initialize */
 
-	pip->ofp = NULL ;
+	pip->ofp = nullptr ;
 	pip->ninstr = 0 ;
 	pip->debuglevel = 0 ;
 	pip->verboselevel = 0 ;
 
-	daytime = time(NULL) ;
+	daytime = time(nullptr) ;
 
 /* program mode */
 
 	sl = sfbasename(argv[0],-1,&sp) ;
 
 	pip->progmode = progmode_ssh ;
-	for (i = 0 ; progmodes[i] != NULL ; i += 1) {
+	for (i = 0 ; progmodes[i] != nullptr ; i += 1) {
 
 	    if (strncmp(sp,progmodes[i],sl) == 0)
 	        break ;
 
 	} /* end for */
 
-	if (progmodes[i] != NULL)
+	if (progmodes[i] != nullptr)
 	    pip->progmode = i ;
 
 
@@ -296,9 +296,9 @@ int main(int argc,mainv argv,mainv envv) {
 	                aol = argl - 1 ;
 	                akp = aop ;
 	                f_optequal = FALSE ;
-	                if ((avp = strchr(aop,'=')) != NULL) {
+	                if ((avp = strchr(aop,'=')) != nullptr) {
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	                    debugprintf("main: got an option key w/ a value\n") ;
 #endif
 
@@ -307,7 +307,7 @@ int main(int argc,mainv argv,mainv envv) {
 	                    avl = aop + aol - avp ;
 	                    f_optequal = TRUE ;
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	                    debugprint("main: avp=") ;
 	                    debugprint(avp) ;
 	                    debugprint("\n") ;
@@ -330,13 +330,13 @@ int main(int argc,mainv argv,mainv envv) {
 
 /* do we have a keyword match or should we assume only key letters ? */
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	                debugprintf("main: about to check for a key word match\n") ;
 #endif
 
 	                if ((kwi = optmatch(argopts,akp,akl)) >= 0) {
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	                    debugprintf("main: got an option keyword, kwi=%d\n",
 	                        kwi) ;
 #endif
@@ -409,7 +409,7 @@ int main(int argc,mainv argv,mainv envv) {
 /* handle all keyword defaults */
 	                    default:
 	                        ex = EX_USAGE ;
-	                        if (efp != NULL)
+	                        if (efp != nullptr)
 	                            bprintf(efp,
 	                                "%s: unknown argument keyword \"%s\"\n",
 	                                pip->progname,akp) ;
@@ -421,13 +421,13 @@ int main(int argc,mainv argv,mainv envv) {
 
 	                } else {
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	                    debugprintf("main: got an option key letter\n") ;
 #endif
 
 	                    while (akl--) {
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	                        debugprintf("main: option key letters >%c<\n",
 	                            *akp) ;
 #endif
@@ -600,7 +600,7 @@ int main(int argc,mainv argv,mainv envv) {
 	                        default:
 	                            ex = EX_USAGE ;
 	                            f_usage = TRUE ;
-	                            if (efp != NULL)
+	                            if (efp != nullptr)
 	                                bprintf(efp,
 	                                    "%s: unknown option - %c\n",
 	                                    pip->progname,*akp) ;
@@ -610,7 +610,7 @@ int main(int argc,mainv argv,mainv envv) {
 
 	                        } /* end switch */
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	                        debugprintf("main: beyond key letters switch\n") ;
 #endif
 
@@ -649,7 +649,7 @@ int main(int argc,mainv argv,mainv envv) {
 	        default:
 	            ex = EX_USAGE ;
 	            f_usage = TRUE ;
-	            if (efp != NULL)
+	            if (efp != nullptr)
 	                bprintf(efp,
 	                    "%s: extra positional arguments ignored\n",
 	                    pip->progname) ;
@@ -664,12 +664,12 @@ int main(int argc,mainv argv,mainv envv) {
 
 	} /* end while (all command line argument processing) */
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("main: done looping on arguments\n") ;
 #endif
 
 
-	if (f_version && (efp != NULL))
+	if (f_version && (efp != nullptr))
 	    bprintf(efp,"%s: version %s\n",
 	        pip->progname,VERSION) ;
 
@@ -693,16 +693,16 @@ int main(int argc,mainv argv,mainv envv) {
 
 /* what mode are we executing in */
 
-	if ((progmodestr != NULL) && (progmodestr[0] != '\0')) {
+	if ((progmodestr != nullptr) && (progmodestr[0] != '\0')) {
 
-	    for (i = 0 ; progmodes[i] != NULL ; i += 1) {
+	    for (i = 0 ; progmodes[i] != nullptr ; i += 1) {
 
 	        if (strcmp(progmodestr,progmodes[i]) == 0)
 	            break ;
 
 	    } /* end for */
 
-	    if (progmodes[i] == NULL)
+	    if (progmodes[i] == nullptr)
 	        goto badprogmode ;
 
 	    pip->progmode = i ;
@@ -739,17 +739,17 @@ int main(int argc,mainv argv,mainv envv) {
 	    debugprintf("main: programroot=%s\n",pip->programroot) ;
 #endif
 
-	if (pip->programroot == NULL) {
+	if (pip->programroot == nullptr) {
 
 	    programroot = getenv(VARPROGRAMROOT1) ;
 
-	    if (programroot == NULL)
+	    if (programroot == nullptr)
 	        programroot = getenv(VARPROGRAMROOT2) ;
 
-	    if (programroot == NULL)
+	    if (programroot == nullptr)
 	        programroot = getenv(VARPROGRAMROOT3) ;
 
-	    if (programroot == NULL)
+	    if (programroot == nullptr)
 	        programroot = PROGRAMROOT ;
 
 	    pip->programroot = programroot ;
@@ -771,7 +771,7 @@ int main(int argc,mainv argv,mainv envv) {
 
 	pip->pid = getpid() ;
 
-	userinfo(&u,userinfobuf,USERINFO_LEN,NULL) ;
+	userinfo(&u,userinfobuf,USERINFO_LEN,nullptr) ;
 
 	pip->nodename = u.nodename ;
 
@@ -847,13 +847,13 @@ int main(int argc,mainv argv,mainv envv) {
 		pip->domainname) ;
 
 	    buf[0] = '\0' ;
-	    if ((u.name != NULL) && (u.name[0] != '\0'))
+	    if ((u.name != nullptr) && (u.name[0] != '\0'))
 	        sprintf(buf,"(%s)",u.name) ;
 
-	    else if ((u.gecosname != NULL) && (u.gecosname[0] != '\0'))
+	    else if ((u.gecosname != nullptr) && (u.gecosname[0] != '\0'))
 	        sprintf(buf,"(%s)",u.gecosname) ;
 
-	    else if ((u.fullname != NULL) && (u.fullname[0] != '\0'))
+	    else if ((u.fullname != nullptr) && (u.fullname[0] != '\0'))
 	        sprintf(buf,"(%s)",u.fullname) ;
 
 #if	F_MASTERDEBUG && CF_DEBUG
@@ -890,10 +890,10 @@ int main(int argc,mainv argv,mainv envv) {
 
 	(void) memset(&pip->in,0,sizeof(struct proginfo_select)) ;
 
-	if (instrspec != NULL) {
+	if (instrspec != nullptr) {
 
 	    sl = -1 ;
-	    if ((cp = strchr(instrspec,':')) != NULL) {
+	    if ((cp = strchr(instrspec,':')) != nullptr) {
 
 	        if (cfnumull((cp + 1),-1,&pip->in.n) < 0)
 			goto badsnum ;
@@ -924,7 +924,7 @@ int main(int argc,mainv argv,mainv envv) {
 	rs = SR_OK ;
 
 	{
-	    PARAMOPT_CUR	c ;
+	    paramopt_cur	c ;
 
 	    int	spc = 0 ;
 
@@ -1087,12 +1087,12 @@ int main(int argc,mainv argv,mainv envv) {
 	    debugprintf("main: progbname=%s\n",progbname) ;
 #endif
 
-	if ((progbname == NULL) || (progbname[0] == '\0')) {
+	if ((progbname == nullptr) || (progbname[0] == '\0')) {
 
-		if ((cp = getenv(VARNAME1)) == NULL)
+		if ((cp = getenv(VARNAME1)) == nullptr)
 			cp = getenv(VARNAME2) ;
 
-		if (cp != NULL)
+		if (cp != nullptr)
 			progbname = cp ;
 
 	} /* end if (program basename) */
@@ -1110,10 +1110,10 @@ int main(int argc,mainv argv,mainv envv) {
 	    debugprintf("main: progfname=%s\n",progfname) ;
 #endif
 
-	if ((progfname == NULL) || (progfname[0] == '\0')) {
+	if ((progfname == nullptr) || (progfname[0] == '\0')) {
 
 	    rs = SR_NOTFOUND ;
-	    if ((progbname != NULL) && (progbname[0] != '\0'))
+	    if ((progbname != nullptr) && (progbname[0] != '\0'))
 	        rs = havefname(pip,"mips",progbname,progfnamebuf) ;
 
 #ifdef	COMMENT
@@ -1153,9 +1153,9 @@ int main(int argc,mainv argv,mainv envv) {
 	    debugprintf("main: progbname=%s\n",progbname) ;
 #endif
 
-	if ((progbname == NULL) || (progbname[0] == '\0')) {
+	if ((progbname == nullptr) || (progbname[0] == '\0')) {
 
-	    if ((progfname != NULL) && (progfname[0] != '\0')) {
+	    if ((progfname != nullptr) && (progfname[0] != '\0')) {
 
 	        rs = havefname(pip,"",progfname,progbnamebuf) ;
 
@@ -1168,8 +1168,8 @@ int main(int argc,mainv argv,mainv envv) {
 
 /* create a cache file name if we do not have one already */
 
-	if ((sshfname == NULL) && 
-	    (progbname != NULL) && (progbname[0] != '\0')) {
+	if ((sshfname == nullptr) && 
+	    (progbname != nullptr) && (progbname[0] != '\0')) {
 
 		sshfname = sshfnamebuf ;
 		sncpy2(sshfnamebuf,MAXPATHLEN,progbname,".ssh") ;
@@ -1180,14 +1180,14 @@ int main(int argc,mainv argv,mainv envv) {
 /* store away the base name if we have one */
 
 	pip->basename[0] = '\0' ;
-	if (progbname != NULL)
+	if (progbname != nullptr)
 		strwcpy(pip->basename,progbname,MAXNAMELEN) ;
 
 
 /* jobname ? */
 
 	if ((pip->jobname[0] == '\0') &&
-	    (progbname != NULL) && (progbname[0] != '\0')) {
+	    (progbname != nullptr) && (progbname[0] != '\0')) {
 
 		strwcpy(pip->jobname,progbname, JOBNAMELEN) ;
 
@@ -1205,11 +1205,11 @@ int main(int argc,mainv argv,mainv envv) {
 	    debugprintf("main: argsfname=%s\n",argsfname) ;
 #endif
 
-	if (argsfname == NULL) {
+	if (argsfname == nullptr) {
 
 		f_argsfile = FALSE ;
 	    rs = SR_NOTFOUND ;
-	    if ((progbname != NULL) && (progbname[0] != '\0'))
+	    if ((progbname != nullptr) && (progbname[0] != '\0'))
 	        rs = havefname(pip,"args",progbname,progargsbuf) ;
 
 	    if (rs >= 0)
@@ -1217,7 +1217,7 @@ int main(int argc,mainv argv,mainv envv) {
 
 	} /* end if (target arguments) */
 
-	if (argsfname != NULL) {
+	if (argsfname != nullptr) {
 
 	    rs = procargs(pip->programroot,argsfname,&args) ;
 
@@ -1226,7 +1226,7 @@ int main(int argc,mainv argv,mainv envv) {
 
 	}
 
-	    if ((argsfname == NULL) && (progbname != NULL))
+	    if ((argsfname == nullptr) && (progbname != nullptr))
 	        vecstr_add(&args,progbname,-1) ;
 
 	} /* end block (target program arguments) */
@@ -1244,11 +1244,11 @@ int main(int argc,mainv argv,mainv envv) {
 		int	f_envfile = TRUE ;
 
 
-	if (envfname == NULL) {
+	if (envfname == nullptr) {
 
 		f_envfile = FALSE ;
 	    rs = SR_NOTFOUND ;
-	    if ((progbname != NULL) && (progbname[0] != '\0')) {
+	    if ((progbname != nullptr) && (progbname[0] != '\0')) {
 
 	        rs = havefname(pip,"env",progbname,progenvbuf) ;
 
@@ -1265,8 +1265,8 @@ int main(int argc,mainv argv,mainv envv) {
 	        envfname) ;
 #endif
 
-	if (envfname != NULL) {
-	    rs = prenvfile(pip->programroot,envfname,&exports) ;
+	if (envfname != nullptr) {
+	    rs = prenvfile(pip->programroot,&exports,envfname) ;
 
 		if ((rs < 0) && f_envfile)
 			goto badenvfile ;
@@ -1274,7 +1274,7 @@ int main(int argc,mainv argv,mainv envv) {
 #if	CF_DEBUG
 	    if (pip->debuglevel > 1) {
 	        for (i = 0 ; rs = vecstr_get(&exports,i,&cp) >= 0 ; i += 1) {
-	            if (cp == NULL) continue ;
+	            if (cp == nullptr) continue ;
 	            debugprintf("main: e> %s\n",cp) ;
 	        }
 	    }
@@ -1294,7 +1294,7 @@ int main(int argc,mainv argv,mainv envv) {
 	f = FALSE ;
 	f = f || pip->f.opt_instr || pip->f.opt_instrdis | pip->f.opt_msv ;
 	f = f || (pip->progmode == progmode_ssh) ;
-	if ((progfname != NULL) && f) {
+	if ((progfname != nullptr) && f) {
 
 #if	CF_DEBUG
 	    if (pip->debuglevel > 1) {
@@ -1354,9 +1354,9 @@ int main(int argc,mainv argv,mainv envv) {
 	f = f || (pip->progmode == progmode_ssh) ;
 #endif
 
-	if ((progfname != NULL) && f) {
+	if ((progfname != nullptr) && f) {
 
-	    rs = mipsdis_init(&dis,NULL,progfname) ;
+	    rs = mipsdis_init(&dis,nullptr,progfname) ;
 
 #if	CF_DEBUG
 	    if (pip->debuglevel > 1)
@@ -1381,7 +1381,7 @@ int main(int argc,mainv argv,mainv envv) {
 	    debugprintf("main: output file=%s\n",ofname) ;
 #endif
 
-	if ((ofname == NULL) || (ofname[0] == '\0'))
+	if ((ofname == nullptr) || (ofname[0] == '\0'))
 	    rs = bopen(&outfile,BFILE_STDOUT,"dwct",0666) ;
 
 	else
@@ -1469,14 +1469,14 @@ ret2:
 
 	vecstr_finish(&exports) ;
 
-	if ((pip->debuglevel > 0) && (pip->efp != NULL))
+	if ((pip->debuglevel > 0) && (pip->efp != nullptr))
 		bprintf(pip->efp,"%s: ex=%d\n",pip->progname,ex) ;
 
 ret1:
 	if (pip->open.aparams)
 	    paramopt_finish(&aparams) ;
 
-	if (pip->efp != NULL)
+	if (pip->efp != nullptr)
 	    bclose(pip->efp) ;
 
 	proginfo_finish(pip) ;
@@ -1486,7 +1486,7 @@ badprogstart:
 
 /* bad stuff */
 badargval:
-	if (pip->efp != NULL)
+	if (pip->efp != nullptr)
 	    bprintf(pip->efp,
 	        "%s: bad argument value was specified\n",
 	        pip->progname) ;
@@ -1494,7 +1494,7 @@ badargval:
 	goto badarg ;
 
 badargnum:
-	if (pip->efp != NULL)
+	if (pip->efp != nullptr)
 	    bprintf(pip->efp,
 	        "%s: not enough arguments given\n",
 	        pip->progname) ;
@@ -1502,7 +1502,7 @@ badargnum:
 	goto badarg ;
 
 badargextra:
-	if (pip->efp != NULL)
+	if (pip->efp != nullptr)
 	    bprintf(pip->efp,
 	        "%s: no value associated with this option key\n",
 	        pip->progname) ;
@@ -1510,7 +1510,7 @@ badargextra:
 	goto badarg ;
 
 badprogmode:
-	if (pip->efp != NULL)
+	if (pip->efp != nullptr)
 	    bprintf(pip->efp,
 	        "%s: unknown program mode specified (%s)\n",
 	        pip->progname,progmodestr) ;
@@ -1519,9 +1519,9 @@ badprogmode:
 
 badarg:
 	ex = EX_USAGE ;
-	if (pip->efp != NULL)
+	if (pip->efp != nullptr)
 	    bprintf(pip->efp,
-	        "%s: a bad (NULL, whatever !) argument was given\n",
+	        "%s: a bad (nullptr, whatever !) argument was given\n",
 	        pip->progname) ;
 
 	goto retearly ;
@@ -1537,7 +1537,7 @@ usage:
 #endif /* COMMENT */
 
 badsnum:
-	if (pip->efp != NULL)
+	if (pip->efp != nullptr)
 	    bprintf(pip->efp,
 	        "%s: a bad number was specified for selection\n",
 	        pip->progname) ;
@@ -1552,7 +1552,7 @@ badeopt:
 
 badprog:
 	ex = EX_NOINPUT ;
-	if (pip->efp != NULL)
+	if (pip->efp != nullptr)
 	    bprintf(pip->efp,
 	        "%s: could not open the program executable (%d)\n",
 	        pip->progname,rs) ;
@@ -1561,7 +1561,7 @@ badprog:
 
 badargsfile:
 	ex = EX_NOINPUT ;
-	if (pip->efp != NULL)
+	if (pip->efp != nullptr)
 	    bprintf(pip->efp,
 	        "%s: could not open the argument file \n",
 	        pip->progname) ;
@@ -1570,7 +1570,7 @@ badargsfile:
 
 badenvfile:
 	ex = EX_NOINPUT ;
-	if (pip->efp != NULL)
+	if (pip->efp != nullptr)
 	    bprintf(pip->efp,
 	        "%s: could not open the environment file \n",
 	        pip->progname) ;
@@ -1579,7 +1579,7 @@ badenvfile:
 
 badmap:
 	ex = EX_NOINPUT ;
-	if (pip->efp != NULL)
+	if (pip->efp != nullptr)
 	    bprintf(pip->efp,
 	        "%s: could not map the program executable file (%d)\n",
 	        pip->progname,rs) ;
@@ -1599,13 +1599,13 @@ badoutopen:
 
 
 /* print out (standard error) some short usage */
-static int usage(pip)
+local int usage(pip)
 struct proginfo	*pip ;
 {
 	int	rs = SR_NOTOPEN ;
 
 
-	if (pip->efp == NULL)
+	if (pip->efp == nullptr)
 	    return rs ;
 
 
@@ -1615,11 +1615,10 @@ struct proginfo	*pip ;
 	    pip->progname,pip->progname) ;
 
 	return rs ;
-}
-/* end subroutine (usage) */
+} /* end subroutine (usage) */
 
 /* do we have a file with the new extension ? */
-static int havefname(pip,ext,tfname,tmpfname)
+local int havefname(pip,ext,tfname,tmpfname)
 struct proginfo	*pip ;
 cchar	ext[] ;
 cchar	tfname[] ;
@@ -1630,17 +1629,17 @@ char		tmpfname[] ;
 	char	*sp ;
 
 	rs = SR_NOENT ;
-	if ((tfname == NULL) || (tfname[0] == '\0'))
+	if ((tfname == nullptr) || (tfname[0] == '\0'))
 	    return rs ;
 
 	bnp = strrchr(tfname,'/') ;
 
 	dp = strrchr(tfname,'.') ;
 
-	if ((dp != NULL) && (bnp != NULL) && (dp > bnp)) {
+	if ((dp != nullptr) && (bnp != nullptr) && (dp > bnp)) {
 	    sp = strwcpy(tmpfname,tfname,(dp - tfname)) ;
 
-	} else if ((dp != NULL) && (bnp == NULL)) {
+	} else if ((dp != nullptr) && (bnp == nullptr)) {
 	    sp = strwcpy(tmpfname,tfname,(dp - tfname)) ;
 	} else {
 	    sp = strwcpy(tmpfname,tfname,-1) ;
@@ -1656,7 +1655,7 @@ char		tmpfname[] ;
 
 	    }
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	    debugprintf("main/havefname: execfile=%s\n",tmpfname) ;
 #endif
 
