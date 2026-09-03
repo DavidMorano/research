@@ -322,7 +322,7 @@ MIPSDIS	*mdp ;
 
 	hdb_curbegin(&mdp->addr,&cur) ;
 
-	while ((rs = hdb_enum(&mdp->addr,&cur,&key,&value)) >= 0) {
+	while ((rs = hdb_curenum(&mdp->addr,&cur,&key,&value)) >= 0) {
 	    if (key.buf != nullptr) {
 	        uc_free((void *) key.buf) ;
 	    }
@@ -334,7 +334,7 @@ MIPSDIS	*mdp ;
 
 	hdb_curbegin(&mdp->instr,&cur) ;
 
-	while ((rs = hdb_enum(&mdp->instr,&cur,&key,&value)) >= 0) {
+	while ((rs = hdb_curenum(&mdp->instr,&cur,&key,&value)) >= 0) {
 	    if (value.buf != nullptr) {
 	        entry_free((struct mipsdis_entry *) value.buf) ;
 	        uc_free((void *) value.buf) ;
@@ -593,7 +593,7 @@ char	fname[] ;
 
 	        hdb_curbegin(&mdp->addr,&cur) ;
 
-	        while ((rs1 = hdb_enum(&mdp->addr,&cur,&key,&value)) >= 0) {
+	        while ((rs1 = hdb_curenum(&mdp->addr,&cur,&key,&value)) >= 0) {
 
 	            ia = *((int *) key.buf) ;
 	            ep = (struct mipsdis_entry *) value.buf ;
