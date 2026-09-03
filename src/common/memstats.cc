@@ -32,35 +32,37 @@
 **************************************************************************/
 
 #include	<envstandards.h>	/* ordered first to configure */
-#include	<sys/types.h>
-#include	<sys/stat.h>
-#include	<sys/param.h>
-#include	<sys/mman.h>
-#include	<unistd.h>
-#include	<fcntl.h>
-#include	<climits>
-#include	<cstddef>		/* |nullptr_t| */
-#include	<cstdlib>
-#include	<cstring>
-#include	<cassert>
-#include	<clanguage.h>
-#include	<usysbase.h>
-#include	<mkpathx.h>
-#include	<mkfnamex.h>
-#include	<strwcpy.h>
-#include	<mallocstuff.h>
-#include	<bfile.h>
-#include	<nextpowtwo.h>
-#include	<hash.h>
-#include	<localmisc.h>
+#include	<sys/types.h>		/* POSIX® */
+#include	<sys/stat.h>		/* POSIX® */
+#include	<sys/param.h>		/* POSIX® */
+#include	<sys/mman.h>		/* POSIX® */
+#include	<unistd.h>		/* POSIX® */
+#include	<fcntl.h>		/* POSIX® */
+#include	<climits>		/* CSTD */
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<cstring>		/* CSTD */
+#include	<cassert>		/* CSTD */
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<ucmem.h>		/* LIBUC */
+#include	<mkpathx.h>		/* LIBUC */
+#include	<mkfnamex.h>		/* LIBUC */
+#include	<strwcpy.h>		/* LIBUC */
+#include	<mallocstuff.h>		/* LIBUC */
+#include	<nextpowtwo.h>		/* LIBUC */
+#include	<hash.h>		/* LIBUC */
+#include	<localmisc.h>		/* LIBU */
+#include	<bfile.h>		/* LIBB */
 
 #include	"memstats.h"
 
 #pragma		GCC dependency		"mod/libutil.ccm"
-#pragma		GCC dependency		"mod/flbs.ccm"
+#pragma		GCC dependency		"mod/findbit.ccm"
 
 import libutil ;			/* |lenstr(3u)| */
-import flbs ;
+import findbit ;
 
 /* local defines */
 
@@ -519,7 +521,7 @@ int		f_se ;
 
 	if (f_se) {
 	    hdb_cursorinit(&op->tts,&cur) ;
-	    while (hdb_enum(&op->tts,&cur,&key,&value) >= 0) {
+	    while (hdb_curenum(&op->tts,&cur,&key,&value) >= 0) {
 
 	        tpep = (memstats_tpe *) value.buf ;
 	        tep = tpep->pp ;
@@ -588,7 +590,7 @@ MEMSTATS	*op ;
 
 	hdb_cursorinit(&op->tts,&cur) ;
 
-	while (hdb_enum(&op->tts,&cur,&key,&value) >= 0) {
+	while (hdb_curenum(&op->tts,&cur,&key,&value) >= 0) {
 
 	    free(value.buf) ;
 
@@ -690,7 +692,7 @@ int memstats_getstats(MS *op,MS_ST *sp) {
 	sp->tes = 0 ;
 	hdb_cursorinit(&op->tts,&cur) ;
 
-	while (hdb_enum(&op->tts,&cur,&key,&value) >= 0) {
+	while (hdb_curenum(&op->tts,&cur,&key,&value) >= 0) {
 
 	    tpep = (memstats_tpe *) value.buf ;
 	    tep = tpep->pp ;
