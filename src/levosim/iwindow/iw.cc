@@ -277,7 +277,7 @@ static char	*const iwparams[] = {
 int iw_init(wp,pip,pfp,mip,lip,ap)
 IW		*wp ;
 struct proginfo	*pip ;
-PARAMFILE	*pfp ;
+paramfile	*pfp ;
 LSIM		*mip ;
 struct levoinfo	*lip ;
 IW_INITARGS	*ap ;
