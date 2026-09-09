@@ -32,28 +32,28 @@
 *****************************************************************************/
 
 #include	<envstandards.h>	/* ordered first to configure */
-#include	<sys/types.h>
-#include	<sys/param.h>
-#include	<sys/resource.h>
-#include	<unistd.h>
-#include	<cstddef>		/* |nullptr_t| */
-#include	<cstdlib>
-#include	<cstring>
-#include	<clanguage.h>
-#include	<usysbase.h>
-#include	<vecstr.h>
-#include	<field.h>
-#include	<mkpathx.h>
-#include	<mkfnamex.h>
-#include	<strwcpy.h>
-#include	<bfile.h>
-#include	<mallocstuff.h>
-#include	<paramfile.h>
-#include	<getfname.h">
-#include	<timestr.h>
+#include	<sys/types.h>		/* POSIX® */
+#include	<sys/param.h>		/* POSIX® */
+#include	<sys/resource.h>	/* POSIX® */
+#include	<unistd.h>		/* POSIX® */
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<cstring>		/* CSTD */
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<vecstr.h>		/* LIBUC */
+#include	<field.h>		/* LIBUC */
+#include	<mkpathx.h>		/* LIBUC */
+#include	<mkfnamex.h>		/* LIBUC */
+#include	<strwcpy.h>		/* LIBUC */
+#include	<paramfile.h>		/* LIBUC */
+#include	<getfname.h>		/* LIBUC */
+#include	<timestr.h>		/* LIBUC */
+#include	<prognamevar.hh>	/* LIBUC */
+#include	<mallocstuff.h>		/* LIBUC */
+#include	<localmisc.h>		/* LIBU */
+#include	<bfile.h>		/* LIBB */
 #include	<prenvfile.h>		/* LIBPR */
-#include	<prognamevar.hh>
-#include	<localmisc.h>
 
 #include	"config.h"
 #include	"defs.h"
@@ -92,7 +92,7 @@
 
 /* external subroutines */
 
-extern int	simplesim(struct proginfo *,PARAMFILE *,LSIM *,
+extern int	simplesim(struct proginfo *,paramfile *,LSIM *,
 			struct statemips *,SYSCALLS *,ulong) ;
 
 
@@ -166,7 +166,7 @@ consexpr cpcchar	pparams[] = {
 int process(pip,targetname,pfp,exportv,maxclocks,skipinstr)
 struct proginfo	*pip ;
 char		targetname[] ;
-PARAMFILE	*pfp ;
+paramfile	*pfp ;
 vecstr		*exportv ;
 ulong		maxclocks ;
 ulong		skipinstr ;
@@ -325,7 +325,7 @@ ulong		skipinstr ;
 	        eprintf("process: getting special environment, file=%s\n",op) ;
 #endif
 
-	    rs = prenvfile(pip->programroot,vbuf,&progenv) ;
+	    rs = prenvfile(pip->programroot,&progenv,vbuf) ;
 	    if (rs < 0)
 	        bprintf(pip->efp,
 	            "%s: error in environment file (%d) -- continuing\n",
