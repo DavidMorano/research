@@ -190,7 +190,7 @@ static char	*const configkeys[] = {
 #define	CONFIGKEY_TIMEOUT	23
 #define	CONFIGKEY_REMOVEMUL	24
 #define	CONFIGKEY_ACCTAB	25
-#define	CONFIGKEY_PARAMFILE	26
+#define	CONFIGKEY_paramfile	26
 #define	CONFIGKEY_NRECIPS	27
 #define	CONFIGKEY_HELPFILE	28
 #define	CONFIGKEY_PARAMTAB	29
@@ -401,7 +401,7 @@ char			configfname[] ;
 	    case CONFIGKEY_TIMEOUT:
 	    case CONFIGKEY_REMOVEMUL:
 	    case CONFIGKEY_ACCTAB:
-	    case CONFIGKEY_PARAMFILE:
+	    case CONFIGKEY_paramfile:
 	    case CONFIGKEY_PARAMTAB:
 	    case CONFIGKEY_NRECIPS:
 	    case CONFIGKEY_HELPFILE:
@@ -594,7 +594,7 @@ char			configfname[] ;
 	            csp->acctab = bp ;
 	            break ;
 
-	        case CONFIGKEY_PARAMFILE:
+	        case CONFIGKEY_paramfile:
 	        case CONFIGKEY_PARAMTAB:
 	        case CONFIGKEY_PINGTAB:
 	            if (csp->paramfname != NULL)
