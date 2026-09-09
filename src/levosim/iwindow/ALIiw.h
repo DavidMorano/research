@@ -186,7 +186,7 @@ struct iw_head {
 
 #if	(! defined(IW_MASTER)) || (IW_MASTER == 0)
 
-extern int	iw_init(IW *,struct proginfo *,PARAMFILE *,
+extern int	iw_init(IW *,struct proginfo *,paramfile *,
 			LSIM *,struct levoinfo *lip,IW_INITARGS *) ;
 extern int	iw_free(IW *) ;
 extern int	iw_comb(IW *,int) ;
