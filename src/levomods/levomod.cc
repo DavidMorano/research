@@ -26,23 +26,23 @@
 *******************************************************************************/
 
 #include	<envstandards.h>	/* MUST be ordered first to configure */
-#include	<cstddef>		/* |nullptr_t| */
-#include	<cstdlib>
-#include	<clanguage.h>
-#include	<usysbase.h>
-#include	<localmisc.h>
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU */
 
 #include	"levomod.h"
 
-#pragma		GCC dependency		"mod/flbs.ccm"
+#pragma		GCC dependency		"mod/findbit.ccm"
 
-import flbs ;
+import findbit ;
 
 namespace levomod {
     int flbsi(int v) noex {
 	uint uv = uint(v) ;
 	return flbs(uv) ;
-    }
+    } /* end subroutine (flbsi) */
 } /* end namespace */
 
 
