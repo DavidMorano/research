@@ -32,7 +32,7 @@
 #define	FCOUNT_MASTER	0		/* include public declarations */
 
 
-#include	<envstandards.h>
+#include	<envstandards.h>	/* ordered first to configure */
 
 #include	<sys/types.h>
 #include	<sys/param.h>
