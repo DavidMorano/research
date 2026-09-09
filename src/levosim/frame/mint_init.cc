@@ -169,7 +169,7 @@ static void mint_usage() ;
 
 int mint_init(pip, pfp,argc, argv, envp)
 struct proginfo	*pip ;
-PARAMFILE	*pfp ;
+paramfile	*pfp ;
 int	argc ;
 char	*argv[] ;
 char	*envp[] ;
