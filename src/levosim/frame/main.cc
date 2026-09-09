@@ -65,7 +65,7 @@
 #include	<schedvar.h>
 #include	<paramfile.h>
 #include	<getfname.h>
-#include	<vstrxcmp.h>		/* |vstrkeycmp(3uc)| */
+#include	<vstrcmp.h>		/* |vstrkeycmp(3uc)| */
 #include	<prognamevar.hh>
 #include	<char.h>
 #include	<exitcodes.h>
@@ -108,7 +108,7 @@
 extern int	expander() ;
 extern int	procfilepaths(char *,char *,VECSTR *) ;
 extern int	procfileenv(char *,char *,VECSTR *) ;
-extern int	process(struct proginfo *,const char *,PARAMFILE *,
+extern int	process(struct proginfo *,const char *,paramfile *,
 			VECSTR *,ulong,ulong) ;
 
 
@@ -255,7 +255,7 @@ int main(int argc,mainv argv,mainv envv) {
 	proginfo	g, *pip = &g ;
 	userinfo	u ;
 	CONFIGFILE	cf ;
-	PARAMFILE	pfile ;
+	paramfile	pfile ;
 	vecstr		defines, unsets, exports ;
 	SCHEDVAR	svars ;
 
