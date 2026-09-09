@@ -1,37 +1,26 @@
-/* las */
+/* las HEADER */
+/* charset=ISO8859-1 */
+/* lang=C++20 */
 
 /* Levo Active Station */
+/* version %I% last-modified %G% */
 
 
-/* revision history :
+/* revision history:
 
-	= 00/02/04, Dave Morano
-
+	= 2000-02-04, Dave Morano
 	Module was originally written for the LEVO simulator LEVOSIM.
 
-
-	- 01/09/26, Dave Morano
-
+	- 2001-09-26, Dave Morano
 	I added some code to support the XML state trace.
 
-
 */
-
-
 
 #ifndef	LAS_INCLUDE
 #define	LAS_INCLUDE	1
 
 
-
-/* exported object defines */
-
-#define	LAS		struct las_head
-#define	LAS_INITARGS	struct las_initargs
-#define	LAS_COMMITINFO	struct las_commitinfo
-
-
-
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<limits.h>
 
@@ -52,6 +41,10 @@
 #include 	"instrclass.h" 
 
 
+/* exported object defines */
+#define	LAS		struct las_head
+#define	LAS_INITARGS	struct las_initargs
+#define	LAS_COMMITINFO	struct las_commitinfo
 
 /* cycles load inst. would wait before reissuing a new data request */
 #define LAS_LOAD_WATCHDOG   15  
@@ -65,9 +58,8 @@ typedef enum {
 
 
 /* the enumerations for the decision table thingy */
-
 typedef enum {
-	SEND_VALUE=0, 
+	SEND_VALUE = 0, 
 	SEND_NULLIFY, 
 	RECV_NULLIFY, 
 	REQ_VALUE, 
@@ -79,7 +71,7 @@ typedef enum {
 	EXEC_BR, 
 	REEXEC,
 	WAITON_VALUE
-} las_command;
+} las_command ;
 
 #define NCOMMANDS 12
 
@@ -114,8 +106,6 @@ typedef enum {
 } las_storage ;
 
 #define NSTORAGES	(OLDMEMA + 1)
-
-
 
 
 struct las_sanitycall {
@@ -188,8 +178,7 @@ struct busintgrp {
 	int		bi, modulus, num ;
 	LBUSINT		*head ;
 	LBUSINT		*outbus ;
-};
-
+} ;
 
 struct las_packet {
 /*	char	name[10]; */
@@ -208,7 +197,6 @@ struct las_packet {
 	uint	f_resp : 1 ;
 	uint	valid : 1 ;
 } ;
-
 
 struct las_state {
 	struct las_reg	src1 ;
@@ -254,7 +242,7 @@ struct las_flags {
 } ;
 
 struct las_head {
-	unsigned long		magic ;
+	uint		magic ;
 	struct las_sanitycall	sanity ;
 	struct las_flags	f ;
 	struct las_state	c, n ;	/* AS state (current and next) */
@@ -305,8 +293,7 @@ struct las_head {
 	int	wait4src3 ;
 	int	wait4src4 ;
 	int	wait4src5 ;
-} ;
-
+} ; /* end struct (las_head) */
 
 
 /* public subroutine definitions here */
@@ -340,6 +327,5 @@ extern void	gdb(void);
 
 
 #endif /* LAS_INCLUDE */
-
 
 
