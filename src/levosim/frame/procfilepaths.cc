@@ -37,7 +37,7 @@
 #include	<bfile.h>
 #include	<field.h>
 #include	<vecstr.h>
-#include	<vstrxcmp.h>		/* |vstrkeycmp(3uc)| */
+#include	<vstrcmp.h>		/* |vstrkeycmp(3uc)| */
 #include	<char.h>
 #include	<localmisc.h>
 
