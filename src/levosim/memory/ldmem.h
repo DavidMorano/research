@@ -50,7 +50,7 @@ struct ldmem_head {
 
 
 
-extern int ldmem_init(LDMEM * ldmem, struct proginfo *,PARAMFILE *,
+extern int ldmem_init(LDMEM * ldmem, struct proginfo *,paramfile *,
 		      struct mintinfo *,struct levoinfo *, 
 		      LDMEM_PARAMETERS *);
 extern int ldmem_write(LDMEM *);
