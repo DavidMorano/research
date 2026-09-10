@@ -65,17 +65,15 @@
 ******************************************************************************/
 
 #include	<envstandards.h>	/* ordered first to configure */
-#include	<cstdlib>
-#include	<cstddef>		/* |nullptr_t| */
-#include	<cstdlib>		/* |getenv(3c)| */
-#include	<cstring>
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<cstring>		/* CSTD */
 #include	<clanguage.h>
 #include	<usysbase.h>
 #include	<netorder.h>
 #include	<paramfile.h>
 #include	<cfnum.h>
 #include	<nextpowtwo.h>
-#include	<findbit.h>
 #include	<localmisc.h>		/* |COLUMNS| */
 
 #include	"config.h"
@@ -98,6 +96,7 @@
 #pragma		GCC dependency		"mod/libutil.ccm"
 
 import libutil ;			/* |lenstr(3u)| */
+import findbit ;
 
 /* local defines */
 
@@ -200,7 +199,7 @@ constexpr cpcchar	lparams[] = {
 int levo_init(lp,pip,pfp,mip,smp)
 LEVO			*lp ;
 struct proginfo		*pip ;
-PARAMFILE		*pfp ;
+paramfile		*pfp ;
 LSIM			*mip ;
 struct statemips	*smp ;
 {
