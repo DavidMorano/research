@@ -182,7 +182,7 @@ static const char	*instrclasses[] = {
 
 int simplesim(pip,pfp,mip,smp,scp,skipinstr)
 struct proginfo		*pip ;
-PARAMFILE		*pfp ;
+paramfile		*pfp ;
 LSIM			*mip ;
 struct statemips	*smp ;
 SYSCALLS		*scp ;
