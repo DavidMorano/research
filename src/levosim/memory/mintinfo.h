@@ -38,7 +38,7 @@
 
 /* our dependencies */
 
-#include	<envstandards.h>
+#include	<envstandards.h>	/* ordered first to configure */
 
 #include	<sys/types.h>
 #include	<sys/param.h>
@@ -136,7 +136,7 @@ struct mintinfo {
 
 #if	(! defined(LSIM_MASTER)) && (! defined(LSIM_MASTER))
 
-extern int lsim_init(LSIM *,struct proginfo *,PARAMFILE *,
+extern int lsim_init(LSIM *,struct proginfo *,paramfile *,
 			LONG,LSIM_SIMPROG *,LSIM_MACHOBJ *) ;
 extern int lsim_setmach(LSIM *,LSIM_MACHOBJ *) ;
 extern int lsim_getpp(LSIM *,LMAPPROG **) ;
