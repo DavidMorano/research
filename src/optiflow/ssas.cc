@@ -77,7 +77,6 @@
 #include	<clanguage.h>
 #include	<usysbase.h>
 #include	<bfile.h>
-#include	<findbit.h>
 #include	<localmisc.h>
 
 #include	"ssconfig.h"
@@ -99,6 +98,7 @@
 #pragma		GCC dependency		"mod/libutil.ccm"
 
 import libutil ;			/* |lenstr(3u)| */
+import findbit ;
 
 /* local defines */
 
@@ -112,6 +112,10 @@ import libutil ;			/* |lenstr(3u)| */
 
 #define	INSTRDISLEN	100
 
+#ifndef	PI
+#define	PI		proginfo
+#endif
+
 
 /* external subroutines */
 
@@ -119,60 +123,55 @@ extenr "C" {
     extern int	getinterleave(uint,uint) noex ;
     extern int	getnumbuses(uint) noex ;
     extern int	seqok(uint,uint,uint) noex ;
-    extern int	dcache_latency(struct proginfo *,SS *,
-			CHECKER *,ULONG,int) noex ;
+    extern int	dcache_latency(PI *,SS *,CHECKER *,ulong,int) noex ;
 }
 
 
 /* forward references */
 
-static int	ssas_opinit(SSAS *,int) ;
-static int	ssas_opchanged(SSAS *,struct proginfo *,int) ;
-static int	ssas_checkexec(SSAS *,struct proginfo *,struct ssinfo *) ;
-static int	ssas_execrequest(SSAS *,struct proginfo *,struct ssinfo *) ;
-static int	ssas_execlocal(SSAS *,struct proginfo *,struct ssinfo *) ;
-static int	ssas_execresult(SSAS *,struct proginfo *,struct ssinfo *) ;
-static int	ssas_snoopset(SSAS *,int,struct operand *) ;
-static int	ssas_handleshift(SSAS *,struct proginfo *,struct ssinfo *) ;
-static int	ssas_handlecommit(SSAS *) ;
-static int	ssas_checkops(SSAS *,struct proginfo *,SS *,struct ssinfo *) ;
-static int	ssas_combstart(SSAS *,struct proginfo *,struct ssinfo *) ;
-static int	ssas_combend(SSAS *,struct proginfo *,struct ssinfo *) ;
-static int	ssas_haveiops(SSAS *,struct proginfo *) ;
-static int	ssas_dumpop(SSAS *,bfile *,int,OPERAND *) ;
+local int	ssas_opinit(SSAS *,int) noex ;
+local int	ssas_opchanged(SSAS *,PI *,int) noex ;
+local int	ssas_checkexec(SSAS *,PI *,ssinfo *) noex ;
+local int	ssas_execrequest(SSAS *,PI *,ssinfo *) noex ;
+local int	ssas_execlocal(SSAS *,PI *,ssinfo *) noex ;
+local int	ssas_execresult(SSAS *,PI *,ssinfo *) noex ;
+local int	ssas_snoopset(SSAS *,int,struct operand *) noex ;
+local int	ssas_handleshift(SSAS *,PI *,ssinfo *) noex ;
+local int	ssas_handlecommit(SSAS *) noex ;
+local int	ssas_checkops(SSAS *,PI *,SS *,ssinfo *) noex ;
+local int	ssas_combstart(SSAS *,PI *,ssinfo *) noex ;
+local int	ssas_combend(SSAS *,PI *,ssinfo *) noex ;
+local int	ssas_haveiops(SSAS *,PI *) noex ;
+local int	ssas_dumpop(SSAS *,bfile *,int,OPERAND *) noex ;
 
 #if	CF_EXECTIMEROBJ
 
-static int	exectimer_init(SSAS *,struct proginfo *) ;
-static int	exectimer_begin(SSAS *,struct proginfo *) ;
-static int	exectimer_set(SSAS *,struct proginfo *,int) ;
-static int	exectimer_clear(SSAS *,struct proginfo *) ;
-static int	exectimer_check(SSAS *,struct proginfo *) ;
-static int	exectimer_end(SSAS *,struct proginfo *) ;
-static int	exectimer_free(SSAS *,struct proginfo *) ;
+local int	exectimer_init(SSAS *,PI *) noex ;
+local int	exectimer_begin(SSAS *,PI *) noex ;
+local int	exectimer_set(SSAS *,PI *,int) noex ;
+local int	exectimer_clear(SSAS *,PI *) noex ;
+local int	exectimer_check(SSAS *,PI *) noex ;
+local int	exectimer_end(SSAS *,PI *) noex ;
+local int	exectimer_free(SSAS *,PI *) noex ;
 
 #endif /* CF_EXECTIMER */
 
 #ifdef	COMMENT
-static int	ssas_xmloutreg(SSAS *,XMLINFO *,struct proginfo *,
-struct ssas_reg *,char *) ;
+local int	ssas_xmloutreg(SSAS *,XMLINFO *,PI *,
+			struct ssas_reg *,char *) noex ;
 #endif /* COMMENT */
 
 #if	(CF_MASTERDEBUG && CF_DEBUG) || CF_XML
-static int	mkttbuf(char *,int) ;
+local int	mkttbuf(char *,int) noex ;
 #endif
 
 
 /* local variables */
 
 
-
-
-
 /* initialize this SSAS object */
 
-/**** with :
-
+/**** with:
 	- object pointer
 	- 'proginfo'
 	- SS pointer
@@ -180,30 +179,19 @@ static int	mkttbuf(char *,int) ;
 	- our unique AS identification number
 	- physical column index
 	- physical SG index
-
 ****/
 
-
-int ssas_init(lasp,pip,mip,lip,ap)
-SSAS		*lasp ;
-struct proginfo	*pip ;
-SS		*mip ;
-struct ssinfo	*lip ;
-SSAS_INITARGS	*ap ;
-{
-	int	rs = SR_OK, i, j, k ;
+int ssas_init(SSAS *lasp,PI *pip,SS *mip,ssinfo *lip,SSAS_INITARGS *ap) noex {
+	int	rs = SR_OK ;
+	int	i, j, k ;
 	int	n, size ;
 	int	npred ;
 
 
-	if ((lasp == NULL) || (ap == NULL))
+	if ((lasp == nullptr) || (ap == nullptr))
 	    return SR_FAULT ;
 
-	(void) memset(lasp,0,sizeof(SSAS)) ;
-
-	lasp->magic = 0 ;
-	(void) memset(&lasp->f,0,sizeof(struct ssas_flags)) ;
-
+	memclear(lasp) ;
 	lasp->pip = pip ;
 	lasp->mip = mip ;
 	lasp->lip = lip ;
@@ -226,17 +214,9 @@ SSAS_INITARGS	*ap ;
 	lasp->rfmodmask = (lip->rfmod - 1) ;
 	lasp->rbmodmask = (lip->rbmod - 1) ;
 
-
-/* zero all machine state */
-
-	(void) memset(&lasp->c,0,sizeof(struct ssas_state)) ;
-
-	(void) memset(&lasp->n,0,sizeof(struct ssas_state)) ;
-
 #if	CF_EXECTIMEROBJ
 	exectimer_init(lasp,pip) ;
 #endif
-
 
 #if	CF_MASTERDEBUG && CF_DEBUG
 	if (DEBUGLEVEL(3))
@@ -257,10 +237,10 @@ int ssas_stats(lasp,sp)
 SSAS		*lasp ;
 SSAS_STATS	*sp ;
 {
-	struct proginfo	*pip ;
+	PI	*pip ;
 
 
-	if (lasp == NULL)
+	if (lasp == nullptr)
 	    return SR_FAULT ;
 
 #if	CF_MASTERDEBUG && CF_SAFE
@@ -277,7 +257,7 @@ SSAS_STATS	*sp ;
 
 	pip = lasp->pip ;
 
-	if (sp == NULL)
+	if (sp == nullptr)
 	    return SR_FAULT ;
 
 	*sp = lasp->s ;
@@ -290,12 +270,12 @@ SSAS_STATS	*sp ;
 int ssas_free(lasp)
 SSAS		*lasp ;
 {
-	struct proginfo		*pip ;
+	PI		*pip ;
 
 	int	rs = SR_OK ;
 
 
-	if (lasp == NULL)
+	if (lasp == nullptr)
 	    return SR_FAULT ;
 
 #if	CF_MASTERDEBUG && CF_SAFE
@@ -334,19 +314,19 @@ int ssas_comb(lasp,phase)
 SSAS	*lasp ;
 int	phase ;
 {
-	struct proginfo	*pip ;
+	PI	*pip ;
 
 	SS		*mip ;
 
-	struct ssinfo	*lip ;
+	ssinfo	*lip ;
 
-	ULONG	clock ;
+	ulong	clock ;
 
 	int	rs = SR_OK, rs1, i ;
 	int	f ;
 
 
-	if (lasp == NULL)
+	if (lasp == nullptr)
 	    return SR_FAULT ;
 
 #if	CF_MASTERDEBUG && CF_DEBUGSPECIAL
@@ -383,15 +363,15 @@ int	phase ;
 	case 0:
 	    ssas_combstart(lasp,pip,lip) ;
 
-	    lasp->f.retire = FALSE ;
-	    lasp->f.commit = FALSE ;
-	    lasp->f.loaded = FALSE ;
-	    lasp->f.shift = FALSE ;
-	    lasp->f.opchanged = FALSE ;
-	    lasp->f.needexec = FALSE ;
+	    lasp->f.retire = false ;
+	    lasp->f.commit = false ;
+	    lasp->f.loaded = false ;
+	    lasp->f.shift = false ;
+	    lasp->f.opchanged = false ;
+	    lasp->f.needexec = false ;
 
 #if	CF_EXECTIMEROBJ
-	    lasp->f.exectimer = FALSE ;
+	    lasp->f.exectimer = false ;
 #endif
 
 	    ssas_opinit(lasp,0) ;
@@ -405,8 +385,8 @@ int	phase ;
 
 		lasp->n.mincounter -= 1 ;
 		if ((lasp->n.mincounter == 0) && (lasp->c.flags & F_MEM)) {
-			lasp->n.clr.executing = TRUE ;
-			lasp->n.set.executed = TRUE ;
+			lasp->n.clr.executing = true ;
+			lasp->n.set.executed = true ;
 		}
 
 	    }
@@ -434,7 +414,7 @@ int	phase ;
 
 	        if (lasp->n.f.haveiops) {
 
-		    f = FALSE ;
+		    f = false ;
 		    f = f || 
 			    (! lasp->c.f.executed) && (! lasp->n.f.executing) ;
 		    f = f || lasp->f.opchanged ;
@@ -459,7 +439,7 @@ int	phase ;
 
 		if (lasp->f.needexec || lasp->c.f.needexec) {
 
-			lasp->n.f.needexec = TRUE ;
+			lasp->n.f.needexec = true ;
 			if (lasp->c.f.localexec) {
 
 	        	if (lasp->n.flags & F_MEM) {
@@ -467,14 +447,14 @@ int	phase ;
 				if ((! lasp->c.f.executed) &&
 					(! lasp->c.f.executing)) {
 
-				lasp->n.clr.needexec = TRUE ;
+				lasp->n.clr.needexec = true ;
 				sspe_fusu(lasp->pep,lasp->c.class) ;
 
 				if (lasp->c.mincounter > 1) {
-				lasp->n.set.executing = TRUE ;
+				lasp->n.set.executing = true ;
 				} else {
-				lasp->n.clr.executing = TRUE ;
-				lasp->n.set.executed = TRUE ;
+				lasp->n.clr.executing = true ;
+				lasp->n.set.executed = true ;
 				}
 
 				lasp->s.nmemexec += 1 ;
@@ -526,7 +506,7 @@ int	phase ;
 	        exectimer_check(lasp,pip) ;
 
 	        if (lasp->n.exectimer == 0)
-	            lasp->n.clr.executing = TRUE ;
+	            lasp->n.clr.executing = true ;
 
 	    } else
 	        exectimer_clear(lasp,pip) ;
@@ -569,15 +549,15 @@ int	phase ;
 int ssas_clock(lasp)
 SSAS	*lasp ;
 {
-	struct proginfo		*pip ;
+	PI		*pip ;
 
-	struct ssinfo		*lip ;
+	ssinfo		*lip ;
 
 	int	rs ;
 
 
 #if	CF_MASTERDEBUG && CF_SAFE
-	if (lasp == NULL)
+	if (lasp == nullptr)
 	    return SR_FAULT ;
 
 	if ((lasp->magic != SSAS_MAGIC) && (lasp->magic != 0)) {
@@ -689,15 +669,15 @@ int ssas_shift(lasp,amount)
 SSAS	*lasp ;
 int	amount ;
 {
-	struct proginfo	*pip ;
+	PI	*pip ;
 
-	struct ssinfo	*lip ;
+	ssinfo	*lip ;
 
 	int	rs = SR_OK, i ;
 
 
 #if	CF_MASTERDEBUG && CF_SAFE
-	if (lasp == NULL)
+	if (lasp == nullptr)
 	    return SR_FAULT ;
 
 	if ((lasp->magic != SSAS_MAGIC) && (lasp->magic != 0)) {
@@ -726,7 +706,7 @@ int	amount ;
 
 /* finally "do" us */
 
-	lasp->f.shift = TRUE ;
+	lasp->f.shift = true ;
 	lasp->shiftamount = amount ;
 
 bad5:
@@ -742,15 +722,15 @@ bad1:
 /* get the instruction address from this AS */
 int ssas_getia(lasp,iap)
 SSAS	*lasp ;
-ULONG	*iap ;
+ulong	*iap ;
 {
-	struct proginfo	*pip ;
+	PI	*pip ;
 
 	int	rs = SR_OK ;
 
 
 #if	CF_MASTERDEBUG && CF_SAFE
-	if (lasp == NULL)
+	if (lasp == nullptr)
 	    return SR_FAULT ;
 
 	if ((lasp->magic != SSAS_MAGIC) && (lasp->magic != 0)) {
@@ -766,7 +746,7 @@ ULONG	*iap ;
 
 	pip = lasp->pip ;
 
-	if (iap == NULL)
+	if (iap == nullptr)
 	    return SR_FAULT ;
 
 /* put something here ! */
@@ -786,19 +766,17 @@ SSAS	*lasp ;
 SSAS	*casp ;
 int	tt ;
 {
-	struct proginfo	*pip ;
-
+	PI	*pip ;
 	SS	*mip ;
-
-	SSINFO	*lip ;
-
+	ssinfo	*lip ;
 	CHECKER	*csp ;
-
-	int	rs = SR_OK, rs1, i, j ;
+	int	rs = SR_OK ;
+	int	rs1 ;
+	int	i, j ;
 
 
 #if	CF_MASTERDEBUG && CF_SAFE
-	if (lasp == NULL)
+	if (lasp == nullptr)
 	    return SR_FAULT ;
 
 	if ((lasp->magic != SSAS_MAGIC) && (lasp->magic != 0)) {
@@ -875,39 +853,41 @@ int	tt ;
 	for (i = 0 ; i < casp->n.nopsi ; i += 1) {
 
 	    lasp->n.opsi[i] = casp->n.opsi[i] ;
-	    lasp->n.opsi[i].f.used = TRUE ;
+	    lasp->n.opsi[i].f.used = true ;
 	    lasp->n.opsi[i].tt = INT_MIN ;
 
 #if	(! CF_VALIDONLOAD)
 	    if (! pip->f.nomem)
-	        lasp->n.opsi[i].f.v = FALSE ;
+	        lasp->n.opsi[i].f.v = false ;
 #endif
 
 	} /* end for */
 
-	for (j = i ; j < MACHSTATE_MAXOPSI ; j += 1)
-	    memset((lasp->n.opsi + i),0,sizeof(struct operand)) ;
+	for (j = i ; j < MACHSTATE_MAXOPSI ; j += 1) {
+	    memclear(lasp->n.opsi + i) ;
+	}
 
 /* output operands */
 
 	for (i = 0 ; i < casp->n.nopso ; i += 1) {
 
 	    lasp->n.opso[i] = casp->n.opso[i] ;
-	    lasp->n.opso[i].f.used = TRUE ;
+	    lasp->n.opso[i].f.used = true ;
 	    lasp->n.opso[i].tt = INT_MIN ;
 
 #if	CF_SIMPLEMEM
-	        lasp->n.opso[i].f.v = FALSE ;
+	        lasp->n.opso[i].f.v = false ;
 	if (pip->f.nomem && (lasp->n.flags & F_MEM))
-	        lasp->n.opso[i].f.v = TRUE ;
+	        lasp->n.opso[i].f.v = true ;
 #else
-	        lasp->n.opso[i].f.v = FALSE ;
+	        lasp->n.opso[i].f.v = false ;
 #endif
 
 	} /* end for */
 
-	for (j = i ; j < MACHSTATE_MAXOPSO ; j += 1)
-	    memset((lasp->n.opso + i),0,sizeof(struct operand)) ;
+	for (j = i ; j < MACHSTATE_MAXOPSO ; j += 1) {
+	    memclear(lasp->n.opso + i) ;
+	}
 
 /* other */
 
@@ -921,11 +901,11 @@ int	tt ;
 
 	lasp->n.f = casp->n.f ;
 
-	lasp->n.f.v = TRUE ;
-	lasp->n.f.enabled = TRUE ;
-	lasp->n.f.export = FALSE ;
-	lasp->n.f.executed = FALSE ;
-	lasp->n.f.executing = FALSE ;
+	lasp->n.f.v = true ;
+	lasp->n.f.enabled = true ;
+	lasp->n.fl.expval = false ;
+	lasp->n.f.executed = false ;
+	lasp->n.f.executing = false ;
 
 /* set where this instruction gets executed (localled or otherwise) */
 
@@ -933,10 +913,8 @@ int	tt ;
 		(lasp->n.class == 0) || lasp->n.f.mem ;
 
 	if (! lasp->n.f.localexec) {
-
 		rs1 = ssinfo_letst(lip,lasp->n.op) ;
-
-		lasp->n.f.localexec = (rs1 > 0) ? TRUE : FALSE ;
+		lasp->n.f.localexec = (rs1 > 0) ? true : false ;
 	}
 
 /* handle case of data memory access */
@@ -977,7 +955,7 @@ int	tt ;
 #else /* CF_DCACHE */
 
 	    lasp->n.mincounter = 0 ;
-	    lasp->n.f.executed = TRUE ;
+	    lasp->n.f.executed = true ;
 
 #endif /* CF_DCACHE */
 
@@ -994,10 +972,10 @@ int	tt ;
 /* regular flags */
 
 #ifdef	COMMENT /* very bad ! */
-	memset(&lasp->f,0,sizeof(struct ssas_flags)) ;
+	lasp->fl = {} ;
 #endif
 
-	lasp->f.loaded = TRUE ;
+	lasp->f.loaded = true ;
 
 
 #if	CF_MASTERDEBUG && CF_DEBUG
@@ -1034,16 +1012,15 @@ SSAS		*lasp ;
 OPERAND		*rop ;
 {
 	OPERAND	*nop ;
-
-	int	rs = SR_OK, n, i ;
+	int	rs = SR_OK ;
+	int	n, i ;
 	int	wset ;
-	int	f_gotone = FALSE ;
-
+	int	f_gotone = false ;
 
 	if (! lasp->c.f.v)
 	    return SR_EMPTY ;
 
-	if (! lasp->c.f.export)
+	if (! lasp->c.fl.expval)
 	    return SR_EMPTY ;
 
 	for (wset = 0 ; wset < 2 ; wset += 1) {
@@ -1057,8 +1034,8 @@ OPERAND		*rop ;
 	            (nop->a == rop->a) && 
 	            (nop->tt < rop->tt)) {
 
-	            nop->f.export = TRUE ;
-	            f_gotone = TRUE ;
+	            nop->fl.expval = true ;
+	            f_gotone = true ;
 	            break ;
 
 	        } /* end if (need this operand) */
@@ -1073,7 +1050,7 @@ OPERAND		*rop ;
 	} /* end for (which set) */
 
 	if (f_gotone)
-	    lasp->n.f.export = TRUE ;
+	    lasp->n.fl.expval = true ;
 
 	return f_gotone ;
 }
@@ -1087,12 +1064,10 @@ int		oi ;
 OPERAND		**opp ;
 {
 	OPERAND	*oop ;
-
 	int	f ;
 
-
 #if	CF_MASTERDEBUG && CF_SAFE
-	if (lasp == NULL)
+	if (lasp == nullptr)
 	    return SR_FAULT ;
 
 	if ((lasp->magic != SSAS_MAGIC) && (lasp->magic != 0)) {
@@ -1113,7 +1088,7 @@ OPERAND		**opp ;
 
 /* if we do not have any exportable operands => we do not have any ! */
 
-	if (! lasp->c.f.export)
+	if (! lasp->c.fl.expval)
 	    return SR_EMPTY ;
 
 #ifdef	OPTIONAL
@@ -1129,11 +1104,11 @@ OPERAND		**opp ;
 #endif /* OPTIONAL */
 
 	oop = lasp->c.opso + oi ;
-	f = oop->f.used && oop->f.v && oop->f.export ;
+	f = oop->f.used && oop->f.v && oop->fl.expval ;
 
 	if (f) {
 	    *opp = oop ;
-	    lasp->n.opso[oi].clr.export = TRUE ;
+	    lasp->n.opso[oi].clr.export = true ;
 	}
 
 	return f ;
@@ -1148,9 +1123,7 @@ int		oi ;
 OPERAND		**opp ;
 {
 	OPERAND	*oop ;
-
 	int	f ;
-
 
 /* if we are not valid => then we do not have any operands ! */
 
@@ -1158,7 +1131,7 @@ OPERAND		**opp ;
 	    return SR_EMPTY ;
 
 #ifdef	COMMENT
-	if (! lasp->c.f.export)
+	if (! lasp->c.fl.expval)
 	    return SR_OK ;
 #endif
 
@@ -1186,14 +1159,12 @@ int ssas_opsnoop(lasp,op)
 SSAS		*lasp ;
 OPERAND		*op ;
 {
-	struct proginfo	*pip ;
-
-	int	rs, i ;
+	PI	*pip ;
+	int	rs ;
+	int	i ;
 	int	c = 0 ;
 
-
 	pip = lasp->pip ;
-
 	rs = ssas_snoopset(lasp,0,op) ;
 
 	if (rs > 0)
@@ -1218,9 +1189,9 @@ OPERAND		*op ;
 int ssas_readyretire(lasp)
 SSAS	*lasp ;
 {
-	struct proginfo	*pip ;
+	PI	*pip ;
 
-	struct ssinfo	*lip ;
+	ssinfo	*lip ;
 
 	struct ssas_sflags	*fp ;
 
@@ -1228,7 +1199,7 @@ SSAS	*lasp ;
 
 
 #if	CF_MASTERDEBUG && CF_SAFE
-	if (lasp == NULL)
+	if (lasp == nullptr)
 	    return SR_FAULT ;
 
 	if ((lasp->magic != SSAS_MAGIC) && (lasp->magic != 0)) {
@@ -1261,7 +1232,7 @@ SSAS	*lasp ;
 /* if we are unused, then we can't very well retire ! */
 
 	if (! lasp->c.f.v)
-	    return FALSE ;
+	    return false ;
 
 /* we are ready to retire if we are not enabled ! */
 
@@ -1272,7 +1243,7 @@ SSAS	*lasp ;
 	        eprintf("ssas_readyretire: not enabled\n") ;
 #endif
 
-	    return TRUE ;
+	    return true ;
 	}
 
 /* we are ready to commit if we have executed at least once */
@@ -1287,21 +1258,21 @@ SSAS	*lasp ;
 		f = (lasp->c.mincounter == 0) ;
 
 	if ((! f) || lasp->c.f.executing)
-	    return FALSE ;
+	    return false ;
 
 	}
 #else /* CF_SIMPLEMEM */
 
 	if ((! lasp->c.f.executed) || lasp->c.f.executing)
-	    return FALSE ;
+	    return false ;
 
 #endif /* CF_SIMPLEMEM */
 
 /* we are also not ready if some output operands needed to be exported */
 
 #if	CF_LATECOMMIT
-	if (lasp->c.f.export)
-	    return FALSE ;
+	if (lasp->c.fl.expval)
+	    return false ;
 #endif
 
 #if	(CF_MASTERDEBUG && CF_DEBUG) || CF_DEBUGS
@@ -1309,7 +1280,7 @@ SSAS	*lasp ;
 	    eprintf("ssas_readyretire: READY\n") ;
 #endif
 
-	return TRUE ;
+	return true ;
 }
 /* end subroutine (ssas_readyretire) */
 
@@ -1318,15 +1289,15 @@ SSAS	*lasp ;
 int ssas_readyload(lasp)
 SSAS	*lasp ;
 {
-	struct proginfo	*pip ;
+	PI	*pip ;
 
-	struct ssinfo	*lip ;
+	ssinfo	*lip ;
 
 	int	rs = SR_OK, f ;
 
 
 #if	CF_MASTERDEBUG && CF_SAFE
-	if (lasp == NULL)
+	if (lasp == nullptr)
 	    return SR_FAULT ;
 
 	if ((lasp->magic != SSAS_MAGIC) && (lasp->magic != 0)) {
@@ -1363,18 +1334,13 @@ int ssas_fureturn(lasp,ovp)
 SSAS		*lasp ;
 SSPE_OPV	*ovp ;
 {
-	struct proginfo	*pip ;
-
+	PI	*pip ;
 	SS		*mip ;
-
 	OPERAND		opsa[MACHSTATE_MAXOPSI] ;
-
-	struct ssinfo	*lip ;
-
+	ssinfo	*lip ;
 	int		rs, i ;
 
-
-	if (lasp == NULL)
+	if (lasp == nullptr)
 	    return SR_FAULT ;
 
 #if	CF_MASTERDEBUG && CF_SAFE
@@ -1443,8 +1409,8 @@ SSPE_OPV	*ovp ;
 
 /* update state for execution */
 
-	lasp->n.clr.executing = TRUE ;
-	lasp->n.set.executed = TRUE ;
+	lasp->n.clr.executing = true ;
+	lasp->n.set.executed = true ;
 
 	lasp->s.nfuacc += 1 ;		/* come-back execution */
 
@@ -1464,14 +1430,14 @@ int ssas_info(lasp,ip)
 SSAS		*lasp ;
 SSAS_INFO	*ip ;
 {
-	struct proginfo	*pip ;
+	PI	*pip ;
 
 	int	rs = SR_OK ;
 	int	i ;
 
 
 #if	CF_MASTERDEBUG && CF_SAFE
-	if (lasp == NULL)
+	if (lasp == nullptr)
 	    return SR_FAULT ;
 
 	if ((lasp->magic != SSAS_MAGIC) && (lasp->magic != 0)) {
@@ -1486,11 +1452,10 @@ SSAS_INFO	*ip ;
 #endif /* CF_SAFE */
 
 	pip = lasp->pip ;
-	if (ip == NULL)
+	if (ip == nullptr)
 	    return SR_FAULT ;
 
-	(void) memset(ip,0,sizeof(struct ssas_info)) ;
-
+	memclear(ip) ;
 	if (! lasp->c.f.v)
 	    return SR_EMPTY ;
 
@@ -1523,14 +1488,14 @@ SSAS_INFO	*ip ;
 int ssas_retire(lasp)
 SSAS	*lasp ;
 {
-	struct proginfo	*pip ;
+	PI	*pip ;
 
 	int	rs = SR_OK ;
 	int	i ;
 
 
 #if	CF_MASTERDEBUG && CF_SAFE
-	if (lasp == NULL)
+	if (lasp == nullptr)
 	    return SR_FAULT ;
 
 	if ((lasp->magic != SSAS_MAGIC) && (lasp->magic != 0)) {
@@ -1548,7 +1513,7 @@ SSAS	*lasp ;
 
 /* entered */
 
-	lasp->f.retire = TRUE ;
+	lasp->f.retire = true ;
 
 
 /* log our occupancy clock count */
@@ -1592,7 +1557,7 @@ int ssas_xmlout(lasp,xip)
 SSAS	*lasp ;
 XMLINFO	*xip ;
 {
-	struct proginfo	*pip ;
+	PI	*pip ;
 
 	int	rs ;
 
@@ -1682,7 +1647,7 @@ XMLINFO	*xip ;
 int ssas_xmloutreg(lasp,xip,pip,rp,name)
 SSAS		*lasp ;
 XMLINFO		*xip ;
-struct proginfo	*pip ;
+PI	*pip ;
 struct ssas_reg	*rp ;
 char		name[] ;
 {
@@ -1734,12 +1699,12 @@ XMLINFO	*xip ;
 int ssas_audit(lasp)
 SSAS	*lasp ;
 {
-	struct proginfo	*pip ;
+	PI	*pip ;
 
 	int	rs = SR_OK ;
 
 
-	if (lasp == NULL)
+	if (lasp == nullptr)
 	    return SR_FAULT ;
 
 #if	CF_DEBUGS
@@ -1776,7 +1741,7 @@ SSAS	*lasp ;
 
 	    cp = (uchar *) lasp ;
 	    v = 0 ;
-	    n = sizeof(SSAS) / sizeof(uchar) ;
+	    n = szof(SSAS) / szof(uchar) ;
 	    for (i = 0 ; i < n ; i += 1)
 	        v |= *cp++ ;
 
@@ -1798,14 +1763,14 @@ int ssas_dump(lasp,fp)
 SSAS	*lasp ;
 bfile	*fp ;
 {
-	struct proginfo	*pip ;
+	PI	*pip ;
 
 	struct operand	*op ;
 
 	int	rs, i ;
 
 
-	if (lasp == NULL)
+	if (lasp == nullptr)
 	    return SR_FAULT ;
 
 #if	CF_DEBUGS
@@ -1863,8 +1828,8 @@ bfile	*fp ;
 	bprintf(fp,"f_executing=%u_%u\n",
 	    lasp->c.f.executing, lasp->n.f.executing) ;
 
-	bprintf(fp,"f_export=%u_%u\n",
-	    lasp->c.f.export, lasp->n.f.export) ;
+	bprintf(fp,"fl.expval=%u_%u\n",
+	    lasp->c.fl.expval, lasp->n.fl.expval) ;
 
 	bprintf(fp,"f_enabled=%u_%u\n",
 	    lasp->c.f.enabled, lasp->n.f.enabled) ;
@@ -1949,7 +1914,7 @@ int ssas_getmemop(lasp,rp)
 SSAS		*lasp ;
 SSAS_MEMOP	*rp ;
 {
-	struct proginfo	*pip ;
+	PI	*pip ;
 
 	OPERAND		*nop ;
 
@@ -1957,7 +1922,7 @@ SSAS_MEMOP	*rp ;
 	int	c = 0 ;
 
 
-	if (lasp == NULL)
+	if (lasp == nullptr)
 	    return SR_FAULT ;
 
 #if	CF_DEBUGS
@@ -1979,7 +1944,7 @@ SSAS_MEMOP	*rp ;
 
 	pip = lasp->pip ;
 
-	if (rp == NULL)
+	if (rp == nullptr)
 		return SR_FAULT ;
 
 	if (lasp->n.flags & F_MEM) {
@@ -1992,7 +1957,7 @@ SSAS_MEMOP	*rp ;
 	            nop = lasp->n.opsi + i ;
 	            if (nop->f.used && (nop->type == OPERAND_TMEM)) {
 
-			rp->f_read = TRUE ;
+			rp->f_read = true ;
 			rp->f_v = nop->f.v ;
 
 			rp->a = nop->a ;
@@ -2017,7 +1982,7 @@ SSAS_MEMOP	*rp ;
 	            nop = lasp->n.opso + i ;
 	            if (nop->f.used && (nop->type == OPERAND_TMEM)) {
 
-			rp->f_read = FALSE ;
+			rp->f_read = false ;
 			rp->f_v = nop->f.v ;
 
 			rp->a = nop->a ;
@@ -2043,26 +2008,16 @@ SSAS_MEMOP	*rp ;
 /* end subroutine (ssas_getmemop) */
 
 
+/* private subroutines */
 
-/* PRIVATE SUBROUTINES */
-
-
-
-static int ssas_dumpop(lasp,fp,oi,op)
-struct operand	*op ;
-SSAS		*lasp ;
-int		oi ;
-bfile		*fp ;
-{
-
-
+local int ssas_dumpop(SSAS *lasp,bfile *fp,int oi,OPERAND *op) noex {
 	bprintf(fp,
 	    "op=%u f_v=%u f_requested=%u f_changed=%u\n",
 	    oi,op->f.v,op->f.requested,op->f.changed) ;
 
 	bprintf(fp,
-	    "f_export=%u f_wanted=%u f_nullify=%u\n",
-	    op->f.export,op->f.wanted,op->f.nullify) ;
+	    "fl.expval=%u f_wanted=%u f_nullify=%u\n",
+	    op->fl.expval,op->f.wanted,op->f.nullify) ;
 
 	bprintf(fp, "type=%u trans=%u\n",op->type,op->trans) ;
 
@@ -2075,29 +2030,21 @@ bfile		*fp ;
 	bprintf(fp, "v=%016llx\n",op->pv) ;
 
 	return 0 ;
-}
-
+} /* end subroutine */
 
 /* snoop a set of operands (input or output) */
 
 /*
 	wset == 0		output set (write)
 	wset == 1		input set (read)
-
 */
 
-static int ssas_snoopset(lasp,wset,rop)
-SSAS		*lasp ;
-int		wset ;
-OPERAND		*rop ;
-{
-	struct proginfo	*pip ;
-
-	struct ssinfo	*lip ;
-
+local int ssas_snoopset(SSAS *lasp,int wset,OPERAND *rop) noex {
+	PI	*pip ;
+	ssinfo	*lip ;
 	struct operand	*nop ;
-
-	int	rs, i ;
+	int	rs ;
+	int	i ;
 	int	n, c = 0 ;
 	int	f ;
 
@@ -2124,7 +2071,7 @@ OPERAND		*rop ;
 
 	    if (nop->f.used) {
 
-	        f = TRUE ;
+	        f = true ;
 	        f = f && (rop->type == nop->type) ;
 
 #if	CF_MASTERDEBUG && CF_DEBUG
@@ -2188,8 +2135,8 @@ OPERAND		*rop ;
 
 	                    c += 1 ;
 	                    nop->pv = rop->v ;
-	                    nop->f.v = TRUE ;
-	                    nop->set.changed = TRUE ;
+	                    nop->f.v = true ;
+	                    nop->set.changed = true ;
 
 #if	CF_MASTERDEBUG && CF_DEBUG && 0
 	                    if (DEBUGLEVEL(4))
@@ -2202,11 +2149,10 @@ OPERAND		*rop ;
 
 	            } else {
 
-	                nop->f.v = FALSE ;
-	                if (wset == 1)
-	                    lasp->n.f.haveiops = FALSE ;
-
-
+	                nop->f.v = false ;
+	                if (wset == 1) {
+	                    lasp->n.f.haveiops = false ;
+			}
 	            } /* end if (NULLIFY or not) */
 
 	        } /* end if (got an operand match) */
@@ -2221,40 +2167,25 @@ OPERAND		*rop ;
 }
 /* end subroutine (ssas_snoopset) */
 
-
 /* initialize next-state that is associated with the operands */
-static int ssas_opinit(lasp,wset)
-SSAS		*lasp ;
-int		wset ;
-{
+local int ssas_opinit(SSAS *lasp,int wset) noex {
 	OPERAND	*nop ;
-
-	int	n, i ;
+	int	n ;
 	int	c = 0 ;
-
 
 	nop = (wset) ? lasp->n.opsi : lasp->n.opso ;
 	n = (wset) ? MACHSTATE_MAXOPSI : MACHSTATE_MAXOPSO ;
 
-	for (i = 0 ; i < n ; i += 1) {
-
-/* set default */
-
-	    memset(&nop->set,0,sizeof(struct operand_flags)) ;
-
-	    memset(&nop->clr,0,sizeof(struct operand_flags)) ;
-
-/* now set what we want */
-
-	    nop->clr.changed = TRUE ;	/* gets cleared unless set */
-
-/* "old" value */
-
+	for (int i = 0 ; i < n ; i += 1) {
+	    /* set default */
+	    nop->set = {} ;
+	    nop->clr = {} ;
+	    /* now set what we want */
+	    nop->clr.changed = true ;	/* gets cleared unless set */
+	    /* "old" value */
 	    nop->opv = nop->pv ;
 	    nop->ov = nop->v ;
-
 	    nop += 1 ;
-
 	} /* end for */
 
 	return c ;
@@ -2263,19 +2194,15 @@ int		wset ;
 
 
 /* calculate if an operand has changed */
-static int ssas_opchanged(lasp,pip,wset)
+local int ssas_opchanged(lasp,pip,wset)
 SSAS		*lasp ;
-struct proginfo	*pip ;
+PI	*pip ;
 int		wset ;
 {
-
-	struct ssinfo	*lip ;
-
+	ssinfo	*lip ;
 	OPERAND	*nop, *cop ;
-
 	int	n, i ;
-	int	c ;
-
+	int	c = 0 ;
 
 	lip = lasp->lip ;
 
@@ -2286,7 +2213,6 @@ int		wset ;
 	cop = (wset) ? lasp->c.opsi : lasp->c.opso ;
 	n = (wset) ? MACHSTATE_MAXOPSI : MACHSTATE_MAXOPSO ;
 
-	c = 0 ;
 	for (i = 0 ; i < n ; i += 1) {
 
 	    if (nop->pv != nop->opv) {
@@ -2297,8 +2223,8 @@ int		wset ;
 	                lasp->asid,i) ;
 #endif
 
-	        nop->f.changed = TRUE ;
-	        nop->set.changed = TRUE ;
+	        nop->f.changed = true ;
+	        nop->set.changed = true ;
 	        nop->seq = (cop->seq + 1) & lip->rfmodmask ;
 	        c += 1 ;
 
@@ -2315,9 +2241,9 @@ int		wset ;
 
 #if	CF_SIMPLEMEM
 	    if (! (lasp->n.flags & F_MEM))
-	        lasp->f.opchanged = TRUE ;
+	        lasp->f.opchanged = true ;
 #else
-	        lasp->f.opchanged = TRUE ;
+	        lasp->f.opchanged = true ;
 #endif
 
 	}
@@ -2341,8 +2267,8 @@ int		wset ;
 	                    lasp->asid,i) ;
 #endif
 
-	            nop->f.export = TRUE ;
-	            nop->set.export = TRUE ;
+	            nop->fl.expval = true ;
+	            nop->set.export = true ;
 	            nop->seq = (cop->seq + 1) & lip->rfmodmask ;
 	            c += 1 ;
 
@@ -2356,7 +2282,7 @@ int		wset ;
 /* if an output operand changed, mark it to be exported */
 
 	    if (c > 0)
-	        lasp->n.set.export = TRUE ;
+	        lasp->n.set.export = true ;
 
 	} /* end if (destination values) */
 
@@ -2366,15 +2292,15 @@ int		wset ;
 
 
 /* check if we need to request an operand from program-ordered-past */
-static int ssas_checkops(lasp,pip,mip,lip)
+local int ssas_checkops(lasp,pip,mip,lip)
 SSAS		*lasp ;
-struct proginfo	*pip ;
+PI	*pip ;
 SS		*mip ;
-struct ssinfo	*lip ;
+ssinfo	*lip ;
 {
 	OPERAND	ro, *nop ;
-
-	int	rs = SR_OK, i ;
+	int	rs = SR_OK ;
+	int	i ;
 	int	wset ;
 	int	n ;
 
@@ -2428,7 +2354,7 @@ struct ssinfo	*lip ;
 	            if (rs < 0)
 	                break ;
 
-	            nop->f.requested = TRUE ;
+	            nop->f.requested = true ;
 
 	        } /* end if (need this operand) */
 
@@ -2449,10 +2375,10 @@ struct ssinfo	*lip ;
 
 
 /* check to see if we need to execute (has its own clock cycle) */
-static int ssas_execrequest(lasp,pip,lip)
+local int ssas_execrequest(lasp,pip,lip)
 SSAS		*lasp ;
-struct proginfo	*pip ;
-struct ssinfo	*lip ;
+PI	*pip ;
+ssinfo	*lip ;
 {
 	SS	*mip ;
 
@@ -2535,10 +2461,10 @@ struct ssinfo	*lip ;
 
 	    if (rs >= 0) {
 
-	    lasp->n.clr.needexec = TRUE ;
-	    lasp->n.set.executing = TRUE ;
+	    lasp->n.clr.needexec = true ;
+	    lasp->n.set.executing = true ;
 
-	    lasp->f.needexec = FALSE ;
+	    lasp->f.needexec = false ;
 
 	    lasp->n.exectimer = fuinfo.ful ;
 
@@ -2564,17 +2490,15 @@ struct ssinfo	*lip ;
 
 
 /* perforn a local execution */
-static int ssas_execlocal(lasp,pip,lip)
+local int ssas_execlocal(lasp,pip,lip)
 SSAS		*lasp ;
-struct proginfo	*pip ;
-struct ssinfo	*lip ;
+PI	*pip ;
+ssinfo	*lip ;
 {
 	SS		*mip ;
-
 	int		rs, i ;
 
-
-	if (lasp == NULL)
+	if (lasp == nullptr)
 	    return SR_FAULT ;
 
 #if	CF_MASTERDEBUG && CF_SAFE
@@ -2620,11 +2544,11 @@ struct ssinfo	*lip ;
 
 /* update state for execution */
 
-	lasp->f.needexec = FALSE ;
+	lasp->f.needexec = false ;
 
-	lasp->n.clr.needexec = TRUE ;
-	lasp->n.clr.executing = TRUE ;
-	lasp->n.set.executed = TRUE ;
+	lasp->n.clr.needexec = true ;
+	lasp->n.clr.executing = true ;
+	lasp->n.set.executed = true ;
 
 	lasp->s.nnorexec += 1 ;
 	lasp->s.ntexec += 1 ;
@@ -2642,9 +2566,9 @@ struct ssinfo	*lip ;
 
 
 /* check if we have all input operands needed (set next-state) */
-static int ssas_haveiops(lasp,pip)
+local int ssas_haveiops(lasp,pip)
 SSAS		*lasp ;
-struct proginfo	*pip ;
+PI	*pip ;
 {
 	OPERAND	*nop ;
 
@@ -2665,7 +2589,7 @@ struct proginfo	*pip ;
 	} /* end for */
 
 	if (i >= n)
-	    lasp->n.f.haveiops = TRUE ;
+	    lasp->n.f.haveiops = true ;
 
 	return rs ;
 }
@@ -2673,10 +2597,10 @@ struct proginfo	*pip ;
 
 
 /* clean something to do with exported stuff (?) */
-static int ssas_clearexports(lasp)
+local int ssas_clearexports(lasp)
 SSAS		*lasp ;
 {
-	struct ssinfo	*lip ;
+	ssinfo	*lip ;
 
 	struct operand	*nop ;
 
@@ -2694,7 +2618,7 @@ SSAS		*lasp ;
 
 	    if (nop->f.v) {
 
-	        nop->f.export = FALSE ;
+	        nop->fl.expval = false ;
 
 	    }
 
@@ -2708,10 +2632,10 @@ SSAS		*lasp ;
 
 
 /* handle a machine shift operation ! */
-static int ssas_handleshift(lasp,pip,lip)
+local int ssas_handleshift(lasp,pip,lip)
 SSAS		*lasp ;
-struct proginfo	*pip ;
-struct ssinfo	*lip ;
+PI	*pip ;
+ssinfo	*lip ;
 {
 	struct operand	*nop ;
 
@@ -2723,7 +2647,7 @@ struct ssinfo	*lip ;
 	if (! lasp->f.shift)
 	    return SR_OK ;
 
-	lasp->f.shift = FALSE ;
+	lasp->f.shift = false ;
 	tt_test = INT_MIN + lasp->shiftamount ;
 
 
@@ -2781,27 +2705,23 @@ struct ssinfo	*lip ;
 /* end subroutine (ssas_handleshift) */
 
 
-static int ssas_combstart(lasp,pip,lip)
+local int ssas_combstart(lasp,pip,lip)
 SSAS		*lasp ;
-struct proginfo	*pip ;
-struct ssinfo	*lip ;
+PI	*pip ;
+ssinfo	*lip ;
 {
 	int	rs = SR_OK ;
-
-
-	memset(&lasp->n.set,0,sizeof(struct ssas_flags)) ;
-
-	memset(&lasp->n.clr,0,sizeof(struct ssas_flags)) ;
-
+	lasp->n.set = {} ;
+	lasp->n.clr = {} ;
 	return rs ;
 }
 /* end subroutine (ssas_combstart) */
 
 
-static int ssas_combend(lasp,pip,lip)
+local int ssas_combend(lasp,pip,lip)
 SSAS		*lasp ;
-struct proginfo	*pip ;
-struct ssinfo	*lip ;
+PI	*pip ;
+ssinfo	*lip ;
 {
 	OPERAND	*nop ;
 
@@ -2809,13 +2729,13 @@ struct ssinfo	*lip ;
 	int	f_active ;
 
 
-	lasp->n.f.export = FALSE ;
+	lasp->n.fl.expval = false ;
 
 	if (lasp->f.loaded)
-		lasp->n.f.v = TRUE ;
+		lasp->n.f.v = true ;
 
 	else if (lasp->f.retire)
-		lasp->n.f.v = FALSE ;
+		lasp->n.f.v = false ;
 
 /* else, leave it alone so that it holds over */
 
@@ -2845,56 +2765,54 @@ struct ssinfo	*lip ;
 	        n = (wset) ? MACHSTATE_MAXOPSI : MACHSTATE_MAXOPSO ;
 	        for (j = 0 ; j < n ; j += 1) {
 
-	            if (nop->set.v) nop->f.v = TRUE ;
-	            else if (nop->clr.v) nop->f.v = FALSE ;
+	            if (nop->set.v) nop->f.v = true ;
+	            else if (nop->clr.v) nop->f.v = false ;
 
-	            if (nop->set.requested) nop->f.requested = TRUE ;
-	            else if (nop->clr.requested) nop->f.requested = FALSE ;
+	            if (nop->set.requested) nop->f.requested = true ;
+	            else if (nop->clr.requested) nop->f.requested = false ;
 
-	            if (nop->set.changed) nop->f.changed = TRUE ;
-	            else if (nop->clr.changed) nop->f.changed = FALSE ;
+	            if (nop->set.changed) nop->f.changed = true ;
+	            else if (nop->clr.changed) nop->f.changed = false ;
 
-	            if (nop->set.export) nop->f.export = TRUE ;
-	            else if (nop->clr.export) nop->f.export = FALSE ;
+	            if (nop->set.export) nop->fl.expval = true ;
+	            else if (nop->clr.export) nop->fl.expval = false ;
 
-	            if (nop->set.nullify) nop->f.nullify = TRUE ;
-	            else if (nop->clr.nullify) nop->f.nullify = FALSE ;
+	            if (nop->set.nullify) nop->f.nullify = true ;
+	            else if (nop->clr.nullify) nop->f.nullify = false ;
 
-	            if (nop->set.fault) nop->f.fault = TRUE ;
-	            else if (nop->clr.fault) nop->f.fault = FALSE ;
+	            if (nop->set.fault) nop->f.fault = true ;
+	            else if (nop->clr.fault) nop->f.fault = false ;
 
 /* consequences */
 
-	            if ((wset == 0) && nop->f.export)
-	                lasp->n.f.export = TRUE ;
-
+	            if ((wset == 0) && nop->fl.expval) {
+	                lasp->n.fl.expval = true ;
+		    }
 	            nop += 1 ;
-
 	        } /* end for */
-
 	    } /* end for */
 
 /* do other state flags */
 
 	    if (lasp->n.set.needexec)
-	        lasp->n.f.needexec = TRUE ;
+	        lasp->n.f.needexec = true ;
 
 	    else if (lasp->n.clr.needexec)
-	        lasp->n.f.needexec = FALSE ;
+	        lasp->n.f.needexec = false ;
 
 
 	    if (lasp->n.set.executing)
-	        lasp->n.f.executing = TRUE ;
+	        lasp->n.f.executing = true ;
 
 	    else if (lasp->n.clr.executing)
-	        lasp->n.f.executing = FALSE ;
+	        lasp->n.f.executing = false ;
 
 
 	    if (lasp->n.set.executed)
-	        lasp->n.f.executed = TRUE ;
+	        lasp->n.f.executed = true ;
 
 	    else if (lasp->n.clr.executed)
-	        lasp->n.f.executed = FALSE ;
+	        lasp->n.f.executed = false ;
 
 
 	    if (lasp->c.f.v)
@@ -2932,7 +2850,7 @@ struct ssinfo	*lip ;
 /* end subroutine (ssas_combend) */
 
 
-static int ssas_handlecommit(lasp)
+local int ssas_handlecommit(lasp)
 SSAS	*lasp ;
 {
 	struct operand	*nop ;
@@ -2951,7 +2869,7 @@ SSAS	*lasp ;
 	for (i = 0 ; i < n ; i += 1) {
 
 	    if (nop->f.used)
-	        nop->f.used = FALSE ;
+	        nop->f.used = false ;
 
 	    nop += 1 ;
 
@@ -2962,7 +2880,7 @@ SSAS	*lasp ;
 	for (i = 0 ; i < n ; i += 1) {
 
 	    if (nop->f.used)
-	        nop->f.used = FALSE ;
+	        nop->f.used = false ;
 
 	    nop += 1 ;
 
@@ -2975,9 +2893,9 @@ SSAS	*lasp ;
 
 #if	CF_EXECTIMEROBJ
 
-static int exectimer_init(op,pip)
+local int exectimer_init(op,pip)
 SSAS		*op ;
-struct proginfo	*pip ;
+PI	*pip ;
 {
 
 
@@ -2986,9 +2904,9 @@ struct proginfo	*pip ;
 }
 
 
-static int exectimer_begin(op,pip)
+local int exectimer_begin(op,pip)
 SSAS		*op ;
-struct proginfo	*pip ;
+PI	*pip ;
 {
 
 
@@ -2997,9 +2915,9 @@ struct proginfo	*pip ;
 }
 
 
-static int exectimer_set(op,pip,v)
+local int exectimer_set(op,pip,v)
 SSAS		*op ;
-struct proginfo	*pip ;
+PI	*pip ;
 int		v ;
 {
 
@@ -3011,29 +2929,24 @@ int		v ;
 #endif
 
 	op->n.exectimer = v ;
-	op->f.exectimer = TRUE ;
+	op->f.exectimer = true ;
 
 	return 0 ;
 }
 
 
-static int exectimer_clear(op,pip)
+local int exectimer_clear(op,pip)
 SSAS		*op ;
-struct proginfo	*pip ;
+PI	*pip ;
 {
 
 
 	op->n.exectimer = 0 ;
-	op->f.exectimer = FALSE ;
+	op->f.exectimer = false ;
 	return 0 ;
 }
 
-
-static int exectimer_check(op,pip)
-SSAS		*op ;
-struct proginfo	*pip ;
-{
-
+local int exectimer_check(SSAS *op,PI *pip) noex {
 
 #if	CF_MASTERDEBUG && CF_DEBUG && CF_DEBUGETIMER
 	if (DEBUGLEVEL(4))
@@ -3041,58 +2954,39 @@ struct proginfo	*pip ;
 	        op->f.exectimer,op->n.exectimer) ;
 #endif
 
-	if ((! op->f.exectimer) && (op->n.exectimer > 0))
+	if ((! op->f.exectimer) && (op->n.exectimer > 0)) {
 	    op->n.exectimer -= 1 ;
+	}
 
 	return 0 ;
-}
+} /* end subroutine */
 
+local int exectimer_end(SSAS *op,PI *pip) noex {
+	return SR_OK ;
+} /* end subroutine */
 
-static int exectimer_end(op,pip)
-SSAS		*op ;
-struct proginfo	*pip ;
-{
-
-
-	return 0 ;
-}
-
-
-static int exectimer_free(op,pip)
-SSAS		*op ;
-struct proginfo	*pip ;
-{
-
-
+local int exectimer_free(SSAS *op,PI *pip) noex {
 	op->n.exectimer = 0 ;
-	op->f.exectimer = FALSE ;
+	op->f.exectimer = false ;
 	return 0 ;
-}
+} /* end subroutine */
 
 #endif /* CF_EXECTIMEROBJ */
 
 #if	(CF_MASTERDEBUG && CF_DEBUG) || CF_XML
 
-static int mkttbuf(buf,tt)
-char	buf[] ;
-int	tt ;
-{
-	int	rs ;
-
-
+local int mkttbuf(char *buf,int tt) noex {
+	int	rs = SR_OK ;
 	if (tt < SSAS_DISPLAYTT) {
-
 	    buf[0] = '-' ;
 	    buf[1] = '\0' ;
 	    rs = 2 ;
-
-	} else
+	} else {
 	    rs = ctdeci(buf,-1,tt) ;
-
+	}
 	return rs ;
-}
+} /* end subroutine */
 
 #endif /* CF_DEBUG */
-
 
 
