@@ -144,7 +144,7 @@ static const char	*syscalls[] = {
 int sssim_init(mip,pip,pfp,maxclocks,simprog,machobj)
 SSSIM		*mip ;
 struct proginfo	*pip ;
-PARAMFILE	*pfp ;
+paramfile	*pfp ;
 LONG		maxclocks ;
 SSSIM_SIMPROG	*simprog ;
 SSSIM_MACHOBJ	*machobj ;
@@ -786,7 +786,7 @@ SSSIM	*mip ;
 
 	    hdb_cursorinit(&mip->pq,&hcur) ;
 
-	    while (hdb_enum(&mip->pq,&hcur,&key,&value) >= 0) {
+	    while (hdb_curenum(&mip->pq,&hcur,&key,&value) >= 0) {
 
 	        if (value.buf != NULL)
 	            free(value.buf) ;	/* the key was in there also ! */
@@ -2175,7 +2175,7 @@ SSSIM	*mip ;
 
 	    hdb_cursorinit(&mip->syscalls,&cur) ;
 
-	    while (hdb_enum(&mip->syscalls,&cur,&key,&value) >= 0) {
+	    while (hdb_curenum(&mip->syscalls,&cur,&key,&value) >= 0) {
 
 	        sep = (SSSIM_SYMBOL *) value.buf ;
 
