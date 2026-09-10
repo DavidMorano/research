@@ -285,7 +285,7 @@ int malloclog_dump()
 
 	hdb_cursorinit(&track,&c) ;
 
-	while ((rs = hdb_enum(&track,&c,&key,&value)) >= 0) {
+	while ((rs = hdb_curenum(&track,&c,&key,&value)) >= 0) {
 
 	    if (value.buf == NULL) continue ;
 
