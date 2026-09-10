@@ -2,17 +2,16 @@
 /* charset=ISO8859-1 */
 /* lang=C20 */
 
-/* miscellaneous stuff which essentially every program wants! */
+/* miscellaneous pre-processor definitions */
 /* version %I% last-modified %G% */
 
 
 /* revision history:
 
 	= 1998-02-15, David A­D­ Morano
-	This code was started to make life easier on the outside
-	(outside of Lucent Technologies).  This file largely contains
-	those things (defines) that I have found to be either useful
-	or problematic in the past.
+	This code is a collection of miscellaneious pre-processor
+	defintions that were eidely used on the various embedded
+	code projects and also on many of the support tool projects.
 
 */
 
@@ -23,12 +22,13 @@
 
 
 #include	<envstandards.h>	/* MUST be first to configure */
-#include	<sys/types.h>
-#include	<sys/param.h>
-#include	<limits.h>
-#include	<stdlib.h>		/* |size_t| */
-#include	<string.h>		/* |memset(3c)| */
-#include	<clanguage.h>
+#include	<sys/types.h>		/* POSIX */
+#include	<sys/param.h>		/* POSIX */
+#include	<limits.h>		/* CSTD */
+#include	<stddef.h>		/* CSTD */
+#include	<stdlib.h>		/* CSTD |size_t| */
+#include	<string.h>		/* CSTD |memset(3c)| */
+#include	<clanguage.h>		/* LIBU */
 
 
 #ifndef	TRUE
@@ -74,6 +74,14 @@
 
 #ifndef	LXOR /* should be operator » ^^ « */
 #define	LXOR(a,b)	(((a) && (! (b))) || ((! (a)) && (b)))
+#endif
+
+#ifndef	LOGEQUIVA /* should be operator » !^^ « */
+#define	LOGEQUIVA(a,b)	(((a) && (b)) || ((! (a)) && (! (b))))
+#endif
+
+#ifndef	LOGDIFFER /* should be operator » ^^ « */
+#define	LOGDIFFER(a,b)	(! LOGEQUIVA(a,b))
 #endif
 
 #ifndef	BFLOOR
@@ -215,19 +223,9 @@ typedef const unsigned long	culong ;
 typedef time_t			ustime ;
 #endif
 
-#ifndef	TYPEDEF_UNIXTIME
-#define	TYPEDEF_UNIXTIME
-typedef time_t			unixtime ;
-#endif
-
 #ifndef	TYPEDEF_CUSTIME
 #define	TYPEDEF_CUSTIME
 typedef const time_t		custime ;
-#endif
-
-#ifndef	TYPEDEF_CUNIXTIME
-#define	TYPEDEF_CUNIXTIME
-typedef const time_t		cunixtime ;
 #endif
 
 #ifndef	TYPEDEF_CC
@@ -310,15 +308,6 @@ typedef const char		cc ;
 #endif
 #endif
 
-/* timezone (zoneinfo) name */
-#ifndef	TZNAMELEN
-#ifdef	TZNAME_MAX
-#define	TZNAMELEN	TZNAME_MAX
-#else
-#define	TZNAMELEN	256
-#endif
-#endif
-
 #ifndef	NODENAMELEN
 #define	NODENAMELEN	256
 #endif
@@ -328,9 +317,22 @@ typedef const char		cc ;
 #endif
 
 /* timezone abbreviation */
+#ifndef	TZNAMELEN
+#ifdef	TZNAME_MAX
+#define	TZNAMELEN	TZNAME_MAX
+#else
+#define	TZNAMELEN	8
+#endif
+#endif /* TZNAMELEN */
+
+/* timezone abbreviation */
 #ifndef	TZABBRLEN
+#ifdef	TZABBR_MAX
+#define	TZABBRLEN	TZABBR_MAX
+#else
 #define	TZABBRLEN	8
 #endif
+#endif /* TZABBRLEN */
 
 /* log-ID (for logging) */
 #ifndef	LOGIDLEN
