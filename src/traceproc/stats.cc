@@ -74,7 +74,7 @@
 
 *******************************************************************************/
 
-#include	<envstandards.h>
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<ctime>
 #include	<cstddef>		/* |nullptr_t| */
@@ -307,7 +307,7 @@ static int	writevpstats(struct proginfo *, ustatemips *,
 			VPRED_STATS *, ustat *,int) ;
 
 static int	hias_check(struct testing *,uint) ;
-static int	getstatsopts(struct proginfo *,KEYOPT *,struct params *) ;
+static int	getstatsopts(struct proginfo *,keyopt *,struct params *) ;
 
 #ifdef	COMMENT
 static int	checkpsyscall(struct proginfo *,LSIM *,SYSCALLS *,uint,uint) ;
@@ -405,7 +405,7 @@ int stats(pip,mpp,mdp,kop,skipinstr,tfname)
 struct proginfo	*pip ;
 LMAPPROG	*mpp ;
 MIPSDIS		*mdp ;
-KEYOPT		*kop ;
+keyopt		*kop ;
 ulong		skipinstr ;
 char		tfname[] ;
 {
@@ -4703,10 +4703,10 @@ static double	percentll(ulong in,ulong id) {
 /* get options for this statistics module */
 int getstatsopts(pip,kop,pp)
 struct proginfo	*pip ;
-KEYOPT		*kop ;
+keyopt		*kop ;
 struct params	*pp ;
 {
-	KEYOPT_CUR	kcur ;
+	keyopt_cur	kcur ;
 
 	int	rs, i, oi, val ;
 	int	nlen, klen, vlen ;
@@ -4721,9 +4721,9 @@ struct params	*pp ;
 	n = 0 ;
 	keyopt_curbegin(kop,&kcur) ;
 
-	while ((rs = keyopt_enumkeys(kop,&kcur,&kp)) >= 0) {
+	while ((rs = keyopt_curenumkeys(kop,&kcur,&kp)) >= 0) {
 
-	    KEYOPT_CUR	vcur ;
+	    keyopt_cur	vcur ;
 
 	    int	f_value = FALSE ;
 
@@ -4735,7 +4735,7 @@ struct params	*pp ;
 	    vlen = -1 ;
 	    keyopt_curbegin(kop,&vcur) ;
 
-	    while ((rs = keyopt_enumvalues(kop,kp,&vcur,&vp)) >= 0) {
+	    while ((rs = keyopt_curenumvals(kop,kp,&vcur,&vp)) >= 0) {
 
 	        f_value = TRUE ;
 	        vlen = rs ;
@@ -5032,10 +5032,10 @@ struct params	*pp ;
 /* load any specified branch predictor modules */
 int loadbps(pip,kop,bpsp)
 struct proginfo	*pip ;
-KEYOPT		*kop ;
+keyopt		*kop ;
 BPEVAL		*bpsp ;
 {
-	KEYOPT_CUR	vcur ;
+	keyopt_cur	vcur ;
 
 	int	rs ;
 	int	sl, vl ;
@@ -5049,7 +5049,7 @@ BPEVAL		*bpsp ;
 	n = 0 ;
 	keyopt_curbegin(kop,&vcur) ;
 
-	while ((vl = keyopt_enumvalues(kop,"bpload",&vcur,&vp)) >= 0) {
+	while ((vl = keyopt_curenumvals(kop,"bpload",&vcur,&vp)) >= 0) {
 
 	    int	p1, p2, p3, p4 ;
 
@@ -5156,7 +5156,7 @@ BPEVAL		*bpsp ;
 
 /* do we have a particular one selected? */
 
-	if ((vl = keyopt_enumvalues(kop,"bpsel",NULL,&vp)) >= 0) {
+	if ((vl = keyopt_curenumvals(kop,"bpsel",NULL,&vp)) >= 0) {
 
 	    if (vp != NULL)
 	        bpeval_bpsel(bpsp,vp) ;
