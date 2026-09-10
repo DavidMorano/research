@@ -111,7 +111,7 @@ constexpr cpcchar	params[] = {
 int lmem_init(lmp,pip,pfp,mip,lip, lmap)
 LMEM		*lmp ;
 struct proginfo	*pip ;
-PARAMFILE	*pfp ;
+paramfile	*pfp ;
 struct mintinfo	*mip ;
 struct levoinfo	*lip ;
 LMEM_ARGS	*lmap ;
