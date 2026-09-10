@@ -31,7 +31,7 @@
 #define	FILTERCALLS_MASTER	1
 
 
-#include	<envstandards.h>
+#include	<envstandards.h>	/* ordered first to configure */
 
 #include	<sys/types.h>
 #include	<sys/param.h>
@@ -374,7 +374,7 @@ LMAPPROG	*mp ;
 
 	hdb_curbegin(&op->index,&cur) ;
 
-	while (hdb_enum(&op->index,&cur,&key,&value) >= 0) {
+	while (hdb_curenum(&op->index,&cur,&key,&value) >= 0) {
 
 	    iep = (FILTERCALLS_ENTRY *) value.buf ;
 
