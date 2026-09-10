@@ -66,7 +66,7 @@ struct lmem_head {
 
 
 
-extern int lmem_init(LMEM *, struct proginfo *, PARAMFILE *,struct mintinfo *,
+extern int lmem_init(LMEM *, struct proginfo *, paramfile *,struct mintinfo *,
 		     struct levoinfo *, LMEM_ARGS *) ;
 extern int lmem_comb(LMEM *,int) ;
 extern int lmem_clock(LMEM *) ;
