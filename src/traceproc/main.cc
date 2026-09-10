@@ -5,7 +5,6 @@
 /* compare execution traces */
 /* last modified %G% version %I% */
 
-#define	CF_DEBUGS	0		/* debug print-outs (non-switchable) */
 #define	CF_DEBUG	0		/* debug print-outs switchable */
 #define	CF_MIPSDIS	1		/* enable disassembly */
 
@@ -35,34 +34,34 @@
 *******************************************************************************/
 
 #include	<envstandards.h>	/* must be ordered first to configure */
-#include	<sys/types.h>
-#include	<sys/param.h>
-#include	<sys/stat.h>
-#include	<sys/utsname.h>
-#include	<sys/resource.h>
-#include	<unistd.h>
-#include	<fcntl.h>
-#include	<ctime>
-#include	<cstddef>		/* |nullptr_t| */
-#include	<cstdlib>
-#include	<cstring>
-#include	<usystem.h>
-#include	<vecstr.h>
-#include	<bfile.h>
-#include	<keyopt.h>
-#include	<paramopt.h>
-#include	<ascii.h>
-#include	<char.h>
-#include	<userinfo.h>
-#include	<logfile.h>
-#include	<mallocstuff.h>
+#include	<sys/types.h>		/* POSIX® */
+#include	<sys/param.h>		/* POSIX® */
+#include	<sys/stat.h>		/* POSIX® */
+#include	<sys/utsname.h>		/* POSIX® */
+#include	<sys/resource.h>	/* POSIX® */
+#include	<unistd.h>		/* POSIX® */
+#include	<fcntl.h>		/* POSIX® */
+#include	<ctime>			/* CSTD */
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<cstring>		/* CSTD */
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<ascii.h>		/* LIBU */
+#include	<vecstr.h>		/* LIBUC */
+#include	<keyopt.h>		/* LIBUC */
+#include	<paramopt.h>		/* LIBUC */
+#include	<char.h>		/* LIBUC */
+#include	<userinfo.h>		/* LIBUC */
+#include	<logfile.h>		/* LIBUC */
+#include	<prognamevar.hh>	/* LIBUC */
+#include	<getfname.h>		/* LIBUC */
+#include	<mallocstuff.h>		/* LIBUC */
+#include	<exitcodes.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU */
+#include	<bfile.h>		/* LIBB */
 #include	<prenvfile.h>		/* LIBPR */
-#include	<prognamevar.hh>
-#include	<prenvfile.h>		/* LIBPR */
-#include	<exitcodes.h>
-#include	<localmisc.h>
 
-#include	"getfname.h"
 #include	"exectrace.h"
 #include	"config.h"
 #include	"defs.h"
@@ -85,7 +84,7 @@ extern int	icounter(struct proginfo *,LMAPPROG *,MIPSDIS *,char *) ;
 extern int	fcounter(struct proginfo *,LMAPPROG *,MIPSDIS *,char *) ;
 extern int	tcopy(struct proginfo *,LMAPPROG *,MIPSDIS *,char *,char *) ;
 extern int	stats(struct proginfo *,LMAPPROG *,MIPSDIS *,
-			KEYOPT *,ULONG,char *) ;
+			keyopt *,ULONG,char *) ;
 
 
 /* external variables */
@@ -102,8 +101,8 @@ local int	usage(struct proginfo *) ;
 local int	havefname(struct proginfo* ,cchar *,cchar *,char *) ;
 local int	makedate_get(cchar *,char **) ;
 
-#if	CF_DEBUG || CF_DEBUGS
-local int	printkeyops(struct proginfo *,KEYOPT *) ;
+#if	CF_DEBUG || CF_DEBUG
+local int	printkeyops(struct proginfo *,keyopt *) ;
 #endif
 
 
@@ -241,10 +240,10 @@ int main(int argc,mainv argv,mainv envv) {
     	prognamevar	progname(argc,argv,envv) ;
 	proginfo	pi, *pip = &pi ;
 	USERINFO	u ;
-	PARAMOPT	aparams ;
+	paramopt	aparams ;
 	LMAPPROG	pm ;
 	MIPSDIS		dis ;
-	KEYOPT		kopts ;
+	keyopt		kopts ;
 	FILTERCALLS	callfilter ;
 	vecstr		args, exports ;
 	bfile		errfile, *efp = &errfile ;
@@ -307,7 +306,7 @@ int main(int argc,mainv argv,mainv envv) {
 	    debugsetfd(fd_debug) ;
 
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("main: starting\n") ;
 #endif
 
@@ -318,7 +317,7 @@ int main(int argc,mainv argv,mainv envv) {
 	    bcontrol(efp,BC_LINEBUF,0) ;
 	}
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("main: STDERR bopen() rs=%d\n",rs) ;
 #endif
 
@@ -402,7 +401,7 @@ int main(int argc,mainv argv,mainv envv) {
 	                f_optequal = FALSE ;
 	                if ((avp = strchr(aop,'=')) != nullptr) {
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	                    debugprintf("main: got option key w/ a value\n") ;
 #endif
 
@@ -520,7 +519,7 @@ int main(int argc,mainv argv,mainv envv) {
 
 	                } else {
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	                    debugprintf("main: got an option key letter\n") ;
 #endif
 
@@ -723,7 +722,7 @@ int main(int argc,mainv argv,mainv envv) {
 
 	                        } /* end switch */
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	                        debugprintf("main: beyond key letters switch\n") ;
 #endif
 
@@ -777,7 +776,7 @@ int main(int argc,mainv argv,mainv envv) {
 
 	} /* end while (all command line argument processing) */
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("main: done looping on arguments\n") ;
 #endif
 
@@ -1135,7 +1134,7 @@ int main(int argc,mainv argv,mainv envv) {
 	rs = SR_OK ;
 
 	{
-	    PARAMOPT_CUR	c ;
+	    paramopt_cur	c ;
 
 	    int	spc = 0 ;
 
@@ -1533,7 +1532,7 @@ int main(int argc,mainv argv,mainv envv) {
 #endif
 
 	    if (envfname != nullptr) {
-	        rs = prenvfile(pip->pr,envfname,&exports) ;
+	        rs = prenvfile(pip->pr,&exports,envfname) ;
 	        if ((rs < 0) && f_envfile)
 	            goto badenvfile ;
 
@@ -2093,7 +2092,7 @@ char		tmpfname[] ;
 
 	    }
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	    debugprintf("main/havefname: execfile=%s\n",tmpfname) ;
 #endif
 
@@ -2105,14 +2104,14 @@ char		tmpfname[] ;
 /* end subroutine (havefname) */
 
 
-#if	CF_DEBUG || CF_DEBUGS
+#if	CF_DEBUG || CF_DEBUG
 
 /* print all options */
 local int printkeyops(pip,kop)
 struct proginfo	*pip ;
-KEYOPT		*kop ;
+keyopt		*kop ;
 {
-	KEYOPT_CUR	kcur ;
+	keyopt_cur	kcur ;
 
 	int	rs = SR_OK ;
 	int	i, oi, val ;
@@ -2128,8 +2127,8 @@ KEYOPT		*kop ;
 	n = 0 ;
 	keyopt_curbegin(kop,&kcur) ;
 
-	while ((rs = keyopt_enumkeys(kop,&kcur,&kp)) >= 0) {
-	    KEYOPT_CUR	vcur ;
+	while ((rs = keyopt_curenumkeys(kop,&kcur,&kp)) >= 0) {
+	    keyopt_cur	vcur ;
 	    int	f_value = FALSE ;
 
 	    klen = rs ;
@@ -2137,7 +2136,7 @@ KEYOPT		*kop ;
 	    vlen = -1 ;
 	    keyopt_curbegin(kop,&vcur) ;
 
-	    while ((rs = keyopt_enumvalues(kop,kp,&vcur,&vp)) >= 0) {
+	    while ((rs = keyopt_curenumvals(kop,kp,&vcur,&vp)) >= 0) {
 
 	        f_value = TRUE ;
 	        vlen = rs ;
@@ -2166,7 +2165,7 @@ KEYOPT		*kop ;
 }
 /* end subroutine (printkeyopts) */
 
-#endif /* CF_DEBUG || CF_DEBUGS */
+#endif /* CF_DEBUG || CF_DEBUG */
 
 /* get the date out of the ID string */
 local int makedate_get(md,rpp)
