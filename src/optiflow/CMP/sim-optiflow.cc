@@ -1369,7 +1369,7 @@ int sim_init(void)
 
 	if (pip->f.params) {
 
-	    PARAMFILE_CURSOR	cur ;
+	    paramfile_curSOR	cur ;
 
 	    ULONG	ulv ;
 
@@ -6436,10 +6436,10 @@ int	buflen ;
 /* get options for this statistics module */
 int getprogopts(pip,kop,pp)
 struct proginfo	*pip ;
-KEYOPT		*kop ;
+keyopt		*kop ;
 struct params	*pp ;
 {
-	KEYOPT_CURSOR	kcur ;
+	keyopt_curSOR	kcur ;
 
 	int	rs, i, oi, val ;
 	int	nlen, klen, vlen ;
@@ -6454,9 +6454,9 @@ struct params	*pp ;
 	n = 0 ;
 	keyopt_cursorinit(kop,&kcur) ;
 
-	while ((rs = keyopt_enumkeys(kop,&kcur,&kp)) >= 0) {
+	while ((rs = keyopt_curenumkeys(kop,&kcur,&kp)) >= 0) {
 
-	    KEYOPT_CURSOR	vcur ;
+	    keyopt_curSOR	vcur ;
 
 	    int	f_value = FALSE ;
 
@@ -6468,7 +6468,7 @@ struct params	*pp ;
 	    vlen = -1 ;
 	    keyopt_cursorinit(kop,&vcur) ;
 
-	    while ((rs = keyopt_enumvalues(kop,kp,&vcur,&vp)) >= 0) {
+	    while ((rs = keyopt_curenumvals(kop,kp,&vcur,&vp)) >= 0) {
 
 	        f_value = TRUE ;
 	        vlen = rs ;
@@ -6767,10 +6767,10 @@ struct params	*pp ;
 /* load any specified branch predictor modules */
 int loadbps(pip,kop,bpsp)
 struct proginfo	*pip ;
-KEYOPT		*kop ;
+keyopt		*kop ;
 BPEVAL		*bpsp ;
 {
-	KEYOPT_CURSOR	vcur ;
+	keyopt_curSOR	vcur ;
 
 	int	rs ;
 	int	sl, vl ;
@@ -6784,7 +6784,7 @@ BPEVAL		*bpsp ;
 	n = 0 ;
 	keyopt_cursorinit(kop,&vcur) ;
 
-	while ((vl = keyopt_enumvalues(kop,"bpload",&vcur,&vp)) >= 0) {
+	while ((vl = keyopt_curenumvals(kop,"bpload",&vcur,&vp)) >= 0) {
 
 	    int	p1, p2, p3, p4 ;
 
@@ -6890,7 +6890,7 @@ BPEVAL		*bpsp ;
 
 /* do we have a particular one selected ? */
 
-	if ((vl = keyopt_enumvalues(kop,"bpsel",NULL,&vp)) >= 0) {
+	if ((vl = keyopt_curenumvals(kop,"bpsel",NULL,&vp)) >= 0) {
 
 	    if (vp != NULL)
 	        bpeval_bpsel(bpsp,vp) ;
