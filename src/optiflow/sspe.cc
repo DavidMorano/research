@@ -48,7 +48,6 @@
 #include	<cstring>
 #include	<clanguage.h>
 #include	<usysbase.h>
-#include	<findbit.h>
 #include	<localmisc.h>
 
 #include	"ssconfig.h"
@@ -67,6 +66,10 @@
 #include	<dmalloc.h>
 #endif
 
+#pragma		GCC dependency		"mod/libutil.ccm"
+
+import libutil ;			/* |lenstr(3u)| */
+import findbit ;
 
 /* local defines */
 
