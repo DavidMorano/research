@@ -141,7 +141,7 @@ struct sssim_head {
 
 #if	(! defined(SSSIM_MASTER)) && (! defined(SSSIM_MASTER))
 
-extern int sssim_init(SSSIM *,struct proginfo *,PARAMFILE *,
+extern int sssim_init(SSSIM *,struct proginfo *,paramfile *,
 			LONG,SSSIM_SIMPROG *,SSSIM_MACHOBJ *) ;
 extern int sssim_setmach(SSSIM *,SSSIM_MACHOBJ *) ;
 
