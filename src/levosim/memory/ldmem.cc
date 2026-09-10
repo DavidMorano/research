@@ -64,7 +64,7 @@ static int ldmem_phase4(LDMEM *) ;
 int ldmem_init(ldmem,pip,pfp,mip,lip, ldm_parameter)
 LDMEM		*ldmem ;
 struct proginfo *pip ;
-PARAMFILE	*pfp ;
+paramfile	*pfp ;
 struct mintinfo *mip ;
 struct levoinfo *lip ;
 LDMEM_PARAMETERS *ldm_parameter;
