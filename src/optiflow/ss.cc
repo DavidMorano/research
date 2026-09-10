@@ -143,7 +143,7 @@ struct proginfo	*pip ;
 ULONG		maxclocks ;
 SS_MACHOBJ	*machobj ;
 {
-	PARAMFILE	*pfp = &pip->pf ;
+	paramfile	*pfp = &pip->pf ;
 
 	ULONG	ulw ;
 
@@ -538,7 +538,7 @@ SS		*op ;
 
 	    hdb_cursorinit(&op->pq,&hcur) ;
 
-	    while (hdb_enum(&op->pq,&hcur,&key,&value) >= 0) {
+	    while (hdb_curenum(&op->pq,&hcur,&key,&value) >= 0) {
 
 	        if (value.buf != NULL)
 	            free(value.buf) ;	/* the key was in there also ! */
