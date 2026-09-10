@@ -797,7 +797,7 @@ LSIM		*mip ;
 
 	hdb_cursorinit(&op->index,&cur) ;
 
-	while (hdb_enum(&op->index,&cur,&key,&value) >= 0) {
+	while (hdb_curenum(&op->index,&cur,&key,&value) >= 0) {
 
 	    iep = (struct indexentry *) value.buf ;
 
