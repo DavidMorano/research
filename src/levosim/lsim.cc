@@ -136,7 +136,7 @@ static char	*const syscalls[] = {
 int lsim_init(mip,pip,pfp,maxclocks,simprog,machobj)
 LSIM		*mip ;
 struct proginfo	*pip ;
-PARAMFILE	*pfp ;
+paramfile	*pfp ;
 LONG		maxclocks ;
 LSIM_SIMPROG	*simprog ;
 LSIM_MACHOBJ	*machobj ;
@@ -762,7 +762,7 @@ LSIM	*mip ;
 
 	    hdb_curbegin(&mip->pq,&hcur) ;
 
-	    while (hdb_enum(&mip->pq,&hcur,&key,&value) >= 0) {
+	    while (hdb_curenum(&mip->pq,&hcur,&key,&value) >= 0) {
 	        if (value.buf != NULL) {
 	            uc_free(value.buf) ;
 		}
@@ -2119,7 +2119,7 @@ LSIM	*mip ;
 
 	    hdb_curbegin(&mip->syscalls,&cur) ;
 
-	    while (hdb_enum(&mip->syscalls,&cur,&key,&value) >= 0) {
+	    while (hdb_curenum(&mip->syscalls,&cur,&key,&value) >= 0) {
 
 	        sep = (LSIM_SYMBOL *) value.buf ;
 
