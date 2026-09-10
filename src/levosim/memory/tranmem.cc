@@ -110,7 +110,7 @@ int
 tranmem_init(tm,tip) 
 struct tranmem *tm;
 /*struct global   *gp ;
-PARAMFILE       *pfp ;
+paramfile       *pfp ;
 struct mintinfo *mip ;
 struct levoinfo *lip ;*/
 struct trminfo  *tip;
