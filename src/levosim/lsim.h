@@ -126,7 +126,7 @@ struct mintinfo {
 extern "C" {
 #endif
 
-extern int lsim_init(LSIM *,struct proginfo *,PARAMFILE *,
+extern int lsim_init(LSIM *,struct proginfo *,paramfile *,
 			LONG,LSIM_SIMPROG *,LSIM_MACHOBJ *) ;
 extern int lsim_setmach(LSIM *,LSIM_MACHOBJ *) ;
 extern int lsim_getpp(LSIM *,LMAPPROG **) ;
