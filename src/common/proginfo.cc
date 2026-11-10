@@ -33,6 +33,7 @@
 #include	<usysbase.h>
 #include	<bfile.h>
 #include	<field.h>
+#include	<strtime.h>		/* LIBUC */
 #include	<localmisc.h>
 
 #if	defined(P_OPTIFLOW)
@@ -60,9 +61,9 @@ import libutil ;			/* |lenstr(3u)| */
 
 int	proginfo_getpwd(struct proginfo *,char *,int) ;
 
-static int	proginfo_procopts(struct proginfo *, cchar *,int) ;
+local int	proginfo_procopts(struct proginfo *, cchar *,int) ;
 
-static int	setit(void *,cvoid *) ;
+local int	setit(void *,cvoid *) ;
 
 local void	freeit(void *) ;
 
@@ -560,7 +561,7 @@ ulong		ck, in ;
 	    if (pip->f.log) {
 
 	        logfile_printf(&pip->lh,"%s %s %s",
-	            timestr_logz(daytime,timebuf),
+	            strtime_logz(daytime,timebuf),
 	            pip->banner,
 	            ((f_done) ? "done" : "update")) ;
 
@@ -576,7 +577,7 @@ ulong		ck, in ;
 	            pip->jobname,pip->pid) ;
 
 	        logfile_printf(&pip->lh,"elapsed time %s\n",
-	            timestr_elapsed(secs,timebuf)) ;
+	            strtime_elapsed(secs,timebuf)) ;
 
 	        logfile_printf(&pip->lh,"sinstr=%llu ninstr=%llu\n",
 	            pip->sinstr,pip->ninstr) ;
@@ -617,10 +618,10 @@ ulong		ck, in ;
 	        bprintf(&tellfile,"jobname=%s\n",pip->jobname) ;
 
 	        bprintf(&tellfile,"starttime=%s\n",
-	            timestr_logz(pip->ti_start,timebuf)) ;
+	            strtime_logz(pip->ti_start,timebuf)) ;
 
 	        bprintf(&tellfile,"daytime=%s\n",
-	            timestr_logz(daytime,timebuf)) ;
+	            strtime_logz(daytime,timebuf)) ;
 
 	        bprintf(&tellfile,"sinstr=%llu\n",pip->sinstr) ;
 
@@ -699,14 +700,14 @@ ulong		ck, in ;
 	    pip->ti_lastlog = daytime ;
 
 	    logfile_printf(&pip->lh,"%s %s!%s\n",
-	        timestr_logz(daytime,timebuf),
+	        strtime_logz(daytime,timebuf),
 	        pip->nodename,pip->username) ;
 
 	    logfile_printf(&pip->lh,"jobname=%s pid=%d\n",
 	        pip->jobname,pip->pid) ;
 
 	    logfile_printf(&pip->lh,"elapsed time %s\n",
-	        timestr_elapsed((daytime - pip->ti_start),timebuf)) ;
+	        strtime_elapsed((daytime - pip->ti_start),timebuf)) ;
 
 	    logfile_printf(&pip->lh,"ck=%llu in=%llu\n",
 	        ck,in) ;
@@ -1114,7 +1115,7 @@ int		prlen ;
 
 /* local subroutines */
 
-static int proginfo_procopts(op,s,slen)
+local int proginfo_procopts(op,s,slen)
 struct proginfo	*op ;
 cchar	s[] ;
 int		slen ;
@@ -1254,7 +1255,7 @@ int		slen ;
 }
 /* end subroutine (proginfo_procopts) */
 
-static int setit(void *ap,cvoid *vp) noex {
+local int setit(void *ap,cvoid *vp) noex {
 	caddr_t	*p = (caddr_t *) ap ;
 	if (vp == nullptr) return SR_OK ;
 	if (*p != nullptr) free(*p) ;
