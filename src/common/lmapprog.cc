@@ -130,20 +130,20 @@
 
 int		lmapprog_getphysical(LMAPPROG *,uint,caddr_t *) ;
 
-static int	lmapprog_initsymtabs(LMAPPROG *,Elf32_Ehdr *,
+local int	lmapprog_initsymtabs(LMAPPROG *,Elf32_Ehdr *,
 			Elf32_Shdr *,uint) ;
-static int	lmapprog_freesymtabs(LMAPPROG *) ;
-static int	lmapprog_initsymbols(LMAPPROG *) ;
-static int	lmapprog_freesymbols(LMAPPROG *) ;
-static int	lmapprog_loadargs(LMAPPROG *,char **,char **) ;
-static int	lmapprog_zerobss(LMAPPROG *,PROGINFO *,
+local int	lmapprog_freesymtabs(LMAPPROG *) ;
+local int	lmapprog_initsymbols(LMAPPROG *) ;
+local int	lmapprog_freesymbols(LMAPPROG *) ;
+local int	lmapprog_loadargs(LMAPPROG *,char **,char **) ;
+local int	lmapprog_zerobss(LMAPPROG *,PROGINFO *,
 			Elf32_Shdr *,int,uint) ;
 
 static ulong	ceiling(ulong,uint) ;
 
-static int	checkelf(PROGINFO *,Elf32_Ehdr *) ;
-static int	findsection(Elf32_Shdr *,int,char *,char *,int) ;
-static int	findhighsection(Elf32_Shdr *,int,char *,char *,int) ;
+local int	checkelf(PROGINFO *,Elf32_Ehdr *) ;
+local int	findsection(Elf32_Shdr *,int,char *,char *,int) ;
+local int	findhighsection(Elf32_Shdr *,int,char *,char *,int) ;
 
 
 /* exported subroutines */
@@ -2737,7 +2737,7 @@ uint		*vp ;
 
 
 /* map the symbol tables along with their string tables */
-static int lmapprog_initsymtabs(mpp,ehp,sheads,mapalign)
+local int lmapprog_initsymtabs(mpp,ehp,sheads,mapalign)
 LMAPPROG	*mpp ;
 Elf32_Ehdr	*ehp ;
 Elf32_Shdr	*sheads ;
@@ -2879,7 +2879,7 @@ bad3:
 
 
 /* free up the symbol tables */
-static int lmapprog_freesymtabs(mpp)
+local int lmapprog_freesymtabs(mpp)
 LMAPPROG	*mpp ;
 {
 	    LMAPPROG_SYMTAB	*stp ;
@@ -2908,7 +2908,7 @@ LMAPPROG	*mpp ;
 
 
 /* initialize the symbols */
-static int lmapprog_initsymbols(mpp)
+local int lmapprog_initsymbols(mpp)
 LMAPPROG	*mpp ;
 {
 	    HDB_DATUM		key, value ;
@@ -2996,7 +2996,7 @@ bad9:
 
 
 /* free up the indexed symbols, if any */
-static int lmapprog_freesymbols(mpp)
+local int lmapprog_freesymbols(mpp)
 LMAPPROG	*mpp ;
 {
 	HDB_CUR		cur ;
@@ -3037,7 +3037,7 @@ LMAPPROG	*mpp ;
 
 
 /* zero out leading parts of BSS sections */
-static int lmapprog_zerobss(mpp,pip,sheads,n,mapalign)
+local int lmapprog_zerobss(mpp,pip,sheads,n,mapalign)
 LMAPPROG	*mpp ;
 PROGINFO	*pip ;
 Elf32_Shdr	*sheads ;
@@ -3101,7 +3101,7 @@ uint		mapalign ;
 #if	CF_STACKARGS
 
 /* load up the user specified arguments on the simulated program stack */
-static int lmapprog_loadargs(mpp,argv,envv)
+local int lmapprog_loadargs(mpp,argv,envv)
 LMAPPROG	*mpp ;
 char		*argv[] ;
 char		*envv[] ;
@@ -3391,7 +3391,7 @@ bad:
 
 
 /* check if we have an ELF file and if we can handle it */
-static int checkelf(pip,ehp)
+local int checkelf(pip,ehp)
 PROGINFO	*pip ;
 Elf32_Ehdr	*ehp ;
 {
@@ -3549,7 +3549,7 @@ bad2:
 
 
 /* find a section by its name (and type if specified) */
-static int findsection(sheads,n,shstrings,name,type)
+local int findsection(sheads,n,shstrings,name,type)
 Elf32_Shdr	*sheads ;
 int		n ;
 char		shstrings[], name[] ;
@@ -3580,7 +3580,7 @@ int		type ;
 
 
 /* find a section by its name (and type if specified) */
-static int findhighsection(sheads,n,shstrings,name,type)
+local int findhighsection(sheads,n,shstrings,name,type)
 Elf32_Shdr	*sheads ;
 int		n ;
 char		shstrings[], name[] ;
