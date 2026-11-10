@@ -5,7 +5,6 @@
 /* utility for KSH built-in commands */
 /* last modified %G% version %I% */
 
-#define	CF_DEBUGS	0		/* compile-time debugging */
 #define	CF_DEBUG	0		/* switchable at invocation */
 
 /* revision history:
@@ -23,8 +22,9 @@
 	proginfo_setpiv
 
 	Description:
-	This subroutine is used for acquiring (setting) the
-	program-root for KSH built-in commands.
+	This subroutine is used for setting the meta-information
+	for the current process, with the seed material taken
+	from the PIVARS variable array.
 
 	Synopsis:
 	int proginfo_setpiv(proginfo *pip,cchar *pr,pivars *vars) noex
@@ -50,11 +50,11 @@
 #include	<cstring>		/* CSTD */
 #include	<clanguage.h>		/* LIBU */
 #include	<usysbase.h>		/* LIBU */
-#include	<getx.h>
-#include	<ids.h>
-#include	<sfx.h>
-#include	<snx.h>
-#include	<mkpathx.h>
+#include	<getx.h>		/* LIBUC */
+#include	<ids.h>			/* LIBUC */
+#include	<sfx.h>			/* LIBUC */
+#include	<snx.h>			/* LIBUC */
+#include	<mkpathx.h>		/* LIBUC */
 #include	<mkpr.h>		/* |getrootdname(3uc)| */
 #include	<permx.h>		/* |permids(3uc)| */
 #include	<localmisc.h>		/* LIBU */
@@ -62,6 +62,7 @@
 
 #include	"defs.h"
 
+import proginfo ;
 
 /* local defines */
 
@@ -101,13 +102,18 @@ local bool	isNotGoodDir(int) noex ;
 
 int proginfo_setpiv(PI *pip,cchar *pr,pivars *vars) noex {
 	int		rs ;
-	if (ids id ; (rs = ids_load(&id)) >= 0) {
-	    rs = proginfo_setpiver(pip,&id,pr,vars) ;
-	    ids_release(&id) ;
+	int		rs1 ;
+	int		rv = 0 ; /* return-value */
+	if (ids id ; (rs = id.load) >= 0) {
+	    {
+	        rs = proginfo_setpiver(pip,&id,pr,vars) ;
+		rv = rs ;
+	    }
+	    rs1 = id.release ;
+	    if (rs >= 0) rs = rs1 ;
 	} /* end if (ids) */
-	return rs ;
-}
-/* end subroutine (proginfo_setpiv) */
+	return (rs >= 0) ? rv : rs ;
+} /* end subroutine (proginfo_setpiv) */
 
 
 /* local subroutines */
@@ -259,13 +265,12 @@ int proginfo_setpiver(PI *pip,ids *idp,cchar *pr,pivars *vars) noex {
 #endif
 
 	return (rs >= 0) ? prlen : rs ;
-}
-/* end subroutine (proginfo_setpiver) */
+} /* end subroutine (proginfo_setpiver) */
 
 local int sfrootdirname(char *dp,int dl,cchar **rpp) noex {
 	int		bl ;
 	int		sl = -1 ;
-	int		f ;
+	bool		f ;
 	cchar	*sp = nullptr ;
 	cchar	*bp ;
 
@@ -273,13 +278,13 @@ local int sfrootdirname(char *dp,int dl,cchar **rpp) noex {
 	    *rpp = nullptr ;
 	}
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("sfrootdirname: d=%r\n",dp,dl) ;
 #endif
 
 	bl = sfbasename(dp,dl,&bp) ;
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("sfrootdirname: b=%r\n",bp,bl) ;
 #endif
 
@@ -288,25 +293,24 @@ local int sfrootdirname(char *dp,int dl,cchar **rpp) noex {
 	if (! f)
 	    f = ((bl == 4) && (strncmp(bp,"sbin",bl) == 0)) ;
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("sfrootdirname: f=%u\n",f) ;
 #endif
 
 	if (f) {
 	    sl = sfdirname(dp,dl,&sp) ;
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	    debugprintf("sfrootdirname: pr=%r\n",sp,sl) ;
 #endif
 	    if ((sl >= 0) && (rpp != nullptr)) *rpp = sp ;
 	}
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("sfrootdirname: ret sl=%d\n",sl) ;
 #endif
 	return sl ;
-}
-/* end subroutine (sfrootdirname) */
+} /* end subroutine (sfrootdirname) */
 
 local int dircheck(ids *idp,cchar *dname) noex {
 	int		rs ;
@@ -317,17 +321,15 @@ local int dircheck(ids *idp,cchar *dname) noex {
 	    } else {
 	        rs = SR_NOTDIR ;
 	    }
-	}
+	} /* end if (u_stat) */
 	return rs ;
-}
-/* end subroutine (dircheck) */
+} /* end subroutine (dircheck) */
 
 local bool isNotGoodDir(int rs) noex {
-	bool f = FALSE ;
+	bool f = false ;
 	f = f || isNotPresent(rs) ;
 	f = f || (rs == SR_NOTDIR) ;
 	return f ;
-}
-/* end if (isNotGoodDir) */
+} /* end if (isNotGoodDir) */
 
 
