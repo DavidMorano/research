@@ -88,9 +88,9 @@ struct bpconfig {
 
 /* forward references */
 
-static int	cmpbits(struct entry **,struct entry **) ;
-static int	cmpconfig(struct bpconfig **,struct bpconfig **) ;
-static int	cmpname(char **,char **) ;
+local int	cmpbits(struct entry **,struct entry **) ;
+local int	cmpconfig(struct bpconfig **,struct bpconfig **) ;
+local int	cmpname(char **,char **) ;
 
 
 /* local variables */
@@ -487,7 +487,7 @@ vecitem		*dbp ;
 
 
 
-static int cmpbits(e1pp,e2pp)
+local int cmpbits(e1pp,e2pp)
 struct entry	**e1pp, **e2pp ;
 {
 	int	diff ;
@@ -524,7 +524,7 @@ struct entry	**e1pp, **e2pp ;
 /* end subroutine (cmpbits) */
 
 
-static int cmpconfig(e1pp,e2pp)
+local int cmpconfig(e1pp,e2pp)
 struct bpconfig	**e1pp, **e2pp ;
 {
 	int	diff ;
@@ -555,7 +555,7 @@ struct bpconfig	**e1pp, **e2pp ;
 
 
 /* compare program names */
-static int cmpname(e1pp,e2pp)
+local int cmpname(e1pp,e2pp)
 char	**e1pp, **e2pp ;
 {
 
