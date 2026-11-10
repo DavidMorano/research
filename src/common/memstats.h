@@ -31,10 +31,10 @@
 
 
 #include	<envstandards.h>	/* ordered first to configure */
-#include	<time.h>
-#include	<clanguage.h>
-#include	<usysbase.h>
-#include	<hdb.h>
+#include	<time.h>		/* POSIX® */
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<hdb.h>			/* LIBUC */
 
 
 /* object defines */
