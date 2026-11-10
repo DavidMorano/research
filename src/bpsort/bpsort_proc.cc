@@ -70,7 +70,7 @@
 
 /* forward references */
 
-static int cmpconfig(struct entry **,struct entry **) ;
+local int cmpconfig(struct entry **,struct entry **) ;
 
 
 /* local variables */
@@ -315,7 +315,7 @@ int process(PROGINFO *pip,vecitem *dbp,cchar *fname)
 /* local subroutines */
 
 
-static int cmpconfig(e1pp,e2pp)
+local int cmpconfig(e1pp,e2pp)
 struct entry	**e1pp, **e2pp ;
 {
 	int	diff ;
