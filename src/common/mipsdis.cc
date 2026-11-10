@@ -64,7 +64,7 @@
 #include	<strwcpy.h>
 #include	<char.h>
 #include	<hasx.h>		/* |haself(3uc)| */
-#include	<ischarx.h>
+#include	<isch.h>
 #include	<localmisc.h>
 
 #include	"mipsdis.h"
@@ -91,12 +91,12 @@
 
 /* forward references */
 
-static int	mipsdis_disload(MIPSDIS *,char *) ;
+local int	mipsdis_disload(MIPSDIS *,char *) ;
 
-static int	entry_init(struct mipsdis_entry *,uint,
+local int	entry_init(struct mipsdis_entry *,uint,
 			char *,int,char *,int) ;
-static int	entry_equal(struct mipsdis_entry *,struct mipsdis_entry *) ;
-static int	entry_free(struct mipsdis_entry *) ;
+local int	entry_equal(struct mipsdis_entry *,struct mipsdis_entry *) ;
+local int	entry_free(struct mipsdis_entry *) ;
 
 
 /* exported subroutines */
@@ -360,7 +360,7 @@ MIPSDIS	*mdp ;
 /* private subroutines */
 
 
-static int mipsdis_disload(mdp,fname)
+local int mipsdis_disload(mdp,fname)
 MIPSDIS	*mdp ;
 char	fname[] ;
 {
@@ -623,7 +623,7 @@ bad:
 /* end subroutine (mipsdis_disload) */
 
 
-static int entry_init(ep,instr,std,stdlen,levo,levolen)
+local int entry_init(ep,instr,std,stdlen,levo,levolen)
 struct mipsdis_entry	*ep ;
 uint	instr ;
 char	std[], levo[] ;
@@ -673,7 +673,7 @@ bad0:
 /* end subroutine (entry_init) */
 
 
-static int entry_equal(e1p,e2p)
+local int entry_equal(e1p,e2p)
 struct mipsdis_entry	*e1p, *e2p ;
 {
 
@@ -706,7 +706,7 @@ struct mipsdis_entry	*e1p, *e2p ;
 /* end subroutine (entry_equal) */
 
 
-static int entry_free(ep)
+local int entry_free(ep)
 struct mipsdis_entry	*ep ;
 {
 
