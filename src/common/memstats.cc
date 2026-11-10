@@ -68,6 +68,8 @@ import findbit ;
 
 #define	MS			memstats
 #define	MS_ST			memstats_st
+#define	MS_TE			memstats_te
+#define	MS_TPE			memstats_tpe
 
 #define	MEMSTATS_DEFPAGESIZE	(8 * 1024)
 #define	MEMSTATS_DEFLENDEN	(256 * 1024)
@@ -85,13 +87,13 @@ import findbit ;
 #define CF_ULOCK	0	/* Unlock a previously locked region */
 #endif
 #ifndef	CF_LOCK
-#define CF_LOCK	1	/* Lock a region for exclusive use */
+#define CF_LOCK		1	/* Lock a region for exclusive use */
 #endif
 #ifndef	CF_TLOCK
 #define CF_TLOCK	2	/* Test and lock a region for exclusive use */
 #endif
 #ifndef	CF_TEST
-#define CF_TEST	3	/* Test a region for other processes locks */
+#define CF_TEST		3	/* Test a region for other processes locks */
 #endif
 #endif /* defined(IRIX) */
 
@@ -101,10 +103,12 @@ import findbit ;
 
 /* external subroutines */
 
-extern int	fmeanvarai(uint *,int,double *,double *) ;
-extern int	fmeanvaral(ulong *,int,double *,double *) ;
-extern int	denpercentsi(uint *,int,double *) ;
-extern int	denpercentsl(ulong *,int,double *) ;
+extern "C" {
+    extern int	fmeanvarai(uint *,int,double *,double *) noex ;
+    extern int	fmeanvaral(ulong *,int,double *,double *) noex ;
+    extern int	denpercentsi(uint *,int,double *) noex ;
+    extern int	denpercentsl(ulong *,int,double *) noex ;
+} /* end extern (C) */
 
 
 /* external variables */
@@ -114,21 +118,21 @@ extern int	denpercentsl(ulong *,int,double *) ;
 
 struct percentages {
 	double	p7, p8, p9 ;
-} ;
+} ; /* end struct */
 
 
 /* forward references */
 
-local ulong countden(ulong *,int) ;
+local ulong countden(ulong *,int) noex ;
 
-local int memstats_lookup(MEMSTATS *,ulong, struct memstats_te **) ;
-local int memstats_allocgroup(MEMSTATS *,struct memstats_te **) ;
-local int memstats_allocpage(MEMSTATS *,struct memstats_te **) ;
+local int memstats_lookup(MS *,ulong, MS_TE **) noex ;
+local int memstats_allocgroup(MS *,MS_TE **) noex ;
+local int memstats_allocpage(MS *,MS_TE **) noex ;
 
-local int	writearray(cchar *,ulong *,int) ;
+local int	writearray(cchar *,ulong *,int) noex ;
 
 #ifdef	COMMENT
-local uint	ourhash(hdb_dat *) ;
+local uint	ourhash(hdb_dat *) noex ;
 #endif
 
 
@@ -252,7 +256,7 @@ int		lenden ;
 	    goto bad2 ;
 
 	n = ngroups * op->npages ;
-	rs = hdb_init(&op->tts,n,nullptr,nullptr) ;
+	rs = hdb_start(&op->tts,n,nullptr,nullptr) ;
 
 	if (rs < 0)
 	    goto bad3 ;
@@ -270,8 +274,7 @@ int		lenden ;
 
 	op->fd = rs ;
 
-	strlcpy(op->fname,fname,MAXPATHLEN) ;
-
+	mkpath(op->fname,fname) ;
 	u_unlink(fname) ;
 
 	op->magval = MEMSTATS_MAGIC ;
@@ -279,7 +282,7 @@ int		lenden ;
 
 /* bad stuff */
 bad4:
-	hdb_free(&op->tts) ;
+	hdb_finish(&op->tts) ;
 
 bad3:
 	vecitem_free(&op->groups) ;
@@ -290,9 +293,7 @@ bad2:
 bad1:
 bad0:
 	return rs ;
-}
-/* end subroutine (memstats_init) */
-
+} /* end subroutine (memstats_init) */
 
 /* process a memory "read" request */
 int memstats_read(op,in,f_se,a,v)
@@ -301,19 +302,13 @@ ulong		in ;
 int		f_se ;
 ulong		a, v ;
 {
-	struct memstats_te	*tep ;
-
-	LONG	diff, diff0, diff1, diff_read, diff_write ;
-
+	MS_TE	*tep ;
+	long	diff, diff0, diff1, diff_read, diff_write ;
 	int	rs ;
 
-
 #if	CF_SAFE
-	if (op == nullptr)
-	    return SR_FAULT ;
-
-	if (op->magval != MEMSTATS_MAGIC)
-	    return SR_NOTOPEN ;
+	if (op == nullptr) return SR_FAULT ;
+	if (op->magval != MEMSTATS_MAGIC) return SR_NOTOPEN ;
 #endif /* CF_SAFE */
 
 #if	CF_DEBUGS
@@ -407,9 +402,7 @@ ulong		a, v ;
 
 ret0:
 	return rs ;
-}
-/* end subroutine (memstats_read) */
-
+} /* end subroutine (memstats_read) */
 
 int memstats_write(op,in,f_se,a,v)
 MEMSTATS	*op ;
@@ -417,19 +410,13 @@ ulong		in ;
 int		f_se ;
 ulong		a, v ;
 {
-	struct memstats_te	*tep ;
-
-	LONG	diff, diff0, diff1 ;
-
+	MS_TE	*tep ;
+	long	diff, diff0, diff1 ;
 	int	rs ;
 
-
 #if	CF_SAFE
-	if (op == nullptr)
-	    return SR_FAULT ;
-
-	if (op->magval != MEMSTATS_MAGIC)
-	    return SR_NOTOPEN ;
+	if (op == nullptr) return SR_FAULT ;
+	if (op->magval != MEMSTATS_MAGIC) return SR_NOTOPEN ;
 #endif /* CF_SAFE */
 
 #if	CF_DEBUGS
@@ -488,9 +475,7 @@ ulong		a, v ;
 
 ret0:
 	return rs ;
-}
-/* end subroutine (memstats_write) */
-
+} /* end subroutine (memstats_write) */
 
 /* call this when the simulator is done executing instructions */
 int memstats_writedone(op,in,f_se)
@@ -498,25 +483,16 @@ MEMSTATS	*op ;
 ulong		in ;
 int		f_se ;
 {
-	struct memstats_tpe	*tpep ;
-
-	struct memstats_te	*tep ;
-
+	MS_TPE	*tpep ;
+	MS_TE	*tep ;
 	hdb_dat	key, value ;
-
 	hdb_cur	cur ;
-
-	LONG	diff, diff0, diff1 ;
-
+	long	diff, diff0, diff1 ;
 	int	n, i ;
 
-
 #if	CF_SAFE
-	if (op == nullptr)
-	    return SR_FAULT ;
-
-	if (op->magval != MEMSTATS_MAGIC)
-	    return SR_NOTOPEN ;
+	if (op == nullptr) return SR_FAULT ;
+	if (op->magval != MEMSTATS_MAGIC) return SR_NOTOPEN ;
 #endif /* CF_SAFE */
 
 	if (f_se) {
@@ -559,14 +535,12 @@ int		f_se ;
 
 	    } /* end while (looping through pages) */
 
-	    hdb_cursorfree(&op->tts,&cur) ;
+	    hdb_curend(&op->tts,&cur) ;
 
 	} /* end if (selection in effect) */
 
 	return 0 ;
-}
-/* end subroutine (memstats_writedone) */
-
+} /* end subroutine (memstats_writedone) */
 
 int memstats_free(op)
 MEMSTATS	*op ;
@@ -589,16 +563,12 @@ MEMSTATS	*op ;
 /* free up the page entries */
 
 	hdb_cursorinit(&op->tts,&cur) ;
-
 	while (hdb_curenum(&op->tts,&cur,&key,&value) >= 0) {
-
 	    free(value.buf) ;
-
 	} /* end while */
+	hdb_curend(&op->tts,&cur) ;
 
-	hdb_cursorfree(&op->tts,&cur) ;
-
-	hdb_free(&op->tts) ;
+	hdb_finish(&op->tts) ;
 
 /* free up the groups */
 
@@ -616,8 +586,7 @@ MEMSTATS	*op ;
 
 	op->magval = 0 ;
 	return rs ;
-}
-/* end subroutine (memstats_free) */
+} /* end subroutine (memstats_free) */
 
 /* return some statistics to the user */
 int memstats_getstats(MS *op,MS_ST *sp) {
@@ -627,9 +596,7 @@ int memstats_getstats(MS *op,MS_ST *sp) {
 	hdb_cur	cur ;
 	ulong	c ;
 	ulong	npages = 0 ;
-
 	uint	mult = (1 << 10) ;
-
 	int	rs, i ;
 	int	n ;
 
@@ -667,8 +634,9 @@ int memstats_getstats(MS *op,MS_ST *sp) {
 /* writes */
 
 	    c = 0 ;
-	    for (i = 0 ; i < op->lenden ; i += 1)
+	    for (i = 0 ; i < op->lenden ; i += 1) {
 	        c += op->denlife[i] ;
+	    }
 
 	    if (c != (op->c_write + op->c_writenew)) {
 	        eprintf("memstats_stats: writes=%llu c=%llu\n",op->c_write,c) ;
@@ -691,24 +659,18 @@ int memstats_getstats(MS *op,MS_ST *sp) {
 
 	sp->tes = 0 ;
 	hdb_cursorinit(&op->tts,&cur) ;
-
 	while (hdb_curenum(&op->tts,&cur,&key,&value) >= 0) {
-
 	    tpep = (memstats_tpe *) value.buf ;
 	    tep = tpep->pp ;
 	    n = op->pagesize / szof(memstats_te) ;
 	    for (i = 0 ; i < n ; i += 1) {
-
-	        if ((tep[i].read != 0) || (tep[i].write != 0))
+	        if ((tep[i].read != 0) || (tep[i].write != 0)) {
 	            sp->tes += 1 ;
-
+		}
 	    } /* end for */
-
 	    npages += 1 ;
-
 	} /* end while */
-
-	hdb_cursorfree(&op->tts,&cur) ;
+	hdb_curend(&op->tts,&cur) ;
 
 /* continue */
 
@@ -936,8 +898,7 @@ int memstats_getstats(MS *op,MS_ST *sp) {
 /* we-re out of here */
 ret0:
 	return rs ;
-}
-/* end subroutine (memstats_stats) */
+} /* end subroutine (memstats_stats) */
 
 int memstats_storefiles(op,rintfname,lifefname,usefname)
 MEMSTATS	*op ;
@@ -1005,8 +966,7 @@ char		usefname[] ;
 #endif
 
 	return rs ;
-}
-/* end subroutine (memstats_storefiles) */
+} /* end subroutine (memstats_storefiles) */
 
 
 /* private subroutines */
@@ -1015,7 +975,7 @@ char		usefname[] ;
 local int memstats_lookup(op,a,tepp)
 MEMSTATS		*op ;
 ulong			a ;
-struct memstats_te	**tepp ;
+MS_TE	**tepp ;
 {
 	memstats_tpe	*tpep ;
 	hdb_dat		key ;
@@ -1118,13 +1078,12 @@ struct memstats_te	**tepp ;
 
 ret0:
 	return rs ;
-}
-/* end subroutine (memstats_lookup) */
+} /* end subroutine (memstats_lookup) */
 
 /* allocate a new page */
 local int memstats_allocpage(op,ppp)
 MEMSTATS		*op ;
-struct memstats_te	**ppp ;
+MS_TE	**ppp ;
 {
 	int	rs = SR_OK ;
 
@@ -1147,7 +1106,7 @@ struct memstats_te	**ppp ;
 
 	} /* end if (allocated a new group) */
 
-	*ppp = (struct memstats_te *)
+	*ppp = (MS_TE *)
 	    (((char *) op->cg.pa) + (op->cg.e * op->pagesize)) ;
 	op->cg.e += 1 ;
 
@@ -1157,9 +1116,7 @@ struct memstats_te	**ppp ;
 
 ret0:
 	return rs ;
-}
-/* end subroutine (memstats_allocpage) */
-
+} /* end subroutine (memstats_allocpage) */
 
 /* allocate a new group of pages */
 local int memstats_allocgroup(op,gpp)
@@ -1221,8 +1178,7 @@ memstats_te	**gpp ;
 	*gpp = (memstats_te *) ge.pa ;
 
 	return rs ;
-}
-/* end subroutine (memstats_allocgroup) */
+} /* end subroutine (memstats_allocgroup) */
 
 local int writearray(fname,a,alen)
 cchar	fname[] ;
@@ -1242,8 +1198,7 @@ int		alen ;
 	} /* end if */
 
 	return rs ;
-}
-/* end subroutine (writearray) */
+} /* end subroutine (writearray) */
 
 local ulong countden(density,lenden)
 ulong	density[] ;
@@ -1254,8 +1209,7 @@ int	lenden ;
 		c += density[i] ;
 	}
 	return c ;
-}
-/* end subroutine (countden) */
+} /* end subroutine (countden) */
 
 
 #ifdef	COMMENT
@@ -1276,8 +1230,7 @@ local uint ourhash(hdb_dat *keyp {
 #endif
 
 	return hv ;
-}
-/* end subroutine (ourhash) */
+} /* end subroutine (ourhash) */
 
 #endif /* COMMENT */
 
