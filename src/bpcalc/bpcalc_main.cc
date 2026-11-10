@@ -1,4 +1,5 @@
 /* main SUPPORT */
+/* charset=ISO8859-1 */
 /* lang=C++20 */
 
 /* branch-prediction calculator */
@@ -28,22 +29,26 @@
 #include	<sys/param.h>
 #include	<unistd.h>
 #include	<fcntl.h>
-#include	<ctime>
-#include	<cstdlib>
-#include	<cstring>
+#include	<netdb.h>
 #include	<pwd.h>
 #include	<grp.h>
-#include	<netdb.h>
-#include	<usystem.h>
-#include	<getpwentry.h>
-#include	<bfile.h>
+#include	<ctime>
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<cstring>
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
 #include	<baops.h>
-#include	<realname.h>
+#include	<getpwentry.h>
 #include	<getusername.h>
+#include	<realname.h>
 #include	<pwfile.h>
 #include	<mallocstuff.h>
+#include	<strtime.h>		/* LIBUC */
 #include	<exitcodes.h>
 #include	<localmisc.h>
+#include	<libdebug.h>		/* LIBDEBUG |DEBUGPRINTF(3debug)| */
+#include	<bfile.h>
 
 #include	"config.h"
 #include	"defs.h"
@@ -69,8 +74,6 @@ extern int	mkgecosname(char *,int,cchar *) ;
 extern int	isdigitlatin(int) ;
 
 extern char	*strbasename(char *) ;
-extern char	*timestr_log(time_t,char *) ;
-extern char	*timestr_elapsed(time_t,char *) ;
 
 
 /* external variables */
@@ -249,7 +252,7 @@ int main(int argc,mainv argv,mainv envv) noex {
 	    f_optminus = (*argp == '-') ;
 	    f_optplus = (*argp == '+') ;
 	    if ((argl > 0) && (f_optminus || f_optplus)) {
-		const int	ach = MKCHAR(argp[1]) ;
+		cint	ach = MKCHAR(argp[1]) ;
 
 	        if (argl > 1) {
 
@@ -1015,7 +1018,7 @@ int main(int argc,mainv argv,mainv envv) noex {
 	                    if (rs >= 0) {
 
 	                        bprintf(ofp,"%s %-8s %16s",
-	                            timestr_log(t,timebuf),
+	                            strtime_log(t,timebuf),
 	                            line,hostname) ;
 
 	                        if (pip->verboselevel >= 1) {
@@ -1024,7 +1027,7 @@ int main(int argc,mainv argv,mainv envv) noex {
 	                                daytime = time(nullptr) ;
 
 	                            bprintf(ofp," (%17s)",
-	                                timestr_elapsed((daytime - t),
+	                                strtime_elapsed((daytime - t),
 	                                timebuf)) ;
 
 	                        }
