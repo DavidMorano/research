@@ -107,7 +107,7 @@ local int	half(long,int) noex ;
 #endif
 
 #ifdef	COMMENT
-static void	mkmodestr(char *,int) noex ;
+local void	mkmodestr(char *,int) noex ;
 #endif
 
 
@@ -1586,7 +1586,7 @@ uint		rtype ;
 #ifdef	COMMENT
 
 /* make the mode string for opening the file */
-static void mkmodestr(buf,mode)
+local void mkmodestr(buf,mode)
 char	buf[] ;
 int	mode ;
 {
