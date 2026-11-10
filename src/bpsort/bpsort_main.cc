@@ -1,12 +1,12 @@
-/* main */
+/* main SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 */
 
 /* program front-end subroutine */
 /* version %I% last-modified %G% */
 
-
 #define	CF_DEBUGS	0		/* compile-time */
 #define	CF_DEBUG	0		/* run-time */
-
 
 /* revision history:
 
@@ -20,28 +20,25 @@
 /*******************************************************************************
 
 	Synopsis:
-
 	$ bpsort <dbfile(s)> ...
-
 
 *******************************************************************************/
 
-
 #include	<envstandards.h>	/* MUST be first to configure */
-
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<unistd.h>
 #include	<fcntl.h>
-#include	<cstdlib>
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
 #include	<cstring>
-
-#include	<usystem.h>
-#include	<bfile.h>
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
 #include	<baops.h>
 #include	<pwfile.h>
 #include	<exitcodes.h>
 #include	<localmisc.h>
+#include	<bfile.h>
 
 #include	"config.h"
 #include	"defs.h"
@@ -65,9 +62,6 @@ extern int	cfdeci(cchar *,int,int *) ;
 extern int	process(PROGINFO *,vecitem *,cchar *) ;
 extern int	dbdump(PROGINFO *,vecitem *) ;
 extern int	isdigitlatin(int) ;
-
-extern char	*timestr_log(time_t,char *) ;
-extern char	*timestr_elapsed(time_t,char *) ;
 
 
 /* external variables */
@@ -123,9 +117,9 @@ int main(int argc,cchar **argv,cchar **envv)
 	int		f_self = FALSE ;
 	int		f_entok = FALSE ;
 
-	const char	*argp, *aop, *akp, *avp ;
-	const char	*cp, *cp2 ;
-	const char	*ofname = NULL ;
+	cchar	*argp, *aop, *akp, *avp ;
+	cchar	*cp, *cp2 ;
+	cchar	*ofname = NULL ;
 	char		argpresent[MAXARGGROUPS] ;
 	char		buf[BUFLEN + 1], *bp ;
 
@@ -170,7 +164,7 @@ int main(int argc,cchar **argv,cchar **envv)
 	    f_optminus = (*argp == '-') ;
 	    f_optplus = (*argp == '+') ;
 	    if ((argl > 0) && (f_optminus || f_optplus)) {
-		const int	ach = MKCHAR(argp[1]) ;
+		cint	ach = MKCHAR(argp[1]) ;
 
 	        if (argl > 1) {
 
