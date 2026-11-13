@@ -64,7 +64,7 @@
 
 /* forward references */
 
-static int	lsq_handleshift(LSQ *,struct proginfo *,struct levoinfo *) ;
+local int	lsq_handleshift(LSQ *,struct proginfo *,struct levoinfo *) ;
 
 
 
@@ -561,7 +561,7 @@ int lsq_print(LSQ * lsqp)
 
 
 /* perform a machine shift if one was called for */
-static int lsq_handleshift(lsqp,pip,lip)
+local int lsq_handleshift(lsqp,pip,lip)
 LSQ		*lsqp ;
 struct proginfo	*pip ;
 struct levoinfo	*lip ;
