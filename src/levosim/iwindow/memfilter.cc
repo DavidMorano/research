@@ -57,8 +57,8 @@
 
 /* forward referecens */
 
-static int memfilter_busread(MEMFILTER *) ;
-static int memfilter_buswrite(MEMFILTER *) ;
+local int memfilter_busread(MEMFILTER *) ;
+local int memfilter_buswrite(MEMFILTER *) ;
 
 
 
@@ -206,7 +206,7 @@ MEMFILTER	*rfp ;
 
 
 /* read our incoming bus */
-static int memfilter_busread(rfp)
+local int memfilter_busread(rfp)
 MEMFILTER	*rfp ;
 {
 	BUS_CONTENT	rd ;
@@ -262,7 +262,7 @@ MEMFILTER	*rfp ;
 
 
 /* write the output bus */
-static int memfilter_buswrite(rfp)
+local int memfilter_buswrite(rfp)
 MEMFILTER	*rfp ;
 {
 	BUS_CONTENT	rd ;
@@ -283,7 +283,7 @@ MEMFILTER	*rfp ;
 
 
 /* do we have a machine shift */
-static int memfilter_handleshift(rfp)
+local int memfilter_handleshift(rfp)
 MEMFILTER	*rfp ;
 {
 	int	rs, i, j ;
@@ -309,7 +309,7 @@ MEMFILTER	*rfp ;
 
 
 /* lookup to see if the present forward operation must forward again */
-static int memfilter_lookup(rfp)
+local int memfilter_lookup(rfp)
 MEMFILTER	*rfp ;
 {
 	int	rs, i, j ;
