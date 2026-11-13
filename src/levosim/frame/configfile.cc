@@ -91,7 +91,7 @@ extern int	cfdeci(char *,int,int *), cfdecmfi(char *,int,int *) ;
 
 /* forward references */
 
-static void	checkfree() ;
+local void	checkfree() ;
 
 
 /* local static data */
@@ -1009,7 +1009,7 @@ struct configfile	*csp ;
 
 
 /* free up the resources occupied by a CONFIG_STRUCTURE */
-static void checkfree(vp)
+local void checkfree(vp)
 char	**vp ;
 {
 
