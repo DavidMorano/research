@@ -436,7 +436,7 @@ return 1;
 
 int
 gdb() {
-static int i=0;
+local int i=0;
 printf("%d\n",i++);
 }
 
