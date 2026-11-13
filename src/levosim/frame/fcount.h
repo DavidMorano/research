@@ -46,7 +46,7 @@ struct fcount_head {
 
 #if	(! defined(FCOUNT_MASTER)) || (FCOUNT_MASTER == 0)
 
-extern int	fcount_init(FCOUNT *,LMAPPROG *,const char *) ;
+extern int	fcount_init(FCOUNT *,LMAPPROG *,cchar *) ;
 extern int	fcount_update(FCOUNT *,uint,int) ;
 extern int	fcount_done(FCOUNT *) ;
 extern int	fcount_sort(FCOUNT *,int (*)()) ;
