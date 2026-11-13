@@ -56,11 +56,11 @@
 
 /* external subroutines */
 
-extern int	cfnumull(const char *,int,ULONG *) ;
-extern int	sfkey(const char *,int,char **) ;
+extern int	cfnumull(cchar *,int,ULONG *) ;
+extern int	sfkey(cchar *,int,char **) ;
 
-extern char	*strwcpy(char *,const char *,int) ;
-extern char	*strnchr(const char *,int,int) ;
+extern char	*strwcpy(char *,cchar *,int) ;
+extern char	*strnchr(cchar *,int,int) ;
 
 
 /* local structures */
@@ -68,7 +68,7 @@ extern char	*strnchr(const char *,int,int) ;
 
 /* forward references */
 
-static int	traceinfo_procopts(TRACEINFO *,char *,const char *) ;
+local int	traceinfo_procopts(TRACEINFO *,char *,cchar *) ;
 
 
 /* local data */
@@ -319,10 +319,10 @@ TRACEINFO	*op ;
 
 
 
-static int traceinfo_procopts(op,filename,opts)
+local int traceinfo_procopts(op,filename,opts)
 TRACEINFO	*op ;
 char		filename[] ;
-const char	opts[] ;
+cchar	opts[] ;
 {
 	FIELD	fsb ;
 
