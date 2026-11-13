@@ -55,7 +55,7 @@
 
 /* forward references */
 
-static int	memorytest_dostuff(MEMORYTEST *) ;
+local int	memorytest_dostuff(MEMORYTEST *) ;
 
 
 
@@ -168,7 +168,7 @@ MEMORYTEST	*mtp ;
 
 
 /* do stuff */
-static int memorytest_dostuff(mtp)
+local int memorytest_dostuff(mtp)
 MEMORYTEST	*mtp ;
 {
 	struct proginfo	*pip ;
