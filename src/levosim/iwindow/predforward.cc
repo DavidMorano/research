@@ -60,8 +60,8 @@
 
 /* forward referecens */
 
-static int predforward_busread(PREDFORWARD *) ;
-static int predforward_buswrite(PREDFORWARD *) ;
+local int predforward_busread(PREDFORWARD *) ;
+local int predforward_buswrite(PREDFORWARD *) ;
 
 
 
@@ -227,7 +227,7 @@ PREDFORWARD	*rfp ;
 
 
 /* read our incoming bus */
-static int predforward_busread(rfp)
+local int predforward_busread(rfp)
 PREDFORWARD	*rfp ;
 {
 	BUS_CONTENT	rd ;
@@ -259,7 +259,7 @@ PREDFORWARD	*rfp ;
 
 
 /* write the output bus */
-static int predforward_buswrite(rfp)
+local int predforward_buswrite(rfp)
 PREDFORWARD	*rfp ;
 {
 	BUS_CONTENT	rd ;
@@ -280,7 +280,7 @@ PREDFORWARD	*rfp ;
 
 
 /* do we have a machine shift */
-static int predforward_handleshift(rfp)
+local int predforward_handleshift(rfp)
 PREDFORWARD	*rfp ;
 {
 	int	rs, i, j ;
@@ -306,7 +306,7 @@ PREDFORWARD	*rfp ;
 
 
 /* lookup to see if the present forward operation must forward again */
-static int predforward_lookup(rfp)
+local int predforward_lookup(rfp)
 PREDFORWARD	*rfp ;
 {
 	int	rs, i, j ;
