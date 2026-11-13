@@ -63,12 +63,12 @@
 
 /* external subroutines */
 
-extern int	cfnumull(const char *,int,ULONG *) ;
-extern int	sfkey(const char *,int,char **) ;
-extern int	optmatch(char *const *,const char *,int) ;
+extern int	cfnumull(cchar *,int,ULONG *) ;
+extern int	sfkey(cchar *,int,char **) ;
+extern int	optmatch(char *const *,cchar *,int) ;
 
-extern char	*strwcpy(char *,const char *,int) ;
-extern char	*strnchr(const char *,int,int) ;
+extern char	*strwcpy(char *,cchar *,int) ;
+extern char	*strnchr(cchar *,int,int) ;
 
 
 /* externals variables */
@@ -76,7 +76,7 @@ extern char	*strnchr(const char *,int,int) ;
 
 /* forward references */
 
-static int	debugwin_procopts(DEBUGWIN *,const char *,int) ;
+local int	debugwin_procopts(DEBUGWIN *,cchar *,int) ;
 
 
 /* local data */
@@ -265,9 +265,9 @@ DEBUGWIN	*pfp ;
 
 
 
-static int debugwin_procopts(op,s,slen)
+local int debugwin_procopts(op,s,slen)
 DEBUGWIN	*op ;
-const char	s[] ;
+cchar	s[] ;
 int		slen ;
 {
 	FIELD	fsb ;
