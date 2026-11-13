@@ -1,15 +1,16 @@
-/* netorder */
+/* netorder SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
-/* network byte order manipulations */
+/* convert integer type variables to and from "net" order */
+/* version %I% last-modified %G% */
 
 
 /* revision history:
 
 	= 1998-03-24, David Morano
-
 	This code was written from scratch to get some portable
 	network ordering for Ethernet (ETHCON) development work.
-
 
 */
 
@@ -17,6 +18,10 @@
 
 /******************************************************************************
 
+  	Group:
+	netorder
+
+	Description:
 	These routines are used to manipulate data that may be in 
 	the portable "network ordering."  This ordering is used
 	on network-type transfers.  We will be implementing the IP
@@ -24,7 +29,6 @@
 	circuit pack computer.
 
 	Subroutines are provided to read and write host native:
-
 	+ shorts
 	+ ints
 	+ LONGs (64-bit)
@@ -32,70 +36,72 @@
 	out of or into a character buffer.  The buffer bytes are what
 	are usually read or written to the network.
 
-
 ******************************************************************************/
 
-
-#define	NETORDER_MASTER		1
-
-
 #include	<envstandards.h>	/* MUST be first to configure */
-
 #include	<sys/types.h>
 #include	<climits>
-
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<clanguage.h>		/* LIBU */
+#include	<utypedefs.h>		/* LIBU */
+#include	<utypealiases.h>	/* LIBU */
+#include	<usysdefs.h>		/* LIBU */
 #include	<localmisc.h>
+
+
+/* local defines */
+
+
+/* local namespaces */
+
+
+/* local typedefs */
+
+
+/* external subroutines */
+
+
+/* external variables */
+
+
+/* local structures */
+
+
+/* forward references */
+
+
+/* local variables */
+
+
+/* exported variables */
 
 
 /* exported subroutines */
 
-
-int netorder_rchar(buf,cwp)
-char	*buf ;
-char	*cwp ;
-{
+int netorder_rchar(char *buf,char *cwp) noex {
 	uchar	*ubuf = (uchar *) buf ;
-
-
 	*cwp = ubuf[0] ;
 	return 1 ;
-}
-/* end subroutine (netorder_rchar) */
+} /* end subroutine (netorder_rchar) */
 
-
-int netorder_rshort(buf,swp)
-char	*buf ;
-short	*swp ;
-{
+int netorder_rshort(char *buf,short *swp) noex {
 	uchar	*ubuf = (uchar *) buf ;
-
-
 	*swp = 0 ;
 	*swp |= (ubuf[0] << 8) ;
 	*swp |= (ubuf[1] << 0) ;
-
 	return 2 ;
-}
-/* end subroutine (netorder_rshort) */
+} /* end subroutine (netorder_rshort) */
 
-
-int netorder_rint(buf,iwp)
-char	*buf ;
-int	*iwp ;
-{
+int netorder_rint(char *buf,int *iwp) noex {
 	uchar	*ubuf = (uchar *) buf ;
-
-
 	*iwp = 0 ;
 	*iwp |= (ubuf[0] << 24) ;
 	*iwp |= (ubuf[1] << 16) ;
 	*iwp |= (ubuf[2] << 8) ;
 	*iwp |= (ubuf[3] << 0) ;
-
 	return 4 ;
-}
-/* end subroutine (netorder_rint) */
-
+} /* end subroutine (netorder_rint) */
 
 #if	(LONG_BIT == 64)
 
@@ -456,6 +462,5 @@ uint	usw ;
 }
 
 #endif /* COMMENT */
-
 
 
