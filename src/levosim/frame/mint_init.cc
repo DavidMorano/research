@@ -121,7 +121,7 @@ mint options:\n\
 #endif
 
 FILE *Fobj;		/* file descriptor for object file */
-static int Nicode;	/* number of free icodes left */
+local int Nicode;	/* number of free icodes left */
 
 static time_t Start_time ;
 static time_t Finish_time ;
@@ -137,7 +137,7 @@ static struct rusage Rusage ;
 static double Total_elapsed_time ;
 static double Total_cpu_time ;
 
-static int Argc ;
+local int Argc ;
 static char **Argv ;
 
 /* file name for cycles for each operation */
@@ -154,14 +154,14 @@ void malloc_share(thread_ptr child, thread_ptr parent) ;
 void allocate_fixed(long addr, long nbytes) ;
 
 /* private functions */
-static void parse_args(int argc, char **argv) ;
-static void save_args(int argc, char **argv) ;
-static void copy_argv(int arg_start, int argc, char **argv, char **envp) ;
-static void mint_stats() ;
-static void read_cycles(char *fname) ;
-static void create_addr_space() ;
-static void read_text() ;
-static void mint_usage() ;
+local void parse_args(int argc, char **argv) ;
+local void save_args(int argc, char **argv) ;
+local void copy_argv(int arg_start, int argc, char **argv, char **envp) ;
+local void mint_stats() ;
+local void read_cycles(char *fname) ;
+local void create_addr_space() ;
+local void read_text() ;
+local void mint_usage() ;
 
 
 
@@ -345,7 +345,7 @@ char	*envp[] ;
 
 
 /* print out a dumb usage statement */
-static void mint_usage()
+local void mint_usage()
 {
 
 
@@ -363,7 +363,7 @@ static void mint_usage()
 
 
 /* copy the args */
-static void save_args(int argc, char **argv)
+local void save_args(int argc, char **argv)
 {
 	int i ;
 
@@ -424,7 +424,7 @@ struct proginfo	*pip ;
 /* end subroutine (mint_done) */
 
 
-static void mint_stats()
+local void mint_stats()
 {
 	int i ;
 	unsigned int elapsed, minutes, seconds ;
@@ -535,7 +535,7 @@ static void mint_stats()
 
 
 /* parse the command line arguments */
-static void parse_args(int argc, char **argv)
+local void parse_args(int argc, char **argv)
 {
 	char *cp, *tmp ;
 	int c, errflag ;
@@ -754,7 +754,7 @@ static void parse_args(int argc, char **argv)
 /* end subroutine (parse_args) */
 
 
-static void read_cycles(char *fname)
+local void read_cycles(char *fname)
 {
 	int i ;
 	FILE *fd ;
@@ -816,7 +816,7 @@ static void read_cycles(char *fname)
 
 
 /* copy application args onto the simulated stack for the main process */
-static void
+local void
 copy_argv(int arg_start, int argc, char **argv, char **envp)
 {
 	int i, size, nenv ;
@@ -909,7 +909,7 @@ copy_argv(int arg_start, int argc, char **argv, char **envp)
  * logbase2() returns the log (base 2) of its argument, rounded up.
  * It also rounds up its argument to the next higher power of 2.
  */
-static int
+local int
 logbase2(long *pnum)
 {
 	int logsize, exp ;
@@ -1032,7 +1032,7 @@ allocate_fixed(long addr, long nbytes)
 
 ****/
 
-static void
+local void
 create_addr_space()
 {
 	int i, size, multiples ;
@@ -1497,7 +1497,7 @@ Reads the text section of the object file and creates the linked list
 of icode structures.
 */
 
-static void read_text()
+local void read_text()
 {
 	int i, make_copy, voffset, wroffset, err, num_pointers ;
 	long instr, opflags, iflags ;
