@@ -79,19 +79,19 @@ extern char	*strwcpy(char *,char *,int) ;
 
 /* forward references */
 
-static int	debugsched_parsefile() ;
-static int	debugsched_freeentries(), debugsched_freefiles() ;
-static int	debugsched_addentry() ;
-static int	debugsched_freefile() ;
+local int	debugsched_parsefile() ;
+local int	debugsched_freeentries(), debugsched_freefiles() ;
+local int	debugsched_addentry() ;
+local int	debugsched_freefile() ;
 
-static int	entry_load(DEBUGSCHED_ENTRY *,char *,int,char *,int) ;
-static int	entry_enough(DEBUGSCHED_ENTRY *) ;
+local int	entry_load(DEBUGSCHED_ENTRY *,char *,int,char *,int) ;
+local int	entry_enough(DEBUGSCHED_ENTRY *) ;
 
-static int	cmpfunc() ;
+local int	cmpfunc() ;
 
-static void	entry_init(DEBUGSCHED_ENTRY *,int) ;
-static void	entry_free(DEBUGSCHED_ENTRY *) ;
-static void	freeit(char **) ;
+local void	entry_init(DEBUGSCHED_ENTRY *,int) ;
+local void	entry_free(DEBUGSCHED_ENTRY *) ;
+local void	freeit(char **) ;
 
 
 /* local static data */
@@ -719,7 +719,7 @@ VECITEM		*eep ;
 
 
 /* parse a parameter file */
-static int debugsched_parsefile(pfp,fi,eep)
+local int debugsched_parsefile(pfp,fi,eep)
 DEBUGSCHED	*pfp ;
 int		fi ;
 VECITEM		*eep ;
@@ -908,7 +908,7 @@ badmal:
 
 
 /* add an entry to something */
-static int debugsched_addentry(pfp,pep)
+local int debugsched_addentry(pfp,pep)
 DEBUGSCHED	*pfp ;
 DEBUGSCHED_ENTRY	*pep ;
 {
@@ -923,7 +923,7 @@ DEBUGSCHED_ENTRY	*pep ;
 
 
 /* free up ALL of the entries in this DEBUGSCHED list */
-static int debugsched_freeentries(pfp)
+local int debugsched_freeentries(pfp)
 DEBUGSCHED		*pfp ;
 {
 	DEBUGSCHED_ENTRY	*pep ;
@@ -964,7 +964,7 @@ DEBUGSCHED		*pfp ;
 
 
 /* free up all of the entries in this DEBUGSCHED list associated w/ a file */
-static int debugsched_freefile(pfp,fi)
+local int debugsched_freefile(pfp,fi)
 DEBUGSCHED	*pfp ;
 int		fi ;
 {
@@ -1014,7 +1014,7 @@ int		fi ;
 
 
 /* free up all of the files in this DEBUGSCHED list */
-static int debugsched_freefiles(pfp)
+local int debugsched_freefiles(pfp)
 DEBUGSCHED	*pfp ;
 {
 	DEBUGSCHED_FILE	*pep ;
@@ -1044,7 +1044,7 @@ DEBUGSCHED	*pfp ;
 
 
 /* initialize an entry */
-static void entry_init(pep,fi)
+local void entry_init(pep,fi)
 DEBUGSCHED_ENTRY	*pep ;
 int		fi ;
 {
@@ -1059,7 +1059,7 @@ int		fi ;
 /* end subroutine (entry_init) */
 
 
-static int entry_load(pep,k,klen,v,vlen)
+local int entry_load(pep,k,klen,v,vlen)
 DEBUGSCHED_ENTRY	*pep ;
 char		k[], v[] ;
 int		klen, vlen ;
@@ -1107,7 +1107,7 @@ int		klen, vlen ;
 /* end subroutine (entry_load) */
 
 
-static int entry_enough(pep)
+local int entry_enough(pep)
 DEBUGSCHED_ENTRY	*pep ;
 {
 
@@ -1126,7 +1126,7 @@ DEBUGSCHED_ENTRY	*pep ;
 #ifdef	DEBUGSCHED_COMMENT
 
 /* compare if all but the netgroup are equal (or matched) */
-static int entry_mat2(e1p,e2p)
+local int entry_mat2(e1p,e2p)
 DEBUGSCHED_ENTRY	*e1p, *e2p ;
 {
 
@@ -1163,7 +1163,7 @@ DEBUGSCHED_ENTRY	*e1p, *e2p ;
 #ifdef	DEBUGSCHED_COMMENT
 
 /* compare if all of the entry is equal (or matched) */
-static int entry_mat3(e1p,e2p)
+local int entry_mat3(e1p,e2p)
 DEBUGSCHED_ENTRY	*e1p, *e2p ;
 {
 
@@ -1188,7 +1188,7 @@ DEBUGSCHED_ENTRY	*e1p, *e2p ;
 
 
 /* free up an entry */
-static void entry_free(pep)
+local void entry_free(pep)
 DEBUGSCHED_ENTRY	*pep ;
 {
 
@@ -1209,7 +1209,7 @@ DEBUGSCHED_ENTRY	*pep ;
 /* end subroutine (entry_free) */
 
 
-static void freeit(pp)
+local void freeit(pp)
 char	**pp ;
 {
 
@@ -1225,7 +1225,7 @@ char	**pp ;
 
 
 /* compare just the 'netgroup' part of entries (used for sorting) */
-static int cmpfunc(e1pp,e2pp)
+local int cmpfunc(e1pp,e2pp)
 DEBUGSCHED_ENTRY	**e1pp, **e2pp ;
 {
 
