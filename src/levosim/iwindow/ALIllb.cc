@@ -54,8 +54,8 @@
 
 /* forward references */
 
-static int	llb_checkload(LLB *,struct proginfo *,struct levoinfo *) ;
-static int	llb_handleshift(LLB *,struct proginfo *,struct levoinfo *) ;
+local int	llb_checkload(LLB *,struct proginfo *,struct levoinfo *) ;
+local int	llb_handleshift(LLB *,struct proginfo *,struct levoinfo *) ;
 
 
 
@@ -615,7 +615,7 @@ int	index;
 
 
 /* handle the combinatorial logic of a machine shift */
-static int llb_checkload(llbp,pip,lip)
+local int llb_checkload(llbp,pip,lip)
 LLB		*llbp ;
 struct proginfo	*pip ;
 struct levoinfo	*lip ;
@@ -646,7 +646,7 @@ struct levoinfo	*lip ;
 
 
 /* handle the combinatorial logic of a machine shift */
-static int llb_handleshift(llbp,pip,lip)
+local int llb_handleshift(llbp,pip,lip)
 LLB		*llbp ;
 struct proginfo	*pip ;
 struct levoinfo	*lip ;
