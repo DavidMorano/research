@@ -48,7 +48,7 @@
 #include	<strwcpy.h>		/* LIBUC */
 #include	<paramfile.h>		/* LIBUC */
 #include	<getfname.h>		/* LIBUC */
-#include	<timestr.h>		/* LIBUC */
+#include	<strtime.h>		/* LIBUC */
 #include	<prognamevar.hh>	/* LIBUC */
 #include	<mallocstuff.h>		/* LIBUC */
 #include	<localmisc.h>		/* LIBU */
@@ -908,7 +908,7 @@ ulong		skipinstr ;
 
 	            bprintf(&statfile,
 	                "LevoSim execution results %s\n\n",
-	                timestr_log(daytime,timebuf)) ;
+	                strtime_log(daytime,timebuf)) ;
 
 	            if (pip->jobname[0] != '\0')
 	                bprintf(&statfile,
@@ -932,7 +932,7 @@ ulong		skipinstr ;
 
 	            bprintf(&statfile,
 	                "elapsed time                     %s\n",
-	                timestr_elapsed(t_elapsed,timebuf)) ;
+	                strtime_elapsed(t_elapsed,timebuf)) ;
 
 	            dc = (double) clocks ;
 	            dt = (double) t_elapsed ;
