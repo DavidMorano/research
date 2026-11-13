@@ -89,7 +89,7 @@
 
 /* external subroutines */
 
-extern int	readsginm(vecitem *,const char *) ;
+extern int	readsginm(vecitem *,cchar *) ;
 
 
 /* local structures */
@@ -101,9 +101,9 @@ extern int	readsginm(vecitem *,const char *) ;
 int		fcount_get(FCOUNT *,int,FCOUNT_ENTRY **) ;
 #endif
 
-static int	cmpfunc(FCOUNT_ENTRY **, FCOUNT_ENTRY **) ;
-static int	incfunc(FCOUNT_ENTRY **, FCOUNT_ENTRY **) ;
-static int	insfunc(FCOUNT_ENTRY **, FCOUNT_ENTRY **) ;
+local int	cmpfunc(FCOUNT_ENTRY **, FCOUNT_ENTRY **) ;
+local int	incfunc(FCOUNT_ENTRY **, FCOUNT_ENTRY **) ;
+local int	insfunc(FCOUNT_ENTRY **, FCOUNT_ENTRY **) ;
 
 
 
@@ -114,7 +114,7 @@ static int	insfunc(FCOUNT_ENTRY **, FCOUNT_ENTRY **) ;
 int fcount_init(op,mp,fname)
 FCOUNT		*op ;
 LMAPPROG	*mp ;
-const char	fname[] ;
+cchar	fname[] ;
 {
 	FCOUNT_ENTRY		e, *ep, *pep, *nep ;
 
@@ -674,7 +674,7 @@ FCOUNT_STATS	*rp ;
 
 
 /* sort by function starting IA */
-static int cmpfunc(e1pp,e2pp)
+local int cmpfunc(e1pp,e2pp)
 FCOUNT_ENTRY	**e1pp, **e2pp ;
 {
 
@@ -703,7 +703,7 @@ FCOUNT_ENTRY	**e1pp, **e2pp ;
 
 
 /* sort an IA by if it is before, inside, or after a function */
-static int incfunc(e1pp,e2pp)
+local int incfunc(e1pp,e2pp)
 FCOUNT_ENTRY	**e1pp, **e2pp ;
 {
 	FCOUNT_ENTRY	*e1p, *e2p ;
@@ -744,7 +744,7 @@ FCOUNT_ENTRY	**e1pp, **e2pp ;
 
 
 /* sort by number of instructions */
-static int insfunc(e1pp,e2pp)
+local int insfunc(e1pp,e2pp)
 FCOUNT_ENTRY	**e1pp, **e2pp ;
 {
 	FCOUNT_ENTRY	*e1p, *e2p ;
@@ -771,7 +771,7 @@ FCOUNT_ENTRY	**e1pp, **e2pp ;
 /* read the stupid SGI name-list file */
 static readsgi(lp,fname)
 vecitem		*lp ;
-const char	fname[] ;
+cchar	fname[] ;
 {
 	bfile	nm ;
 
