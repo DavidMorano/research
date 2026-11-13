@@ -54,11 +54,11 @@
 
 /* external subroutines */
 
-extern int	cfnumull(const char *,int,ULONG *) ;
-extern int	sfkey(const char *,int,char **) ;
+extern int	cfnumull(cchar *,int,ULONG *) ;
+extern int	sfkey(cchar *,int,char **) ;
 
-extern char	*strwcpy(char *,const char *,int) ;
-extern char	*strnchr(const char *,int,int) ;
+extern char	*strwcpy(char *,cchar *,int) ;
+extern char	*strnchr(cchar *,int,int) ;
 
 
 /* local structures */
@@ -66,7 +66,7 @@ extern char	*strnchr(const char *,int,int) ;
 
 /* forward references */
 
-static int	xmlinfo_procopts(XMLINFO *,char *,const char *) ;
+local int	xmlinfo_procopts(XMLINFO *,char *,cchar *) ;
 
 
 /* local data */
@@ -332,10 +332,10 @@ XMLINFO	*op ;
 
 
 
-static int xmlinfo_procopts(op,filename,opts)
+local int xmlinfo_procopts(op,filename,opts)
 XMLINFO		*op ;
 char		filename[] ;
-const char	opts[] ;
+cchar	opts[] ;
 {
 	FIELD	fsb ;
 
