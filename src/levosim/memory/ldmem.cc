@@ -53,7 +53,7 @@
 
 /* forward references */
 
-static int ldmem_phase4(LDMEM *) ;
+local int ldmem_phase4(LDMEM *) ;
 
 
 
@@ -183,7 +183,7 @@ int ldmem_busy (LDMEM *ldmem){
 
 
 
-static int ldmem_phase4(LDMEM * ldmem)
+local int ldmem_phase4(LDMEM * ldmem)
 {
 
   if (ldmem -> busy == 0 ) 
