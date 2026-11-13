@@ -68,6 +68,7 @@
 #include	<vstrcmp.h>		/* |vstrkeycmp(3uc)| */
 #include	<prognamevar.hh>
 #include	<char.h>
+#include	<strtime.h>		/* LIBUC */
 #include	<exitcodes.h>
 #include	<localmisc.h>
 
@@ -108,7 +109,7 @@
 extern int	expander() ;
 extern int	procfilepaths(char *,char *,VECSTR *) ;
 extern int	procfileenv(char *,char *,VECSTR *) ;
-extern int	process(struct proginfo *,const char *,paramfile *,
+extern int	process(struct proginfo *,cchar *,paramfile *,
 			VECSTR *,ulong,ulong) ;
 
 
@@ -122,40 +123,21 @@ extern char	levosim_makedate[] ;
 struct rsstring {
 	int	rs ;
 	char	*str ;
-} ;
+} ; /* end struct */
 
 
 /* forward references */
 
-static int	procfile(struct proginfo *,int (*)(),char *,
-			SCHEDVAR *,char *, VECSTR *) ;
-static int	makedate_get(const char *,char **) ;
+local int	procfile(struct proginfo *,int (*)(),char *,
+			SCHEDVAR *,char *,VECSTR *) ;
+local int	makedate_get(cchar *,char **) ;
 
-static void	int_inter(int,siginfo_t *,void *) ;
-static void	int_hanger(int,siginfo_t *,void *) ;
-static void	int_piper(int,siginfo_t *,void *) ;
+local void	int_inter(int,siginfo_t *,void *) ;
+local void	int_hanger(int,siginfo_t *,void *) ;
+local void	int_piper(int,siginfo_t *,void *) ;
 
 
 /* local variables */
-
-static const char *argopts[] = {
-	"TMPDIR",
-	"VERSION",
-	"VV",
-	"VERBOSE",
-	"ROOT",
-	"LOGFILE",
-	"CONFIG",
-	"PARAMTAB",
-	"DEBUG",
-	"DS",
-	"icount",
-	"count",
-	"et",
-	"s",
-	"skip",
-	NULL
-} ;
 
 enum argopts {
 	argopt_tmpdir,
@@ -174,38 +156,56 @@ enum argopts {
 	argopt_select,
 	argopt_skip,
 	argopt_overlast
-} ;
+} ; /* end enum (argopt) */
+
+constexpr cpcchar	argopts[] = {
+	"TMPDIR",
+	"VERSION",
+	"VV",
+	"VERBOSE",
+	"ROOT",
+	"LOGFILE",
+	"CONFIG",
+	"PARAMTAB",
+	"DEBUG",
+	"DS",
+	"icount",
+	"count",
+	"et",
+	"s",
+	"skip",
+	NULL
+} ; /* end array */
 
 /* program modes (these must match the corresponding defines) */
-
-static const char *progmodes[] = {
+constexpr cpcchar	progmodes[] = {
 	"levosim",
 	"levosize",
 	"simplesim",
 	NULL
-} ;
+} ; /* end array */
 
 /* 'conf' for most regular programs */
-static const char	*sched1[] = {
+constexpr cpcchar	sched1[] = {
 	"%p/%e/%n/%n.%f",
 	"%p/%e/%n/%f",
 	"%p/%e/%n.%f",
 	"%p/%n.%f",
 	NULL
-} ;
+} ; /* end array */
 
 /* non-'conf' ETC stuff for all regular programs */
-static const char	*sched2[] = {
+constexpr cpcchar	sched2[] = {
 	"%p/%e/%n/%n.%f",
 	"%p/%e/%n/%f",
 	"%p/%e/%n.%f",
 	"%p/%e/%f",
 	"%p/%n.%f",
 	NULL
-} ;
+} ; /* end array */
 
 /* 'conf' and non-'conf' ETC stuff for local searching */
-static const char	*sched3[] = {
+constexpr cpcchar	sched3[] = {
 	"%e/%n/%n.%f",
 	"%e/%n/%f",
 	"%e/%n.%f",
@@ -213,17 +213,16 @@ static const char	*sched3[] = {
 	"%n.%f",
 	"%f",
 	NULL
-} ;
+} ; /* end array */
 
 /* exit strings */
-
-static const struct rsstring	rsstrings[] = {
+constexpr rsstring	rsstrings[] = {
 	{ 1, "program reached normal exit" },
 	{ SR_OK, "OK exit" },
 	{ SR_NOTFOUND, "no entry found" },
 	{ SR_NOMEM, "not enough memory" },
 	{ SR_DEADLOCK, "deadlock was detected" },
-	{ SR_BADFMT, "bad format detected" },
+	{ SR_BADExFMT, "bad format detected" },
 	{ SR_NOTOPEN, "something was not open or initialized" },
 	{ SR_FAULT, "some memory fault or NULL pointer was encountered" },
 	{ SR_INVALID, "invalid argument or parameter" },
@@ -231,7 +230,7 @@ static const struct rsstring	rsstrings[] = {
 	{ SR_NOANODE, "no anode -- very bad!" },
 	{ SR_NOTSUP, "operation not supported" },
 	{ 0, NULL }
-} ;
+} ; /* end array */
 
 
 /* global variables */
@@ -1893,22 +1892,20 @@ int main(int argc,mainv argv,mainv envv) {
 	pip->logid = mallocstrn(buf,MAX(i,LOGIDLEN)) ;
 
 #if	CF_MASTERDEBUG && CF_DEBUG
-	if (pip->debuglevel > 1)
+	if (pip->debuglevel > 1) {
 	    eprintf("main: logid=%s\n",pip->logid) ;
+	}
 #endif
 
-	rs = SR_BAD ;
 	if (logfname[0] == '\0') {
-
 	    logfile_type = GETFNAME_TYPEROOT ;
 	    strcpy(logfname,LOGFNAME) ;
-
 	}
 
 	sl = getfname(pip->programroot,logfname,logfile_type,tmpfname) ;
-
-	if (sl > 0)
+	if (sl > 0) {
 	    strwcpy(logfname,tmpfname,sl) ;
+	}
 
 	rs = logfile_open(&pip->lh,logfname,0666,pip->logid) ;
 
@@ -1949,7 +1946,7 @@ int main(int argc,mainv argv,mainv envv) {
 #endif
 
 	    logfile_printf(&pip->lh,"%s %s\n",
-	        timestr_log(daytime,timebuf),
+	        strtime_log(daytime,timebuf),
 	        BANNER) ;
 
 	    logfile_printf(&pip->lh,"%-14s %s/%s\n",
@@ -2055,7 +2052,7 @@ int main(int argc,mainv argv,mainv envv) {
 
 	    logfile_printf(&pip->lh,"paramfile=%s\n",paramfname) ;
 
-	    rs = paramfile_open(&pfile,(const char **) envv,paramfname) ;
+	    rs = paramfile_open(&pfile,(cchar **) envv,paramfname) ;
 
 	    if (rs < 0) {
 
@@ -2299,13 +2296,13 @@ int main(int argc,mainv argv,mainv envv) {
 
 	    logfile_printf(&pip->lh,
 	        "%s exiting> (%d)\n", 
-	        timestr_log(daytime,timebuf), rs) ;
+	        strtime_log(daytime,timebuf), rs) ;
 
 	    logfile_printf(&pip->lh, "| %s\n", cp) ;
 
 	    logfile_printf(&pip->lh,
 	        "total elapsed time %s\n",
-	        timestr_elapsed((daytime - pip->starttime),timebuf)) ;
+	        strtime_elapsed((daytime - pip->starttime),timebuf)) ;
 
 #if	CF_STDOUT
 	    if (pip->ofp != NULL) {
@@ -2315,7 +2312,7 @@ int main(int argc,mainv argv,mainv envv) {
 	        bprintf(ofp,"process result=%d\n",rs) ;
 
 	        bprintf(ofp,"elapsed time %s\n",
-	            timestr_elapsed((daytime - pip->starttime),timebuf)) ;
+	            strtime_elapsed((daytime - pip->starttime),timebuf)) ;
 
 	        bclose(ofp) ;
 
@@ -2448,7 +2445,7 @@ badret:
 /* local subroutines */
 
 
-static int procfile(pip,func,pr,svp,fname,elp)
+local int procfile(pip,func,pr,svp,fname,elp)
 struct proginfo	*pip ;
 int		(*func)(char *,char *,VECSTR *) ;
 char		pr[] ;
@@ -2490,8 +2487,8 @@ VECSTR		*elp ;
 
 
 /* get the date out of the ID string */
-static int makedate_get(md,rpp)
-const char	md[] ;
+local int makedate_get(md,rpp)
+cchar	md[] ;
 char		**rpp ;
 {
 	int	rs ;
@@ -2531,7 +2528,7 @@ char		**rpp ;
 /* end subroutine (makedate_get) */
 
 
-static void int_inter(sn,sip,vp)
+local void int_inter(sn,sip,vp)
 int		sn ;
 siginfo_t	*sip ;
 void		*vp ;
@@ -2548,7 +2545,7 @@ void		*vp ;
 	f_pipe = TRUE ;
 
 	nprintf("here.deb","%s SIGINT\n",
-	    timestr_log(daytime,timebuf)) ;
+	    strtime_log(daytime,timebuf)) ;
 
 	errno = oen ;
 	return ;
@@ -2556,7 +2553,7 @@ void		*vp ;
 /* end subroutine (int_inter) */
 
 
-static void int_hanger(sn,sip,vp)
+local void int_hanger(sn,sip,vp)
 int		sn ;
 siginfo_t	*sip ;
 void		*vp ;
@@ -2573,7 +2570,7 @@ void		*vp ;
 	f_pipe = TRUE ;
 
 	nprintf("here.deb","%s SIGHUP\n",
-	    timestr_log(daytime,timebuf)) ;
+	    strtime_log(daytime,timebuf)) ;
 
 	errno = oen ;
 	return ;
@@ -2581,7 +2578,7 @@ void		*vp ;
 /* end subroutine (int_hanger) */
 
 
-static void int_piper(sn,sip,vp)
+local void int_piper(sn,sip,vp)
 int		sn ;
 siginfo_t	*sip ;
 void		*vp ;
@@ -2598,7 +2595,7 @@ void		*vp ;
 	f_pipe = TRUE ;
 
 	nprintf("here.deb","%s SIGPIPE\n",
-	    timestr_log(daytime,timebuf)) ;
+	    strtime_log(daytime,timebuf)) ;
 
 	errno = oen ;
 	return ;
