@@ -55,11 +55,11 @@
 
 /* external subroutines */
 
-extern int	bopenroot(bfile *,const char *,const char *,
-			char *,const char *,mode_t) ;
+extern int	bopenroot(bfile *,cchar *,cchar *,
+			char *,cchar *,mode_t) ;
 
 
-extern char	*strwcpy(char *,const char *,int) ;
+extern char	*strwcpy(char *,cchar *,int) ;
 
 
 /* external variables */
@@ -89,8 +89,8 @@ static const uchar	fterms[32] = {
 
 
 int procargs(programroot,fname,lp)
-const char	programroot[] ;
-const char	fname[] ;
+cchar	programroot[] ;
+cchar	fname[] ;
 VECSTR		*lp ;
 {
 	bfile	efile, *efp = &efile ;
@@ -102,7 +102,7 @@ VECSTR		*lp ;
 	int	fl ;
 	int	n = 0 ;
 
-	const char	*fp ;
+	cchar	*fp ;
 
 	char	linebuf[LINEBUFLEN + 1] ;
 	char	fbuf[FBUFLEN + 1] ;
