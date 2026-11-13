@@ -385,13 +385,13 @@
 
 /* forward references */
 
-static int	ldecode_special(LDECODE *,uint) ;
-static int	ldecode_cop0(LDECODE *,uint) ;
-static int	ldecode_fp_cop1(LDECODE *,uint)  ;
-static int	ldecode_fps_op(LDECODE *,uint) ;
-static int	ldecode_fpd_op(LDECODE *,uint) ;
-static int	ldecode_fpw_op(LDECODE *,uint) ;
-static int	ldecode_regimm(LDECODE *,uint) ;
+local int	ldecode_special(LDECODE *,uint) ;
+local int	ldecode_cop0(LDECODE *,uint) ;
+local int	ldecode_fp_cop1(LDECODE *,uint)  ;
+local int	ldecode_fps_op(LDECODE *,uint) ;
+local int	ldecode_fpd_op(LDECODE *,uint) ;
+local int	ldecode_fpw_op(LDECODE *,uint) ;
+local int	ldecode_regimm(LDECODE *,uint) ;
 
 
 
@@ -904,7 +904,7 @@ ExcCode Field at Cause Register. It also saves the status register */
 
 
 /* special instructions ? */
-static int ldecode_special(current_instr,instr)
+local int ldecode_special(current_instr,instr)
 LDECODE	*current_instr ;
 uint	instr ;
 {
@@ -1214,7 +1214,7 @@ uint	instr ;
 
 
 /* coprocessor-0 instructions */
-static int ldecode_cop0(current_instr,instr)
+local int ldecode_cop0(current_instr,instr)
 LDECODE	*current_instr ;
 uint	instr ;
 {
@@ -1388,7 +1388,7 @@ uint	instr ;
 
 
 /* coprocessor-1 instructions (floating point) */
-static int ldecode_fp_cop1(current_instr,instr)
+local int ldecode_fp_cop1(current_instr,instr)
 LDECODE	*current_instr ;
 uint	instr ;
 {
@@ -1585,7 +1585,7 @@ uint	instr ;
 
 
 /* floating point single precision instructions */
-static int ldecode_fps_op(current_instr,instr)
+local int ldecode_fps_op(current_instr,instr)
 LDECODE	*current_instr ;
 uint	instr ;
 {
@@ -1822,7 +1822,7 @@ uint	instr ;
 
 
 /* Floating Point Double Precision Instructions */
-static int ldecode_fpd_op(current_instr,instr)
+local int ldecode_fpd_op(current_instr,instr)
 LDECODE	*current_instr ;
 uint	instr ;
 {
@@ -2111,7 +2111,7 @@ uint	instr ;
 
 
 /* Fixed Point Precision Instructions */
-static int ldecode_fpw_op(current_instr,instr)
+local int ldecode_fpw_op(current_instr,instr)
 LDECODE	*current_instr ;
 uint	instr ;
 {
@@ -2167,7 +2167,7 @@ uint	instr ;
 /* end subroutine (ldecode_fpw_op) */
 
 
-static int ldecode_regimm(current_instr,instr)
+local int ldecode_regimm(current_instr,instr)
 LDECODE	*current_instr ;
 uint	instr ;
 {
