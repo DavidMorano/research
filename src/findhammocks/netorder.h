@@ -1,62 +1,64 @@
-/* netorder */
+/* netorder HEADER */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
+
+/* convert integer type variables to and from "net" order */
+/* version %I% last-modified %G% */
 
 
 /* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
 
 #ifndef	NETORDER_INCLUDE
-#define	NETORDER_INCLUDE	1
+#define	NETORDER_INCLUDE
 
 
 #include	<envstandards.h>	/* MUST be first to configure */
-
 #include	<sys/types.h>
 #include	<limits.h>
-
 #include	<localmisc.h>
 
 
 /* object define */
-
 #define	NETORDER	char *
 
 
-#if	(! defined(NETORDER_MASTER)) || (NETORDER_MASTER == 0)
+EXTERNC_begin
+extern int netorder_rchar	(void *,char *) noex ;
+extern int netorder_rshort	(void *,short *) noex ;
+extern int netorder_rint	(void *,int *) noex ;
+extern int netorder_rlong	(void *,long *) noex ;
+extern int netorder_rll		(void *,long *) noex ;
+EXTERNC_end
 
-#ifdef	__cplusplus
-extern "C" {
-#endif
-
-extern int netorder_rchar(void *,char *) ;
-extern int netorder_rshort(void *,short *) ;
-extern int netorder_rint(void *,int *) ;
-extern int netorder_rlong(void *,long *) ;
-extern int netorder_rll(void *,LONG *) ;
-
-#if	(LONG_BIT == 64)
+#if	(long_BIT == 64)
 #define	netorder_rlong64(a,b)	netorder_rlong((a),(b))
 #else
 #define	netorder_rlong64(a,b)	netorder_rll((a),(b))
 #endif
 
-extern int netorder_ruchar(void *,uchar *) ;
-extern int netorder_rushort(void *,ushort *) ;
-extern int netorder_ruint(void *,uint *) ;
-extern int netorder_rulong(void *,ulong *) ;
-extern int netorder_rull(void *,ULONG *) ;
+EXTERNC_begin
+extern int netorder_ruchar	(void *,uchar *) noex ;
+extern int netorder_rushort	(void *,ushort *) noex ;
+extern int netorder_ruint	(void *,uint *) noex ;
+extern int netorder_rulong	(void *,ulong *) noex ;
+extern int netorder_rull	(void *,ulong *) noex ;
+EXTERNC_end
 
-#if	(LONG_BIT == 64)
+#if	(long_BIT == 64)
 #define	netorder_rulong64(a,b)	netorder_rulong((a),(b))
 #else
 #define	netorder_rulong64(a,b)	netorder_rull((a),(b))
 #endif
 
-extern int netorder_wchar(void *,int) ;
-extern int netorder_wshort(void *,int) ;
-extern int netorder_wint(void *,int) ;
-extern int netorder_wlong(void *,long) ;
-extern int netorder_wll(void *,LONG) ;
+EXTERNC_begin
+extern int netorder_wchar	(void *,int) noex ;
+extern int netorder_wshort	(void *,int) noex ;
+extern int netorder_wint	(void *,int) noex ;
+extern int netorder_wlong	(void *,long) noex ;
+extern int netorder_wll		(void *,long) noex ;
+EXTERNC_end
 
-#if	(LONG_BIT == 64)
+#if	(long_BIT == 64)
 #define	netorder_wlong64(a,b)	netorder_wlong((a),(b))
 #else
 #define	netorder_wlong64(a,b)	netorder_wll((a),(b))
@@ -68,7 +70,7 @@ extern int netorder_wll(void *,LONG) ;
 #define	netorder_wulong(A,B)	netorder_wlong((A),(B)) ;
 #define	netorder_wull(A,B)	netorder_wll((A),(B)) ;
 
-#if	(LONG_BIT == 64)
+#if	(long_BIT == 64)
 #define	netorder_wulong64(a,b)	netorder_wulong((a),(b))
 #else
 #define	netorder_wulong64(a,b)	netorder_wull((a),(b))
@@ -86,12 +88,6 @@ extern int netorder_wll(void *,LONG) ;
 #define	netorder_writei(A,B)	netorder_wint((A),(B)) ;
 #define	netorder_writel(A,B)	netorder_wlong((A),(B)) ;
 
-
-#ifdef	__cplusplus
-}
-#endif
-
-#endif /* (! defined(NETORDER_MASTER) || (NETORDER_MASTER == 0) */
 
 #endif /* NETORDER_INCLUDE */
 
