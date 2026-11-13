@@ -88,9 +88,9 @@
 
 /* external subroutines */
 
-extern int	cfhexi(const char *,int,uint *) ;
+extern int	cfhexi(cchar *,int,uint *) ;
 
-extern char	*strwcpy(char *,const char *,int) ;
+extern char	*strwcpy(char *,cchar *,int) ;
 
 
 /* external variables */
@@ -110,9 +110,9 @@ struct counts {
 
 /* forward references */
 
-static int	readem(struct proginfo *,LMAPPROG *,MIPSDIS *,
+local int	readem(struct proginfo *,LMAPPROG *,MIPSDIS *,
 			RECORDER *,struct counts *,uint,uint) ;
-static int	writecache(struct proginfo *,RECORDER *,char *) ;
+local int	writecache(struct proginfo *,RECORDER *,char *) ;
 
 
 /* local (module-scope static) data */
@@ -398,7 +398,7 @@ badcache:
 
 
 
-static int readem(pip,pmp,dp,rp,cp,start,len)
+local int readem(pip,pmp,dp,rp,cp,start,len)
 struct proginfo	*pip ;
 LMAPPROG	*pmp ;
 MIPSDIS		*dp ;
@@ -569,7 +569,7 @@ uint		start, len ;
 
 
 /* write out the cache file */
-static int writecache(pip,rp,fname)
+local int writecache(pip,rp,fname)
 struct proginfo	*pip ;
 RECORDER	*rp ;
 char		fname[] ;
