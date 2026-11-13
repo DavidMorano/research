@@ -107,8 +107,8 @@ extern int	getnumbuses(uint) ;
 
 /* forward references */
 
-static int	lwq_handleshift(LWQ *,struct proginfo *,struct levoinfo *) ;
-static int	lwq_snoop_mbwb(LWQ *) ;
+local int	lwq_handleshift(LWQ *,struct proginfo *,struct levoinfo *) ;
+local int	lwq_snoop_mbwb(LWQ *) ;
 
 
 
@@ -920,7 +920,7 @@ XMLINFO	*xip ;
 
 
 
-static int lwq_snoop_mbwb(lwqp)
+local int lwq_snoop_mbwb(lwqp)
 LWQ	*lwqp ;
 {
 	struct proginfo	*pip ;
@@ -1146,7 +1146,7 @@ lwq_print_wq(LWQ *lwqp) {
 
 
 /* perform a machine shift if one was called for */
-static int 
+local int 
 lwq_handleshift(lwqp,pip,lip)
 LWQ		*lwqp ;
 struct proginfo	*pip ;
