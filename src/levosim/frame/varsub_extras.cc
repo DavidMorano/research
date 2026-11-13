@@ -70,7 +70,7 @@
 
 /* external subroutines */
 
-extern int	substring(const char *,int,const char *) ;
+extern int	substring(cchar *,int,cchar *) ;
 
 extern char	*getenv2(), *getenv3() ;
 
@@ -80,8 +80,8 @@ extern char	*getenv2(), *getenv3() ;
 
 /* forward references */
 
-static int	keycmp(char *,char *,int) ;
-static int	valuecmp() ;
+local int	keycmp(char *,char *,int) ;
+local int	valuecmp() ;
 
 
 
@@ -573,7 +573,7 @@ char	*envp[] ;
 
 
 /* our own key comparison routine (to handle the '=' character) */
-static int keycmp(s,k,klen)
+local int keycmp(s,k,klen)
 char	s[], k[] ;
 int	klen ;
 {
@@ -593,7 +593,7 @@ int	klen ;
 
 
 /* compare a new value with the exiting values of a variable */
-static int valuecmp(sp,vp,vlen)
+local int valuecmp(sp,vp,vlen)
 char	*sp ;
 char	*vp ;
 int	vlen ;
