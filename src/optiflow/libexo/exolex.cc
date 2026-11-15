@@ -210,20 +210,20 @@ static YY_BUFFER_STATE yy_current_buffer = 0;
 /* yy_hold_char holds the character lost when yytext is formed. */
 static char yy_hold_char;
 
-static int yy_n_chars;		/* number of characters read into yy_ch_buf */
+local int yy_n_chars;		/* number of characters read into yy_ch_buf */
 
 
 int yyleng;
 
 /* Points to current character in buffer. */
 static char *yy_c_buf_p = (char *) 0;
-static int yy_init = 1;		/* whether we need to initialize */
-static int yy_start = 0;	/* start state number */
+local int yy_init = 1;		/* whether we need to initialize */
+local int yy_start = 0;	/* start state number */
 
 /* Flag which is used to allow yywrap()'s to do buffer switches
  * instead of setting up a fresh yyin.  A bit of a hack ...
  */
-static int yy_did_buffer_switch_on_eof;
+local int yy_did_buffer_switch_on_eof;
 
 void yyrestart YY_PROTO(( FILE *input_file ));
 
@@ -236,12 +236,12 @@ void yy_flush_buffer YY_PROTO(( YY_BUFFER_STATE b ));
 #define YY_FLUSH_BUFFER yy_flush_buffer( yy_current_buffer )
 
 YY_BUFFER_STATE yy_scan_buffer YY_PROTO(( char *base, yy_size_t size ));
-YY_BUFFER_STATE yy_scan_string YY_PROTO(( yyconst char *yy_str ));
-YY_BUFFER_STATE yy_scan_bytes YY_PROTO(( yyconst char *bytes, int len ));
+YY_BUFFER_STATE yy_scan_string YY_PROTO(( yycchar *yy_str ));
+YY_BUFFER_STATE yy_scan_bytes YY_PROTO(( yycchar *bytes, int len ));
 
-static void *yy_flex_alloc YY_PROTO(( yy_size_t ));
-static void *yy_flex_realloc YY_PROTO(( void *, yy_size_t ));
-static void yy_flex_free YY_PROTO(( void * ));
+local void *yy_flex_alloc YY_PROTO(( yy_size_t ));
+local void *yy_flex_realloc YY_PROTO(( void *, yy_size_t ));
+local void yy_flex_free YY_PROTO(( void * ));
 
 #define yy_new_buffer yy_create_buffer
 
@@ -269,8 +269,8 @@ extern char *yytext;
 
 static yy_state_type yy_get_previous_state YY_PROTO(( void ));
 static yy_state_type yy_try_NUL_trans YY_PROTO(( yy_state_type current_state ));
-static int yy_get_next_buffer YY_PROTO(( void ));
-static void yy_fatal_error YY_PROTO(( yyconst char msg[] ));
+local int yy_get_next_buffer YY_PROTO(( void ));
+local void yy_fatal_error YY_PROTO(( yycchar msg[] ));
 
 /* Done after the current pattern has been matched and before the
  * corresponding action - sets up yytext.
@@ -294,7 +294,7 @@ static yyconst short int yy_accept[60] =
         3,    0,    7,    0,    0,    8,    0,    7,    0
     } ;
 
-static yyconst int yy_ec[256] =
+static yycint yy_ec[256] =
     {   0,
         1,    1,    1,    1,    1,    1,    1,    1,    2,    3,
         2,    2,    1,    1,    1,    1,    1,    1,    1,    1,
@@ -326,7 +326,7 @@ static yyconst int yy_ec[256] =
         1,    1,    1,    1,    1
     } ;
 
-static yyconst int yy_meta[37] =
+static yycint yy_meta[37] =
     {   0,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    2,
         1,    1,    1,    1,    1,    1,    1,    1,    3,    3,
@@ -507,7 +507,7 @@ char *yytext;
 unsigned line = 1;		/* line of last recognized token */
 
 int yywrap(void);
-static void lex_eat_comment(void);
+local void lex_eat_comment(void);
 
 #define BLOB_MODE 1
 
@@ -526,37 +526,37 @@ extern int yywrap YY_PROTO(( void ));
 #endif
 
 #ifndef YY_NO_UNPUT
-static void yyunput YY_PROTO(( int c, char *buf_ptr ));
+local void yyunput YY_PROTO(( int c, char *buf_ptr ));
 #endif
 
 #ifndef yytext_ptr
-static void yy_flex_strncpy YY_PROTO(( char *, yyconst char *, int ));
+local void yy_flex_strncpy YY_PROTO(( char *, yycchar *, int ));
 #endif
 
 #ifdef YY_NEED_STRLEN
-static int yy_flex_strlen YY_PROTO(( yyconst char * ));
+local int yy_flex_strlen YY_PROTO(( yycchar * ));
 #endif
 
 #ifndef YY_NO_INPUT
 #ifdef __cplusplus
-static int yyinput YY_PROTO(( void ));
+local int yyinput YY_PROTO(( void ));
 #else
-static int input YY_PROTO(( void ));
+local int input YY_PROTO(( void ));
 #endif
 #endif
 
 #if YY_STACK_USED
-static int yy_start_stack_ptr = 0;
-static int yy_start_stack_depth = 0;
-static int *yy_start_stack = 0;
+local int yy_start_stack_ptr = 0;
+local int yy_start_stack_depth = 0;
+local int *yy_start_stack = 0;
 #ifndef YY_NO_PUSH_STATE
-static void yy_push_state YY_PROTO(( int new_state ));
+local void yy_push_state YY_PROTO(( int new_state ));
 #endif
 #ifndef YY_NO_POP_STATE
-static void yy_pop_state YY_PROTO(( void ));
+local void yy_pop_state YY_PROTO(( void ));
 #endif
 #ifndef YY_NO_TOP_STATE
-static int yy_top_state YY_PROTO(( void ));
+local int yy_top_state YY_PROTO(( void ));
 #endif
 
 #else
@@ -1019,7 +1019,7 @@ ECHO;
  *	EOB_ACT_END_OF_FILE - end of file
  */
 
-static int yy_get_next_buffer()
+local int yy_get_next_buffer()
 	{
 	register char *dest = yy_current_buffer->yy_ch_buf;
 	register char *source = yytext_ptr;
@@ -1216,9 +1216,9 @@ yy_state_type yy_current_state;
 
 #ifndef YY_NO_UNPUT
 #ifdef YY_USE_PROTOS
-static void yyunput( int c, register char *yy_bp )
+local void yyunput( int c, register char *yy_bp )
 #else
-static void yyunput( c, yy_bp )
+local void yyunput( c, yy_bp )
 int c;
 register char *yy_bp;
 #endif
@@ -1260,9 +1260,9 @@ register char *yy_bp;
 
 
 #ifdef __cplusplus
-static int yyinput()
+local int yyinput()
 #else
-static int input()
+local int input()
 #endif
 	{
 	int c;
@@ -1544,10 +1544,10 @@ yy_size_t size;
 
 #ifndef YY_NO_SCAN_STRING
 #ifdef YY_USE_PROTOS
-YY_BUFFER_STATE yy_scan_string( yyconst char *yy_str )
+YY_BUFFER_STATE yy_scan_string( yycchar *yy_str )
 #else
 YY_BUFFER_STATE yy_scan_string( yy_str )
-yyconst char *yy_str;
+yycchar *yy_str;
 #endif
 	{
 	int len;
@@ -1561,10 +1561,10 @@ yyconst char *yy_str;
 
 #ifndef YY_NO_SCAN_BYTES
 #ifdef YY_USE_PROTOS
-YY_BUFFER_STATE yy_scan_bytes( yyconst char *bytes, int len )
+YY_BUFFER_STATE yy_scan_bytes( yycchar *bytes, int len )
 #else
 YY_BUFFER_STATE yy_scan_bytes( bytes, len )
-yyconst char *bytes;
+yycchar *bytes;
 int len;
 #endif
 	{
@@ -1600,9 +1600,9 @@ int len;
 
 #ifndef YY_NO_PUSH_STATE
 #ifdef YY_USE_PROTOS
-static void yy_push_state( int new_state )
+local void yy_push_state( int new_state )
 #else
-static void yy_push_state( new_state )
+local void yy_push_state( new_state )
 int new_state;
 #endif
 	{
@@ -1633,7 +1633,7 @@ int new_state;
 
 
 #ifndef YY_NO_POP_STATE
-static void yy_pop_state()
+local void yy_pop_state()
 	{
 	if ( --yy_start_stack_ptr < 0 )
 		YY_FATAL_ERROR( "start-condition stack underflow" );
@@ -1644,7 +1644,7 @@ static void yy_pop_state()
 
 
 #ifndef YY_NO_TOP_STATE
-static int yy_top_state()
+local int yy_top_state()
 	{
 	return yy_start_stack[yy_start_stack_ptr - 1];
 	}
@@ -1655,9 +1655,9 @@ static int yy_top_state()
 #endif
 
 #ifdef YY_USE_PROTOS
-static void yy_fatal_error( yyconst char msg[] )
+local void yy_fatal_error( yycchar msg[] )
 #else
-static void yy_fatal_error( msg )
+local void yy_fatal_error( msg )
 char msg[];
 #endif
 	{
@@ -1687,11 +1687,11 @@ char msg[];
 
 #ifndef yytext_ptr
 #ifdef YY_USE_PROTOS
-static void yy_flex_strncpy( char *s1, yyconst char *s2, int n )
+local void yy_flex_strncpy( char *s1, yycchar *s2, int n )
 #else
-static void yy_flex_strncpy( s1, s2, n )
+local void yy_flex_strncpy( s1, s2, n )
 char *s1;
-yyconst char *s2;
+yycchar *s2;
 int n;
 #endif
 	{
@@ -1703,10 +1703,10 @@ int n;
 
 #ifdef YY_NEED_STRLEN
 #ifdef YY_USE_PROTOS
-static int yy_flex_strlen( yyconst char *s )
+local int yy_flex_strlen( yycchar *s )
 #else
-static int yy_flex_strlen( s )
-yyconst char *s;
+local int yy_flex_strlen( s )
+yycchar *s;
 #endif
 	{
 	register int n;
@@ -1719,9 +1719,9 @@ yyconst char *s;
 
 
 #ifdef YY_USE_PROTOS
-static void *yy_flex_alloc( yy_size_t size )
+local void *yy_flex_alloc( yy_size_t size )
 #else
-static void *yy_flex_alloc( size )
+local void *yy_flex_alloc( size )
 yy_size_t size;
 #endif
 	{
@@ -1729,9 +1729,9 @@ yy_size_t size;
 	}
 
 #ifdef YY_USE_PROTOS
-static void *yy_flex_realloc( void *ptr, yy_size_t size )
+local void *yy_flex_realloc( void *ptr, yy_size_t size )
 #else
-static void *yy_flex_realloc( ptr, size )
+local void *yy_flex_realloc( ptr, size )
 void *ptr;
 yy_size_t size;
 #endif
@@ -1747,9 +1747,9 @@ yy_size_t size;
 	}
 
 #ifdef YY_USE_PROTOS
-static void yy_flex_free( void *ptr )
+local void yy_flex_free( void *ptr )
 #else
-static void yy_flex_free( ptr )
+local void yy_flex_free( ptr )
 void *ptr;
 #endif
 	{
@@ -1772,7 +1772,7 @@ yywrap(void)
   return 1;
 }
 
-static void
+local void
 lex_eat_comment(void)
 {
   char c, c1;
