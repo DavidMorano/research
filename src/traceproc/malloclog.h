@@ -24,13 +24,13 @@
 extern "C" {
 #endif
 
-extern void	malloclog_alloc(const void *,int,const char *) ;
-extern void	malloclog_free(const void *,const char *) ;
-extern void	malloclog_realloc(const void *,const void *,int,const char *) ;
+extern void	malloclog_alloc(const void *,int,cchar *) ;
+extern void	malloclog_free(const void *,cchar *) ;
+extern void	malloclog_realloc(const void *,const void *,int,cchar *) ;
 extern void	malloclog_mark() ;
 extern void	malloclog_dump() ;
 extern void	malloclog_clear() ;
-extern int	malloclog_printf(const char [],...) ;
+extern int	malloclog_printf(cchar [],...) ;
 
 #ifdef	__cplusplus
 }
