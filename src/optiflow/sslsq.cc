@@ -129,20 +129,20 @@ extenr "C" {
 
 /* forward references */
 
-static int	sslsq_startops(SSLSQ *,int) ;
-static int	sslsq_checkexec(SSLSQ *,struct proginfo *,struct ssinfo *) ;
-static int	sslsq_snoopset(SSLSQ *,int,struct operand *) ;
-static int	sslsq_handleshift(SSLSQ *,struct proginfo *,struct ssinfo *) ;
-static int	sslsq_handlecommit(SSLSQ *) ;
-static int	sslsq_combs(SSLSQ *,struct proginfo *,struct ssinfo *) ;
+local int	sslsq_startops(SSLSQ *,int) ;
+local int	sslsq_checkexec(SSLSQ *,struct proginfo *,struct ssinfo *) ;
+local int	sslsq_snoopset(SSLSQ *,int,struct operand *) ;
+local int	sslsq_handleshift(SSLSQ *,struct proginfo *,struct ssinfo *) ;
+local int	sslsq_handlecommit(SSLSQ *) ;
+local int	sslsq_combs(SSLSQ *,struct proginfo *,struct ssinfo *) ;
 
 #ifdef	COMMENT
-static int	sslsq_xmloutreg(SSLSQ *,XMLINFO *,struct proginfo *,
+local int	sslsq_xmloutreg(SSLSQ *,XMLINFO *,struct proginfo *,
 			struct sslsq_slot *,char *) ;
 #endif /* COMMENT */
 
 #if	(CF_MASTERDEBUG && CF_DEBUG) || CF_XML
-static int	mkttbuf(char *,int) ;
+local int	mkttbuf(char *,int) ;
 #endif
 
 
@@ -1173,7 +1173,7 @@ XMLINFO		*xip ;
 
 
 /* initialize next-state that is associated with the operands */
-static int sslsq_startops(op,wset)
+local int sslsq_startops(op,wset)
 SSLSQ		*op ;
 int		wset ;
 {
@@ -1214,7 +1214,7 @@ int		wset ;
 
 
 /* handle a machine shift operation ! */
-static int sslsq_handleshift(op,pip,lip)
+local int sslsq_handleshift(op,pip,lip)
 SSLSQ		*op ;
 struct proginfo	*pip ;
 struct ssinfo	*lip ;
@@ -1269,7 +1269,7 @@ struct ssinfo	*lip ;
 /* end subroutine (sslsq_handleshift) */
 
 
-static int sslsq_combs(op,pip,lip)
+local int sslsq_combs(op,pip,lip)
 SSLSQ		*op ;
 struct proginfo	*pip ;
 struct ssinfo	*lip ;
@@ -1336,7 +1336,7 @@ struct ssinfo	*lip ;
 
 #if	(CF_MASTERDEBUG && CF_DEBUG) || CF_XML
 
-static int mkttbuf(buf,tt)
+local int mkttbuf(buf,tt)
 char	buf[] ;
 int	tt ;
 {
