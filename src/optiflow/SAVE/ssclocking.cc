@@ -68,16 +68,16 @@
 
 /* forward references */
 
-static int	ssclocking_callthem(SSCLOCKING *) ;
+local int	ssclocking_callthem(SSCLOCKING *) ;
 
 #if	F_DEBUG || F_DEBUGS
-static int	ssclocking_prpq(SSCLOCKING *,ULONG) ;
+local int	ssclocking_prpq(SSCLOCKING *,ULONG) ;
 #endif
 
 
 /* local variables */
 
-static const char	*lparams[] = {
+static cchar	*lparams[] = {
 	    "sim:maxclocks",	/* maximum number of clocks */
 	    "sim:fastqueues",	/* number of fast queues */
 	    NULL
@@ -890,7 +890,7 @@ ULONG		*lp ;
 
 */
 
-static int ssclocking_callthem(mip)
+local int ssclocking_callthem(mip)
 SSCLOCKING		*mip ;
 {
 	struct proginfo	*pip ;
@@ -1173,7 +1173,7 @@ SSCLOCKING		*mip ;
 
 #if	F_DEBUG || F_DEBUGS
 
-static int ssclocking_prpq(mip,ckey)
+local int ssclocking_prpq(mip,ckey)
 SSCLOCKING	*mip ;
 ULONG		ckey ;
 {
