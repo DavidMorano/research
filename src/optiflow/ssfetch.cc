@@ -82,10 +82,10 @@
 
 /* forward references */
 
-static int	ssfetch_freeup(SSFETCH *) ;
-static int	ssfetch_startops(SSFETCH *,int) ;
-static int	ssfetch_decrement(SSFETCH *,struct proginfo *) ;
-static int	ssfetch_combs(SSFETCH *,struct proginfo *,struct ssinfo *) ;
+local int	ssfetch_freeup(SSFETCH *) ;
+local int	ssfetch_startops(SSFETCH *,int) ;
+local int	ssfetch_decrement(SSFETCH *,struct proginfo *) ;
+local int	ssfetch_combs(SSFETCH *,struct proginfo *,struct ssinfo *) ;
 
 
 /* local variables */
@@ -760,7 +760,7 @@ SSFETCH		*op ;
 
 
 /* initialize next-state that is associated with the operands */
-static int ssfetch_startops(op,wset)
+local int ssfetch_startops(op,wset)
 SSFETCH		*op ;
 int		wset ;
 {
@@ -775,7 +775,7 @@ int		wset ;
 #ifdef	COMMENT
 
 /* try to load fetch buffer slots */
-static int ssfetch_load(op,pip,lip)
+local int ssfetch_load(op,pip,lip)
 SSFETCH		*op ;
 struct proginfo	*pip ;
 struct ssinfo	*lip ;
@@ -924,7 +924,7 @@ struct ssinfo	*lip ;
 #endif /* COMMENT */
 
 
-static int ssfetch_decrement(op,pip)
+local int ssfetch_decrement(op,pip)
 SSFETCH		*op ;
 struct proginfo	*pip ;
 {
@@ -960,7 +960,7 @@ struct proginfo	*pip ;
 
 #ifdef	COMMENT
 
-static int ssfetch_combs(op,pip,lip)
+local int ssfetch_combs(op,pip,lip)
 SSFETCH		*op ;
 struct proginfo	*pip ;
 struct ssinfo	*lip ;
