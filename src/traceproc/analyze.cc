@@ -60,8 +60,8 @@
 
 /* forward references */
 
-static int	getreg(uint,EXECTRACE_ENTRY *) ;
-static int	getmem(uint,EXECTRACE_ENTRY *) ;
+local int	getreg(uint,EXECTRACE_ENTRY *) ;
+local int	getmem(uint,EXECTRACE_ENTRY *) ;
 
 
 /* local (module-scope static) data */
@@ -472,7 +472,7 @@ bad0:
 
 
 
-static int getreg(ra,ep)
+local int getreg(ra,ep)
 uint		ra ;
 EXECTRACE_ENTRY	*ep ;
 {
@@ -494,7 +494,7 @@ EXECTRACE_ENTRY	*ep ;
 /* end subroutine (getreg) */
 
 
-static int getmem(ma,ep)
+local int getmem(ma,ep)
 uint		ma ;
 EXECTRACE_ENTRY	*ep ;
 {
