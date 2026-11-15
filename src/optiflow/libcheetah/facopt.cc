@@ -51,19 +51,19 @@ static struct tree_node *root,	/* Root of tree */
 static struct hash_table slot[HASHNO];	/* Hash table */
 static short slot_flag [HASHNO];	/* Flag for hash slots */
 static unsigned *out_stack;	/* Stack depth hits array */
-static int comp=0, comp_del=0, comp_ins=0,
+local int comp=0, comp_del=0, comp_ins=0,
            no_splay_steps, tot_addrs, grps_passd;
-static int t_entries;		/* Count of addresses processed */
+local int t_entries;		/* Count of addresses processed */
 extern unsigned addr_array[],
  	        time_array[];
-static int ihcount;  /* To count no of time inf_handler called */
-static int grp_ct=MAXINT;  /* To number groups */
+local int ihcount;  /* To count no of time inf_handler called */
+local int grp_ct=MAXINT;  /* To number groups */
 static short size_exceeded=0;		/* Stack overflow flag */
-static int log_tot_addrs;
+local int log_tot_addrs;
 static unsigned next_two_pwr;
 static unsigned unknowns;
 
-static int CLEAN_INTERVAL,
+local int CLEAN_INTERVAL,
            next_clean_time;
 
 extern int L,		/* Line size */
@@ -74,7 +74,7 @@ extern int MISS_RATIO_INTERVAL,	/* Output interval */
            SAVE_INTERVAL,      	/* Interval at which results are saved */
            P_INTERVAL;  /* Intervals at which progress output is done */
 
-static int next_save_time;
+local int next_save_time;
 
 
 /********************************************************************
