@@ -139,7 +139,7 @@
 #define BOUND_POS(N)		((int)(MIN(MAX(0, (N)), 2147483647)))
 
 /* unlink BLK from the hash table bucket chain in SET */
-static void
+local void
 unlink_htab_ent(struct cache_t *cp,		/* cache to update */
 		struct cache_set_t *set,	/* set containing bkt chain */
 		struct cache_blk_t *blk)	/* block to unlink */
@@ -172,7 +172,7 @@ unlink_htab_ent(struct cache_t *cp,		/* cache to update */
 }
 
 /* insert BLK onto the head of the hash table bucket chain in SET */
-static void
+local void
 link_htab_ent(struct cache_t *cp,		/* cache to update */
 	      struct cache_set_t *set,		/* set containing bkt chain */
 	      struct cache_blk_t *blk)		/* block to insert */
@@ -188,7 +188,7 @@ link_htab_ent(struct cache_t *cp,		/* cache to update */
 enum list_loc_t { Head, Tail };
 
 /* insert BLK into the order way chain in SET at location WHERE */
-static void
+local void
 update_way_list(struct cache_set_t *set,	/* set contained way chain */
 		struct cache_blk_t *blk,	/* block to insert */
 		enum list_loc_t where)		/* insert location */
