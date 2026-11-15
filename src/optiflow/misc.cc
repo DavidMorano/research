@@ -80,7 +80,7 @@ int debugging = FALSE;
 
 /* fatal function hook, this function is called just before an exit
    caused by a fatal error, used to spew stats, etc. */
-static void (*hook_fn)(FILE *stream) = NULL;
+local void (*hook_fn)(FILE *stream) = NULL;
 
 
 
@@ -96,10 +96,10 @@ fatal_hook(void (*fn)(FILE *stream))	/* fatal hook function */
 /* declare a fatal run-time error, calls fatal hook function */
 #ifdef __GNUC__
 void
-_fatal(const char *file, const char *func, int line, const char *fmt, ...)
+_fatal(cchar *file, cchar *func, int line, cchar *fmt, ...)
 #else /* !__GNUC__ */
 void
-fatal(const char *fmt, ...)
+fatal(cchar *fmt, ...)
 #endif /* __GNUC__ */
 {
   va_list v;
@@ -121,10 +121,10 @@ fatal(const char *fmt, ...)
 /* declare a panic situation, dumps core */
 #ifdef __GNUC__
 void
-_panic(const char *file, const char *func, int line, const char *fmt, ...)
+_panic(cchar *file, cchar *func, int line, cchar *fmt, ...)
 #else /* !__GNUC__ */
 void
-panic(const char *fmt, ...)
+panic(cchar *fmt, ...)
 #endif /* __GNUC__ */
 {
   va_list v;
@@ -145,10 +145,10 @@ panic(const char *fmt, ...)
 /* declare a warning */
 #ifdef __GNUC__
 void
-_warn(const char *file, const char *func, int line, const char *fmt, ...)
+_warn(cchar *file, cchar *func, int line, cchar *fmt, ...)
 #else /* !__GNUC__ */
 void
-warn(const char *fmt, ...)
+warn(cchar *fmt, ...)
 #endif /* __GNUC__ */
 {
   va_list v;
@@ -167,10 +167,10 @@ warn(const char *fmt, ...)
 /* print general information */
 #ifdef __GNUC__
 void
-_info(const char *file, const char *func, int line, const char *fmt, ...)
+_info(cchar *file, cchar *func, int line, cchar *fmt, ...)
 #else /* !__GNUC__ */
 void
-info(const char *fmt, ...)
+info(cchar *fmt, ...)
 #endif /* __GNUC__ */
 {
   va_list v;
@@ -189,10 +189,10 @@ info(const char *fmt, ...)
 /* print a debugging message */
 #ifdef __GNUC__
 void
-_debug(const char *file, const char *func, int line, const char *fmt, ...)
+_debug(cchar *file, cchar *func, int line, cchar *fmt, ...)
 #else /* !__GNUC__ */
 void
-debug(const char *fmt, ...)
+debug(cchar *fmt, ...)
 #endif /* __GNUC__ */
 {
     va_list v;
@@ -425,7 +425,7 @@ typedef sword_t slargeint_t;
 typedef word_t largeint_t;
 #endif /* HOST_HAS_QWORD */
 
-static int
+local int
 _lowdigit(slargeint_t *valptr)
 {
   /* this function computes the decimal low-order digit of the number pointed
@@ -442,7 +442,7 @@ _lowdigit(slargeint_t *valptr)
 
 /* portable vsprintf with qword support, returns end pointer */
 char *
-myvsprintf(char *obuf, const char *format, va_list v)
+myvsprintf(char *obuf, cchar *format, va_list v)
 {
   static char _blanks[] = "                    ";
   static char _zeroes[] = "00000000000000000000";
@@ -771,7 +771,7 @@ myvsprintf(char *obuf, const char *format, va_list v)
 
 /* portable sprintf with qword support, returns end pointer */
 char *
-mysprintf(char *obuf, const char *format, ...)
+mysprintf(char *obuf, cchar *format, ...)
 {
   /* vararg parameters */
   va_list v;
@@ -782,7 +782,7 @@ mysprintf(char *obuf, const char *format, ...)
 
 /* portable vfprintf with qword support, returns end pointer */
 void
-myvfprintf(FILE *stream, const char *format, va_list v)
+myvfprintf(FILE *stream, cchar *format, va_list v)
 {
   /* temp buffer */
   char buf[2048];
@@ -793,7 +793,7 @@ myvfprintf(FILE *stream, const char *format, va_list v)
 
 /* portable fprintf with qword support, returns end pointer */
 void
-myfprintf(FILE *stream, const char *format, ...)
+myfprintf(FILE *stream, cchar *format, ...)
 {
   /* temp buffer */
   char buf[2048];
@@ -1100,11 +1100,11 @@ gzclose(FILE *fd)
    bit ordering convention */
 #define POLYNOMIAL 0x04c11db7L
 
-static int crc_init = FALSE;
+local int crc_init = FALSE;
 static unsigned long crc_table[256];
 
 /* generate the table of CRC remainders for all possible bytes */
-static void
+local void
 crc_gentab(void)
 {
   int i, j;
