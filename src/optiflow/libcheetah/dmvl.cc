@@ -55,7 +55,7 @@ static unsigned CACHE_SZ,	/* Size of the caches */
 	        *hits;		/* Used in output processing */
 
 
-static int t_entries;		/* Count of no. of entries seen */
+local int t_entries;		/* Count of no. of entries seen */
 
 #ifdef PERF
 int compares, skips;
@@ -77,7 +77,7 @@ static unsigned RCACHE_SZ;
 static unsigned RTAG_SET1_MASK;
 static unsigned RMIN_LINE_SZ;
 static unsigned RNO_LINES;
-static int next_save_time;
+local int next_save_time;
 
 
 /****************************************************************
