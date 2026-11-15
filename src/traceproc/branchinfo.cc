@@ -57,12 +57,12 @@
 extern double	sqrt(double) ;
 #endif
 
-extern char	*strwcpy(char *,const char *,int) ;
+extern char	*strwcpy(char *,cchar *,int) ;
 
 
 /* forward references */
 
-static int	brcmp(BRANCHINFO_ENTRY *,BRANCHINFO_ENTRY *) ;
+local int	brcmp(BRANCHINFO_ENTRY *,BRANCHINFO_ENTRY *) ;
 
 
 /* exported subroutines */
@@ -273,7 +273,7 @@ int		f_taken ;
 
 
 
-static int brcmp(e1p,e2p)
+local int brcmp(e1p,e2p)
 BRANCHINFO_ENTRY	*e1p, *e2p ;
 {
 
