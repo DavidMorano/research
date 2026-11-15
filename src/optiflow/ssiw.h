@@ -134,7 +134,7 @@ extern int	ssiw_checkstate(SSIW *) ;
 extern int	ssiw_sanitycheck(SSIW *) ;
 extern int	ssiw_statfile(SSIW *,bfile *) ;
 extern int	ssiw_oprequest(SSIW *,OPERAND *,int) ;
-extern int	ssiw_printstats(SSIW *,const char *) ;
+extern int	ssiw_printstats(SSIW *,cchar *) ;
 extern int	ssiw_dump(SSIW *,bfile *) ;
 
 #endif /* declarations */
