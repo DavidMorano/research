@@ -76,19 +76,19 @@ int		lsim_callthem(LSIM *) ;
 int		lsim_getsymval(LSIM *,char *,uint *) ;
 
 #ifdef	COMMENT
-static int	hashfunc() ;
+local int	hashfunc() ;
 #endif
 
-static int	lsim_syscalls(LSIM *) ;
-static int	lsim_syscallsfree(LSIM *) ;
+local int	lsim_syscalls(LSIM *) ;
+local int	lsim_syscallsfree(LSIM *) ;
 
 #if	CF_DEBUG || CF_DEBUGS
-static int	lsim_prpq(LSIM *,ULONG) ;
-static int	lsim_finddatamem(LSIM *,char *,uint *) ;
+local int	lsim_prpq(LSIM *,ULONG) ;
+local int	lsim_finddatamem(LSIM *,char *,uint *) ;
 #endif
 
 #if	CF_DEBUG || CF_DEBUGS
-static int	datasymrank(Elf32_Sym *) ;
+local int	datasymrank(Elf32_Sym *) ;
 #endif
 
 
@@ -1668,7 +1668,7 @@ uint	newval ;
 int lsim_issyscall(mip,addr,npp)
 LSIM		*mip ;
 uint		addr ;
-const char	**npp ;
+cchar	**npp ;
 {
 	LSIM_SYMBOL	*sep ;
 
@@ -1963,7 +1963,7 @@ Elf32_Sym	**rpp ;
 
 #if	CF_DEBUG || CF_DEBUGS
 
-static int lsim_prpq(mip,ckey)
+local int lsim_prpq(mip,ckey)
 LSIM	*mip ;
 ULONG	ckey ;
 {
@@ -2003,7 +2003,7 @@ ULONG	ckey ;
 
 
 /* find any SYSCALLs and index them by their function address */
-static int lsim_syscalls(mip)
+local int lsim_syscalls(mip)
 LSIM	*mip ;
 {
 	struct proginfo	*pip ;
@@ -2109,7 +2109,7 @@ bad0:
 
 
 /* free up the data used to hold SYSCALL information */
-static int lsim_syscallsfree(mip)
+local int lsim_syscallsfree(mip)
 LSIM	*mip ;
 {
 	HDB_CUR		cur ;
@@ -2159,7 +2159,7 @@ static struct lsim_symrank	ranks[] = {
 	{ -1, -1, -1 },
 } ;
 
-static int lsim_finddatamem(mip,name,rp)
+local int lsim_finddatamem(mip,name,rp)
 LSIM	*mip ;
 char	name[] ;
 uint	*rp ;
@@ -2252,7 +2252,7 @@ bad0:
 
 
 /* find the symbol's ranking suitable for data memory */
-static int datasymrank(sep)
+local int datasymrank(sep)
 Elf32_Sym	*sep ;
 {
 	int	i ;
