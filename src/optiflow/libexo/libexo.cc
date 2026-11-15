@@ -96,7 +96,7 @@ char *exo_class_str[ec_NUM] = {
 /* return the value of an escape sequence, ESCAPE is a pointer to the first
    character following '\', sets NEXT to first character after escape */
 /* A2.5.2 */
-static int
+local int
 intern_escape(char *esc, char **next)
 {
   int c, value, empty, count;
@@ -200,7 +200,7 @@ intern_escape(char *esc, char **next)
 
 /* return the value of an character literal sequence */
 /* A2.5.2 */
-static int
+local int
 intern_char(char *s, char **next)
 {
   unsigned char value;
@@ -231,7 +231,7 @@ intern_char(char *s, char **next)
   return value;
 }
 
-static void
+local void
 print_char(unsigned char c, FILE *stream)
 {
   switch (c)
@@ -317,7 +317,7 @@ intern_string(char *str)
   return istr;
 }
 
-static void
+local void
 print_string(unsigned char *s, FILE *stream)
 {
   while (*s)
@@ -330,7 +330,7 @@ print_string(unsigned char *s, FILE *stream)
 /* bogus token value */
 #define TOKEN_BOGON		0
 
-static int token_id = TOKEN_BOGON + 1;
+local int token_id = TOKEN_BOGON + 1;
 
 #define TOKEN_HASH_SIZE		1024
 struct exo_token_t *token_hash[TOKEN_HASH_SIZE];
@@ -881,7 +881,7 @@ extern int yy_nextchar(void);
 extern char *yytext;
 extern FILE *yyin;
 
-static void
+local void
 exo_err(char *err)
 {
   extern int line;
