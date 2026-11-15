@@ -52,7 +52,7 @@ struct xmlinfo {
 
 #if	(! defined(XMLINFO_MASTER)) || (XMLINFO_MASTER == 0)
 
-extern int xmlinfo_init(XMLINFO *,char *,const char *) ;
+extern int xmlinfo_init(XMLINFO *,char *,cchar *) ;
 extern int xmlinfo_on(XMLINFO *) ;
 extern int xmlinfo_enabled(XMLINFO *,ULONG) ;
 extern int xmlinfo_flush(XMLINFO *) ;
