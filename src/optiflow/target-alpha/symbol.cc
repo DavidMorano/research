@@ -90,7 +90,7 @@ struct sym_sym_t **sym_datasyms = NULL;
 struct sym_sym_t **sym_datasyms_by_name = NULL;
 
 /* symbols loaded? */
-static int syms_loaded = FALSE;
+local int syms_loaded = FALSE;
 
 #ifdef PRINT_SYMS
 /* convert BFD symbols flags to a printable string */
@@ -184,7 +184,7 @@ flags2str(unsigned int flags)	/* bfd symbol flags */
 #endif /* PRINT_SYMS */
 
 /* qsort helper function */
-static int
+local int
 acmp(struct sym_sym_t **sym1, struct sym_sym_t **sym2)
 {
 
@@ -192,7 +192,7 @@ acmp(struct sym_sym_t **sym1, struct sym_sym_t **sym2)
 }
 
 /* qsort helper function */
-static int
+local int
 ncmp(struct sym_sym_t **sym1, struct sym_sym_t **sym2)
 {
   return strcmp((*sym1)->name, (*sym2)->name);
@@ -537,12 +537,12 @@ sym_loadsyms(char *fname,	/* file name containing symbols */
 
 /* DAM */
   qsort(sym_syms, sym_nsyms, sizeof(struct sym_sym_t *),
-	(int (*)(const void *,const void *)) acmp);
+	(int (*)(cvoid *,cvoid *)) acmp);
 
   /* sort by name */
 /* DAM */
   qsort(sym_syms_by_name, sym_nsyms, sizeof(struct sym_sym_t *),
-	(int (*)(const void *,const void *)) ncmp);
+	(int (*)(cvoid *,cvoid *)) ncmp);
 
   /* text segment sorted by address and name */
   sym_textsyms =
@@ -571,12 +571,12 @@ sym_loadsyms(char *fname,	/* file name containing symbols */
   /* sort by address */
 /* DAM */
   qsort(sym_textsyms, sym_ntextsyms, sizeof(struct sym_sym_t *), 
-	(int (*)(const void *,const void *)) acmp) ;
+	(int (*)(cvoid *,cvoid *)) acmp) ;
 
   /* sort by name */
 /* DAM */
   qsort(sym_textsyms_by_name, sym_ntextsyms, sizeof(struct sym_sym_t *), 
-	(int (*)(const void *,const void *)) ncmp) ;
+	(int (*)(cvoid *,cvoid *)) ncmp) ;
 
   /* data segment sorted by address and name */
   sym_datasyms =
@@ -605,12 +605,12 @@ sym_loadsyms(char *fname,	/* file name containing symbols */
   /* sort by address */
 /* DAM */
   qsort(sym_datasyms, sym_ndatasyms, sizeof(struct sym_sym_t *), 
-	(int (*)(const void *,const void *)) acmp) ;
+	(int (*)(cvoid *,cvoid *)) acmp) ;
 
   /* sort by name */
 /* DAM */
   qsort(sym_datasyms_by_name, sym_ndatasyms, sizeof(struct sym_sym_t *), 
-	(int (*)(const void *,const void *)) ncmp) ;
+	(int (*)(cvoid *,cvoid *)) ncmp) ;
 
   /* compute symbol sizes */
   for (i=0; i<sym_ntextsyms; i++)
