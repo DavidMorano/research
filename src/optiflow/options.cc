@@ -111,7 +111,7 @@ opt_delete(struct opt_odb_t *odb)	/* option database */
 }
 
 /* add option OPT to option database ODB */
-static void
+local void
 add_option(struct opt_odb_t *odb,	/* option database */
 	   struct opt_opt_t *opt)	/* option variable */
 {
@@ -502,7 +502,7 @@ opt_reg_double_list(struct opt_odb_t *odb, /* option data base */
 }
 
 /* bind an enumeration string to an enumeration value */
-static int
+local int
 bind_to_enum(char *str,			/* string to bind to an enum */
 	     char **emap,		/* enumeration string map */
 	     int *eval,			/* enumeration value map, optional */
@@ -683,7 +683,7 @@ static char *flag_emap[NUM_FLAGS] = {
   "false", "f", "F", "False", "FALSE", "0", "n", "N", "no", "No", "NO",
   "off", "Off", "OFF"
 };
-static int flag_eval[NUM_FLAGS] = {
+local int flag_eval[NUM_FLAGS] = {
   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 };
@@ -1242,11 +1242,11 @@ process_option(struct opt_odb_t *odb,	/* option database */
 }
 
 /* forward declarations */
-static void process_file(struct opt_odb_t *odb, char *fname, int depth);
-static void dump_config(struct opt_odb_t *odb, char *fname);
+local void process_file(struct opt_odb_t *odb, char *fname, int depth);
+local void dump_config(struct opt_odb_t *odb, char *fname);
 
 /* process a command line, internal version that tracks `-config' depth */
-static void
+local void
 __opt_process_options(struct opt_odb_t *odb,	/* option data base */
 		      int argc,			/* number of arguments */
 		      char **argv,		/* argument array */
@@ -1354,7 +1354,7 @@ opt_process_options(struct opt_odb_t *odb,	/* option data base */
 /* handle `-config' builtin option */
 #define MAX_LINE_ARGS		256
 #define MAX_FILENAME_LEN	1024
-static void
+local void
 process_file(struct opt_odb_t *odb, char *fname, int depth)
 {
   int largc;
@@ -1588,7 +1588,7 @@ opt_print_option(struct opt_opt_t *opt,/* option variable */
 }
 
 /* print any options header */
-static void
+local void
 print_option_header(struct opt_odb_t *odb,/* options database */
 		    FILE *fd)		/* output stream */
 {
@@ -1599,7 +1599,7 @@ print_option_header(struct opt_odb_t *odb,/* options database */
 }
 
 /* print option notes */
-static void
+local void
 print_option_notes(struct opt_odb_t *odb,/* options database */
 		   FILE *fd)		/* output stream */
 {
@@ -1700,7 +1700,7 @@ opt_print_options(struct opt_odb_t *odb,/* option data base */
 }
 
 /* print help information for an option */
-static void
+local void
 print_help(struct opt_opt_t *opt,	/* option variable */
 	   FILE *fd)			/* output stream */
 {
@@ -1787,7 +1787,7 @@ opt_print_help(struct opt_odb_t *odb,	/* option data base */
 }
 
 /* handle `-dumpconfig' builtin option, print options from file argument */
-static void
+local void
 dump_config(struct opt_odb_t *odb,	/* option data base */
 	    char *fname)		/* output file name, "-" == stdout */
 {
