@@ -67,7 +67,7 @@
 
 /* forward referecens */
 
-static int lfgf_handleshift(LFGF *,struct proginfo *,int) ;
+local int lfgf_handleshift(LFGF *,struct proginfo *,int) ;
 
 
 
@@ -570,7 +570,7 @@ LFLOWGROUP	*fgp ;
 
 
 
-static int lfgf_handleshift(rfp,pip,totalrows)
+local int lfgf_handleshift(rfp,pip,totalrows)
 LFGF		*rfp ;
 struct proginfo	*pip ;
 int		totalrows ;
