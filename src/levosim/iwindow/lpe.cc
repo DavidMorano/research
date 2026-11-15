@@ -91,9 +91,9 @@
 
 /* forward references */
 
-static int	lpe_phase2(LPE *,struct proginfo *,struct levoinfo *) ;
-static int	lpe_handleshift(LPE *,struct proginfo *,struct levoinfo *) ;
-static int	lpe_exec(LPE *,struct proginfo *,struct lpe_waitlist *) ;
+local int	lpe_phase2(LPE *,struct proginfo *,struct levoinfo *) ;
+local int	lpe_handleshift(LPE *,struct proginfo *,struct levoinfo *) ;
+local int	lpe_exec(LPE *,struct proginfo *,struct lpe_waitlist *) ;
 
 
 
@@ -540,7 +540,7 @@ XMLINFO	*xip ;
 
 
 /* do our phase 2 combinatorial stuff */
-static int lpe_phase2(lpep,pip,lip)
+local int lpe_phase2(lpep,pip,lip)
 LPE		*lpep ;
 struct proginfo	*pip ;
 struct levoinfo	*lip ;
@@ -625,7 +625,7 @@ struct levoinfo	*lip ;
 
 
 /* handle doing a shift for us */
-static int lpe_handleshift(lpep,pip,lip)
+local int lpe_handleshift(lpep,pip,lip)
 LPE		*lpep ;
 struct proginfo	*pip ;
 struct levoinfo	*lip ;
@@ -770,7 +770,7 @@ struct lpe_waitlist	*wentry ;
 
 
 /* print out some stuff */
-static int lpe_print(LPE * lpep)
+local int lpe_print(LPE * lpep)
 {
 	int i ;
 
