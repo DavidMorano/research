@@ -81,10 +81,10 @@ char *eval_err_str[ERR_NUM] = {
 
 /* *first* token character -> enum eval_token_t map */
 static enum eval_token_t tok_map[256];
-static int tok_map_initialized = FALSE;
+local int tok_map_initialized = FALSE;
 
 /* builds the first token map */
-static void
+local void
 init_tok_map(void)
 {
   int i;
@@ -798,7 +798,7 @@ f_neg(struct eval_value_t val1)
 }
 
 /* compute val1 == 0 */
-static int
+local int
 f_eq_zero(struct eval_value_t val1)
 {
   int val;
