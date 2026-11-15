@@ -81,10 +81,10 @@
 
 extern int	getnodedomain(char *,char *) ;
 extern int	getlogname(char *,int) ;
-extern int	sfshrink(const char *,int,char **) ;
-extern int	cfdeci(const char *,int,int *) ;
+extern int	sfshrink(cchar *,int,char **) ;
+extern int	cfdeci(cchar *,int,int *) ;
 
-extern char	*strwcpy(char *,const char *,int) ;
+extern char	*strwcpy(char *,cchar *,int) ;
 
 
 /* local structures */
@@ -102,64 +102,64 @@ struct indexentry {
 
 /* forward references */
 
-static int	syscalls_indexinit(SYSCALLS *,LSIM *) ;
-static int	syscalls_indexfree(SYSCALLS *,LSIM *) ;
-static int	syscalls_memread(SYSCALLS *,struct proginfo *,LSIM *,
+local int	syscalls_indexinit(SYSCALLS *,LSIM *) ;
+local int	syscalls_indexfree(SYSCALLS *,LSIM *) ;
+local int	syscalls_memread(SYSCALLS *,struct proginfo *,LSIM *,
 			uint,char *,int) ;
-static int	syscalls_memreadstr(SYSCALLS *,struct proginfo *,LSIM *,
+local int	syscalls_memreadstr(SYSCALLS *,struct proginfo *,LSIM *,
 			uint,char *,int) ;
-static int	syscalls_memwrite(SYSCALLS *,struct proginfo *,LSIM *,
+local int	syscalls_memwrite(SYSCALLS *,struct proginfo *,LSIM *,
 			uint,char *,int) ;
 
-static int	handle_exit(SYSCALLS *,struct proginfo *,LSIM *,
+local int	handle_exit(SYSCALLS *,struct proginfo *,LSIM *,
 			SYSCALLS_ARGREGS *,SYSCALLS_RETREG *) ;
-static int	handle_getpid(SYSCALLS *,struct proginfo *,LSIM *,
+local int	handle_getpid(SYSCALLS *,struct proginfo *,LSIM *,
 			SYSCALLS_ARGREGS *,SYSCALLS_RETREG *) ;
-static int	handle_getuid(SYSCALLS *,struct proginfo *,LSIM *,
+local int	handle_getuid(SYSCALLS *,struct proginfo *,LSIM *,
 			SYSCALLS_ARGREGS *,SYSCALLS_RETREG *) ;
-static int	handle_open(SYSCALLS *,struct proginfo *,LSIM *,
+local int	handle_open(SYSCALLS *,struct proginfo *,LSIM *,
 			SYSCALLS_ARGREGS *,SYSCALLS_RETREG *) ;
-static int	handle_close(SYSCALLS *,struct proginfo *,LSIM *,
+local int	handle_close(SYSCALLS *,struct proginfo *,LSIM *,
 			SYSCALLS_ARGREGS *,SYSCALLS_RETREG *) ;
-static int	handle_read(SYSCALLS *,struct proginfo *,LSIM *,
+local int	handle_read(SYSCALLS *,struct proginfo *,LSIM *,
 			SYSCALLS_ARGREGS *,SYSCALLS_RETREG *) ;
-static int	handle_write(SYSCALLS *,struct proginfo *,LSIM *,
+local int	handle_write(SYSCALLS *,struct proginfo *,LSIM *,
 			SYSCALLS_ARGREGS *,SYSCALLS_RETREG *) ;
-static int	handle_lseek(SYSCALLS *,struct proginfo *,LSIM *,
+local int	handle_lseek(SYSCALLS *,struct proginfo *,LSIM *,
 			SYSCALLS_ARGREGS *,SYSCALLS_RETREG *) ;
-static int	handle_fcntl(SYSCALLS *,struct proginfo *,LSIM *,
+local int	handle_fcntl(SYSCALLS *,struct proginfo *,LSIM *,
 			SYSCALLS_ARGREGS *,SYSCALLS_RETREG *) ;
-static int	handle_ioctl(SYSCALLS *,struct proginfo *,LSIM *,
+local int	handle_ioctl(SYSCALLS *,struct proginfo *,LSIM *,
 			SYSCALLS_ARGREGS *,SYSCALLS_RETREG *) ;
-static int	handle_brk(SYSCALLS *,struct proginfo *,LSIM *,
+local int	handle_brk(SYSCALLS *,struct proginfo *,LSIM *,
 			SYSCALLS_ARGREGS *,SYSCALLS_RETREG *) ;
-static int	handle_sbrk(SYSCALLS *,struct proginfo *,LSIM *,
+local int	handle_sbrk(SYSCALLS *,struct proginfo *,LSIM *,
 			SYSCALLS_ARGREGS *,SYSCALLS_RETREG *) ;
-static int	handle_stat(SYSCALLS *,struct proginfo *,LSIM *,
+local int	handle_stat(SYSCALLS *,struct proginfo *,LSIM *,
 			SYSCALLS_ARGREGS *,SYSCALLS_RETREG *) ;
-static int	handle_fstat(SYSCALLS *,struct proginfo *,LSIM *,
+local int	handle_fstat(SYSCALLS *,struct proginfo *,LSIM *,
 			SYSCALLS_ARGREGS *,SYSCALLS_RETREG *) ;
-static int	handle_getpagesize(SYSCALLS *,struct proginfo *,LSIM *,
+local int	handle_getpagesize(SYSCALLS *,struct proginfo *,LSIM *,
 			SYSCALLS_ARGREGS *,SYSCALLS_RETREG *) ;
-static int	handle_getrlimit(SYSCALLS *,struct proginfo *,LSIM *,
+local int	handle_getrlimit(SYSCALLS *,struct proginfo *,LSIM *,
 			SYSCALLS_ARGREGS *,SYSCALLS_RETREG *) ;
-static int	handle_setrlimit(SYSCALLS *,struct proginfo *,LSIM *,
+local int	handle_setrlimit(SYSCALLS *,struct proginfo *,LSIM *,
 			SYSCALLS_ARGREGS *,SYSCALLS_RETREG *) ;
-static int	handle_signal(SYSCALLS *,struct proginfo *,LSIM *,
+local int	handle_signal(SYSCALLS *,struct proginfo *,LSIM *,
 			SYSCALLS_ARGREGS *,SYSCALLS_RETREG *) ;
-static int	handle_access(SYSCALLS *,struct proginfo *,LSIM *,
+local int	handle_access(SYSCALLS *,struct proginfo *,LSIM *,
 			SYSCALLS_ARGREGS *,SYSCALLS_RETREG *) ;
-static int	handle_getrusage(SYSCALLS *,struct proginfo *,LSIM *,
+local int	handle_getrusage(SYSCALLS *,struct proginfo *,LSIM *,
 			SYSCALLS_ARGREGS *,SYSCALLS_RETREG *) ;
-static int	handle_time(SYSCALLS *,struct proginfo *,LSIM *,
+local int	handle_time(SYSCALLS *,struct proginfo *,LSIM *,
 			SYSCALLS_ARGREGS *,SYSCALLS_RETREG *) ;
-static int	handle_times(SYSCALLS *,struct proginfo *,LSIM *,
+local int	handle_times(SYSCALLS *,struct proginfo *,LSIM *,
 			SYSCALLS_ARGREGS *,SYSCALLS_RETREG *) ;
-static int	handle_prctl(SYSCALLS *,struct proginfo *,LSIM *,
+local int	handle_prctl(SYSCALLS *,struct proginfo *,LSIM *,
 			SYSCALLS_ARGREGS *,SYSCALLS_RETREG *) ;
-static int	handle_syssgi(SYSCALLS *,struct proginfo *,LSIM *,
+local int	handle_syssgi(SYSCALLS *,struct proginfo *,LSIM *,
 			SYSCALLS_ARGREGS *,SYSCALLS_RETREG *) ;
-static int	handle_isatty(SYSCALLS *,struct proginfo *,LSIM *,
+local int	handle_isatty(SYSCALLS *,struct proginfo *,LSIM *,
 			SYSCALLS_ARGREGS *,SYSCALLS_RETREG *) ;
 
 
@@ -397,7 +397,7 @@ SYSCALLS	*op ;
 int syscalls_issyscall(op,addr,npp)
 SYSCALLS	*op ;
 uint		addr ;
-const char	**npp ;
+cchar	**npp ;
 {
 	struct proginfo		*pip ;
 
@@ -495,7 +495,7 @@ SYSCALLS_RETREG		*rrp ;
 	int	ei ;
 	int	f_exit = FALSE ;
 
-	const char	*np ;
+	cchar	*np ;
 
 
 #if	F_SAFE
@@ -677,7 +677,7 @@ SYSCALLS_STATS	*sp ;
 
 
 /* find any SYSCALLs and index them by their function address */
-static int syscalls_indexinit(op,mip)
+local int syscalls_indexinit(op,mip)
 SYSCALLS	*op ;
 LSIM		*mip ;
 {
@@ -782,7 +782,7 @@ bad1:
 
 
 /* free up the data used to hold SYSCALL information */
-static int syscalls_indexfree(op,mip)
+local int syscalls_indexfree(op,mip)
 SYSCALLS	*op ;
 LSIM		*mip ;
 {
@@ -816,7 +816,7 @@ LSIM		*mip ;
 
 
 /* exit */
-static int handle_exit(op,pip,mip,arp,rrp)
+local int handle_exit(op,pip,mip,arp,rrp)
 SYSCALLS		*op ;
 struct proginfo		*pip ;
 LSIM			*mip ;
@@ -838,7 +838,7 @@ SYSCALLS_RETREG		*rrp ;
 
 
 /* getpid */
-static int handle_getpid(op,pip,mip,arp,rrp)
+local int handle_getpid(op,pip,mip,arp,rrp)
 SYSCALLS		*op ;
 struct proginfo		*pip ;
 LSIM			*mip ;
@@ -863,7 +863,7 @@ SYSCALLS_RETREG		*rrp ;
 /* end subroutine (handle_getpid) */
 
 
-static int handle_getuid(op,pip,mip,arp,rrp)
+local int handle_getuid(op,pip,mip,arp,rrp)
 SYSCALLS		*op ;
 struct proginfo		*pip ;
 LSIM			*mip ;
@@ -889,7 +889,7 @@ SYSCALLS_RETREG		*rrp ;
 
 
 /* open */
-static int handle_open(op,pip,mip,arp,rrp)
+local int handle_open(op,pip,mip,arp,rrp)
 SYSCALLS		*op ;
 struct proginfo		*pip ;
 LSIM			*mip ;
@@ -1033,7 +1033,7 @@ SYSCALLS_RETREG		*rrp ;
 /* end subroutine (handle_open) */
 
 
-static int handle_close(op,pip,mip,arp,rrp)
+local int handle_close(op,pip,mip,arp,rrp)
 SYSCALLS		*op ;
 struct proginfo		*pip ;
 LSIM			*mip ;
@@ -1103,7 +1103,7 @@ SYSCALLS_RETREG		*rrp ;
 /* end subroutine (handle_close) */
 
 
-static int handle_read(op,pip,mip,arp,rrp)
+local int handle_read(op,pip,mip,arp,rrp)
 SYSCALLS		*op ;
 struct proginfo		*pip ;
 LSIM			*mip ;
@@ -1197,7 +1197,7 @@ SYSCALLS_RETREG		*rrp ;
 /* end subroutine (handle_read) */
 
 
-static int handle_write(op,pip,mip,arp,rrp)
+local int handle_write(op,pip,mip,arp,rrp)
 SYSCALLS		*op ;
 struct proginfo		*pip ;
 LSIM			*mip ;
@@ -1273,7 +1273,7 @@ SYSCALLS_RETREG		*rrp ;
 /* end subroutine (handle_write) */
 
 
-static int handle_lseek(op,pip,mip,arp,rrp)
+local int handle_lseek(op,pip,mip,arp,rrp)
 SYSCALLS		*op ;
 struct proginfo		*pip ;
 LSIM			*mip ;
@@ -1348,7 +1348,7 @@ SYSCALLS_RETREG		*rrp ;
 /* end subroutine (handle_lseek) */
 
 
-static int handle_fstat(op,pip,mip,arp,rrp)
+local int handle_fstat(op,pip,mip,arp,rrp)
 SYSCALLS		*op ;
 struct proginfo		*pip ;
 LSIM			*mip ;
@@ -1485,7 +1485,7 @@ SYSCALLS_RETREG		*rrp ;
 /* end subroutine (handle_fstat) */
 
 
-static int handle_fcntl(op,pip,mip,arp,rrp)
+local int handle_fcntl(op,pip,mip,arp,rrp)
 SYSCALLS		*op ;
 struct proginfo		*pip ;
 LSIM			*mip ;
@@ -1656,7 +1656,7 @@ SYSCALLS_RETREG		*rrp ;
 /* end subroutine (handle_fcntl) */
 
 
-static int handle_ioctl(op,pip,mip,arp,rrp)
+local int handle_ioctl(op,pip,mip,arp,rrp)
 SYSCALLS		*op ;
 struct proginfo		*pip ;
 LSIM			*mip ;
@@ -1725,7 +1725,7 @@ SYSCALLS_RETREG		*rrp ;
 /* end subroutine (handle_ioctl) */
 
 
-static int handle_brk(op,pip,mip,arp,rrp)
+local int handle_brk(op,pip,mip,arp,rrp)
 SYSCALLS		*op ;
 struct proginfo		*pip ;
 LSIM			*mip ;
@@ -1801,7 +1801,7 @@ SYSCALLS_RETREG		*rrp ;
 /* end subroutine (handle_brk) */
 
 
-static int handle_sbrk(op,pip,mip,arp,rrp)
+local int handle_sbrk(op,pip,mip,arp,rrp)
 SYSCALLS		*op ;
 struct proginfo		*pip ;
 LSIM			*mip ;
@@ -1896,7 +1896,7 @@ SYSCALLS_RETREG		*rrp ;
 /* end subroutine (handle_sbrk) */
 
 
-static int handle_stat(op,pip,mip,arp,rrp)
+local int handle_stat(op,pip,mip,arp,rrp)
 SYSCALLS		*op ;
 struct proginfo		*pip ;
 LSIM			*mip ;
@@ -2057,7 +2057,7 @@ SYSCALLS_RETREG		*rrp ;
 /* end subroutine (handle_stat) */
 
 
-static int handle_getpagesize(op,pip,mip,arp,rrp)
+local int handle_getpagesize(op,pip,mip,arp,rrp)
 SYSCALLS		*op ;
 struct proginfo		*pip ;
 LSIM			*mip ;
@@ -2119,7 +2119,7 @@ SYSCALLS_RETREG		*rrp ;
 /* end subroutine (handle_getpagesize) */
 
 
-static int handle_getrlimit(op,pip,mip,arp,rrp)
+local int handle_getrlimit(op,pip,mip,arp,rrp)
 SYSCALLS		*op ;
 struct proginfo		*pip ;
 LSIM			*mip ;
@@ -2236,7 +2236,7 @@ SYSCALLS_RETREG		*rrp ;
 /* end subroutine (handle_getrlimit) */
 
 
-static int handle_setrlimit(op,pip,mip,arp,rrp)
+local int handle_setrlimit(op,pip,mip,arp,rrp)
 SYSCALLS		*op ;
 struct proginfo		*pip ;
 LSIM			*mip ;
@@ -2297,7 +2297,7 @@ SYSCALLS_RETREG		*rrp ;
 /* end subroutine (handle_setrlimit) */
 
 
-static int handle_signal(op,pip,mip,arp,rrp)
+local int handle_signal(op,pip,mip,arp,rrp)
 SYSCALLS		*op ;
 struct proginfo		*pip ;
 LSIM			*mip ;
@@ -2359,7 +2359,7 @@ SYSCALLS_RETREG		*rrp ;
 
 
 /* access */
-static int handle_access(op,pip,mip,arp,rrp)
+local int handle_access(op,pip,mip,arp,rrp)
 SYSCALLS		*op ;
 struct proginfo		*pip ;
 LSIM			*mip ;
@@ -2456,7 +2456,7 @@ SYSCALLS_RETREG		*rrp ;
 /* end subroutine (handle_access) */
 
 
-static int handle_getrusage(op,pip,mip,arp,rrp)
+local int handle_getrusage(op,pip,mip,arp,rrp)
 SYSCALLS		*op ;
 struct proginfo		*pip ;
 LSIM			*mip ;
@@ -2561,7 +2561,7 @@ SYSCALLS_RETREG		*rrp ;
 /* end subroutine (handle_getrusage) */
 
 
-static int handle_time(op,pip,mip,arp,rrp)
+local int handle_time(op,pip,mip,arp,rrp)
 SYSCALLS		*op ;
 struct proginfo		*pip ;
 LSIM			*mip ;
@@ -2642,7 +2642,7 @@ SYSCALLS_RETREG		*rrp ;
 /* end subroutine (handle_time) */
 
 
-static int handle_times(op,pip,mip,arp,rrp)
+local int handle_times(op,pip,mip,arp,rrp)
 SYSCALLS		*op ;
 struct proginfo		*pip ;
 LSIM			*mip ;
@@ -2732,7 +2732,7 @@ SYSCALLS_RETREG		*rrp ;
 /* end subroutine (handle_times) */
 
 
-static int handle_prctl(op,pip,mip,arp,rrp)
+local int handle_prctl(op,pip,mip,arp,rrp)
 SYSCALLS		*op ;
 struct proginfo		*pip ;
 LSIM			*mip ;
@@ -2793,7 +2793,7 @@ SYSCALLS_RETREG		*rrp ;
 /* end subroutine (handle_prctl) */
 
 
-static int handle_syssgi(op,pip,mip,arp,rrp)
+local int handle_syssgi(op,pip,mip,arp,rrp)
 SYSCALLS		*op ;
 struct proginfo		*pip ;
 LSIM			*mip ;
@@ -2857,7 +2857,7 @@ SYSCALLS_RETREG		*rrp ;
 /* end subroutine (handle_syssgi) */
 
 
-static int handle_isatty(op,pip,mip,arp,rrp)
+local int handle_isatty(op,pip,mip,arp,rrp)
 SYSCALLS		*op ;
 struct proginfo		*pip ;
 LSIM			*mip ;
@@ -2884,7 +2884,7 @@ SYSCALLS_RETREG		*rrp ;
 
 
 /* read the target program memory (BIG ENDIAN ASSUMED) */
-static int syscalls_memread(op,pip,mip,ta,buf,len)
+local int syscalls_memread(op,pip,mip,ta,buf,len)
 SYSCALLS	*op ;
 struct proginfo	*pip ;
 LSIM		*mip ;
@@ -2927,7 +2927,7 @@ int		len ;
 
 
 /* read the target program memory (BIG ENDIAN ASSUMED) */
-static int syscalls_memreadstr(op,pip,mip,ta,buf,len)
+local int syscalls_memreadstr(op,pip,mip,ta,buf,len)
 SYSCALLS	*op ;
 struct proginfo	*pip ;
 LSIM		*mip ;
@@ -2989,7 +2989,7 @@ int		len ;
 
 
 /* write the target program memory (BIG ENDIAN ASSUMED) */
-static int syscalls_memwrite(op,pip,mip,ta,buf,len)
+local int syscalls_memwrite(op,pip,mip,ta,buf,len)
 SYSCALLS	*op ;
 struct proginfo	*pip ;
 LSIM		*mip ;
