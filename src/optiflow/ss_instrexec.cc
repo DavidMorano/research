@@ -94,9 +94,9 @@
 
 /* external subroutines */
 
-extern int	cfdeci(const char *,int,int *) ;
-extern int	cfdecui(const char *,int,int *) ;
-extern int	cfdecull(const char *,int,ULONG *) ;
+extern int	cfdeci(cchar *,int,int *) ;
+extern int	cfdecui(cchar *,int,int *) ;
+extern int	cfdecull(cchar *,int,ULONG *) ;
 
 
 /* external variables */
@@ -109,12 +109,12 @@ extern struct proginfo	pi ;
 
 /* forward references */
 
-static int ssas_getreg(SSAS *,int,ULONG *) ;
-static int ssas_setreg(SSAS *,int,ULONG) ;
-static int ssas_getmem(SSAS *,ULONG,int,ULONG *) ;
-static int ssas_setmem(SSAS *,ULONG,int,ULONG) ;
-static int ssas_getop(SSAS *,int,ULONG,ULONG *) ;
-static int ssas_setop(SSAS *,int,ULONG,int,ULONG) ;
+local int ssas_getreg(SSAS *,int,ULONG *) ;
+local int ssas_setreg(SSAS *,int,ULONG) ;
+local int ssas_getmem(SSAS *,ULONG,int,ULONG *) ;
+local int ssas_setmem(SSAS *,ULONG,int,ULONG) ;
+local int ssas_getop(SSAS *,int,ULONG,ULONG *) ;
+local int ssas_setop(SSAS *,int,ULONG,int,ULONG) ;
 
 /* subroutines called by the macros */
 
@@ -124,25 +124,25 @@ static LONG	getreg(int,SSAS *) ;
 
 static double	getfprd(int,SSAS *) ;
 
-static int	setgpr(int,LONG,SSAS *) ;
-static int	setfprq(int,LONG,SSAS *) ;
-static int	setfprd(int,double,SSAS *) ;
-static int	setreg(int,LONG,SSAS *) ;
+local int	setgpr(int,LONG,SSAS *) ;
+local int	setfprq(int,LONG,SSAS *) ;
+local int	setfprd(int,double,SSAS *) ;
+local int	setreg(int,LONG,SSAS *) ;
 
-static int	getmembyte(ULONG,SSAS *) ;
-static int	getmemhalf(ULONG,SSAS *) ;
-static int	getmemword(ULONG,SSAS *) ;
+local int	getmembyte(ULONG,SSAS *) ;
+local int	getmemhalf(ULONG,SSAS *) ;
+local int	getmemword(ULONG,SSAS *) ;
 static LONG	getmemlong(ULONG,SSAS *) ;
 
-static int	setmembyte(ULONG,LONG,SSAS *) ;
-static int	setmemhalf(ULONG,LONG,SSAS *) ;
-static int	setmemword(ULONG,LONG,SSAS *) ;
-static int	setmemlong(ULONG,LONG,SSAS *) ;
+local int	setmembyte(ULONG,LONG,SSAS *) ;
+local int	setmemhalf(ULONG,LONG,SSAS *) ;
+local int	setmemword(ULONG,LONG,SSAS *) ;
+local int	setmemlong(ULONG,LONG,SSAS *) ;
 
 
 /* local variables */
 
-static const char	*optypes[] = {
+static cchar	*optypes[] = {
 	    "none",
 	    "register",
 	    "memory",
@@ -408,7 +408,7 @@ SSAS	*asp ;
 /* end subroutine (getgpr) */
 
 
-static int setgpr(n,v,asp)
+local int setgpr(n,v,asp)
 int	n ;
 LONG	v ;
 SSAS	*asp ;
@@ -448,7 +448,7 @@ SSAS	*asp ;
 /* end subroutine (getfprq) */
 
 
-static int setfprq(n,v,asp)
+local int setfprq(n,v,asp)
 int	n ;
 LONG	v ;
 SSAS	*asp ;
@@ -487,7 +487,7 @@ SSAS	*asp ;
 /* end subroutine (getfprd) */
 
 
-static int setfprd(n,v,asp)
+local int setfprd(n,v,asp)
 int	n ;
 double 	v ;
 SSAS	*asp ;
@@ -530,7 +530,7 @@ SSAS	*asp ;
 /* end subroutine (getreg) */
 
 
-static int setreg(n,v,asp)
+local int setreg(n,v,asp)
 int	n ;
 LONG	v ;
 SSAS	*asp ;
@@ -551,7 +551,7 @@ SSAS	*asp ;
 
 /* subroutines for the macros (memory) */
 
-static int getmembyte(a,asp)
+local int getmembyte(a,asp)
 ULONG	a ;
 SSAS	*asp ;
 {
@@ -571,7 +571,7 @@ SSAS	*asp ;
 /* end subroutine (getmembyte) */
 
 
-static int getmemhalf(a,asp)
+local int getmemhalf(a,asp)
 ULONG	a ;
 SSAS	*asp ;
 {
@@ -591,7 +591,7 @@ SSAS	*asp ;
 /* end subroutine (getmemhalf) */
 
 
-static int getmemword(a,asp)
+local int getmemword(a,asp)
 ULONG	a ;
 SSAS	*asp ;
 {
@@ -631,7 +631,7 @@ SSAS	*asp ;
 /* end subroutine (getmemlong) */
 
 
-static int setmembyte(a,v,asp)
+local int setmembyte(a,v,asp)
 ULONG	a ;
 LONG	v ;
 SSAS	*asp ;
@@ -650,7 +650,7 @@ SSAS	*asp ;
 /* end subroutine (setmembyte) */
 
 
-static int setmemhalf(a,v,asp)
+local int setmemhalf(a,v,asp)
 ULONG	a ;
 LONG	v ;
 SSAS	*asp ;
@@ -669,7 +669,7 @@ SSAS	*asp ;
 /* end subroutine (setmemhalf) */
 
 
-static int setmemword(a,v,asp)
+local int setmemword(a,v,asp)
 ULONG	a ;
 LONG	v ;
 SSAS	*asp ;
@@ -688,7 +688,7 @@ SSAS	*asp ;
 /* end subroutine (setmemword) */
 
 
-static int setmemlong(a,v,asp)
+local int setmemlong(a,v,asp)
 ULONG	a ;
 LONG	v ;
 SSAS	*asp ;
@@ -708,7 +708,7 @@ SSAS	*asp ;
 
 
 /* get a register value */
-static int ssas_getreg(asp,a,vp)
+local int ssas_getreg(asp,a,vp)
 SSAS	*asp ;
 int	a ;
 ULONG	*vp ;
@@ -735,7 +735,7 @@ ULONG	*vp ;
 
 
 /* set a destination register value in an AS */
-static int ssas_setreg(asp,a,v)
+local int ssas_setreg(asp,a,v)
 SSAS	*asp ;
 int	a ;
 ULONG	v ;
@@ -763,7 +763,7 @@ ULONG	v ;
 
 
 /* get a memory value */
-static int ssas_getmem(asp,a,size,vp)
+local int ssas_getmem(asp,a,size,vp)
 SSAS	*asp ;
 ULONG	a ;
 int	size ;
@@ -780,7 +780,7 @@ ULONG	*vp ;
 
 
 /* set a memory value */
-static int ssas_setmem(asp,a,size,v)
+local int ssas_setmem(asp,a,size,v)
 SSAS	*asp ;
 ULONG	a ;
 int	size ;
@@ -797,7 +797,7 @@ ULONG	v ;
 
 
 /* get an operand by name */
-static int ssas_getop(asp,type,a,vp)
+local int ssas_getop(asp,type,a,vp)
 SSAS	*asp ;
 int	type ;
 ULONG	a ;
@@ -828,7 +828,7 @@ ULONG	*vp ;
 
 
 /* set an output operand by name */
-static int ssas_setop(asp,type,a,size,v)
+local int ssas_setop(asp,type,a,size,v)
 SSAS	*asp ;
 int	type ;
 ULONG	a ;
