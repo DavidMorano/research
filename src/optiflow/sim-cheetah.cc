@@ -97,25 +97,25 @@ static char *repl_str;
 static char *conf_str;
 
 /* minimum number of sets to analyze (log base 2) */
-static int min_sets;
+local int min_sets;
 
 /* minimum number of sets to analyze (log base 2) */
-static int max_sets;
+local int max_sets;
 
 /* line size of the caches (log base 2) */
-static int line_size;
+local int line_size;
 
 /* max degree of associativity to analyze (log base 2) */
-static int max_assoc;
+local int max_assoc;
 
 /* cache size intervals at which miss ratio is shown */
-static int cache_interval;
+local int cache_interval;
 
 /* maximum cache size of interest */
-static int max_cache;
+local int max_cache;
 
 /* size of cache (log base 2) for DM analysis */
-static int cache_size;
+local int cache_size;
 
 /* reference stream to analyze, i.e., {inst|data|unified} */
 static char *ref_stream;
@@ -123,7 +123,7 @@ static char *ref_stream;
 /* reference stream to analyze */
 #define REFS_INST		0x01
 #define REFS_DATA		0x02
-static int refs;
+local int refs;
 
 /* register simulator-specific options */
 void
@@ -176,7 +176,7 @@ sim_reg_options(struct opt_odb_t *odb)
 }
 
 /* libcheetah argument count and string vector */
-static int lib_argc = 0;
+local int lib_argc = 0;
 static char *lib_argv[16];
 
 /* check simulator-specific option values */
