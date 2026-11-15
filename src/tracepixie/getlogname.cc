@@ -70,14 +70,6 @@
 #define	GRBUFLEN	7296		/* from Solaris */
 #endif
 
-#ifndef	LOGNAMELEN
-#ifdef	LOGNAME_MAX
-#define	LOGNAMELEN	LOGNAME_MAX
-#else
-#define	LOGNAMELEN	32
-#endif
-#endif
-
 #ifndef	VARUSERNAME
 #define	VARUSERNAME	"USERNAME"
 #endif
@@ -93,10 +85,10 @@
 
 /* external subroutines */
 
-extern int	sncpy1(char *,int,const char *) ;
-extern int	snwcpy(char *,int,const char *,int) ;
+extern int	sncpy1(char *,int,cchar *) ;
+extern int	snwcpy(char *,int,cchar *,int) ;
 
-extern char	*strwcpy(char *,const char *,int) ;
+extern char	*strwcpy(char *,cchar *,int) ;
 
 
 /* external variables */
@@ -126,7 +118,7 @@ int		lognamelen ;
 
 #if	CF_ENV
 	if (rs == SR_NOTFOUND) {
-	    const char	*cp ;
+	    cchar	*cp ;
 
 	    if ((cp = getenv(VARLOGNAME)) != NULL) {
 
