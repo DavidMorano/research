@@ -122,7 +122,7 @@ SSAS	*casp ;
 
 int itype_writeout(itp,statsfname)
 ITYPE		*itp ;
-const char	statsfname[] ;
+cchar	statsfname[] ;
 {
 	bfile	sfile, *tfp = &sfile ;
 
