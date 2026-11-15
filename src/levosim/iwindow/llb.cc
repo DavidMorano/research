@@ -91,10 +91,10 @@
 
 /* forward references */
 
-static int	llb_checkload(LLB *,struct proginfo *,struct levoinfo *) ;
-static int	llb_handleshift(LLB *,struct proginfo *,struct levoinfo *) ;
+local int	llb_checkload(LLB *,struct proginfo *,struct levoinfo *) ;
+local int	llb_handleshift(LLB *,struct proginfo *,struct levoinfo *) ;
 
-static int	isbadp(void *) ;
+local int	isbadp(void *) ;
 
 
 
@@ -1233,7 +1233,7 @@ XMLINFO	*xip ;
 
 
 /* handle the combinatorial logic of a machine shift */
-static int llb_checkload(llbp,pip,lip)
+local int llb_checkload(llbp,pip,lip)
 LLB		*llbp ;
 struct proginfo	*pip ;
 struct levoinfo	*lip ;
@@ -1264,7 +1264,7 @@ struct levoinfo	*lip ;
 
 
 /* handle the combinatorial logic of a machine shift */
-static int llb_handleshift(llbp,pip,lip)
+local int llb_handleshift(llbp,pip,lip)
 LLB		*llbp ;
 struct proginfo	*pip ;
 struct levoinfo	*lip ;
@@ -1329,7 +1329,7 @@ int llb_dummyload(LLB * llbp) {
 
 
 #if	F_MASTEDEBUG && F_SAFE && F_SAFE2
-static int isbadp(p)
+local int isbadp(p)
 void	*p ;
 {
 	int	i = (int) p ;
