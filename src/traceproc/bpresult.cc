@@ -1,18 +1,16 @@
-/* bpresult */
+/* bpresult SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
-/* write a BP result */
+/* OptiFlow Branch-Prediction Result */
 /* last modified %G% version %I% */
 
-
-#define	CF_DEBUGS	0		/* compile-time debugging */
-
+#define	CF_DEBUG	0		/* compile-time debugging */
 
 /* revision history:
 
 	= 2002-06-14, David Morano
-
 	This program was originally written.
-
 
 */
 
@@ -20,24 +18,22 @@
 
 /*******************************************************************************
 
-	This object module facilitates wiring branch-prediction results
-	to a file.
-
+  	Description:
+	This object module facilitates wiring branch-prediction
+	results to a file.
 
 *******************************************************************************/
 
-
 #include	<envstandards.h>	/* ordered first to configure */
-
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<sys/stat.h>
 #include	<unistd.h>
 #include	<fcntl.h>
 #include	<climits>
-#include	<cstdlib>
-#include	<cstring>
-#include	<ctype.h>
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<cstring>		/* CSTD */
 
 #if	defined(IRIX)
 #include	<standards.h>
@@ -50,8 +46,6 @@
 
 
 /* local defines */
-
-#define	BPRESULT_MAGIC	0x98326514
 
 #define	DEFFILE		"bpdb"
 
