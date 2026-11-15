@@ -86,8 +86,8 @@
 
 /* forward references */
 
-static int	bus_arbitrate(BUS *,struct proginfo *) ;
-static int	bus_clear(BUS *,struct proginfo *) ;
+local int	bus_arbitrate(BUS *,struct proginfo *) ;
+local int	bus_clear(BUS *,struct proginfo *) ;
 
 
 
@@ -816,7 +816,7 @@ BUS_INFO	*ip ;
 
 
 /* the bus performs arbitration on phase 1 for the next clock period */
-static int bus_arbitrate(busp,pip)
+local int bus_arbitrate(busp,pip)
 BUS		*busp ;
 struct proginfo	*pip ;
 {
@@ -951,7 +951,7 @@ struct proginfo	*pip ;
 
 
 /* clear the data off of the bus for the NEXT cycle */
-static int bus_clear(busp,pip)
+local int bus_clear(busp,pip)
 BUS		*busp ;
 struct proginfo	*pip ;
 {
