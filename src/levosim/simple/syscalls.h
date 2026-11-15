@@ -109,7 +109,7 @@ struct syscalls_e {
 
 extern int	syscalls_init(SYSCALLS *,struct proginfo *,LSIM *,
 			struct statemips *,char **) ;
-extern int	syscalls_issyscall(SYSCALLS *,uint,const char **) ;
+extern int	syscalls_issyscall(SYSCALLS *,uint,cchar **) ;
 extern int	syscalls_handle(SYSCALLS *,uint,
 			SYSCALLS_ARGREGS *, SYSCALLS_RETREG *) ;
 extern int	ssycalls_getbrkmax(SYSCALLS *,uint *,uint *) ;
