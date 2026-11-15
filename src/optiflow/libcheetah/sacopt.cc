@@ -41,7 +41,7 @@ extern int N,		/* Degree of associativity = 2^N */
            SAVE_INTERVAL,      	/* Interval at which results are saved */
            P_INTERVAL;  /* Intervals at which progress output is done */
 
-static int TWO_PWR_N,	/* 2^N. i.e., Degree of associativity */
+local int TWO_PWR_N,	/* 2^N. i.e., Degree of associativity */
            MAX_DEPTH,	/* B-A, Number of range of sets simulated */
            TWO_POWER_MAX_DEPTH,	/* 2^MAX_DEPTH */
            SET_MASK,	/* Masks */
@@ -60,7 +60,7 @@ static unsigned *tag_arr,
                 **hits; /* Hit counts in caches */
 static unsigned hit0;
 static short *all_hit_flag;
-static int *prty_arr;
+local int *prty_arr;
 
 static unsigned t_entries; /* Count of addresses processed */
 static unsigned unknowns;
