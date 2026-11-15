@@ -82,23 +82,23 @@ int		sssim_getsymval(SSSIM *,char *,uint *) ;
 #endif /* COMMENT */
 
 #ifdef	COMMENT
-static int	sssim_syscalls(SSSIM *) ;
-static int	sssim_syscallsfree(SSSIM *) ;
+local int	sssim_syscalls(SSSIM *) ;
+local int	sssim_syscallsfree(SSSIM *) ;
 #endif /* COMMENT */
 
 #if	F_DEBUG || F_DEBUGS
-static int	sssim_prpq(SSSIM *,ULONG) ;
-static int	sssim_finddatamem(SSSIM *,char *,uint *) ;
+local int	sssim_prpq(SSSIM *,ULONG) ;
+local int	sssim_finddatamem(SSSIM *,char *,uint *) ;
 #endif
 
 #if	defined(COMMENT) && (F_DEBUG || F_DEBUGS)
-static int	datasymrank(Elf32_Sym *) ;
+local int	datasymrank(Elf32_Sym *) ;
 #endif
 
 
 /* local variables */
 
-static const char	*lparams[] = {
+static cchar	*lparams[] = {
 	"sim:maxclocks",	/* maximum number of clocks */
 	"sim:fastqueues",	/* number of fast queues */
 	NULL
@@ -110,7 +110,7 @@ enum lparams {
 	lparam_overlast
 } ;
 
-static const char	*syscalls[] = {
+static cchar	*syscalls[] = {
 	"open",
 	"close",
 	"read",
@@ -1716,7 +1716,7 @@ uint	newval ;
 int sssim_issyscall(mip,addr,npp)
 SSSIM		*mip ;
 uint		addr ;
-const char	**npp ;
+cchar	**npp ;
 {
 	SSSIM_SYMBOL	*sep ;
 
@@ -2011,7 +2011,7 @@ Elf32_Sym	**rpp ;
 
 #if	F_DEBUG || F_DEBUGS
 
-static int sssim_prpq(mip,ckey)
+local int sssim_prpq(mip,ckey)
 SSSIM	*mip ;
 ULONG	ckey ;
 {
@@ -2052,7 +2052,7 @@ ULONG	ckey ;
 #ifdef	COMMENT
 
 /* find any SYSCALLs and index them by their function address */
-static int sssim_syscalls(mip)
+local int sssim_syscalls(mip)
 SSSIM	*mip ;
 {
 	struct proginfo	*pip ;
@@ -2161,7 +2161,7 @@ bad1:
 
 
 /* free up the data used to hold SYSCALL information */
-static int sssim_syscallsfree(mip)
+local int sssim_syscallsfree(mip)
 SSSIM	*mip ;
 {
 	HDB_CURSOR	cur ;
@@ -2214,7 +2214,7 @@ static struct sssim_symrank	ranks[] = {
 	{ -1, -1, -1 },
 } ;
 
-static int sssim_finddatamem(mip,name,rp)
+local int sssim_finddatamem(mip,name,rp)
 SSSIM	*mip ;
 char	name[] ;
 uint	*rp ;
@@ -2317,7 +2317,7 @@ bad0:
 
 
 /* find the symbol's ranking suitable for data memory */
-static int datasymrank(sep)
+local int datasymrank(sep)
 Elf32_Sym	*sep ;
 {
 	int	i ;
