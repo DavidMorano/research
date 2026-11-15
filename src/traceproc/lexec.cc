@@ -302,7 +302,7 @@ typedef struct lexec_type_ {
 
 /* forward references */
 
-static int lexec_comp_instr(int,uint,
+local int lexec_comp_instr(int,uint,
 	DATAVAL *,DATAVAL *,DATAVAL *,DATAVAL *,DATAVAL *,DATAVAL *) ;
 
 
@@ -1888,7 +1888,7 @@ fd */
 
 
 /* Floating point Comparison Instructions Routine */
-static int lexec_comp_instr(opexec, instr,src1,src2,src3,src4,src5,dst1)
+local int lexec_comp_instr(opexec, instr,src1,src2,src3,src4,src5,dst1)
 int	opexec ;
 uint	instr ;
 DATAVAL *src1, *src2, *src3, *src4, *src5 ;
