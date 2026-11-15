@@ -73,9 +73,9 @@
 
 /* forward references */
 
-static int	rfbus_move(RFBUS *) ;
-static int	rfbus_handleshift(RFBUS *,int) ;
-static int	rfbus_clear(RFBUS *) ;
+local int	rfbus_move(RFBUS *) ;
+local int	rfbus_handleshift(RFBUS *,int) ;
+local int	rfbus_clear(RFBUS *) ;
 
 
 
@@ -619,7 +619,7 @@ XMLINFO	*xip ;
 
 
 
-static int rfbus_handleshift(busp,totalrows)
+local int rfbus_handleshift(busp,totalrows)
 RFBUS	*busp ;
 int	totalrows ;
 {
@@ -656,7 +656,7 @@ int	totalrows ;
 
 
 /* shift the FIFO */
-static int rfbus_move(busp)
+local int rfbus_move(busp)
 RFBUS	*busp ;
 {
 	int	i ;
