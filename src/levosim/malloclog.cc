@@ -45,16 +45,16 @@ struct arec {
 
 /* forward references */
 
-static int malloclog_access(const char *,int) ;
+local int malloclog_access(cchar *,int) ;
 
 
 /* local non-automatic variables */
 
 static HDB	track ;
 
-static int	rs_file = -1 ;
-static int	f_init = FALSE ;
-static int	f_file = FALSE ;
+local int	rs_file = -1 ;
+local int	f_init = FALSE ;
+local int	f_file = FALSE ;
 
 static uint	mark = 0 ;
 static uint	serial = 0 ;
@@ -309,7 +309,7 @@ int malloclog_dump()
 /* end subroutine (malloclog_dump) */
 
 
-int malloclog_printf(const char fmt[],...)
+int malloclog_printf(cchar fmt[],...)
 {
 	va_list	ap ;
 
@@ -339,8 +339,8 @@ int malloclog_printf(const char fmt[],...)
 
 
 
-static int malloclog_access(fname,perm)
-const char	fname[] ;
+local int malloclog_access(fname,perm)
+cchar	fname[] ;
 int		perm ;
 {
 
