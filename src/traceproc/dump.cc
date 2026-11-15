@@ -64,7 +64,7 @@
 
 /* forward references */
 
-static int	memwriteback(struct proginfo *,LMAPPROG *,EXECTRACE_ENTRY *) ;
+local int	memwriteback(struct proginfo *,LMAPPROG *,EXECTRACE_ENTRY *) ;
 
 
 /* local (module-scope static) data */
@@ -514,7 +514,7 @@ bad0:
 
 
 
-static int memwriteback(pip,pmp,ep)
+local int memwriteback(pip,pmp,ep)
 struct proginfo	*pip ;
 LMAPPROG	*pmp ;
 EXECTRACE_ENTRY	*ep ;
