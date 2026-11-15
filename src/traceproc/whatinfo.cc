@@ -8,7 +8,7 @@
 
 
 
-static const char	whatinfo[] = WHATINFO VERSION ;
+static cchar	whatinfo[] = WHATINFO VERSION ;
 
 
 
