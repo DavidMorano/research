@@ -80,16 +80,16 @@
 /* external subroutines */
 
 extern uint	nextpowtwo(uint) ;
-extern uint	hashelf(const void *,int) ;
+extern uint	hashelf(cvoid *,int) ;
 
-extern char	*strwcpy(char *,const char *,int) ;
+extern char	*strwcpy(char *,cchar *,int) ;
 
 
 /* forward references */
 
-static int	recorder_extend(RECORDER *) ;
+local int	recorder_extend(RECORDER *) ;
 
-static int	hashindex(uint,uint) ;
+local int	hashindex(uint,uint) ;
 
 
 /* exported subroutines */
@@ -503,7 +503,7 @@ RECORDER	*asp ;
 
 
 /* extend the object recorder */
-static int recorder_extend(asp)
+local int recorder_extend(asp)
 RECORDER	*asp ;
 {
 	int		rs ;
@@ -547,7 +547,7 @@ RECORDER	*asp ;
 
 
 /* calculate the next hash from a given one */
-static int hashindex(i,n)
+local int hashindex(i,n)
 uint	i, n ;
 {
 	int	hi = MODP2(i,n) ;
