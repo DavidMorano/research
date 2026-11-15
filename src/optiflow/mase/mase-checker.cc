@@ -184,7 +184,7 @@ pu_mem_access(struct mem_t *mem,        /* memory space to access */
 }
 
 /* release line in hash table - used during committing and squashing */
-static void
+local void
 release_htable_line(int isq_index)
 {
   md_addr_t addr;
@@ -226,7 +226,7 @@ release_htable_line(int isq_index)
  * This is called when the oracle is being executed during the fetch
  * stage.  It is called for each output dependency associated with
  * the instruction. */
-static void
+local void
 save_reg_state(struct reg_state_t *reg_state, int reg_name)
 {
   /* Get the dependence name and type of the register.  The variable
@@ -291,7 +291,7 @@ save_reg_state(struct reg_state_t *reg_state, int reg_name)
  * is called when the checker commits an instruction and is called for
  * each output dependency associated with the instruction.
  */
-static void
+local void
 commit_reg_state(struct reg_state_t *reg_state)
 {
   /* extract info from reg_state structure */
@@ -373,7 +373,7 @@ isq_reset(int rollback_index)
 }
 
 /* print an ISQ memory value */
-static void
+local void
 isq_print_mem_value(FILE *stream, int size, union val_union u)
 {
   switch (size) {
@@ -386,7 +386,7 @@ isq_print_mem_value(FILE *stream, int size, union val_union u)
 }
 
 /* print an ISQ register value */
-static void
+local void
 isq_print_reg_value(FILE *stream, struct reg_state_t *reg_state)
 {
   switch (reg_state->reg_type) {
@@ -472,7 +472,7 @@ checker_init()
 int
 checker_exec(md_addr_t fetch_PC, struct fetch_rec *IFQ)
 {
-  const int fastfwd_mode = 0;		/* used in memory macros */
+  cint fastfwd_mode = 0;		/* used in memory macros */
   md_inst_t inst;			/* actual instruction bits */
   enum md_opcode op;			/* decoded opcode enum */
   enum md_fault_type fault;		/* fault information */
@@ -716,7 +716,7 @@ checker_recover(int rollback_index)
 }
 
 /* Process a timing dependent instruction. Writes the re value into the isq. */
-static void
+local void
 process_timing_dep(struct ROB_entry *re, struct inst_state *isq)
 {
   int i, j;			    /* loop iteration variables */
@@ -806,7 +806,7 @@ process_timing_dep(struct ROB_entry *re, struct inst_state *isq)
 }
 
 /* Prints all errors associated with an instruction. */
-static void
+local void
 checker_print_errors(struct ROB_entry *re, struct inst_state *isq)
 {
   int i, j;			    /* loop iteration variables */
