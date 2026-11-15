@@ -67,10 +67,10 @@
 
 /* forward referecens */
 
-static int	lbtrb_lookup() ;
-static int	lbtrb_get_cpaddr() ;
-static int	lbtrb_remove() ;
-static int	lbtrb_insert() ;
+local int	lbtrb_lookup() ;
+local int	lbtrb_get_cpaddr() ;
+local int	lbtrb_remove() ;
+local int	lbtrb_insert() ;
 
 
 
@@ -488,7 +488,7 @@ lbtrb_print(lbtrbp);
 
 
 
-static int 
+local int 
 lbtrb_lookup(lbtrbp, addr)
 LBTRB * lbtrbp ;
 uint addr ;
@@ -506,7 +506,7 @@ uint addr ;
 }
 
 
-static int 
+local int 
 lbtrb_get_cpaddr(lbtrbp, index, cpaddr, cpval, ncp)
 LBTRB * lbtrbp ;
 int	index ;
@@ -533,7 +533,7 @@ int	*ncp ;
 }
 
 
-static int 
+local int 
 lbtrb_remove(lbtrbp, index)
 LBTRB * lbtrbp ;
 int	index ;
@@ -545,7 +545,7 @@ int	index ;
 }
 
 
-static int 
+local int 
 lbtrb_insert(lbtrbp, instTA, predaddr)
 LBTRB * lbtrbp ;
 uint	instTA ;
