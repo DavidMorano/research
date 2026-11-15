@@ -29,9 +29,9 @@
 
 	int printhelp(fp,pr,sn,hfname)
 	void		*fp ;
-	const char	pr[] ;
-	const char	sn[] ;
-	const char	hfname[] ;
+	cchar	pr[] ;
+	cchar	sn[] ;
+	cchar	hfname[] ;
 
 	Arguments:
 
@@ -103,34 +103,34 @@
 
 /* external subroutines */
 
-extern int	snsds(char *,int,const char *,const char *) ;
-extern int	mkpath1(char *,const char *) ;
-extern int	mkpath2(char *,const char *,const char *) ;
-extern int	sfbasename(const char *,int,const char **) ;
-extern int	perm(const char *,uid_t,gid_t,gid_t *,int) ;
-extern int	permsched(const char **,vecstr *,char *,int,cchar *,int) ;
+extern int	snsds(char *,int,cchar *,cchar *) ;
+extern int	mkpath1(char *,cchar *) ;
+extern int	mkpath2(char *,cchar *,cchar *) ;
+extern int	sfbasename(cchar *,int,cchar **) ;
+extern int	perm(cchar *,uid_t,gid_t,gid_t *,int) ;
+extern int	permsched(cchar **,vecstr *,char *,int,cchar *,int) ;
 extern int	getnodedomain(char *,char *) ;
-extern int	vecstr_envadd(vecstr *,const char *,const char *,int) ;
-extern int	vecstr_envset(vecstr *,const char *,const char *,int) ;
-extern int	vecstr_loadfile(VECSTR *,int,const char *) ;
+extern int	vecstr_envadd(vecstr *,cchar *,cchar *,int) ;
+extern int	vecstr_envset(vecstr *,cchar *,cchar *,int) ;
+extern int	vecstr_loadfile(VECSTR *,int,cchar *) ;
 extern int	isNotPresent(int) ;
 
-extern char	*strwcpy(char *,const char *,int) ;
-extern char	*strwcpyuc(char *,const char *,int) ;
+extern char	*strwcpy(char *,cchar *,int) ;
+extern char	*strwcpyuc(char *,cchar *,int) ;
 
 
 /* forward references */
 
-static int	findhelp(const char *,const char *,char *,const char *) ;
-static int	loadscheds(vecstr *,const char *,const char *) ;
-static int	procprint(cchar *,cchar *,void *,char *,int,cchar *) ;
-static int	procexpload(const char *,EXPCOOK *,const char *) ;
-static int	procout(EXPCOOK *,void *,char *,int,const char *) ;
+local int	findhelp(cchar *,cchar *,char *,cchar *) ;
+local int	loadscheds(vecstr *,cchar *,cchar *) ;
+local int	procprint(cchar *,cchar *,void *,char *,int,cchar *) ;
+local int	procexpload(cchar *,EXPCOOK *,cchar *) ;
+local int	procout(EXPCOOK *,void *,char *,int,cchar *) ;
 
 
 /* local variables */
 
-static const char	*schedule[] = {
+static cchar	*schedule[] = {
 	"%r/%l/%n/%n.%f",
 	"%r/%l/%n/%f",
 	"%r/share/help/%n.%f",
@@ -145,7 +145,7 @@ static const char	*schedule[] = {
 	NULL
 } ;
 
-static const char	*expkeys[] = {
+static cchar	*expkeys[] = {
 	"SN",
 	"SS",
 	"PR",
@@ -168,7 +168,7 @@ enum expkeys {
 int printhelp(void *fp,cchar *pr,cchar *sn,cchar *hfname)
 {
 	int		rs = SR_OK ;
-	const char	*fname ;
+	cchar	*fname ;
 	char		tmpfname[MAXPATHLEN + 1] ;
 
 #if	CF_DEBUGS
@@ -244,12 +244,12 @@ int printhelp(void *fp,cchar *pr,cchar *sn,cchar *hfname)
 /* local subroutines */
 
 
-static int findhelp(cchar *pr,cchar *sn,char *tmpfname,cchar *hfname)
+local int findhelp(cchar *pr,cchar *sn,char *tmpfname,cchar *hfname)
 {
 	vecstr		hs ;
 	int		rs ;
 	int		f_hs = FALSE ;
-	const char	**spp = schedule ;
+	cchar	**spp = schedule ;
 
 #if	CF_DEBUGS
 	debugprintf("printhelp/findhelp: hfname=%s\n",hfname) ;
@@ -260,7 +260,7 @@ static int findhelp(cchar *pr,cchar *sn,char *tmpfname,cchar *hfname)
 	if ((rs = mkpath2(tmpfname,pr,HELPSCHEDFNAME)) >= 0) {
 
 	    if ((rs = perm(tmpfname,-1,-1,NULL,R_OK)) >= 0) {
-		const int	opts = VECSTR_OCOMPACT ;
+		cint	opts = VECSTR_OCOMPACT ;
 
 	        if ((rs = vecstr_start(&hs,15,opts)) >= 0) {
 	            f_hs = TRUE ;
@@ -319,7 +319,7 @@ static int findhelp(cchar *pr,cchar *sn,char *tmpfname,cchar *hfname)
 /* end subroutine (findhelp) */
 
 
-static int loadscheds(vecstr *slp,const char *pr,const char *sn)
+local int loadscheds(vecstr *slp,cchar *pr,cchar *sn)
 {
 	int		rs = SR_OK ;
 
@@ -336,7 +336,7 @@ static int loadscheds(vecstr *slp,const char *pr,const char *sn)
 /* end subroutine (loadscheds) */
 
 
-static int procprint(cchar *pr,cchar *sn,void *fp,char *rp,int rl,cchar *fn)
+local int procprint(cchar *pr,cchar *sn,void *fp,char *rp,int rl,cchar *fn)
 {
 	EXPCOOK		c ;
 	int		rs ;
@@ -359,18 +359,18 @@ static int procprint(cchar *pr,cchar *sn,void *fp,char *rp,int rl,cchar *fn)
 /* end subroutine (procprint) */
 
 
-static int procexpload(cchar *pr,EXPCOOK *ecp,cchar *sn)
+local int procexpload(cchar *pr,EXPCOOK *ecp,cchar *sn)
 {
 	int		rs ;
 	char		nn[NODENAMELEN+1] ;
 	char		dn[MAXHOSTNAMELEN+1] ;
 
 	if ((rs = getnodedomain(nn,dn)) >= 0) {
-	    const int	hlen = MAXHOSTNAMELEN ;
+	    cint	hlen = MAXHOSTNAMELEN ;
 	    int		i ;
 	    int		vl ;
-	    const char	*vp ;
-	    const char	*ks = "SNDHPR" ;
+	    cchar	*vp ;
+	    cchar	*ks = "SNDHPR" ;
 	    char	hbuf[MAXHOSTNAMELEN + 1] ;
 	    char	kbuf[KBUFLEN+1] ;
 	    kbuf[1] = '\0' ;
@@ -437,7 +437,7 @@ static int procexpload(cchar *pr,EXPCOOK *ecp,cchar *sn)
 /* end subroutine (procexpload) */
 
 
-static int procout(EXPCOOK *ecp,void *fp,char lbuf[],int llen,cchar *fname)
+local int procout(EXPCOOK *ecp,void *fp,char lbuf[],int llen,cchar *fname)
 {
 	bfile		outfile ;
 	bfile		helpfile, *hfp = &helpfile ;
@@ -458,7 +458,7 @@ static int procout(EXPCOOK *ecp,void *fp,char lbuf[],int llen,cchar *fname)
 #endif /* CF_SFIO */
 
 	if ((rs >= 0) && ((rs = bopen(hfp,fname,"r",0666)) >= 0)) {
-	    const int	elen = EBUFLEN ;
+	    cint	elen = EBUFLEN ;
 	    char	*ebuf ;
 	    if ((rs = uc_malloc((elen+1),&ebuf)) >= 0) {
 	        int	len ;
