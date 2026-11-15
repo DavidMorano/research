@@ -84,20 +84,20 @@ static counter_t sim_num_refs = 0;
 static unsigned int max_insts;
 
 /* profiling options */
-static int prof_all /* = FALSE */;
-static int prof_ic /* = FALSE */;
-static int prof_inst /* = FALSE */;
-static int prof_bc /* = FALSE */;
-static int prof_am /* = FALSE */;
-static int prof_seg /* = FALSE */;
-static int prof_tsyms /* = FALSE */;
-static int prof_dsyms /* = FALSE */;
-static int load_locals /* = FALSE */;
-static int prof_taddr /* = FALSE */;
+local int prof_all /* = FALSE */;
+local int prof_ic /* = FALSE */;
+local int prof_inst /* = FALSE */;
+local int prof_bc /* = FALSE */;
+local int prof_am /* = FALSE */;
+local int prof_seg /* = FALSE */;
+local int prof_tsyms /* = FALSE */;
+local int prof_dsyms /* = FALSE */;
+local int load_locals /* = FALSE */;
+local int prof_taddr /* = FALSE */;
 
 /* text-based stat profiles */
 #define MAX_PCSTAT_VARS 8
-static int pcstat_nelt = 0;
+local int pcstat_nelt = 0;
 static char *pcstat_vars[MAX_PCSTAT_VARS];
 
 /* register simulator-specific options */
