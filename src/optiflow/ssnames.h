@@ -6,7 +6,7 @@
 
 #if	(! defined(SSNAMES_MASTER)) || (SSNAMES_MASTER == 0)
 
-extern const char	*ssfunames[] ;
+extern cchar	*ssfunames[] ;
 
 #endif /* SSNAMES_MASTER */
 
