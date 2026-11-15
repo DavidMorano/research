@@ -62,8 +62,8 @@
 
 /* forward references */
 
-static int	getmem(uint,EXECTRACE_ENTRY *) ;
-static int	copyrecord(struct proginfo *,EXECTRACE *,EXECTRACE_ENTRY *) ;
+local int	getmem(uint,EXECTRACE_ENTRY *) ;
+local int	copyrecord(struct proginfo *,EXECTRACE *,EXECTRACE_ENTRY *) ;
 
 
 /* local (module-scope static) data */
@@ -323,7 +323,7 @@ char		*t1fname, *t2fname ;
 
 	    if (pip->f.filter && (! f_filtering)) {
 
-	        const char	*np ;
+	        cchar	*np ;
 
 
 	        rs = filtercalls_have(pip->callfilter,e1.ia,&np) ;
@@ -442,7 +442,7 @@ bad0:
 
 
 
-static int copyrecord(pip,tp,ep)
+local int copyrecord(pip,tp,ep)
 struct proginfo	*pip ;
 EXECTRACE	*tp ;
 EXECTRACE_ENTRY	*ep ;
