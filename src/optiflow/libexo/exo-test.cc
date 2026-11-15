@@ -68,10 +68,10 @@
 static struct opt_odb_t *odb;
 
 /* dump help information */
-static int help_me;
+local int help_me;
 
 /* make internal defs */
-static int make_defs;
+local int make_defs;
 
 /* EXO file to load */
 static char *load_file;
@@ -80,12 +80,12 @@ static char *load_file;
 static char *save_file;
 
 /* print the EXO DB to stdout */
-static int print_db;
+local int print_db;
 
 /* EXO definition data base */
 static struct exo_term_t *exo_db = NULL;
 
-static void
+local void
 usage(FILE *stream, int argc, char **argv)
 {
   fprintf(stream, "Usage: %s {-options}\n", argv[0]);
