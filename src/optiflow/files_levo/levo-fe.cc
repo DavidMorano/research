@@ -84,14 +84,14 @@ struct rename_entry *rename_table[MD_TOTAL_REGS];
 static struct rename_entry *rename_free_list = NULL;
 
 /* icache fetch blocking variables */
-static int icache_block = FALSE;
+local int icache_block = FALSE;
 static unsigned icache_delay = 0;
 
 /* set if there is an unknown target */
-static int unknown_target = FALSE;
+local int unknown_target = FALSE;
 
 /* speculation mode bit in dispatch */
-static int dp_spec_mode = FALSE;
+local int dp_spec_mode = FALSE;
 
 /* PC values in the fetch stage */
 static md_addr_t fetch_PC;
@@ -103,8 +103,8 @@ static md_addr_t dp_pred_NPC;
 static md_addr_t dp_oracle_NPC;
 
 /* pipetrace variables */
-static int last_inst_missed = FALSE;
-static int last_inst_tmissed = FALSE;
+local int last_inst_missed = FALSE;
+local int last_inst_tmissed = FALSE;
 
 /* pipetrace instruction sequence counter */
 static unsigned int ptrace_seq = 0;
