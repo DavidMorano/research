@@ -110,11 +110,11 @@ fatal_hook(void (*hook_fn)(FILE *stream));	/* fatal hook function */
   _fatal(__FILE__, __FUNCTION__, __LINE__, fmt, ## args)
 
 void
-_fatal(const char *file, const char *func, int line, const char *fmt, ...)
+_fatal(cchar *file, cchar *func, int line, cchar *fmt, ...)
 __attribute__ ((noreturn));
 #else /* !__GNUC__ */
 void
-fatal(const char *fmt, ...);
+fatal(cchar *fmt, ...);
 #endif /* !__GNUC__ */
 
 #ifdef __GNUC__
@@ -123,11 +123,11 @@ fatal(const char *fmt, ...);
   _panic(__FILE__, __FUNCTION__, __LINE__, fmt, ## args)
 
 void
-_panic(const char *file, const char *func, int line, const char *fmt, ...)
+_panic(cchar *file, cchar *func, int line, cchar *fmt, ...)
 __attribute__ ((noreturn));
 #else /* !__GNUC__ */
 void
-panic(const char *fmt, ...);
+panic(cchar *fmt, ...);
 #endif /* !__GNUC__ */
 
 #ifdef __GNUC__
@@ -136,10 +136,10 @@ panic(const char *fmt, ...);
   _warn(__FILE__, __FUNCTION__, __LINE__, fmt, ## args)
 
 void
-_warn(const char *file, const char *func, int line, const char *fmt, ...);
+_warn(cchar *file, cchar *func, int line, cchar *fmt, ...);
 #else /* !__GNUC__ */
 void
-warn(const char *fmt, ...);
+warn(cchar *fmt, ...);
 #endif /* !__GNUC__ */
 
 #ifdef __GNUC__
@@ -148,10 +148,10 @@ warn(const char *fmt, ...);
   _info(__FILE__, __FUNCTION__, __LINE__, fmt, ## args)
 
 void
-_info(const char *file, const char *func, int line, const char *fmt, ...);
+_info(cchar *file, cchar *func, int line, cchar *fmt, ...);
 #else /* !__GNUC__ */
 void
-info(const char *fmt, ...);
+info(cchar *fmt, ...);
 #endif /* !__GNUC__ */
 
 #ifdef DEBUG
@@ -165,10 +165,10 @@ info(const char *fmt, ...);
     } while(0)
 
 void
-_debug(const char *file, const char *func, int line, const char *fmt, ...);
+_debug(cchar *file, cchar *func, int line, cchar *fmt, ...);
 #else /* !__GNUC__ */
 void
-debug(const char *fmt, ...);
+debug(cchar *fmt, ...);
 #endif /* !__GNUC__ */
 
 #else /* !DEBUG */
@@ -177,7 +177,7 @@ debug(const char *fmt, ...);
 #define debug(fmt, args...)
 #else /* !__GNUC__ */
 /* the optimizer should eliminate this call! */
-static void debug(char *fmt, ...) {}
+local void debug(char *fmt, ...) {}
 #endif /* !__GNUC__ */
 
 #endif /* !DEBUG */
@@ -230,16 +230,16 @@ extractl(int word,		/* the word from which to extract */
 /* portable 64-bit I/O package */
 
 /* portable vsprintf with qword support, returns end pointer */
-char *myvsprintf(char *obuf, const char *format, va_list v);
+char *myvsprintf(char *obuf, cchar *format, va_list v);
 
 /* portable sprintf with qword support, returns end pointer */
-char *mysprintf(char *obuf, const char *format, ...);
+char *mysprintf(char *obuf, cchar *format, ...);
 
 /* portable vfprintf with qword support, returns end pointer */
-void myvfprintf(FILE *stream, const char *format, va_list v);
+void myvfprintf(FILE *stream, cchar *format, va_list v);
 
 /* portable fprintf with qword support, returns end pointer */
-void myfprintf(FILE *stream, const char *format, ...);
+void myfprintf(FILE *stream, cchar *format, ...);
 
 #ifdef HOST_HAS_QWORD
 
