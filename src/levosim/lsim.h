@@ -62,7 +62,7 @@ struct lsim_mp {
 
 struct lsim_sym {
 	Elf32_Sym	*ep ;
-	const char	*name ;
+	cchar	*name ;
 } ;
 
 struct lsim_sncursor {
@@ -138,7 +138,7 @@ extern int lsim_readinstr(LSIM *,uint,uint *) ;
 extern int lsim_readint(LSIM *,uint,uint *) ;
 extern int lsim_writeint(LSIM *,uint,uint,uint) ;
 extern int lsim_memaccess(LSIM *,uint,uint) ;
-extern int lsim_issyscall(LSIM *,uint,const char **) ;
+extern int lsim_issyscall(LSIM *,uint,cchar **) ;
 extern int lsim_getsymval(LSIM *,char *,uint *) ;
 extern int lsim_getentry(LSIM *,uint *) ;
 extern int lsim_getstack(LSIM *,uint *) ;
