@@ -134,9 +134,9 @@
 
 /* external subroutines */
 
-extern int	cfdeci(const char *,int,int *) ;
-extern int	cfdecui(const char *,int,int *) ;
-extern int	cfdecull(const char *,int,ULONG *) ;
+extern int	cfdeci(cchar *,int,int *) ;
+extern int	cfdecui(cchar *,int,int *) ;
+extern int	cfdecull(cchar *,int,ULONG *) ;
 
 
 /* external variables */
@@ -155,16 +155,16 @@ int	getregval(struct regs_t *,int,ULONG *) ;
 int	sim_exec(struct ss *,uint) ;
 int	sim_retire(struct ss *,uint) ;
 
-static int	sim_fast(struct ss *,uint) ;
-static int	sim_perf(struct ss *,uint) ;
-static int	setas(SSAS *,int,int,int,int,int,int,int) ;
-static int	setasreg(SSAS *) ;
-static int	setasmem(SSAS *,int,ULONG,int,ULONG,ULONG) ;
-static int	setasmemread(SSAS *,ULONG,int,ULONG) ;
-static int	setop(OPERAND *,uint,ULONG) ;
-static int	setopreg(OPERAND *,int) ;
-static int	mkdatapresent(uint,int) ;
-static int	g_asdump(struct ss *,SSAS *) ;
+local int	sim_fast(struct ss *,uint) ;
+local int	sim_perf(struct ss *,uint) ;
+local int	setas(SSAS *,int,int,int,int,int,int,int) ;
+local int	setasreg(SSAS *) ;
+local int	setasmem(SSAS *,int,ULONG,int,ULONG,ULONG) ;
+local int	setasmemread(SSAS *,ULONG,int,ULONG) ;
+local int	setop(OPERAND *,uint,ULONG) ;
+local int	setopreg(OPERAND *,int) ;
+local int	mkdatapresent(uint,int) ;
+local int	g_asdump(struct ss *,SSAS *) ;
 
 
 /* local variables */
@@ -212,7 +212,7 @@ static unsigned short dps[] = {
 	    0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff,
 } ;
 
-static const char	*ssparams[] = {
+static cchar	*ssparams[] = {
 	"fwsize",
 	"dwsize",
 	"iwsize",
@@ -683,7 +683,7 @@ void sim_main(void)
 
 
 /* do a fast-forward operation */
-static int sim_fast(gp,ninstr)
+local int sim_fast(gp,ninstr)
 struct ss	*gp ;
 uint		ninstr ;
 {
@@ -1386,7 +1386,7 @@ uint		ninstr ;
 
 
 /* do the "performance" simulation */
-static int sim_perf(gp,n)
+local int sim_perf(gp,n)
 struct ss	*gp ;
 uint		n ;
 {
@@ -1700,7 +1700,7 @@ uint		n ;
 
 
 /* set a checker AS from decoded instruction information */
-static int setas(asp,res,flags,o1,o2,i1,i2,i3)
+local int setas(asp,res,flags,o1,o2,i1,i2,i3)
 SSAS	*asp ;
 int	res, flags ;
 int	o1, o2 ;
@@ -1754,7 +1754,7 @@ int	i1, i2, i3 ;
 
 
 /* set all of the destination register values in an AS */
-static int setasreg(asp)
+local int setasreg(asp)
 SSAS	*asp ;
 {
 	OPERAND	*op ;
@@ -1781,7 +1781,7 @@ SSAS	*asp ;
 
 
 /* set a previous memory value in an AS */
-static int setasmem(asp,f,a,size,pv,v)
+local int setasmem(asp,f,a,size,pv,v)
 SSAS	*asp ;
 int	f ;
 ULONG	a ;
@@ -1836,7 +1836,7 @@ ULONG	pv, v ;
 
 
 /* set a previous memory value in an AS */
-static int setasmemread(asp,a,size,pv)
+local int setasmemread(asp,a,size,pv)
 SSAS	*asp ;
 ULONG	a ;
 int	size ;
@@ -1873,7 +1873,7 @@ ULONG	pv ;
 /* end subroutine (setasmemread) */
 
 
-static int setop(op,type,oa)
+local int setop(op,type,oa)
 OPERAND	*op ;
 uint	type ;
 ULONG	oa ;
@@ -1896,7 +1896,7 @@ ULONG	oa ;
 
 
 /* set the previous value of an operand register */
-static int setopreg(op,opname)
+local int setopreg(op,opname)
 OPERAND	*op ;
 int	opname ;
 {
@@ -1979,7 +1979,7 @@ ULONG		*vp ;
 /* end subroutine (getregval) */
 
 
-static int mkdatapresent(a,size)
+local int mkdatapresent(a,size)
 uint	a ;
 int	size ;
 {
@@ -1993,7 +1993,7 @@ int	size ;
 /* end subroutine (mkdatapresent) */
 
 
-static int g_asdump(gp,asp)
+local int g_asdump(gp,asp)
 struct ss	*gp ;
 SSAS		*asp ;
 {
