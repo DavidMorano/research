@@ -61,7 +61,7 @@
 
 /* forward references */
 
-static int	bustest_dostuff(BUSTEST *) ;
+local int	bustest_dostuff(BUSTEST *) ;
 
 
 
@@ -341,7 +341,7 @@ BUSTEST	*rfp ;
 
 
 /* do stuff */
-static int bustest_dostuff(rfp)
+local int bustest_dostuff(rfp)
 BUSTEST	*rfp ;
 {
 	struct proginfo	*pip ;
