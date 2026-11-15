@@ -123,18 +123,18 @@ extern int	seqok(uint,uint,uint) ;
 
 /* forward references */
 
-static int	ssreg_startops(SSREG *,int) ;
-static int	ssreg_handleshift(SSREG *,struct proginfo *,struct ssinfo *) ;
-static int	ssreg_handlecommit(SSREG *) ;
-static int	ssreg_combs(SSREG *,struct proginfo *,struct ssinfo *) ;
+local int	ssreg_startops(SSREG *,int) ;
+local int	ssreg_handleshift(SSREG *,struct proginfo *,struct ssinfo *) ;
+local int	ssreg_handlecommit(SSREG *) ;
+local int	ssreg_combs(SSREG *,struct proginfo *,struct ssinfo *) ;
 
 #ifdef	COMMENT
-static int	ssreg_xmloutreg(SSREG *,XMLINFO *,struct proginfo *,
+local int	ssreg_xmloutreg(SSREG *,XMLINFO *,struct proginfo *,
 			struct ssreg_reg *,char *) ;
 #endif /* COMMENT */
 
 #if	(CF_MASTERDEBUG && CF_DEBUG) || CF_XML
-static int	mkttbuf(char *,int) ;
+local int	mkttbuf(char *,int) ;
 #endif
 
 
@@ -914,7 +914,7 @@ XMLINFO		*xip ;
 
 
 /* initialize next-state that is associated with the operands */
-static int ssreg_startops(regp,wset)
+local int ssreg_startops(regp,wset)
 SSREG		*regp ;
 int		wset ;
 {
@@ -945,7 +945,7 @@ int		wset ;
 
 
 /* handle a machine shift operation ! */
-static int ssreg_handleshift(regp,pip,lip)
+local int ssreg_handleshift(regp,pip,lip)
 SSREG		*regp ;
 struct proginfo	*pip ;
 struct ssinfo	*lip ;
@@ -988,7 +988,7 @@ struct ssinfo	*lip ;
 /* end subroutine (ssreg_handleshift) */
 
 
-static int ssreg_combs(regp,pip,lip)
+local int ssreg_combs(regp,pip,lip)
 SSREG		*regp ;
 struct proginfo	*pip ;
 struct ssinfo	*lip ;
@@ -1053,7 +1053,7 @@ struct ssinfo	*lip ;
 
 #ifdef	COMMENT
 
-static int ssreg_handlecommit(regp)
+local int ssreg_handlecommit(regp)
 SSREG		*regp ;
 {
 	struct operand	*setp, *oop ;
@@ -1107,7 +1107,7 @@ SSREG		*regp ;
 
 #if	(CF_MASTERDEBUG && CF_DEBUG) || CF_XML
 
-static int mkttbuf(buf,tt)
+local int mkttbuf(buf,tt)
 char	buf[] ;
 int	tt ;
 {
