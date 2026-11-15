@@ -321,7 +321,7 @@ local int	las_xmloutreg(LAS *,XMLINFO *,struct proginfo *,
 local int	fill_packet(struct las_packet *,LFLOWGROUP *) ;
 local int	read_packet(struct las_packet *,LFLOWGROUP *) ;
 local int	las_print_pred_regs(struct pred_regs *) ;
-local int	las_print_register(const char *, struct las_reg) ;
+local int	las_print_register(cchar *, struct las_reg) ;
 
 #if	CF_FPRINTF || (CF_MASTERDEBUG && CF_DEBUG) || CF_XML
 local int	mkttbuf(char *,int) ;
@@ -6834,7 +6834,7 @@ las_print_pred_regs(&lasp->c.pregs);
 
 local int
 las_print_register(name,reg)
-const char * name;
+cchar * name;
 struct las_reg  reg;
 {
 
