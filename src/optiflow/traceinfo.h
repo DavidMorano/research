@@ -59,7 +59,7 @@ struct traceinfo {
 
 #if	(! defined(TRACEINFO_MASTER)) || (TRACEINFO_MASTER == 0)
 
-extern int traceinfo_init(TRACEINFO *,const char *,const char *,const char *) ;
+extern int traceinfo_init(TRACEINFO *,cchar *,cchar *,cchar *) ;
 extern int traceinfo_enabled(TRACEINFO *,ULONG) ;
 extern int traceinfo_flush(TRACEINFO *) ;
 extern int traceinfo_free(TRACEINFO *) ;
