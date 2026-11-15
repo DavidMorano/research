@@ -85,7 +85,7 @@ int trace_config;
 short repl;
 
 /* non-zero after cheetah_init() has been called */
-static int initialized = 0;
+local int initialized = 0;
 
 /* initialize libcheetah */
 void            
