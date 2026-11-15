@@ -84,7 +84,7 @@ int dlite_active = FALSE;
 int dlite_check = FALSE;
 
 /* set non-zero to exit DLite command loop */
-static int dlite_return = FALSE;
+local int dlite_return = FALSE;
 
 /* size modifier mask bit definitions */
 #define MOD_BYTE	0x0001		/* b - print a byte */
@@ -896,7 +896,7 @@ dlite_mstate_obj(FILE *stream,			/* output stream */
 }
 
 /* scroll terminator, wait for user to press return */
-static void
+local void
 dlite_pause(void)
 {
   char buf[512];
@@ -906,7 +906,7 @@ dlite_pause(void)
 }
 
 /* print help information for DLite command CMD */
-static void
+local void
 print_help(struct dlite_cmd_t *cmd)		/* command to describe */
 {
   int i;
@@ -1678,7 +1678,7 @@ struct dlite_break_t {
 static struct dlite_break_t *dlite_bps = NULL;
 
 /* unique id of next breakpoint */
-static int break_id = 1;
+local int break_id = 1;
 
 /* return breakpoint class as a string */
 static char *					/* breakpoint class string */
@@ -1783,7 +1783,7 @@ delete_break(int id)				/* id of brkpnt to delete */
 }
 
 /* this variable clues dlite_main() into why it was called */
-static int break_access = 0;
+local int break_access = 0;
 
 /* internal break check interface */
 int						/* non-zero if brkpt hit */
@@ -2181,7 +2181,7 @@ dlite_init(dlite_reg_obj_t reg_obj,		/* register state object */
 }
 
 /* print a mini-state header */
-static void
+local void
 dlite_status(md_addr_t regs_PC,			/* PC of just completed inst */
 	     md_addr_t next_PC,			/* PC of next inst to exec */
 	     counter_t cycle,			/* current cycle */
