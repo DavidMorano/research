@@ -25,11 +25,11 @@ short ft_slot_flag[HASHNO];	/* Hash table */
 unsigned addr_array[2*LA_DIST],	/* Trace input to stack_proc */
          time_array[2*LA_DIST];	/* Next time of arrival of addresses */
 
-static int la_limit,	/* Look-ahead limit in current iteration */
+local int la_limit,	/* Look-ahead limit in current iteration */
 	       base,	/* Base time in current iteration */
 	  oe_flag=1;   /* Whether top or bottom half of array */
 
-static int p_inum;	/* Address count */
+local int p_inum;	/* Address count */
 
 
 /***************************************************************
@@ -192,7 +192,7 @@ Side effects: Does pre-processing on the trace and calls stack_proc till
 	      reached (checked inside stack_proc).
 *********************************************************************/
 
-static int start, end;
+local int start, end;
 
 void
 init_optpp(void)
