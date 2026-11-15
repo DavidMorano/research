@@ -587,7 +587,7 @@ void SortCandidates(void) {
     /* Sort the letters by frequency */
     for (i = 0; i < ALPHABET; i++) achByFrequency[i] = i;
     qsort(achByFrequency, ALPHABET, sizeof(char),
-          (int (*)(const void *, const void *))CompareFrequency);
+          (int (*)(cvoid *, cvoid *))CompareFrequency);
 
     fprintf(stdout, "Order of search will be ");
     for (i = 0; i < ALPHABET; i++)
