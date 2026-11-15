@@ -71,9 +71,9 @@
 
 /* external subroutines */
 
-extern int	cfdeci(const char *,int,int *) ;
-extern int	cfdecui(const char *,int,int *) ;
-extern int	cfdecull(const char *,int,ULONG *) ;
+extern int	cfdeci(cchar *,int,int *) ;
+extern int	cfdecui(cchar *,int,int *) ;
+extern int	cfdecull(cchar *,int,ULONG *) ;
 
 
 /* external variables */
