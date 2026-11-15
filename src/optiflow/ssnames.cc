@@ -117,8 +117,8 @@
 
 /* external subroutines */
 
-extern int	mkpath2(char *,const char *,const char *) ;
-extern int	mkfnamesuf(char *,const char *,const char *) ;
+extern int	mkpath2(char *,cchar *,cchar *) ;
+extern int	mkfnamesuf(char *,cchar *,cchar *) ;
 
 
 /* forward references */
@@ -126,7 +126,7 @@ extern int	mkfnamesuf(char *,const char *,const char *) ;
 
 /* local variables */
 
-const char	*ssfunames[] = {
+cchar	*ssfunames[] = {
 	"null",
 	"ialu",
 	"imult",
