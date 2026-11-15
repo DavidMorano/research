@@ -61,9 +61,9 @@
 
 /* external subroutines */
 
-extern int	sfshrink(const char *,int,char **) ;
+extern int	sfshrink(cchar *,int,char **) ;
 
-extern char	*strwcpy(char *,const char *,int) ;
+extern char	*strwcpy(char *,cchar *,int) ;
 
 
 /* local structures */
@@ -71,9 +71,9 @@ extern char	*strwcpy(char *,const char *,int) ;
 
 /* forward references */
 
-static int	filtercalls_indexinit(FILTERCALLS *,LMAPPROG *,
-				int,const char *) ;
-static int	filtercalls_indexfree(FILTERCALLS *,LMAPPROG *) ;
+local int	filtercalls_indexinit(FILTERCALLS *,LMAPPROG *,
+				int,cchar *) ;
+local int	filtercalls_indexfree(FILTERCALLS *,LMAPPROG *) ;
 
 
 /* local variables */
@@ -85,7 +85,7 @@ static int	filtercalls_indexfree(FILTERCALLS *,LMAPPROG *) ;
 int filtercalls_init(op,mp,fname)
 FILTERCALLS	*op ;
 LMAPPROG	*mp ;
-const char	fname[] ;
+cchar	fname[] ;
 {
 	ustat	sb ;
 
@@ -151,7 +151,7 @@ FILTERCALLS	*op ;
 int filtercalls_have(op,addr,npp)
 FILTERCALLS	*op ;
 uint		addr ;
-const char	**npp ;
+cchar	**npp ;
 {
 	FILTERCALLS_ENTRY	*iep ;
 
@@ -228,11 +228,11 @@ const char	**npp ;
 
 
 /* index the calls by their function address */
-static int filtercalls_indexinit(op,mp,size,fname)
+local int filtercalls_indexinit(op,mp,size,fname)
 FILTERCALLS	*op ;
 LMAPPROG	*mp ;
 int		size ;
-const char	fname[] ;
+cchar	fname[] ;
 {
 	FILTERCALLS_ENTRY	*iep ;
 
@@ -363,7 +363,7 @@ bad1:
 
 
 /* free up the data used to hold SYSCALL information */
-static int filtercalls_indexfree(op,mp)
+local int filtercalls_indexfree(op,mp)
 FILTERCALLS	*op ;
 LMAPPROG	*mp ;
 {
