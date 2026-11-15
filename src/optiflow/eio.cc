@@ -481,7 +481,7 @@ static struct mem_rec_t input_mem_rec;
 static struct exo_term_t *output_mem;
 static struct mem_rec_t output_mem_rec;
 
-static int seen_write;
+local int seen_write;
 static mem_access_fn local_mem_fn;
 
 /* size of padding that can be filled on the end of a blob tail */
