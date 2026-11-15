@@ -123,70 +123,70 @@ static struct mem_t *mem = NULL;
 static unsigned int max_insts;
 
 /* number of insts skipped before timing starts */
-static int fastfwd_count;
+local int fastfwd_count;
 
 /* pipeline trace range and output filename */
-static int ptrace_nelt = 0;
+local int ptrace_nelt = 0;
 static char *ptrace_opts[2];
 
 /* instruction fetch queue size (in insts) */
-static int ruu_ifq_size;
+local int ruu_ifq_size;
 
 /* extra branch mis-prediction latency */
-static int ruu_branch_penalty;
+local int ruu_branch_penalty;
 
 /* speed of front-end of machine relative to execution core */
-static int fetch_speed;
+local int fetch_speed;
 
 /* optimistic misfetch recovery */
-static int mf_compat;
+local int mf_compat;
 
 /* branch predictor type {nottaken|taken|perfect|bimod|2lev} */
 static char *pred_type;
 
 /* bimodal predictor config (<table_size>) */
-static int bimod_nelt = 1;
-static int bimod_config[1] =
+local int bimod_nelt = 1;
+local int bimod_config[1] =
   { /* bimod tbl size */2048 };
 
 /* 2-level predictor config (<l1size> <l2size> <hist_size> <xor>) */
-static int twolev_nelt = 4;
-static int twolev_config[4] =
+local int twolev_nelt = 4;
+local int twolev_config[4] =
   { /* l1size */1, /* l2size */1024, /* hist */8, /* xor */FALSE};
 
 /* combining predictor config (<meta_table_size> */
-static int comb_nelt = 1;
-static int comb_config[1] =
+local int comb_nelt = 1;
+local int comb_config[1] =
   { /* meta_table_size */1024 };
 
 /* return address stack (RAS) size */
-static int ras_size = 8;
+local int ras_size = 8;
 
 /* BTB predictor config (<num_sets> <associativity>) */
-static int btb_nelt = 2;
-static int btb_config[2] =
+local int btb_nelt = 2;
+local int btb_config[2] =
   { /* nsets */512, /* assoc */4 };
 
 /* instruction decode B/W (insts/cycle) */
-static int ruu_decode_width;
+local int ruu_decode_width;
 
 /* instruction issue B/W (insts/cycle) */
-static int ruu_issue_width;
+local int ruu_issue_width;
 
 /* run pipeline with in-order issue */
-static int ruu_inorder_issue;
+local int ruu_inorder_issue;
 
 /* issue instructions down wrong execution paths */
-static int ruu_include_spec = TRUE;
+local int ruu_include_spec = TRUE;
 
 /* instruction commit B/W (insts/cycle) */
-static int ruu_commit_width;
+local int ruu_commit_width;
 
 /* register update unit (RUU) size */
-static int RUU_size = 8;
+local int RUU_size = 8;
 
 /* load/store queue (LSQ) size */
-static int LSQ_size = 4;
+local int LSQ_size = 4;
 
 /* perfect memory disambiguation */   
 int perfect_disambig = FALSE;
@@ -195,39 +195,39 @@ int perfect_disambig = FALSE;
 static char *cache_dl1_opt;
 
 /* l1 data cache hit latency (in cycles) */
-static int cache_dl1_lat;
+local int cache_dl1_lat;
 
 /* l2 data cache config, i.e., {<config>|none} */
 static char *cache_dl2_opt;
 
 /* l2 data cache hit latency (in cycles) */
-static int cache_dl2_lat;
+local int cache_dl2_lat;
 
 /* l1 instruction cache config, i.e., {<config>|dl1|dl2|none} */
 static char *cache_il1_opt;
 
 /* l1 instruction cache hit latency (in cycles) */
-static int cache_il1_lat;
+local int cache_il1_lat;
 
 /* l2 instruction cache config, i.e., {<config>|dl1|dl2|none} */
 static char *cache_il2_opt;
 
 /* l2 instruction cache hit latency (in cycles) */
-static int cache_il2_lat;
+local int cache_il2_lat;
 
 /* flush caches on system calls */
-static int flush_on_syscalls;
+local int flush_on_syscalls;
 
 /* convert 64-bit inst addresses to 32-bit inst equivalents */
-static int compress_icache_addrs;
+local int compress_icache_addrs;
 
 /* memory access latency (<first_chunk> <inter_chunk>) */
-static int mem_nelt = 2;
-static int mem_lat[2] =
+local int mem_nelt = 2;
+local int mem_lat[2] =
   { /* lat to first chunk */18, /* lat between remaining chunks */2 };
 
 /* memory access bus width (in bytes) */
-static int mem_bus_width;
+local int mem_bus_width;
 
 /* instruction TLB config, i.e., {<config>|none} */
 static char *itlb_opt;
@@ -236,26 +236,26 @@ static char *itlb_opt;
 static char *dtlb_opt;
 
 /* inst/data TLB miss latency (in cycles) */
-static int tlb_miss_lat;
+local int tlb_miss_lat;
 
 /* total number of integer ALU's available */
-static int res_ialu;
+local int res_ialu;
 
 /* total number of integer multiplier/dividers available */
-static int res_imult;
+local int res_imult;
 
 /* total number of memory system ports available (to CPU) */
-static int res_memport;
+local int res_memport;
 
 /* total number of floating point ALU's available */
-static int res_fpalu;
+local int res_fpalu;
 
 /* total number of floating point multiplier/dividers available */
-static int res_fpmult;
+local int res_fpmult;
 
 /* text-based stat profiles */
 #define MAX_PCSTAT_VARS 8
-static int pcstat_nelt = 0;
+local int pcstat_nelt = 0;
 static char *pcstat_vars[MAX_PCSTAT_VARS];
 
 /* convert 64-bit inst text addresses to 32-bit inst equivalents */
@@ -270,7 +270,7 @@ static char *pcstat_vars[MAX_PCSTAT_VARS];
 #endif /* TARGET_PISA */
 
 /* operate in backward-compatible bugs mode (for testing only) */
-static int bugcompat_mode;
+local int bugcompat_mode;
 
 /*
  * functional unit resource configuration
@@ -394,13 +394,13 @@ static unsigned int ptrace_seq = 0;
    instructions down the wrong path, thus state recovery will eventually have
    to occur that resets processor register and memory state back to the last
    precise state */
-static int spec_mode = FALSE;
+local int spec_mode = FALSE;
 
 /* cycles until fetch issue resumes */
 static unsigned ruu_fetch_issue_delay = 0;
 
 /* perfect prediction enabled */
-static int pred_perfect = FALSE;
+local int pred_perfect = FALSE;
 
 /* speculative bpred-update enabled */
 static char *bpred_spec_opt;
@@ -1403,14 +1403,14 @@ sim_reg_stats(struct stat_sdb_t *sdb)   /* stats database */
 }
 
 /* forward declarations */
-static void ruu_init(void);
-static void lsq_init(void);
-static void rslink_init(int nlinks);
-static void eventq_init(void);
-static void readyq_init(void);
-static void cv_init(void);
-static void tracer_init(void);
-static void fetch_init(void);
+local void ruu_init(void);
+local void lsq_init(void);
+local void rslink_init(int nlinks);
+local void eventq_init(void);
+local void readyq_init(void);
+local void cv_init(void);
+local void tracer_init(void);
+local void fetch_init(void);
 
 /* initialize the simulator */
 void
@@ -1640,8 +1640,8 @@ struct las {
 /* register update unit, combination of reservation stations and reorder
    buffer device, organized as a circular queue */
 static struct RUU_station *RUU;		/* register update unit */
-static int RUU_head, RUU_tail;		/* RUU head and tail pointers */
-static int RUU_num;			/* num entries currently in RUU */
+local int RUU_head, RUU_tail;		/* RUU head and tail pointers */
+local int RUU_num;			/* num entries currently in RUU */
 
 /* Active Stations (DAM) */
 
@@ -1653,7 +1653,7 @@ static struct las	*lases ;	/* same number as RUUs */
 
 
 /* allocate and initialize register update unit (RUU) */
-static void
+local void
 ruu_init(void)
 {
 	int	size ;
@@ -1687,7 +1687,7 @@ ruu_init(void)
 
 
 /* dump the contents of the RUU */
-static void
+local void
 ruu_dumpent(struct RUU_station *rs,		/* ptr to RUU station */
 	    int index,				/* entry index */
 	    FILE *stream,			/* output stream */
@@ -1723,7 +1723,7 @@ ruu_dumpent(struct RUU_station *rs,		/* ptr to RUU station */
 }
 
 /* dump the contents of the RUU */
-static void
+local void
 ruu_dump(FILE *stream)				/* output stream */
 {
   int num, head;
@@ -1776,8 +1776,8 @@ ruu_dump(FILE *stream)				/* output stream */
  *   in effective zero time after their effective address is known
  */
 static struct RUU_station *LSQ;         /* load/store queue */
-static int LSQ_head, LSQ_tail;          /* LSQ head and tail pointers */
-static int LSQ_num;                     /* num entries currently in LSQ */
+local int LSQ_head, LSQ_tail;          /* LSQ head and tail pointers */
+local int LSQ_num;                     /* num entries currently in LSQ */
 
 /*
  * input dependencies for stores in the LSQ:
@@ -1791,7 +1791,7 @@ static int LSQ_num;                     /* num entries currently in LSQ */
 #define STORE_ADDR_READY(RS)            ((RS)->idep_ready[STORE_ADDR_INDEX])
 
 /* allocate and initialize the load/store queue (LSQ) */
-static void
+local void
 lsq_init(void)
 {
   LSQ = calloc(LSQ_size, sizeof(struct RUU_station));
@@ -1805,7 +1805,7 @@ lsq_init(void)
 }
 
 /* dump the contents of the RUU */
-static void
+local void
 lsq_dump(FILE *stream)				/* output stream */
 {
   int num, head;
@@ -1905,7 +1905,7 @@ static struct RS_link RSLINK_NULL = RSLINK_NULL_DATA;
   }
 
 /* initialize the free RS_LINK pool */
-static void
+local void
 rslink_init(int nlinks)			/* total number of RS_LINK available */
 {
   int i;
@@ -1926,7 +1926,7 @@ rslink_init(int nlinks)			/* total number of RS_LINK available */
    once per cycle, and it used to step the BUSY timers attached to each
    functional unit in the function unit resource pool, as long as a functional
    unit's BUSY count is > 0, it cannot be issued an operation */
-static void
+local void
 ruu_release_fu(void)
 {
   int i;
@@ -1953,14 +1953,14 @@ ruu_release_fu(void)
 static struct RS_link *event_queue;
 
 /* initialize the event queue structures */
-static void
+local void
 eventq_init(void)
 {
   event_queue = NULL;
 }
 
 /* dump the contents of the event queue */
-static void
+local void
 eventq_dump(FILE *stream)			/* output stream */
 {
   struct RS_link *ev;
@@ -1988,7 +1988,7 @@ eventq_dump(FILE *stream)			/* output stream */
 /* insert an event for RS into the event queue, event queue is sorted from
    earliest to latest event, event and associated side-effects will be
    apparent at the start of cycle WHEN */
-static void
+local void
 eventq_queue_event(struct RUU_station *rs, tick_t when)
 {
   struct RS_link *prev, *ev, *new_ev;
@@ -2079,14 +2079,14 @@ eventq_next_event(void)
 static struct RS_link *ready_queue;
 
 /* initialize the event queue structures */
-static void
+local void
 readyq_init(void)
 {
   ready_queue = NULL;
 }
 
 /* dump the contents of the ready queue */
-static void
+local void
 readyq_dump(FILE *stream)			/* output stream */
 {
   struct RS_link *link;
@@ -2121,7 +2121,7 @@ readyq_dump(FILE *stream)			/* output stream */
   which works to reduce branch misprediction latencies, and very long latency
   instructions (such loads and multiplies) get priority since they are very
   likely on the program's critical path. */
-static void
+local void
 readyq_enqueue(struct RUU_station *rs)		/* RS to enqueue */
 {
   struct RS_link *prev, *node, *new_node;
@@ -2215,7 +2215,7 @@ static tick_t spec_create_vector_rt[MD_TOTAL_REGS];
 				 : (create_vector[N] = (L)))
 
 /* initialize the create vector */
-static void
+local void
 cv_init(void)
 {
   int i;
@@ -2235,7 +2235,7 @@ cv_init(void)
 }
 
 /* dump the contents of the create vector */
-static void
+local void
 cv_dump(FILE *stream)				/* output stream */
 {
   int i;
@@ -2266,7 +2266,7 @@ cv_dump(FILE *stream)				/* output stream */
 /* this function commits the results of the oldest completed entries from the
    RUU and LSQ to the architected reg file, stores in the LSQ will commit
    their store data to the data cache at this point as well */
-static void
+local void
 ruu_commit(void)
 {
   int i, lat, events, committed = 0;
@@ -2417,7 +2417,7 @@ ruu_commit(void)
 
 /* recover processor microarchitecture state back to point of the
    mis-predicted branch at RUU[BRANCH_INDEX] */
-static void
+local void
 ruu_recover(int branch_index)			/* index of mis-pred branch */
 {
   int i, RUU_index = RUU_tail, LSQ_index = LSQ_tail;
@@ -2507,14 +2507,14 @@ ruu_recover(int branch_index)			/* index of mis-pred branch */
  */
 
 /* forward declarations */
-static void tracer_recover(void);
+local void tracer_recover(void);
 
 /* writeback completed operation results from the functional units to RUU,
    at this point, the output dependency chains of completing instructions
    are also walked to determine if any dependent instruction now has all
    of its register operands, if so the (nearly) ready instruction is inserted
    into the ready instruction queue */
-static void
+local void
 ruu_writeback(void)
 {
   int i;
@@ -2665,7 +2665,7 @@ ruu_writeback(void)
    for blocking memory dependency condition (e.g., earlier store with an
    unknown address) */
 #define MAX_STD_UNKNOWNS		64
-static void
+local void
 lsq_refresh(void)
 {
   int i, j, index, n_std_unknowns;
@@ -2748,7 +2748,7 @@ lsq_refresh(void)
    is available in this cycle to commence execution of the operation; if all
    goes well, the function unit is allocated, a writeback event is scheduled,
    and the instruction begins execution */
-static void
+local void
 ruu_issue(void)
 {
   int i, load_lat, tlb_lat, n_issued;
@@ -3013,7 +3013,7 @@ static BITMAP_TYPE(MD_NUM_FREGS, use_spec_C);
 static md_ctrl_t spec_regs_C;
 
 /* dump speculative register state */
-static void
+local void
 rspec_dump(FILE *stream)			/* output stream */
 {
   int i;
@@ -3093,14 +3093,14 @@ struct fetch_rec {
   unsigned int ptrace_seq;		/* print trace sequence id */
 };
 static struct fetch_rec *fetch_data;	/* IFETCH -> DISPATCH inst queue */
-static int fetch_num;			/* num entries in IF -> DIS queue */
-static int fetch_tail, fetch_head;	/* head and tail pointers of queue */
+local int fetch_num;			/* num entries in IF -> DIS queue */
+local int fetch_tail, fetch_head;	/* head and tail pointers of queue */
 
 /* recover instruction trace generator state to precise state state immediately
    before the first mis-predicted branch; this is accomplished by resetting
    all register value copied-on-write bitmasks are reset, and the speculative
    memory hash table is cleared */
-static void
+local void
 tracer_recover(void)
 {
   int i;
@@ -3153,7 +3153,7 @@ tracer_recover(void)
 }
 
 /* initialize the speculative instruction state generator state */
-static void
+local void
 tracer_init(void)
 {
   int i;
@@ -3361,7 +3361,7 @@ spec_mem_access(struct mem_t *mem,		/* memory space to access */
 }
 
 /* dump speculative memory state */
-static void
+local void
 mspec_dump(FILE *stream)			/* output stream */
 {
   int i;
@@ -3835,7 +3835,7 @@ static struct RS_link last_op = RSLINK_NULL_DATA;
 /* dispatch instructions from the IFETCH -> DISPATCH queue: instructions are
    first decoded, then they allocated RUU (and LSQ for load/stores) resources
    and input and output dependence chains are updated accordingly */
-static void
+local void
 ruu_dispatch(void)
 {
   int i;
@@ -4296,7 +4296,7 @@ ruu_dispatch(void)
  */
 
 /* initialize the instruction fetch pipeline stage */
-static void
+local void
 fetch_init(void)
 {
   /* allocate the IFETCH -> DISPATCH instruction queue */
@@ -4348,12 +4348,12 @@ fetch_dump(FILE *stream)			/* output stream */
     }
 }
 
-static int last_inst_missed = FALSE;
-static int last_inst_tmissed = FALSE;
+local int last_inst_missed = FALSE;
+local int last_inst_tmissed = FALSE;
 
 /* fetch up as many instruction as one branch prediction and one cache line
    access will support without overflowing the IFETCH -> DISPATCH QUEUE */
-static void
+local void
 ruu_fetch(void)
 {
   int i, lat, tlb_lat, done = FALSE;
