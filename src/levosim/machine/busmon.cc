@@ -57,8 +57,8 @@
 
 /* forward references */
 
-static int	busmon_busread(BUSMON *) ;
-static int	busmon_buswrite(BUSMON *) ;
+local int	busmon_busread(BUSMON *) ;
+local int	busmon_buswrite(BUSMON *) ;
 
 
 
@@ -240,7 +240,7 @@ LFLOWGROUP	*lfgp ;
 
 
 /* read our incoming bus */
-static int busmon_busread(rfp)
+local int busmon_busread(rfp)
 BUSMON	*rfp ;
 {
 	struct proginfo	*pip ;
@@ -297,7 +297,7 @@ BUSMON	*rfp ;
 
 
 /* write the output bus */
-static int busmon_buswrite(rfp)
+local int busmon_buswrite(rfp)
 BUSMON	*rfp ;
 {
 	BUS_CONTENT	rd ;
