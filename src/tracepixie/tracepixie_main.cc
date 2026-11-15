@@ -75,8 +75,8 @@ extern int	convert(struct proginfo *,char *,char *,uint) ;
 
 /* forward references */
 
-static int	usage(struct proginfo *) ;
-static int	haveprogfname(struct proginfo* ,cchar *,char *) ;
+local int	usage(struct proginfo *) ;
+local int	haveprogfname(struct proginfo* ,cchar *,char *) ;
 
 
 /* local variables */
@@ -874,7 +874,7 @@ badoutopen:
 
 
 /* print out (standard error) some short usage */
-static int usage(pip)
+local int usage(pip)
 struct proginfo	*pip ;
 {
 	int	rs = SR_NOTOPEN ;
@@ -898,7 +898,7 @@ struct proginfo	*pip ;
 /* end subroutine (usage) */
 
 
-static int haveprogfname(pip,tfname,tmpfname)
+local int haveprogfname(pip,tfname,tmpfname)
 struct proginfo	*pip ;
 cchar	tfname[] ;
 char		tmpfname[] ;
