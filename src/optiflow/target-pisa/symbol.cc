@@ -89,7 +89,7 @@ struct sym_sym_t **sym_datasyms = NULL;
 struct sym_sym_t **sym_datasyms_by_name = NULL;
 
 /* symbols loaded? */
-static int syms_loaded = FALSE;
+local int syms_loaded = FALSE;
 
 #ifdef PRINT_SYMS
 /* convert BFD symbols flags to a printable string */
@@ -183,14 +183,14 @@ flags2str(unsigned int flags)	/* bfd symbol flags */
 #endif /* PRINT_SYMS */
 
 /* qsort helper function */
-static int
+local int
 acmp(struct sym_sym_t **sym1, struct sym_sym_t **sym2)
 {
   return (int)((*sym1)->addr - (*sym2)->addr);
 }
 
 /* qsort helper function */
-static int
+local int
 ncmp(struct sym_sym_t **sym1, struct sym_sym_t **sym2)
 {
   return strcmp((*sym1)->name, (*sym2)->name);
