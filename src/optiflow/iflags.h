@@ -52,7 +52,7 @@ struct iflags {
 
 extern int	iflags_init(struct iflags *) ;
 extern int	iflags_proc(struct iflags *,int,int) ;
-extern int	iflags_free(struct iflags *,const char *) ;
+extern int	iflags_free(struct iflags *,cchar *) ;
 
 
 
