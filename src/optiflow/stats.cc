@@ -64,7 +64,7 @@
 
 /* forward references */
 
-static int compare_fn(const void *,const void *) ;
+local int compare_fn(cvoid *,cvoid *) ;
 
 
 
@@ -246,7 +246,7 @@ stat_delete(struct stat_sdb_t *sdb)	/* stats database */
 }
 
 /* add stat variable STAT to stat database SDB */
-static void
+local void
 add_stat(struct stat_sdb_t *sdb,	/* stat database */
 	 struct stat_stat_t *stat)	/* stat variable */
 {
@@ -647,8 +647,8 @@ stat_reg_formula(struct stat_sdb_t *sdb,/* stat database */
 
 
 /* compare two indicies in a sparse array hash table, used by qsort() */
-static int
-compare_fn(const void *p1, const void *p2)
+local int
+compare_fn(cvoid *p1, cvoid *p2)
 {
   struct bucket_t	**pb1 = (struct bucket_t **) p1 ;
   struct bucket_t	**pb2 = (struct bucket_t **) p2 ;
@@ -664,7 +664,7 @@ compare_fn(const void *p1, const void *p2)
 }
 
 /* print an array distribution */
-static void
+local void
 print_dist(struct stat_stat_t *stat,	/* stat variable */
 	   FILE *fd)			/* output stream */
 {
@@ -788,7 +788,7 @@ print_dist(struct stat_stat_t *stat,	/* stat variable */
 }
 
 /* print a sparse array distribution */
-static void
+local void
 print_sdist(struct stat_stat_t *stat,	/* stat variable */
 	    FILE *fd)			/* output stream */
 {
