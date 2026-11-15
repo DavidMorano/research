@@ -87,10 +87,10 @@ static counter_t sim_num_refs = 0;
 static unsigned int max_insts;
 
 /* number of insts skipped before timing starts */
-static int fastfwd_count;
+local int fastfwd_count;
 
 /* non-zero when fastforward'ing */
-static int fastfwding = FALSE;
+local int fastfwding = FALSE;
 
 /* external I/O filename */
 static char *trace_fname;
@@ -108,11 +108,11 @@ static counter_t next_chkpt_cycle;
 static unsigned int chkpt_num;
 
 /* checkpoint output filename and range */
-static int chkpt_nelt = 0;
+local int chkpt_nelt = 0;
 static char *chkpt_opts[2];
 
 /* periodic checkpoint output filename and range */
-static int per_chkpt_nelt = 0;
+local int per_chkpt_nelt = 0;
 static char *per_chkpt_opts[2];
 
 
