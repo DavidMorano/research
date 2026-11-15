@@ -74,8 +74,8 @@ extern int	ctdeci(char *,int,int) ;
 
 /* forward references */
 
-static int	lbusint_busread(LBUSINT *) ;
-static int	lbusint_handleshift(LBUSINT *) ;
+local int	lbusint_busread(LBUSINT *) ;
+local int	lbusint_handleshift(LBUSINT *) ;
 
 
 
@@ -824,7 +824,7 @@ LBUSINT	*rfp ;
 
 
 /* read our incoming bus */
-static int lbusint_busread(rfp)
+local int lbusint_busread(rfp)
 LBUSINT	*rfp ;
 {
 	struct proginfo	*pip ;
@@ -966,7 +966,7 @@ LBUSINT	*rfp ;
 
 
 /* do we have a machine shift */
-static int lbusint_handleshift(rfp)
+local int lbusint_handleshift(rfp)
 LBUSINT	*rfp ;
 {
 	struct proginfo	*pip ;
