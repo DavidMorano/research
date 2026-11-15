@@ -59,18 +59,20 @@
 
 #include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
-#include	<cmath>
-#include	<cstddef>		/* |nullptr_t| */
-#include	<cstdlib>
-#include	<cstring>
-#include	<usystem.h>
-#include	<bfile.h>
+#include	<cmath>			/* CSTD */
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<cstring>		/* CSTD */
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
 #include	<libuc.h>
 #include	<mkpathx.h>
 #include	<mkfnamex.h>
 #include	<strwcpy.h>
 #include	<paramfile.h>
+#include	<strtime.h>		/* LIBUC */
 #include	<localmisc.h>
+#include	<bfile.h>
 
 #include	"config.h"
 #include	"defs.h"
@@ -116,8 +118,6 @@ extern double	sqrt(double) ;
 
 extern int	fmeanvaral(ULONG *,int,double *,double *) ;
 
-extern char	*timestr_log(time_t,char *) ;
-
 
 /* local structures */
 
@@ -145,21 +145,21 @@ struct stats {
 
 /* forward references */
 
-static int	loadinstr(struct proginfo *,LSIM *,int,uint,uint,
+local int	loadinstr(struct proginfo *,LSIM *,int,uint,uint,
 			uint *,uint *) ;
-static int	storeinstr(struct proginfo *,LSIM *,int,uint,uint,uint,
+local int	storeinstr(struct proginfo *,LSIM *,int,uint,uint,uint,
 			uint *,uint *,uint *,uint *) ;
-static int	checkpsyscall(struct proginfo *,LSIM *,SYSCALLS *,uint,uint) ;
-static int	regload(struct proginfo *,int,uint,uint,uint,uint,
+local int	checkpsyscall(struct proginfo *,LSIM *,SYSCALLS *,uint,uint) ;
+local int	regload(struct proginfo *,int,uint,uint,uint,uint,
 			uint *,uint *) ;
-static int	iscf(LDECODE *) ;
-static int	writestats(struct proginfo *,
+local int	iscf(LDECODE *) ;
+local int	writestats(struct proginfo *,
 			struct stats *,struct statemips *) ;
 
 
 /* local variables */
 
-static const char	*instrclasses[] = {
+static cchar	*instrclasses[] = {
 	"unused",
 	"brel",
 	"bind",
@@ -1241,7 +1241,7 @@ ULONG			skipinstr ;
 
 	        if (pii.f_taken) {
 
-	            const char	*np ;
+	            cchar	*np ;
 
 
 #if	F_MASTERDEBUG && F_DEBUG
@@ -1391,7 +1391,7 @@ bad0:
 
 
 /* execute a load type instruction */
-static int loadinstr(pip,mip,opexec,ma,rval,dvp,d2p)
+local int loadinstr(pip,mip,opexec,ma,rval,dvp,d2p)
 struct proginfo	*pip ;
 LSIM		*mip ;
 int		opexec ;
@@ -1470,7 +1470,7 @@ uint		*d2p ;		/* destination 2 */
 
 
 /* perform the register-load function */
-static int regload(pip,opexec,ma,mval,mval2,rval,dvp,d2p)
+local int regload(pip,opexec,ma,mval,mval2,rval,dvp,d2p)
 struct proginfo	*pip ;
 int		opexec ;
 uint		ma ;		/* memory address */
@@ -1702,7 +1702,7 @@ uint		*d2p ;
 
 
 /* do the store instructions */
-static int storeinstr(pip,mip,opexec,vaddr,dv1,dv2,map,mv1p,mv2p,dpp)
+local int storeinstr(pip,mip,opexec,vaddr,dv1,dv2,map,mv1p,mv2p,dpp)
 struct proginfo	*pip ;
 LSIM		*mip ;
 int		opexec ;
@@ -1909,7 +1909,7 @@ uint    	*dpp ;		/* returned memory data present */
 
 
 /* check for a Pseudo System Call (PSYSCALL) */
-static int checkpsyscall(pip,mip,scp,ia,ta)
+local int checkpsyscall(pip,mip,scp,ia,ta)
 struct proginfo	*pip ;
 LSIM		*mip ;
 SYSCALLS	*scp ;
@@ -1917,7 +1917,7 @@ uint		ia, ta ;
 {
 	int	rs ;
 
-	const char	*np ;
+	cchar	*np ;
 
 
 
@@ -1955,7 +1955,7 @@ uint		ia, ta ;
 
 
 /* is the instruction (in view) a control-flow instruction ? */
-static int iscf(dip)
+local int iscf(dip)
 LDECODE	*dip ;
 {
 	int	f ;
@@ -1971,7 +1971,7 @@ LDECODE	*dip ;
 
 
 /* write out the statistics */
-static int writestats(pip,scp,smp)
+local int writestats(pip,scp,smp)
 struct proginfo		*pip ;
 struct stats		*scp ;
 struct statemips	*smp ;
@@ -2058,7 +2058,7 @@ struct statemips	*smp ;
 	    u_time(&daytime) ;
 
 	    bprintf(&tmpfile,"SimpleSim statistics %s\n",
-	        timestr_log(daytime,tmpfname)) ;
+	        strtime_log(daytime,tmpfname)) ;
 
 	    bprintf(&tmpfile,"statistics for job=%s logid=%s\n\n",
 	        pip->jobname,pip->logid) ;
