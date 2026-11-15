@@ -1,72 +1,75 @@
-/* bpresult */
+/* bpresult SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
-/* write a BP result */
+/* OptiFlow Branch-Prediction Result */
 /* last modified %G% version %I% */
 
-
-#define	CF_DEBUGS	0
-
+#define	CF_DEBUG	0		/* compile-time debugging */
 
 /* revision history:
 
-	= 02/06/14, Dave Morano
-
+	= 2002-06-14, David Morano
 	This program was originally written.
-
 
 */
 
-/* Copyright © 2003-2007 David A­D­ Morano.  All rights reserved. */
+/* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
 
-/**************************************************************************
+/*******************************************************************************
 
-	This object module facilitates wiring branch-prediction results
-	to a file.
+  	Description:
+	This object module facilitates wiring branch-prediction
+	results to a file.
 
+*******************************************************************************/
 
-**************************************************************************/
-
-
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
-#include	<sys/stat.h>
 #include	<sys/param.h>
+#include	<sys/stat.h>
 #include	<unistd.h>
 #include	<fcntl.h>
 #include	<climits>
-#include	<cstdlib>
-#include	<cstring>
-#include	<ctype.h>
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<cstring>		/* CSTD */
 
 #if	defined(IRIX)
 #include	<standards.h>
 #endif
 
 #include	<usystem.h>
+#include	<localmisc.h>
 
-#include	"localmisc.h"
 #include	"bpresult.h"
-
 
 
 /* local defines */
 
-#define	BPRESULT_MAGIC	0x98326514
-
 #define	DEFFILE		"bpdb"
-#define	LINELEN		31
+
 #define	TO_LOCK		4		/* seconds */
 
+#ifndef	LINEBUFLEN
+#ifdef	LINE_MAX
+#define	LINEBUFLEN	MAX(LINE_MAX,2048)
+#else
+#define	LINEBUFLEN	2048
+#endif
+#endif
+
 #if	defined(IRIX)
-#ifndef	F_ULOCK
+#ifndef	CF_ULOCK
 #define F_ULOCK	0	/* Unlock a previously locked region */
 #endif
-#ifndef	F_LOCK
+#ifndef	CF_LOCK
 #define F_LOCK	1	/* Lock a region for exclusive use */
 #endif
-#ifndef	F_TLOCK
+#ifndef	CF_TLOCK
 #define F_TLOCK	2	/* Test and lock a region for exclusive use */
 #endif
-#ifndef	F_TEST
+#ifndef	CF_TEST
 #define F_TEST	3	/* Test a region for other processes locks */
 #endif
 #endif /* defined(IRIX) */
@@ -85,9 +88,7 @@
 /* forward references */
 
 
-
-
-
+/* exported subroutines */
 
 
 int bpresult_open(op,fname)
@@ -104,12 +105,12 @@ char		fname[] ;
 		fname = DEFFILE ;
 
 	rs = bopen(&op->rfile,fname,"wca",0666) ;
-
 	if (rs < 0)
-		return rs ;
-
+	    goto ret0 ;
 
 	op->magic = BPRESULT_MAGIC ;
+
+ret0:
 	return rs ;
 }
 /* end subroutine (bpresult_open) */
@@ -144,7 +145,7 @@ int		p1, p2, p3, p4 ;
 		progname,acc,predname,bits,p1,p2,p3,p4) ;
 
 	if (f_locked)
-		bcontrol(&op->rfile,BC_UNLOCK,0) ;
+	bcontrol(&op->rfile,BC_UNLOCK,0) ;
 
 	return rs ;
 }
@@ -162,11 +163,11 @@ BPRESULT	*op ;
 	if (op->magic != BPRESULT_MAGIC)
 		return SR_NOTOPEN ;
 
-
 	rs = bclose(&op->rfile) ;
 
+	op->magic = 0 ;
 	return rs ;
 }
-
+/* end subroutine (bpresult_close) */
 
 
