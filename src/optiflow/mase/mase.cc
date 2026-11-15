@@ -53,14 +53,13 @@
 #include "mase-macros-oracle.h"
 
 
-#ifndef	DIGBUFLEN
-#define	DIGBUFLEN	20
-#endif
+
+/* exported variables */
 
 
+/* exported subroutines */
 
 /* initialize the simulator */
-
 int sim_init(void)
 {
   sim_num_refs = 0;
