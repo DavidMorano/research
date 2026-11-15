@@ -65,12 +65,12 @@
 extern double	sqrt(double) ;
 #endif
 
-extern char	*strwcpy(char *,const char *,int) ;
+extern char	*strwcpy(char *,cchar *,int) ;
 
 
 /* forward references */
 
-static int	bustrace_busread(BUSTRACE *,struct proginfo *,LSIM *) ;
+local int	bustrace_busread(BUSTRACE *,struct proginfo *,LSIM *) ;
 
 
 
@@ -475,7 +475,7 @@ int		flags ;
 
 
 /* read our incoming bus */
-static int bustrace_busread(rfp,pip,mip)
+local int bustrace_busread(rfp,pip,mip)
 BUSTRACE	*rfp ;
 struct proginfo	*pip ;
 LSIM		*mip ;
