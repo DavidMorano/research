@@ -67,8 +67,8 @@
 
 /* forward references */
 
-static int libus_handleshift(LIBUS *,struct proginfo *,struct levoinfo *) ;
-static int libus_clear(LIBUS *) ;
+local int libus_handleshift(LIBUS *,struct proginfo *,struct levoinfo *) ;
+local int libus_clear(LIBUS *) ;
 
 
 
@@ -465,7 +465,7 @@ XMLINFO	*xip ;
 
 
 
-static int libus_clear(busp)
+local int libus_clear(busp)
 LIBUS	*busp ;
 {
 
@@ -475,7 +475,7 @@ LIBUS	*busp ;
 /* end subroutine (libus_clear) */
 
 
-static int libus_handleshift(busp,pip,lip)
+local int libus_handleshift(busp,pip,lip)
 LIBUS		*busp ;
 struct proginfo	*pip ;
 struct levoinfo	*lip ;
