@@ -163,30 +163,30 @@ extern int	sim_checkrelease(PROGINFO *,int) ;
 
 /* forward references */
 
-static int	ssiw_setnext(SSIW *,struct proginfo *,struct ssinfo *) ;
-static int	ssiw_broadcast(SSIW *,struct proginfo *,struct ssinfo *) ;
-static int	ssiw_checkasload(SSIW *,struct proginfo *,
+local int	ssiw_setnext(SSIW *,struct proginfo *,struct ssinfo *) ;
+local int	ssiw_broadcast(SSIW *,struct proginfo *,struct ssinfo *) ;
+local int	ssiw_checkasload(SSIW *,struct proginfo *,
 			SS *,struct ssinfo *) ;
-static int	ssiw_checkretire(SSIW *,struct proginfo *,
+local int	ssiw_checkretire(SSIW *,struct proginfo *,
 			SS *,struct ssinfo *) ;
-static int	ssiw_checkretireases(SSIW *,struct proginfo *,
+local int	ssiw_checkretireases(SSIW *,struct proginfo *,
 			struct ssinfo *) ;
-static int	ssiw_retireases(SSIW *,struct proginfo *,
+local int	ssiw_retireases(SSIW *,struct proginfo *,
 			struct ssinfo *,int) ;
-static int	ssiw_handleshift() ;
-static int	ssiw_flushwindow(SSIW *,struct proginfo *,
+local int	ssiw_handleshift() ;
+local int	ssiw_flushwindow(SSIW *,struct proginfo *,
 			struct ssinfo *,int) ;
-static int	ssiw_asload(SSIW *,struct proginfo *,
+local int	ssiw_asload(SSIW *,struct proginfo *,
 			SS *,struct ssinfo *,SSAS *,int,int) ;
-static int	ssiw_commit(SSIW *,SSAS *,int) ;
-static int	ssiw_audit(SSIW *,struct proginfo *,struct ssinfo *) ;
-static int	ssiw_dumpall(SSIW *,const char *) ;
-static int	ssiw_dumpases(SSIW *,bfile *) ;
+local int	ssiw_commit(SSIW *,SSAS *,int) ;
+local int	ssiw_audit(SSIW *,struct proginfo *,struct ssinfo *) ;
+local int	ssiw_dumpall(SSIW *,cchar *) ;
+local int	ssiw_dumpases(SSIW *,bfile *) ;
 
 #if	CF_FETCH
-static int	ssiw_checkfetch(SSIW *,struct proginfo *,
+local int	ssiw_checkfetch(SSIW *,struct proginfo *,
 			SS *,struct ssinfo *) ;
-static int	ssiw_checkdispatch(SSIW *,struct proginfo *,
+local int	ssiw_checkdispatch(SSIW *,struct proginfo *,
 			SS *,struct ssinfo *) ;
 #endif
 
@@ -1643,7 +1643,7 @@ bfile		*fp ;
 
 int ssiw_printstats(wp,fname)
 SSIW		*wp ;
-const char	fname[] ;
+cchar	fname[] ;
 {
 	struct proginfo	*pip ;
 
@@ -2240,7 +2240,7 @@ XMLINFO	*xip ;
 
 
 /* set the default next state */
-static int ssiw_setnext(wp,pip,lip)
+local int ssiw_setnext(wp,pip,lip)
 SSIW		*wp ;
 struct proginfo	*pip ;
 struct ssinfo	*lip ;
@@ -2268,7 +2268,7 @@ If any ASes are either empty or are being committed,
 load them up if possible.
 */
 
-static int ssiw_checkasload(wp,pip,mip,lip)
+local int ssiw_checkasload(wp,pip,mip,lip)
 SSIW		*wp ;
 struct proginfo	*pip ;
 SS		*mip ;
@@ -2447,7 +2447,7 @@ struct ssinfo	*lip ;
 
 #if	CF_FETCH
 
-static int ssiw_checkfetch(wp,pip,mip,lip)
+local int ssiw_checkfetch(wp,pip,mip,lip)
 SSIW		*wp ;
 struct proginfo	*pip ;
 SS		*mip ;
@@ -2675,7 +2675,7 @@ ret0:
 
 
 /* check for possible instruction dispatch (fetch => ISes) */
-static int ssiw_checkdispatch(wp,pip,mip,lip)
+local int ssiw_checkdispatch(wp,pip,mip,lip)
 SSIW		*wp ;
 struct proginfo	*pip ;
 SS		*mip ;
@@ -2878,7 +2878,7 @@ ret0:
 
 
 /* load an AS */
-static int ssiw_asload(wp,pip,mip,lip,lasp,ci,tt)
+local int ssiw_asload(wp,pip,mip,lip,lasp,ci,tt)
 SSIW		*wp ;
 struct proginfo	*pip ;
 SS		*mip ;
@@ -2915,7 +2915,7 @@ int		ci, tt ;
 
 
 /* broadcast operands */
-static int ssiw_broadcast(wp,pip,lip)
+local int ssiw_broadcast(wp,pip,lip)
 SSIW		*wp ;
 struct proginfo	*pip ;
 struct ssinfo	*lip ;
@@ -3119,7 +3119,7 @@ struct ssinfo	*lip ;
 
 
 /* check if we are ready to retire some ASes */
-static int ssiw_checkretire(wp,pip,mip,lip)
+local int ssiw_checkretire(wp,pip,mip,lip)
 SSIW		*wp ;
 struct proginfo	*pip ;
 SS		*mip ;
@@ -3197,7 +3197,7 @@ ret0:
 
 
 /* check to see how many ASes can retire */
-static int ssiw_checkretireases(wp,pip,lip)
+local int ssiw_checkretireases(wp,pip,lip)
 SSIW		*wp ;
 struct proginfo	*pip ;
 struct ssinfo	*lip ;
@@ -3289,7 +3289,7 @@ struct ssinfo	*lip ;
 #if	CF_RETIRE
 
 /* retire the ASes (not an easy job) */
-static int ssiw_retireases(wp,pip,lip,n)
+local int ssiw_retireases(wp,pip,lip,n)
 SSIW		*wp ;
 struct proginfo	*pip ;
 struct ssinfo	*lip ;
@@ -3535,7 +3535,7 @@ int		n ;
 
 
 /* commit operands back to machine-permanent storage */
-static int ssiw_commit(wp,lasp,asid)
+local int ssiw_commit(wp,lasp,asid)
 SSIW		*wp ;
 SSAS		*lasp ;
 int		asid ;
@@ -3596,7 +3596,7 @@ int		asid ;
 
 
 /* handle the consequences of a machine shift within our own object */
-static int ssiw_handleshift(wp,pip,lip)
+local int ssiw_handleshift(wp,pip,lip)
 SSIW		*wp ;
 struct proginfo	*pip ;
 struct ssinfo	*lip ;
@@ -3620,7 +3620,7 @@ struct ssinfo	*lip ;
 #ifdef	COMMENT /* this is only for a Levo-solumn-like machine */
 
 /* flush the entire execution window except the specified column! */
-static int ssiw_flushwindow(wp,pip,lip,ci)
+local int ssiw_flushwindow(wp,pip,lip,ci)
 SSIW		*wp ;
 struct proginfo	*pip ;
 struct ssinfo	*lip ;
@@ -3753,7 +3753,7 @@ int		ci ;
 #endif /* COMMENT */
 
 
-static int ssiw_audit(wp,pip,lip)
+local int ssiw_audit(wp,pip,lip)
 SSIW		*wp ;
 struct proginfo	*pip ;
 struct ssinfo	*lip ;
@@ -3800,7 +3800,7 @@ struct ssinfo	*lip ;
 /* end subroutine (ssiw_audit) */
 
 
-static int ssiw_dumpases(op,fp)
+local int ssiw_dumpases(op,fp)
 SSIW		*op ;
 bfile		*fp ;
 {
@@ -3820,9 +3820,9 @@ bfile		*fp ;
 /* end subroutine (ssiw_dumpases) */
 
 
-static int ssiw_dumpall(op,fname)
+local int ssiw_dumpall(op,fname)
 SSIW		*op ;
-const char	fname[] ;
+cchar	fname[] ;
 {
 	SS		*mip ;
 
