@@ -87,6 +87,7 @@
 #include	<mkpathx.h>
 #include	<mkfnamex.h>
 #include	<strwcpy.h>
+#include	<strtime.h>		/* LIBUC */
 #include	<localmisc.h>
 
 #include	"config.h"
@@ -294,29 +295,29 @@ struct vpfifo {
 
 /* forward references */
 
-static int	loadinstr(struct proginfo *,LMAPPROG *,int,uint,uint,
+local int	loadinstr(struct proginfo *,LMAPPROG *,int,uint,uint,
 			uint *,uint *) ;
-static int	storeinstr(struct proginfo *,LMAPPROG *,int,uint,uint,uint,
+local int	storeinstr(struct proginfo *,LMAPPROG *,int,uint,uint,uint,
 			uint *,uint *,uint *,uint *) ;
-static int	regload(struct proginfo *,int,uint,uint,uint,uint,
+local int	regload(struct proginfo *,int,uint,uint,uint,uint,
 			uint *,uint *) ;
-static int	writestats(struct proginfo *, ustatemips *,
+local int	writestats(struct proginfo *, ustatemips *,
 			VPRED_STATS *, ustat *,BPEVAL *,
 			struct params *) ;
-static int	writevpstats(struct proginfo *, ustatemips *,
+local int	writevpstats(struct proginfo *, ustatemips *,
 			VPRED_STATS *, ustat *,int) ;
 
-static int	hias_check(struct testing *,uint) ;
-static int	getstatsopts(struct proginfo *,keyopt *,struct params *) ;
+local int	hias_check(struct testing *,uint) ;
+local int	getstatsopts(struct proginfo *,keyopt *,struct params *) ;
 
 #ifdef	COMMENT
-static int	checkpsyscall(struct proginfo *,LSIM *,SYSCALLS *,uint,uint) ;
+local int	checkpsyscall(struct proginfo *,LSIM *,SYSCALLS *,uint,uint) ;
 #endif
 
-static int	vpfifo_init(struct vpfifo *,int) ;
-static int	vpfifo_free(struct vpfifo *) ;
-static int	vpfifo_add(struct vpfifo *,uint *,int,int) ;
-static int	vpfifo_remove(struct vpfifo *,uint *,int *) ;
+local int	vpfifo_init(struct vpfifo *,int) ;
+local int	vpfifo_free(struct vpfifo *) ;
+local int	vpfifo_add(struct vpfifo *,uint *,int,int) ;
+local int	vpfifo_remove(struct vpfifo *,uint *,int *) ;
 
 static double	percentll(ulong,ulong) ;
 
@@ -2588,7 +2589,7 @@ char		tfname[] ;
 
 	        if (pii.f_taken) {
 
-	            const char	*np ;
+	            cchar	*np ;
 
 
 #if	CF_MASTERDEBUG && CF_DEBUG
@@ -3335,7 +3336,7 @@ bad0:
 
 
 /* execute a load type instruction */
-static int loadinstr(pip,mip,opexec,ma,rval,dvp,d2p)
+local int loadinstr(pip,mip,opexec,ma,rval,dvp,d2p)
 struct proginfo	*pip ;
 LMAPPROG	*mip ;
 int		opexec ;
@@ -3414,7 +3415,7 @@ uint		*d2p ;		/* destination 2 */
 
 
 /* perform the register-load function */
-static int regload(pip,opexec,ma,mval,mval2,rval,dvp,d2p)
+local int regload(pip,opexec,ma,mval,mval2,rval,dvp,d2p)
 struct proginfo	*pip ;
 int		opexec ;
 uint		ma ;		/* memory address */
@@ -3646,7 +3647,7 @@ uint		*d2p ;
 
 
 /* do the store instructions */
-static int storeinstr(pip,mip,opexec,vaddr,dv1,dv2,map,mv1p,mv2p,dpp)
+local int storeinstr(pip,mip,opexec,vaddr,dv1,dv2,map,mv1p,mv2p,dpp)
 struct proginfo	*pip ;
 LMAPPROG	*mip ;
 int		opexec ;
@@ -3856,7 +3857,7 @@ uint    	*dpp ;		/* returned memory data present */
 #ifdef	COMMENT
 
 /* check for a Pseudo System Call (PSYSCALL) */
-static int checkpsyscall(pip,mip,scp,ia,ta)
+local int checkpsyscall(pip,mip,scp,ia,ta)
 struct proginfo	*pip ;
 LMAPPROG	*mip ;
 SYSCALLS	*scp ;
@@ -3864,7 +3865,7 @@ uint		ia, ta ;
 {
 	int	rs ;
 
-	const char	*np ;
+	cchar	*np ;
 
 
 
@@ -3904,7 +3905,7 @@ uint		ia, ta ;
 
 
 /* is the instruction (in view) a control-flow instruction? */
-static int iscf(dip)
+local int iscf(dip)
 LDECODE	*dip ;
 {
 	int	f ;
@@ -3920,7 +3921,7 @@ LDECODE	*dip ;
 
 
 /* write out the statistics */
-static int writestats(pip,smp,vsp,scp,bpsp,pp)
+local int writestats(pip,smp,vsp,scp,bpsp,pp)
 struct proginfo		*pip ;
 ustat		*scp ;
 VPRED_STATS		*vsp ;
@@ -4028,14 +4029,14 @@ struct params		*pp ;
 	    u_time(&daytime) ;
 
 	    bprintf(&tmpfile,"SimpleSim statistics %s\n",
-	        timestr_log(daytime,tmpfname)) ;
+	        strtime_log(daytime,tmpfname)) ;
 
 	    bprintf(&tmpfile,"statistics for job=%s logid=%s\n",
 	        pip->jobname,pip->logid) ;
 
 	    bprintf(&tmpfile,"started %s (elapsed time %s)\n",
-	        timestr_log(pip->starttime,timebuf1),
-	        timestr_elapsed((daytime - pip->starttime),timebuf2)) ;
+	        strtime_log(pip->starttime,timebuf1),
+	        strtime_elapsed((daytime - pip->starttime),timebuf2)) ;
 
 	    rs1 = uc_getrusage(RUSAGE_SELF,&ut) ;
 
@@ -4050,15 +4051,15 @@ struct params		*pp ;
 
 	        elapsed = daytime - pip->starttime ;
 	        bprintf(&tmpfile,"real   time=%s.%06d\n",
-	            timestr_elapsed(elapsed,timebuf),
+	            strtime_elapsed(elapsed,timebuf),
 	            ut.ru_utime.tv_usec) ;
 
 	        bprintf(&tmpfile,"user   time=%s.%06d\n",
-	            timestr_elapsed(ut.ru_utime.tv_sec,timebuf),
+	            strtime_elapsed(ut.ru_utime.tv_sec,timebuf),
 	            ut.ru_utime.tv_usec) ;
 
 	        bprintf(&tmpfile,"system time=%s.%06d\n",
-	            timestr_elapsed(ut.ru_stime.tv_sec,timebuf),
+	            strtime_elapsed(ut.ru_stime.tv_sec,timebuf),
 	            ut.ru_stime.tv_usec) ;
 
 	    } /* end if (getrusage) */
@@ -4594,7 +4595,7 @@ struct params		*pp ;
 
 
 /* write out value prediction statistics */
-static int writevpstats(pip,smp,vsp,scp,vprow)
+local int writevpstats(pip,smp,vsp,scp,vprow)
 struct proginfo		*pip ;
 ustat		*scp ;
 VPRED_STATS		*vsp ;
@@ -4658,7 +4659,7 @@ int			vprow ;
 
 
 /* check (the hard way) for a SSH */
-static int hias_check(op,ia)
+local int hias_check(op,ia)
 struct testing	*op ;
 uint		ia ;
 {
@@ -5171,7 +5172,7 @@ BPEVAL		*bpsp ;
 
 /* VPFIFO */
 
-static int vpfifo_init(op,n)
+local int vpfifo_init(op,n)
 struct vpfifo	*op ;
 int		n ;
 {
@@ -5194,7 +5195,7 @@ int		n ;
 /* end subroutine (vpfifo_init) */
 
 
-static int vpfifo_free(op)
+local int vpfifo_free(op)
 struct vpfifo	*op ;
 {
 
@@ -5211,7 +5212,7 @@ struct vpfifo	*op ;
 /* end subroutine (vpfifo_free) */
 
 
-static int vpfifo_add(op,values,n,row)
+local int vpfifo_add(op,values,n,row)
 struct vpfifo	*op ;
 uint		values[] ;
 int		n ;
@@ -5232,7 +5233,7 @@ int		row ;
 /* end subroutine (vpfifo_add) */
 
 
-static int vpfifo_remove(op,values,rp)
+local int vpfifo_remove(op,values,rp)
 struct vpfifo	*op ;
 uint		values[] ;
 int		*rp ;
