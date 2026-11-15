@@ -88,11 +88,11 @@
 
 /* external subroutines */
 
-extern int	cfdeci(const char *,int,int *) ;
-extern int	cfdecui(const char *,int,int *) ;
-extern int	cfdecull(const char *,int,ULONG *) ;
-extern int	cfnumui(const char *,int,uint *) ;
-extern int	cfnumull(const char *,int,ULONG *) ;
+extern int	cfdeci(cchar *,int,int *) ;
+extern int	cfdecui(cchar *,int,int *) ;
+extern int	cfdecull(cchar *,int,ULONG *) ;
+extern int	cfnumui(cchar *,int,uint *) ;
+extern int	cfnumull(cchar *,int,ULONG *) ;
 
 
 /* external variables */
@@ -105,10 +105,10 @@ extern struct proginfo	pi ;
 
 /* forward references */
 
-static int	ss_callthem(SS *) ;
+local int	ss_callthem(SS *) ;
 
 #if	F_DEBUG || F_DEBUGS
-static int	ss_prpq(SS *,ULONG) ;
+local int	ss_prpq(SS *,ULONG) ;
 #endif
 
 extern int	sim_exec(SS *,uint) ;
@@ -121,7 +121,7 @@ extern int	getregval(struct regs_t *,int,ULONG *) ;
 
 /* local variables */
 
-static const char	*lparams[] = {
+static cchar	*lparams[] = {
 	"sim:maxclocks",	/* maximum number of clocks */
 	"sim:fastqueues",	/* number of fast queues */
 	NULL
@@ -145,7 +145,7 @@ struct proginfo	*pip ;
 ULONG		maxclocks ;
 SS_MACHOBJ	*machobj ;
 {
-	PARAMFILE	*pfp = &pip->pf ;
+	paramfile	*pfp = &pip->pf ;
 
 	ULONG	ulw ;
 
@@ -540,7 +540,7 @@ SS		*mip ;
 
 	    hdb_cursorinit(&mip->pq,&hcur) ;
 
-	    while (hdb_enum(&mip->pq,&hcur,&key,&value) >= 0) {
+	    while (hdb_curenum(&mip->pq,&hcur,&key,&value) >= 0) {
 
 	        if (value.buf != NULL)
 	            free(value.buf) ;	/* the key was in there also ! */
@@ -1079,7 +1079,7 @@ int	n ;
 
 */
 
-static int ss_callthem(mip)
+local int ss_callthem(mip)
 SS		*mip ;
 {
 	struct proginfo	*pip ;
@@ -1368,7 +1368,7 @@ SS		*mip ;
 
 #if	F_DEBUG || F_DEBUGS
 
-static int ss_prpq(mip,ckey)
+local int ss_prpq(mip,ckey)
 SS	*mip ;
 ULONG		ckey ;
 {
