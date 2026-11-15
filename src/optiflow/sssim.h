@@ -71,7 +71,7 @@ struct sssim_mp {
 
 struct sssim_sym {
 	Elf32_Sym	*ep ;
-	const char	*name ;
+	cchar	*name ;
 } ;
 
 #ifdef	COMMENT
@@ -157,7 +157,7 @@ extern int sssim_readinstr(SSSIM *,uint,uint *) ;
 extern int sssim_readint(SSSIM *,uint,uint *) ;
 extern int sssim_writeint(SSSIM *,uint,uint,uint) ;
 extern int sssim_memaccess(SSSIM *,uint,uint) ;
-extern int sssim_issyscall(SSSIM *,uint,const char **) ;
+extern int sssim_issyscall(SSSIM *,uint,cchar **) ;
 extern int sssim_getsymval(SSSIM *,char *,uint *) ;
 extern int sssim_getentry(SSSIM *,uint *) ;
 extern int sssim_getstack(SSSIM *,uint *) ;
