@@ -86,11 +86,11 @@
 
 /* external subroutines */
 
-extern int	cfdeci(const char *,int,int *) ;
-extern int	cfdecui(const char *,int,int *) ;
-extern int	cfdecull(const char *,int,ULONG *) ;
-extern int	cfnumui(const char *,int,uint *) ;
-extern int	cfnumull(const char *,int,ULONG *) ;
+extern int	cfdeci(cchar *,int,int *) ;
+extern int	cfdecui(cchar *,int,int *) ;
+extern int	cfdecull(cchar *,int,ULONG *) ;
+extern int	cfnumui(cchar *,int,uint *) ;
+extern int	cfnumull(cchar *,int,ULONG *) ;
 
 
 /* external variables */
@@ -103,10 +103,10 @@ extern struct proginfo	pi ;
 
 /* forward references */
 
-static int	ss_callthem(SS *) ;
+local int	ss_callthem(SS *) ;
 
 #if	CF_DEBUG || CF_DEBUGS
-static int	ss_prpq(SS *,ULONG) ;
+local int	ss_prpq(SS *,ULONG) ;
 #endif
 
 extern int	sim_checkexec(SS *,int) ;
@@ -119,7 +119,7 @@ extern int	getregval(struct regs_t *,int,ULONG *) ;
 
 /* local variables */
 
-static const char	*lparams[] = {
+static cchar	*lparams[] = {
 	"sim:maxclocks",	/* maximum number of clocks */
 	"sim:fastqueues",	/* number of fast queues */
 	NULL
@@ -1121,7 +1121,7 @@ int	n ;
 
 */
 
-static int ss_callthem(op)
+local int ss_callthem(op)
 SS		*op ;
 {
 	struct proginfo	*pip ;
@@ -1410,7 +1410,7 @@ SS		*op ;
 
 #if	CF_DEBUG || CF_DEBUGS
 
-static int ss_prpq(op,ckey)
+local int ss_prpq(op,ckey)
 SS	*op ;
 ULONG		ckey ;
 {
