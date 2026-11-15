@@ -83,26 +83,26 @@ static unsigned int max_insts;
 static char *pred_type;
 
 /* bimodal predictor config (<table_size>) */
-static int bimod_nelt = 1;
-static int bimod_config[1] =
+local int bimod_nelt = 1;
+local int bimod_config[1] =
   { /* bimod tbl size */2048 };
 
 /* 2-level predictor config (<l1size> <l2size> <hist_size> <xor>) */
-static int twolev_nelt = 4;
-static int twolev_config[4] =
+local int twolev_nelt = 4;
+local int twolev_config[4] =
   { /* l1size */1, /* l2size */1024, /* hist */8, /* xor */FALSE};
 
 /* combining predictor config (<meta_table_size> */
-static int comb_nelt = 1;
-static int comb_config[1] =
+local int comb_nelt = 1;
+local int comb_config[1] =
   { /* meta_table_size */1024 };
 
 /* return address stack (RAS) size */
-static int ras_size = 8;
+local int ras_size = 8;
 
 /* BTB predictor config (<num_sets> <associativity>) */
-static int btb_nelt = 2;
-static int btb_config[2] =
+local int btb_nelt = 2;
+local int btb_config[2] =
   { /* nsets */512, /* assoc */4 };
 
 /* branch predictor */
