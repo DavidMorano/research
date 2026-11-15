@@ -231,21 +231,21 @@ extern "C" {
 /*
  * POSIX 1003.1 Functions
  */
-extern int access(const char *, int);
+extern int access(cchar *, int);
 extern unsigned alarm(unsigned);
-extern int chdir(const char *);
-extern int chown(const char *, uid_t, gid_t);
+extern int chdir(cchar *);
+extern int chown(cchar *, uid_t, gid_t);
 extern int close(int);
 extern char *ctermid(char *);
 extern char *cuserid(char *);
 extern int dup(int);
 extern int dup2(int, int);
-extern int execl(const char *, const char *, ...);
-extern int execle(const char *, const char *, ...);
-extern int execlp(const char *, const char *, ...);
-extern int execv(const char *, char *const *);
-extern int execve(const char *, char *const *, char *const *);
-extern int execvp(const char *, char *const *);
+extern int execl(cchar *, cchar *, ...);
+extern int execle(cchar *, cchar *, ...);
+extern int execlp(cchar *, cchar *, ...);
+extern int execv(cchar *, char *const *);
+extern int execve(cchar *, char *const *, char *const *);
+extern int execvp(cchar *, char *const *);
 extern void _exit(int);
 extern pid_t fork(void);
 extern long fpathconf(int, int);
@@ -269,13 +269,13 @@ extern pid_t getpid(void);
 extern pid_t getppid(void);
 extern uid_t getuid(void);
 extern int isatty(int);
-extern int link(const char *, const char *);
+extern int link(cchar *, cchar *);
 extern off_t lseek(int, off_t, int);
-extern long pathconf(const char *, int);
+extern long pathconf(cchar *, int);
 extern int pause(void);
 extern int pipe(int *);
 extern ssize_t read(int, void *, size_t);
-extern int rmdir(const char *);
+extern int rmdir(cchar *);
 extern int setgid(gid_t);
 extern int setpgid(pid_t, pid_t);
 extern pid_t setsid(void);
@@ -285,7 +285,7 @@ extern long sysconf(int);
 extern pid_t tcgetpgrp(int);
 extern int tcsetpgrp(int, pid_t);
 extern char *ttyname(int);
-extern int unlink(const char *);
+extern int unlink(cchar *);
 extern ssize_t write(int, const void *, size_t);
 
 #if _POSIX93
@@ -329,11 +329,11 @@ extern size_t   confstr(int, char *, size_t);
 /*
  * XPG4 additions
  */
-extern int chroot(const char *);
+extern int chroot(cchar *);
 extern int nice(int);
-extern char     *crypt(const char *, const char *);
+extern char     *crypt(cchar *, cchar *);
 extern void     encrypt(char *, int);
-extern char     *getpass(const char *);
+extern char     *getpass(cchar *);
 extern void     swab(const void *, void *, ssize_t);
 #endif /* _XOPEN4 */
 
@@ -350,9 +350,9 @@ extern int getpagesize(void);
 extern pid_t getpgid(pid_t);
 extern pid_t getsid(pid_t);
 extern char *getwd(char *);
-extern int lchown(const char *, uid_t, gid_t);
+extern int lchown(cchar *, uid_t, gid_t);
 extern int lockf(int, int, off_t);
-extern int readlink(const char *, char *, size_t);
+extern int readlink(cchar *, char *, size_t);
 extern void *sbrk(ssize_t);
 #if defined(_BSD_COMPAT)
 extern int setpgrp(int, int);
@@ -361,9 +361,9 @@ extern pid_t setpgrp(void);
 #endif /* _BSD_COMPAT */
 extern int setregid(gid_t, gid_t);
 extern int setreuid(uid_t, uid_t);
-extern int symlink(const char *, const char *);
+extern int symlink(cchar *, cchar *);
 extern void sync(void);
-extern int truncate(const char *, off_t);
+extern int truncate(cchar *, off_t);
 extern useconds_t ualarm(useconds_t, useconds_t);
 extern int usleep(useconds_t);
 #if !_SGIAPI
@@ -375,8 +375,8 @@ static pid_t vfork(void) { return(__vfork()); }
  * stropts.h to include all of unistd.h, thus it is valid to define them
  * here
  */
-extern int fattach(int, const char *);
-extern int fdetach(const char *);
+extern int fattach(int, cchar *);
+extern int fdetach(cchar *);
 extern int ioctl(int, int, ...);
 
 #endif /* _XOPEN4UX */
@@ -400,13 +400,13 @@ extern int select(int, fd_set *, fd_set *, fd_set *, struct timeval *);
 #include <sys/uio.h>
 #include <utime.h>	/* 4.0 compatibility */
 #include <re_comp.h>
-extern int acct(const char *);
+extern int acct(cchar *);
 extern void exit(int);
 extern int gethostname(char *, int);
-extern char *gettxt(const char *, const char *);
+extern char *gettxt(cchar *, cchar *);
 extern int profil(unsigned short *, unsigned int, unsigned int, unsigned int);
 extern int ptrace(int, pid_t, int, int);
-extern int rename(const char *, const char *);	/* added in 1003.1b */
+extern int rename(cchar *, cchar *);	/* added in 1003.1b */
 extern int seteuid(uid_t);
 extern int setegid(gid_t);
 extern int stime(const time_t *);
@@ -428,7 +428,7 @@ extern void bfset(char *, bitnum_t, bitlen_t);
 extern void bfclr(char *, bitnum_t, bitlen_t);
 extern bitlen_t bftstset(char *, bitnum_t, bitlen_t);
 extern bitlen_t bftstclr(char *, bitnum_t, bitlen_t);
-extern int BSDchown(const char *, uid_t, gid_t);
+extern int BSDchown(cchar *, uid_t, gid_t);
 extern int BSDdup2(int, int);
 extern int BSDfchown(int, uid_t, gid_t);
 extern int BSDgetpgrp(int);
@@ -446,35 +446,35 @@ extern int mincore(caddr_t, size_t, char *);
 extern int mpin(void *, size_t);
 extern int munpin(void *, size_t);
 extern int newarraysess(void);
-extern pid_t pcreatel(const char *, const char *, ...);
-extern pid_t pcreatelp(const char *, const char *, ...);
-extern pid_t pcreatev(const char *, char *const *);
-extern pid_t pcreateve(const char *, char *const *, char *const *);
-extern pid_t pcreatevp(const char *, char *const *);
+extern pid_t pcreatel(cchar *, cchar *, ...);
+extern pid_t pcreatelp(cchar *, cchar *, ...);
+extern pid_t pcreatev(cchar *, char *const *);
+extern pid_t pcreateve(cchar *, char *const *, char *const *);
+extern pid_t pcreatevp(cchar *, char *const *);
 extern ssize_t pread(int, void *, size_t, off64_t);
 extern ssize_t pwrite(int, const void *, size_t, off64_t);
-extern int rexecl(cell_t, const char *, const char *, ...);
-extern int rexecle(cell_t, const char *, const char *, ...);
-extern int rexeclp(cell_t, const char *, const char *, ...);
-extern int rexecv(cell_t, const char *, char *const *);
-extern int rexecve(cell_t, const char *, char *const *, char *const *);
-extern int rexecvp(cell_t, const char *, char *const *);
+extern int rexecl(cell_t, cchar *, cchar *, ...);
+extern int rexecle(cell_t, cchar *, cchar *, ...);
+extern int rexeclp(cell_t, cchar *, cchar *, ...);
+extern int rexecv(cell_t, cchar *, char *const *);
+extern int rexecve(cell_t, cchar *, char *const *, char *const *);
+extern int rexecvp(cell_t, cchar *, char *const *);
 extern float _sqrt_s(float);
 extern double _sqrt_d(double);
 extern int setash(ash_t);
-extern int setdomainname(const char *, int);
+extern int setdomainname(cchar *, int);
 #if defined(_BSD_COMPAT)
 extern int setgroups(int, int *);
 #else	/* !_BSD_COMPAT */
 extern int setgroups(int, const gid_t *);
 #endif /* _BSD_COMPAT */
 extern int sethostid(int);
-extern int sethostname(const char *, int);
+extern int sethostname(cchar *, int);
 extern int setprid(prid_t);
 extern int setrgid(gid_t);
 extern int setruid(uid_t);
 extern int setspinfo(struct acct_spi *);
-extern int sgikopt(const char *, char *, int);
+extern int sgikopt(cchar *, char *, int);
 extern long sginap(long);
 extern int vhangup(void);
 #endif /* _SGIAPI */
@@ -485,7 +485,7 @@ extern int ftruncate64(int, off64_t);
 extern int lockf64(int, int, off64_t);
 extern off64_t lseek64(int, off64_t, int);
 extern off64_t tell64(int);
-extern int truncate64(const char *, off64_t);
+extern int truncate64(cchar *, off64_t);
 #endif 	/* _LFAPI */
 
 #endif /* _LANGUAGE_C  _LANGUAGE_C_PLUS_PLUS  _LANGUAGE_ASSEMBLY */
