@@ -78,7 +78,7 @@
 
 /* external subroutines */
 
-extern char	*strwcpy(char *,const char *,int) ;
+extern char	*strwcpy(char *,cchar *,int) ;
 
 
 /* preferred nop instruction definition */
