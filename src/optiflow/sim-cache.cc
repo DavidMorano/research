@@ -233,11 +233,11 @@ static char *cache_il1_opt /* = "none" */;
 static char *cache_il2_opt /* = "none" */;
 static char *itlb_opt /* = "none" */;
 static char *dtlb_opt /* = "none" */;
-static int flush_on_syscalls /* = FALSE */;
-static int compress_icache_addrs /* = FALSE */;
+local int flush_on_syscalls /* = FALSE */;
+local int compress_icache_addrs /* = FALSE */;
 
 /* text-based stat profiles */
-static int pcstat_nelt = 0;
+local int pcstat_nelt = 0;
 static char *pcstat_vars[MAX_PCSTAT_VARS];
 
 /* convert 64-bit inst text addresses to 32-bit inst equivalents */
