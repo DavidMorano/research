@@ -106,11 +106,11 @@
 
 /* external subroutines */
 
-extern int	cfdeci(const char *,int,int *) ;
-extern int	cfhexui(const char *,int,uint *) ;
-extern int	sfshrink(const char *,int,char **) ;
+extern int	cfdeci(cchar *,int,int *) ;
+extern int	cfhexui(cchar *,int,uint *) ;
+extern int	sfshrink(cchar *,int,char **) ;
 
-extern char	*strwcpy(char *,const char *,int) ;
+extern char	*strwcpy(char *,cchar *,int) ;
 
 
 /* local structures */
@@ -124,19 +124,19 @@ struct record {
 
 /* forward references */
 
-static int	record_init(struct record *) ;
-static int	record_id(struct record *,FIELD *) ;
-static int	record_ia(struct record *,FIELD *) ;
-static int	record_free(struct record *) ;
+local int	record_init(struct record *) ;
+local int	record_id(struct record *,FIELD *) ;
+local int	record_ia(struct record *,FIELD *) ;
+local int	record_free(struct record *) ;
 
-static int	field_getref(FIELD *) ;
-static int	procref(vecitem *,int,uint) ;
+local int	field_getref(FIELD *) ;
+local int	procref(vecitem *,int,uint) ;
 
 #if	CF_DEBUGS && 0
-static int	showterms(uchar *) ;
+local int	showterms(uchar *) ;
 #endif
 
-static int	cmpfunc(FCOUNT_ENTRY **, FCOUNT_ENTRY **) ;
+local int	cmpfunc(FCOUNT_ENTRY **, FCOUNT_ENTRY **) ;
 
 
 /* exported subroutines */
@@ -145,7 +145,7 @@ static int	cmpfunc(FCOUNT_ENTRY **, FCOUNT_ENTRY **) ;
 /* read the stupid SGI name-list file */
 int readsginm(lp,fname)
 vecitem		*lp ;
-const char	fname[] ;
+cchar	fname[] ;
 {
 	bfile	nm ;
 
@@ -383,7 +383,7 @@ ret0:
 
 
 
-static int record_init(rp)
+local int record_init(rp)
 struct record	*rp ;
 {
 
@@ -394,7 +394,7 @@ struct record	*rp ;
 }
 
 
-static int record_id(rp,lfp)
+local int record_id(rp,lfp)
 struct record	*rp ;
 FIELD		*lfp ;
 {
@@ -414,7 +414,7 @@ FIELD		*lfp ;
 /* end subroutine (record_id) */
 
 
-static int record_ia(rp,lfp)
+local int record_ia(rp,lfp)
 struct record	*rp ;
 FIELD		*lfp ;
 {
@@ -428,7 +428,7 @@ FIELD		*lfp ;
 /* end subroutine (record_ia) */
 
 
-static int record_free(rp)
+local int record_free(rp)
 struct record	*rp ;
 {
 
@@ -436,7 +436,7 @@ struct record	*rp ;
 }
 
 
-static int field_getref(lfp)
+local int field_getref(lfp)
 FIELD		*lfp ;
 {
 	int	rs = -1 ;
@@ -462,7 +462,7 @@ FIELD		*lfp ;
 /* end subroutine (field_getref) */
 
 
-static int procref(stagep,ref,size)
+local int procref(stagep,ref,size)
 vecitem		*stagep ;
 int		ref ;
 uint		size ;
@@ -493,7 +493,7 @@ uint		size ;
 
 #if	CF_DEBUGS && 0
 
-static int	showterms(terms)
+local int	showterms(terms)
 uchar	terms[] ;
 {
 	int	i ;
@@ -517,7 +517,7 @@ uchar	terms[] ;
 
 
 /* sort by function starting IA */
-static int cmpfunc(e1pp,e2pp)
+local int cmpfunc(e1pp,e2pp)
 FCOUNT_ENTRY	**e1pp, **e2pp ;
 {
 
