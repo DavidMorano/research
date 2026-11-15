@@ -62,6 +62,9 @@
 #include	<paramfile.h>
 #include	<field.h>
 #include	<mallocstuff.h>
+#include	<density.h>
+#include	<strtime.h>		/* LIBUC */
+#include	<localmisc.h>
 
 /* simple scalar stuff */
 
@@ -90,8 +93,6 @@
 
 /* from 'main' */
 
-#include	"density.h"
-#include	"localmisc.h"
 #include	"ssconfig.h"
 #include	"defs.h"
 
@@ -334,27 +335,27 @@ int	sim_checkreleaser(PROGINFO *,int) ;
 
 int	instr_display(uint,char *,int) ;
 
-static int	sim_fast(PROGINFO *,ULONG,ULONG) ;
-static int	sim_faster(PROGINFO *,ULONG,ULONG) ;
-static int	sim_checktional(PROGINFO *) ;
-static int	sim_functional(PROGINFO *) ;
+local int	sim_fast(PROGINFO *,ULONG,ULONG) ;
+local int	sim_faster(PROGINFO *,ULONG,ULONG) ;
+local int	sim_checktional(PROGINFO *) ;
+local int	sim_functional(PROGINFO *) ;
 
-static int	sim_asdump(PROGINFO *,SSAS *) ;
-static int	sim_tracedump(struct proginfo *,cchar *) ;
-static int	sim_genstats(struct proginfo *,cchar *) ;
-static int	sim_regstats(struct proginfo *,cchar *) ;
-static int	sim_memstats(struct proginfo *,cchar *) ;
+local int	sim_asdump(PROGINFO *,SSAS *) ;
+local int	sim_tracedump(struct proginfo *,cchar *) ;
+local int	sim_genstats(struct proginfo *,cchar *) ;
+local int	sim_regstats(struct proginfo *,cchar *) ;
+local int	sim_memstats(struct proginfo *,cchar *) ;
 
-static int	setas(SSAS *,int,int,int,int,int,int,int) ;
-static int	setasreg(SSAS *) ;
-static int	setasmem(SSAS *,int,ULONG,int,ULONG,ULONG) ;
-static int	setasmemread(SSAS *,ULONG,int,ULONG) ;
-static int	setop(OPERAND *,uint,ULONG) ;
-static int	setopreg(OPERAND *,int) ;
-static int	mkdatapresent(uint,int) ;
+local int	setas(SSAS *,int,int,int,int,int,int,int) ;
+local int	setasreg(SSAS *) ;
+local int	setasmem(SSAS *,int,ULONG,int,ULONG,ULONG) ;
+local int	setasmemread(SSAS *,ULONG,int,ULONG) ;
+local int	setop(OPERAND *,uint,ULONG) ;
+local int	setopreg(OPERAND *,int) ;
+local int	mkdatapresent(uint,int) ;
 
-static int	peparse(struct proginfo *,cchar *,int,int *,int *) ;
-static int	leparse(struct proginfo *,struct ssinfo *,cchar *,int) ;
+local int	peparse(struct proginfo *,cchar *,int,int *,int *) ;
+local int	leparse(struct proginfo *,struct ssinfo *,cchar *,int) ;
 
 
 /* local variables */
@@ -383,43 +384,43 @@ static counter_t fastfwd_count ;
 #endif /* COMMENT */
 
 /* speed of front-end of machine relative to execution core */
-static int fetch_speed ;
+local int fetch_speed ;
 
 /* optimistic misfetch recovery */
-static int mf_compat ;
+local int mf_compat ;
 
 /* branch predictor type {nottaken|taken|perfect|bimod|2lev} */
 static char *pred_type ;
 
 /* bimodal predictor config (<table_size>) */
-static int bimod_nelt = 1 ;
-static int bimod_config[1] =
+local int bimod_nelt = 1 ;
+local int bimod_config[1] =
 { /* bimod tbl size */
 	    2048 } ;
 
 /* 2-level predictor config (<l1size> <l2size> <hist_size> <xor>) */
-static int twolev_nelt = 4 ;
-static int twolev_config[4] =
+local int twolev_nelt = 4 ;
+local int twolev_config[4] =
 { /* l1size */
 	    1, /* l2size */1024, /* hist */8, /* xor */FALSE} ;
 
 /* combining predictor config (<meta_table_size> */
-static int comb_nelt = 1 ;
-static int comb_config[1] =
+local int comb_nelt = 1 ;
+local int comb_config[1] =
 { /* meta_table_size */
 	    1024 } ;
 
 /* return address stack (RAS) size */
-static int ras_size = 8 ;
+local int ras_size = 8 ;
 
 /* BTB predictor config (<num_sets> <associativity>) */
-static int btb_nelt = 2 ;
-static int btb_config[2] =
+local int btb_nelt = 2 ;
+local int btb_config[2] =
 { /* nsets */
 	    512, /* assoc */4 } ;
 
 /* perfect prediction enabled */
-static int pred_perfect = FALSE ;
+local int pred_perfect = FALSE ;
 
 /* speculative bpred-update enabled */
 static char *bpred_spec_opt ;
@@ -456,40 +457,40 @@ int perfect_disambig = FALSE ;
 static char *cache_dl1_opt ;
 
 /* l1 data cache hit latency (in cycles) */
-static int cache_dl1_lat ;
+local int cache_dl1_lat ;
 
 /* l2 data cache config, i.e., {<config>|none} */
 static char *cache_dl2_opt ;
 
 /* l2 data cache hit latency (in cycles) */
-static int cache_dl2_lat ;
+local int cache_dl2_lat ;
 
 /* l1 instruction cache config, i.e., {<config>|dl1|dl2|none} */
 static char *cache_il1_opt ;
 
 /* l1 instruction cache hit latency (in cycles) */
-static int cache_il1_lat ;
+local int cache_il1_lat ;
 
 /* l2 instruction cache config, i.e., {<config>|dl1|dl2|none} */
 static char *cache_il2_opt ;
 
 /* l2 instruction cache hit latency (in cycles) */
-static int cache_il2_lat ;
+local int cache_il2_lat ;
 
 /* flush caches on system calls */
-static int flush_on_syscalls ;
+local int flush_on_syscalls ;
 
 /* convert 64-bit inst addresses to 32-bit inst equivalents */
-static int compress_icache_addrs ;
+local int compress_icache_addrs ;
 
 /* memory access latency (<first_chunk> <inter_chunk>) */
-static int mem_nelt = 2 ;
-static int mem_lat[2] =
+local int mem_nelt = 2 ;
+local int mem_lat[2] =
 { /* lat to first chunk */
 	    18, /* lat between remaining chunks */2 } ;
 
 /* memory access bus width (in bytes) */
-static int mem_bus_width ;
+local int mem_bus_width ;
 
 /* instruction TLB config, i.e., {<config>|none} */
 static char *itlb_opt ;
@@ -498,7 +499,7 @@ static char *itlb_opt ;
 static char *dtlb_opt ;
 
 /* inst/data TLB miss latency (in cycles) */
-static int tlb_miss_lat ;
+local int tlb_miss_lat ;
 
 
 /* add-on simulator state */
@@ -3680,7 +3681,7 @@ PROGINFO	*pip ;
 
 
 /* do a fast-forward operation */
-static int sim_fast(pip,sinstr,winstr)
+local int sim_fast(pip,sinstr,winstr)
 PROGINFO	*pip ;
 ULONG		sinstr, winstr ;
 {
@@ -4043,7 +4044,7 @@ ULONG		sinstr, winstr ;
 
 
 /* do a fast-forward operation -- only faster */
-static int sim_faster(pip,sinstr,winstr)
+local int sim_faster(pip,sinstr,winstr)
 PROGINFO	*pip ;
 ULONG		sinstr, winstr ;
 {
@@ -4423,7 +4424,7 @@ ULONG		sinstr, winstr ;
 
 
 /* perform a "checktional" simulation */
-static int sim_checktional(pip)
+local int sim_checktional(pip)
 PROGINFO	*pip ;
 {
 	CHECKER	*csp = &pip->check ;
@@ -4500,7 +4501,7 @@ PROGINFO	*pip ;
 
 
 /* perform "functional" simulation */
-static int sim_functional(pip)
+local int sim_functional(pip)
 PROGINFO	*pip ;
 {
 	CHECKER	*csp = &pip->check ;
@@ -4741,7 +4742,7 @@ PROGINFO	*pip ;
 	    fprintf(stderr,"IPC=%8.3f\n",ipc) ;
 
 	    fprintf(stderr,"elapsed clocked time ECT=%s\n",
-	        timestr_elapsed(elapsed,timebuf)) ;
+	        strtime_elapsed(elapsed,timebuf)) ;
 
 	    ips = ipc_instrs / ips_elapsed ;
 	    fprintf(stderr,"sim speed IPS=%16.2f\n",ips) ;
@@ -4753,7 +4754,7 @@ PROGINFO	*pip ;
 	        bprintf(&sfile,"IPC=%8.3f\n",ipc) ;
 
 	        bprintf(&sfile,"elapsed clocked time ECT=%s\n",
-	            timestr_elapsed(elapsed,timebuf)) ;
+	            strtime_elapsed(elapsed,timebuf)) ;
 
 	        bprintf(&sfile,"sim speed IPS=%16.2f\n",ips) ;
 
@@ -4798,7 +4799,7 @@ ret0:
 #ifdef	COMMENT
 
 /* dump trace file */
-static int sim_tracedump(pip,tfname)
+local int sim_tracedump(pip,tfname)
 struct proginfo	*pip ;
 cchar	tfname[] ;
 {
@@ -4873,7 +4874,7 @@ ret0:
 
 
 /* write out general statistics */
-static int sim_genstats(pip,statfname)
+local int sim_genstats(pip,statfname)
 struct proginfo	*pip ;
 cchar	statfname[] ;
 {
@@ -4897,13 +4898,13 @@ cchar	statfname[] ;
 	daytime = time(NULL) ;
 
 	    bprintf(tfp,"ETSTATS %s\n",
-		timestr_logz(daytime,timebuf)) ;
+		strtime_logz(daytime,timebuf)) ;
 
 	    bprintf(tfp,"jobname=%s\n",
 		pip->jobname) ;
 
 	    bprintf(tfp,"time_start=%s\n",
-		timestr_logz(pip->ti_start,timebuf)) ;
+		strtime_logz(pip->ti_start,timebuf)) ;
 
 	    bprintf(tfp,"\n") ;
 
@@ -4924,7 +4925,7 @@ ret0:
 
 
 /* write out register statistics */
-static int sim_regstats(pip,statfname)
+local int sim_regstats(pip,statfname)
 struct proginfo	*pip ;
 cchar	statfname[] ;
 {
@@ -5090,7 +5091,7 @@ cchar	statfname[] ;
 
 
 /* write out memory statistics */
-static int sim_memstats(pip,statfname)
+local int sim_memstats(pip,statfname)
 struct proginfo	*pip ;
 cchar	statfname[] ;
 {
@@ -5375,7 +5376,7 @@ cchar	statfname[] ;
 
 
 /* set a checker AS from decoded instruction information */
-static int setas(casp,res,flags,o1,o2,i1,i2,i3)
+local int setas(casp,res,flags,o1,o2,i1,i2,i3)
 SSAS	*casp ;
 int	res, flags ;
 int	o1, o2 ;
@@ -5446,7 +5447,7 @@ int	i1, i2, i3 ;
 
 
 /* set all of the output (destination) register values in an AS */
-static int setasreg(casp)
+local int setasreg(casp)
 SSAS	*casp ;
 {
 	OPERAND	*opp ;
@@ -5473,7 +5474,7 @@ SSAS	*casp ;
 
 
 /* set a previous memory value in an AS */
-static int setasmem(casp,f_read,a,size,pv,v)
+local int setasmem(casp,f_read,a,size,pv,v)
 SSAS	*casp ;
 int	f_read ;	/* pread/nwrite */
 ULONG	a ;
@@ -5559,7 +5560,7 @@ ULONG	pv, v ;
 
 
 /* set a previous memory value in an AS */
-static int setasmemread(casp,a,size,pv)
+local int setasmemread(casp,a,size,pv)
 SSAS	*casp ;
 ULONG	a ;
 int	size ;
@@ -5605,7 +5606,7 @@ ULONG	pv ;
 
 
 /* set an operand with its operand address (handles any type) */
-static int setop(opp,type,oa)
+local int setop(opp,type,oa)
 OPERAND	*opp ;
 uint	type ;
 ULONG	oa ;
@@ -5628,7 +5629,7 @@ ULONG	oa ;
 
 
 /* set the previous value of an operand register */
-static int setopreg(opp,opname)
+local int setopreg(opp,opname)
 OPERAND	*opp ;
 int	opname ;
 {
@@ -5642,7 +5643,7 @@ int	opname ;
 /* end subroutine (setopreg) */
 
 
-static int mkdatapresent(a,size)
+local int mkdatapresent(a,size)
 uint	a ;
 int	size ;
 {
@@ -5669,7 +5670,7 @@ int	size ;
 #ifdef	COMMENT
 
 /* dump a checker AS */
-static int sim_asdump(pip,asp)
+local int sim_asdump(pip,asp)
 PROGINFO	*pip ;
 SSAS		*asp ;
 {
@@ -6286,7 +6287,7 @@ BPEVAL		*bpsp ;
 
 
 /* write out the statistics */
-static int writestats(pip,scp,bpsp,pp)
+local int writestats(pip,scp,bpsp,pp)
 struct proginfo		*pip ;
 struct stats		*scp ;
 BPEVAL			*bpsp ;
@@ -6392,14 +6393,14 @@ struct params		*pp ;
 	    daytime = time(NULL) ;
 
 	    bprintf(&tmpfile,"SimpleSim statistics %s\n",
-	        timestr_log(daytime,tmpfname)) ;
+	        strtime_log(daytime,tmpfname)) ;
 
 	    bprintf(&tmpfile,"statistics for job=%s logid=%s\n",
 	        pip->jobname,pip->logid) ;
 
 	    bprintf(&tmpfile,"started %s (elapsed time %s)\n",
-	        timestr_log(pip->ti_start,timebuf1),
-	        timestr_elapsed((daytime - pip->ti_start),timebuf2)) ;
+	        strtime_log(pip->ti_start,timebuf1),
+	        strtime_elapsed((daytime - pip->ti_start),timebuf2)) ;
 
 	    rs1 = uc_getrusage(RUSAGE_SELF,&ut) ;
 
@@ -6414,15 +6415,15 @@ struct params		*pp ;
 
 	        elapsed = daytime - pip->ti_start ;
 	        bprintf(&tmpfile,"real   time=%s.%06d\n",
-	            timestr_elapsed(elapsed,timebuf),
+	            strtime_elapsed(elapsed,timebuf),
 	            ut.ru_utime.tv_usec) ;
 
 	        bprintf(&tmpfile,"user   time=%s.%06d\n",
-	            timestr_elapsed(ut.ru_utime.tv_sec,timebuf),
+	            strtime_elapsed(ut.ru_utime.tv_sec,timebuf),
 	            ut.ru_utime.tv_usec) ;
 
 	        bprintf(&tmpfile,"system time=%s.%06d\n",
-	            timestr_elapsed(ut.ru_stime.tv_sec,timebuf),
+	            strtime_elapsed(ut.ru_stime.tv_sec,timebuf),
 	            ut.ru_stime.tv_usec) ;
 
 	    } /* end if (getrusage) */
@@ -6918,7 +6919,7 @@ tick_t now)		/* time of access */
 
 
 /* parse the PE numbers and latencies */
-static int peparse(pip,sp,sl,np,lp)
+local int peparse(pip,sp,sl,np,lp)
 struct proginfo	*pip ;
 cchar	*sp ;
 int		sl ;
@@ -6975,7 +6976,7 @@ int		*lp ;
 
 
 /* parse the Local-Exec operation (OP) codes */
-static int leparse(pip,lip,sp,sl)
+local int leparse(pip,lip,sp,sl)
 struct proginfo	*pip ;
 struct ssinfo	*lip ;
 cchar	*sp ;
