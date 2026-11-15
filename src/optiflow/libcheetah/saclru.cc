@@ -40,7 +40,7 @@ extern int N,		/* Degree of associativity = 2^N */
 
 static unsigned TWO_PWR_N;	/* 2^N. i.e., Degree of associativity */
 static unsigned MAX_DEPTH;   /* B-A, Number of range of sets simulated */
-static int TWO_POWER_MAX_DEPTH,	/* 2^MAX_DEPTH */
+local int TWO_POWER_MAX_DEPTH,	/* 2^MAX_DEPTH */
            SET_MASK,	/* Masks */
            DIFF_SET_MASK,
            BASE,	/* 2^N+1, |{0,1, ..., 2^N}| */
@@ -52,7 +52,7 @@ static int TWO_POWER_MAX_DEPTH,	/* 2^MAX_DEPTH */
 
 static unsigned *arr;	/* GBT array */
 unsigned **sac_hits; /* Hit counts in caches */
-static int *hitarr; /* Encoded hit counts */
+local int *hitarr; /* Encoded hit counts */
 
 static unsigned *base_pwr_array;/* Stores BASE^0, BASE^1,..., BASE^MAX_DEPTH */
 static unsigned *rm_arr;	/* Stores right-matches */
