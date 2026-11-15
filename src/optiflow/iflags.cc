@@ -140,7 +140,7 @@ int		flags, class ;
 
 int iflags_free(ifp,fname)
 struct iflags	*ifp ;
-const char	fname[] ;
+cchar	fname[] ;
 {
 	bfile	tfile ;
 
