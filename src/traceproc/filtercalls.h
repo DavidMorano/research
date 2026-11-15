@@ -63,9 +63,9 @@ struct filtercalls_head {
 extern "C" {
 #endif
 
-extern int	filtercalls_init(FILTERCALLS *,LMAPPROG *,const char *) ;
+extern int	filtercalls_init(FILTERCALLS *,LMAPPROG *,cchar *) ;
 extern int	filtercalls_free(FILTERCALLS *) ;
-extern int	filtercalls_have(FILTERCALLS *,UINT,const char **) ;
+extern int	filtercalls_have(FILTERCALLS *,UINT,cchar **) ;
 
 #ifdef	__cplusplus
 }
