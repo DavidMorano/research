@@ -1668,23 +1668,21 @@ int main(int argc,mainv argv,mainv envv) {
 
 	        procfileenv(pip->programroot,cf.envfname,&exports) ;
 
-	    } else
+	    } else {
 	        procfile(pip,procfileenv,pip->programroot,&svars,
 	            ENVFNAME,&exports) ;
-
+	    }
 	    f_procfileenv = TRUE ;
-
 
 /* "do" any 'paths' file before we process the environment variables */
 
 	    if (cf.pathsfname != NULL) {
-	        procfilepaths(pip->programroot,cf.pathsfname,&exports) ;
-	    } else
+	        vecstr_filepaths(&exports,pip->programroot,cf.pathsfile) ;
+	    } else {
 	        procfile(pip,procfilepaths,pip->programroot,&svars,
 	            PATHSFNAME,&exports) ;
-
+	    }
 	    f_procfilepaths = TRUE ;
-
 
 #if	CF_MASTERDEBUG && CF_DEBUG
 	    if (pip->debuglevel > 1)
@@ -1694,17 +1692,12 @@ int main(int argc,mainv argv,mainv envv) {
 	    if ((cf.loglen >= 0) && (loglen < 0))
 	        loglen = cf.loglen ;
 
-
 /* loop through the UNSETs in the configuration file */
 
 	    for (i = 0 ; vecstr_get(&cf.unsets,i,&cp) >= 0 ; i += 1) {
-
 	        if (cp == NULL) continue ;
-
 	        vecstr_add(&unsets,cp,-1) ;
-
 	        rs = vecstr_finder(&exports,cp,vstrkeycmp,NULL) ;
-
 	        if (rs >= 0)
 	            vecstr_del(&exports,rs) ;
 
