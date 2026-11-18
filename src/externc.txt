@@ -1,2 +1,2 @@
-EXTERNC_begin
+EXTERNC_beg
 EXTERNC_end
