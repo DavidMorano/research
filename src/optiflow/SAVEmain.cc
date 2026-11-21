@@ -91,6 +91,7 @@
 #include	<exitcodes.h>
 #include	<mallocstuff.h>
 #include	<getfname.h>
+#include	<strtime.h>		/* LIBUC */
 #include	<localmisc.h>
 
 #include	"ssconfig.h"
@@ -151,15 +152,15 @@ struct pav {
 
 void		sim_print_stats(FILE *) ;
 
-static int	procargs(struct proginfo *,struct pav *,int,char **) ;
-static int	orphan_fn(int, int , char **) ;
-static int	procn(struct proginfo *,ccint *,int) ;
+local int	procargs(struct proginfo *,struct pav *,int,char **) ;
+local int	orphan_fn(int, int , char **) ;
+local int	procn(struct proginfo *,ccint *,int) ;
 
-static void	signal_sim_stats(int) ;
-static void	signal_exit_now(int) ;
-static void	banner(FILE *, int, char **) ;
-static void	exit_now(int) ;
-static void	usage(FILE *, int, char **) ;
+local void	signal_sim_stats(int) ;
+local void	signal_exit_now(int) ;
+local void	banner(FILE *, int, char **) ;
+local void	exit_now(int) ;
+local void	usage(FILE *, int, char **) ;
 
 
 /* local variables */
@@ -256,23 +257,23 @@ static char *sim_progout = NULL;
 FILE *sim_progfd = NULL;
 
 /* track first argument orphan, this is the program to execute */
-static int exec_index = -1;
+local int exec_index = -1;
 
 /* dump help information */
-static int help_me;
+local int help_me;
 
 /* random number generator seed */
-static int rand_seed;
+local int rand_seed;
 
 /* initialize and quit immediately */
-static int init_quit;
+local int init_quit;
 
 #ifndef _MSC_VER
 /* simulator scheduling priority */
-static int nice_priority;
+local int nice_priority;
 #endif
 
-static int running = FALSE;
+local int running = FALSE;
 
 
 
@@ -872,7 +873,7 @@ char	*envv[] ;
 			pip->f.log = TRUE ;
 			logfile_printf(&pip->lh,
 				"%s %s\n",
-				timestr_logz(daytime,timebuf),
+				strtime_logz(daytime,timebuf),
 				BANNER) ;
 
 	    if (pip->realname[0] != '\0')
@@ -920,7 +921,7 @@ char	*envv[] ;
 
 
 		bprintf(&sfile,"STATS %s\n",
-			timestr_logz(daytime,timebuf)) ;
+			strtime_logz(daytime,timebuf)) ;
 
 		bprintf(&sfile,"target= %s\n",pip->targetname) ;
 
@@ -1025,9 +1026,9 @@ int procsimpoint(pip,ulwp)
 struct proginfo	*pip ;
 ULONG		*ulwp ;
 {
-	PARAMFILE		simpoints ;
+	paramfile		simpoints ;
 
-	PARAMFILE_CURSOR	cur ;
+	paramfile_curSOR	cur ;
 
 	int	rs = SR_OK ;
 	int	vlen ;
@@ -1071,7 +1072,7 @@ done:
 
 
 
-static int procargs(pip,pavp,argc,argv)
+local int procargs(pip,pavp,argc,argv)
 struct proginfo	*pip ;
 struct pav	*pavp ;
 int		argc ;
@@ -1765,7 +1766,7 @@ badarg:
 
 
 /* stats csignalandler */
-static void
+local void
 signal_sim_stats(int sigtype)
 {
   sim_dump_stats = TRUE;
@@ -1773,7 +1774,7 @@ signal_sim_stats(int sigtype)
 
 
 /* exit csignalandler */
-static void
+local void
 signal_exit_now(int sigtype)
 {
 
@@ -1782,7 +1783,7 @@ signal_exit_now(int sigtype)
 }
 
 
-static int
+local int
 orphan_fn(int i, int argc, char **argv)
 {
   exec_index = i;
@@ -1790,7 +1791,7 @@ orphan_fn(int i, int argc, char **argv)
 }
 
 
-static void
+local void
 banner(FILE *fd, int argc, char **argv)
 {
   char *s;
@@ -1807,7 +1808,7 @@ banner(FILE *fd, int argc, char **argv)
 }
 
 
-static void
+local void
 usage(FILE *fd, int argc, char **argv)
 {
 
@@ -1846,7 +1847,7 @@ sim_print_stats(FILE *fd)		/* output stream */
 
 
 /* print stats, uninitialize simulator components, and exit w/ exitcode */
-static void
+local void
 exit_now(int exit_code)
 {
 	struct proginfo	*pip = &pi ;
@@ -1886,7 +1887,7 @@ exit_now(int exit_code)
 /* end subroutine (exit_now) */
 
 
-static int procn(pip,a,alen)
+local int procn(pip,a,alen)
 struct proginfo	*pip ;
 ccint	a[] ;
 int		alen ;
