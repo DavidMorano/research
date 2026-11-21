@@ -165,42 +165,42 @@ extern int	getnumbuses(uint) ;
 
 int		iw_sanitycheck(IW *) ;
 
-static int	iw_initmbuses(IW *,struct proginfo *,struct levoinfo *) ;
-static int	iw_freembuses(IW *,struct proginfo *,struct levoinfo *) ;
-static int	iw_setnext(IW *,struct proginfo *,struct levoinfo *) ;
-static int	iw_commitcheck(IW *,struct proginfo *,struct levoinfo *) ;
-static int	iw_manipulate(IW *,struct proginfo *,struct levoinfo *) ;
-static int	iw_commitcheckases(IW *,struct proginfo *,struct levoinfo *,
+local int	iw_initmbuses(IW *,struct proginfo *,struct levoinfo *) ;
+local int	iw_freembuses(IW *,struct proginfo *,struct levoinfo *) ;
+local int	iw_setnext(IW *,struct proginfo *,struct levoinfo *) ;
+local int	iw_commitcheck(IW *,struct proginfo *,struct levoinfo *) ;
+local int	iw_manipulate(IW *,struct proginfo *,struct levoinfo *) ;
+local int	iw_commitcheckases(IW *,struct proginfo *,struct levoinfo *,
 			int) ;
-static int	iw_commitchecklwq(IW *,struct proginfo *,struct levoinfo *,
+local int	iw_commitchecklwq(IW *,struct proginfo *,struct levoinfo *,
 			int) ;
-static int	iw_readyregfilters() ;
-static int	iw_commitases(IW *,struct proginfo *,struct levoinfo *,int) ;
-static int	iw_getpathcol(IW *,struct levoinfo *,int,int) ;
-static int	iw_getnextcol(IW *,struct levoinfo *,int,int) ;
-static int	iw_flushwindow(IW *,struct proginfo *,struct levoinfo *,int) ;
-static int	iw_killpath(IW *,struct proginfo *,struct levoinfo *,int,int) ;
-static int	iw_loadcheck(IW *,struct proginfo *,struct levoinfo *) ;
-static int	iw_lbready() ;
-static int	iw_initregfilters() ;
-static int	iw_freeregfilters(IW *,struct proginfo *,struct levoinfo *) ;
-static int	iw_handleshift() ;
-static int	iw_targetin(IW *,struct proginfo *,struct levoinfo *,uint,int) ;
-static int	iw_targetinlb(IW *,struct proginfo *,struct levoinfo *,
+local int	iw_readyregfilters() ;
+local int	iw_commitases(IW *,struct proginfo *,struct levoinfo *,int) ;
+local int	iw_getpathcol(IW *,struct levoinfo *,int,int) ;
+local int	iw_getnextcol(IW *,struct levoinfo *,int,int) ;
+local int	iw_flushwindow(IW *,struct proginfo *,struct levoinfo *,int) ;
+local int	iw_killpath(IW *,struct proginfo *,struct levoinfo *,int,int) ;
+local int	iw_loadcheck(IW *,struct proginfo *,struct levoinfo *) ;
+local int	iw_lbready() ;
+local int	iw_initregfilters() ;
+local int	iw_freeregfilters(IW *,struct proginfo *,struct levoinfo *) ;
+local int	iw_handleshift() ;
+local int	iw_targetin(IW *,struct proginfo *,struct levoinfo *,uint,int) ;
+local int	iw_targetinlb(IW *,struct proginfo *,struct levoinfo *,
 				uint,int *) ;
-static int	iw_getrfunused(IW *,struct proginfo *,struct levoinfo *,int) ;
-static int	iw_setrfs(IW *,struct proginfo *,struct levoinfo *,int,int) ;
-static int	iw_initregs(IW *,struct proginfo *,struct levoinfo *,
+local int	iw_getrfunused(IW *,struct proginfo *,struct levoinfo *,int) ;
+local int	iw_setrfs(IW *,struct proginfo *,struct levoinfo *,int,int) ;
+local int	iw_initregs(IW *,struct proginfo *,struct levoinfo *,
 				REGFILTER *) ;
 
-static int	getbusid(struct levoinfo *,int) ;
+local int	getbusid(struct levoinfo *,int) ;
 
 #if	F_FPRINTF || F_DEBUG || F_DEBUGS
-static int	iw_printregs(IW *,struct proginfo *,struct levoinfo *) ;
+local int	iw_printregs(IW *,struct proginfo *,struct levoinfo *) ;
 #endif
 
 #if	F_DEBUG
-static int	iw_checkregs(IW *,struct proginfo *,struct levoinfo *,
+local int	iw_checkregs(IW *,struct proginfo *,struct levoinfo *,
 				REGFILTER *) ;
 #endif
 
@@ -242,7 +242,7 @@ static char	*const iwparams[] = {
 int iw_init(wp,pip,pfp,mip,lip,ap)
 IW		*wp ;
 struct proginfo	*pip ;
-PARAMFILE	*pfp ;
+paramfile	*pfp ;
 LSIM		*mip ;
 struct levoinfo	*lip ;
 IW_INITARGS	*ap ;
@@ -3673,7 +3673,7 @@ bad:
 
 
 /* create and initialize the i-window memory buses */
-static int iw_initmbuses(wp,pip,lip)
+local int iw_initmbuses(wp,pip,lip)
 IW		*wp ;
 struct proginfo	*pip ;
 struct levoinfo	*lip ;
@@ -3806,7 +3806,7 @@ bad0:
 /* end subroutine (iw_initmbuses) */
 
 
-static int iw_freembuses(wp,pip,lip)
+local int iw_freembuses(wp,pip,lip)
 IW		*wp ;
 struct proginfo	*pip ;
 struct levoinfo	*lip ;
@@ -3832,7 +3832,7 @@ struct levoinfo	*lip ;
 
 
 /* set the default next state */
-static int iw_setnext(wp,pip,lip)
+local int iw_setnext(wp,pip,lip)
 IW		*wp ;
 struct proginfo	*pip ;
 struct levoinfo	*lip ;
@@ -3870,7 +3870,7 @@ struct levoinfo	*lip ;
 
 
 /* check if we are ready to commit a column */
-static int iw_commitcheck(wp,pip,lip)
+local int iw_commitcheck(wp,pip,lip)
 IW		*wp ;
 struct proginfo	*pip ;
 struct levoinfo	*lip ;
@@ -4100,7 +4100,7 @@ struct levoinfo	*lip ;
 
 
 /* check to see if all of the ASes in the specified column can commit */
-static int iw_commitcheckases(wp,pip,lip,ci)
+local int iw_commitcheckases(wp,pip,lip,ci)
 IW		*wp ;
 struct proginfo	*pip ;
 struct levoinfo	*lip ;
@@ -4151,7 +4151,7 @@ int		ci ;
 
 
 /* see if the LWQ is ready to take a commitment */
-static int iw_commitchecklwq(wp,pip,lip,ci)
+local int iw_commitchecklwq(wp,pip,lip,ci)
 IW		*wp ;
 struct proginfo	*pip ;
 struct levoinfo	*lip ;
@@ -4211,7 +4211,7 @@ int		ci ;
 
 
 /* check to see if all of the REGFILTERs in the specified column can commit */
-static int iw_readyregfilters(wp,pip,lip,ci)
+local int iw_readyregfilters(wp,pip,lip,ci)
 IW		*wp ;
 struct proginfo	*pip ;
 struct levoinfo	*lip ;
@@ -4371,7 +4371,7 @@ bad:
 
 
 /* kill off all columns that have the given path starting at 'ci' */
-static int iw_killpath(wp,pip,lip,path,ci)
+local int iw_killpath(wp,pip,lip,path,ci)
 IW		*wp ;
 struct proginfo	*pip ;
 struct levoinfo	*lip ;
@@ -4423,7 +4423,7 @@ int		ci ;
 
 
 /* check if we are ready to load a column */
-static int iw_loadcheck(wp,pip,lip)
+local int iw_loadcheck(wp,pip,lip)
 IW		*wp ;
 struct proginfo	*pip ;
 struct levoinfo	*lip ;
@@ -4961,7 +4961,7 @@ struct levoinfo	*lip ;
 
 
 /* is the specified LB ready to do a load ? */
-static int iw_lbready(wp,pip,lip,lbp)
+local int iw_lbready(wp,pip,lip,lbp)
 IW		*wp ;
 struct proginfo	*pip ;
 struct levoinfo	*lip ;
@@ -4997,7 +4997,7 @@ LLB		*lbp ;
 
 
 /* initialize the REGFILTERs */
-static int iw_initregfilters(wp,pip,mip,lip,stackaddr)
+local int iw_initregfilters(wp,pip,mip,lip,stackaddr)
 IW		*wp ;
 struct proginfo	*pip ;
 LSIM		*mip ;
@@ -5274,7 +5274,7 @@ bad1:
 
 
 /* free up the register filter units */
-static int iw_freeregfilters(wp,pip,lip)
+local int iw_freeregfilters(wp,pip,lip)
 IW		*wp ;
 struct proginfo	*pip ;
 struct levoinfo	*lip ;
@@ -5310,7 +5310,7 @@ struct levoinfo	*lip ;
 
 
 /* handle the consequences of a machine shift within our own object */
-static int iw_handleshift(wp,pip,lip)
+local int iw_handleshift(wp,pip,lip)
 IW		*wp ;
 struct proginfo	*pip ;
 struct levoinfo	*lip ;
@@ -5338,7 +5338,7 @@ struct levoinfo	*lip ;
 
 
 /* manipulate the register filters */
-static int iw_manipulate(wp,pip,lip)
+local int iw_manipulate(wp,pip,lip)
 IW		*wp ;
 struct proginfo	*pip ;
 struct levoinfo	*lip ;
@@ -5746,7 +5746,7 @@ bad:
 
 
 /* is the target instruction already in the window ? */
-static int iw_targetin(wp,pip,lip,ta,tt)
+local int iw_targetin(wp,pip,lip,ta,tt)
 IW		*wp ;
 struct proginfo	*pip ;
 struct levoinfo	*lip ;
@@ -5828,7 +5828,7 @@ int	tt ;
 
 
 /* flush the entire execution window except the specified column ! */
-static int iw_flushwindow(wp,pip,lip,ci)
+local int iw_flushwindow(wp,pip,lip,ci)
 IW		*wp ;
 struct proginfo	*pip ;
 struct levoinfo	*lip ;
@@ -5906,7 +5906,7 @@ int		ci ;
 
 
 /* is the target address (outside of e-window) in the LB ? */
-static int iw_targetinlb(wp,pip,lip,ta,ip)
+local int iw_targetinlb(wp,pip,lip,ta,ip)
 IW		*wp ;
 struct proginfo	*pip ;
 struct levoinfo	*lip ;
@@ -5941,7 +5941,7 @@ int		*ip ;
 
 
 /* set time-tag values in the REGFILTERs of the specified SG column */
-static int iw_setrfs(wp,pip,lip,sgci,tt)
+local int iw_setrfs(wp,pip,lip,sgci,tt)
 IW		*wp ;
 struct proginfo	*pip ;
 struct levoinfo	*lip ;
@@ -5994,7 +5994,7 @@ int		tt ;
 #if	F_DEBUG || F_FPRINTF || F_DEBUGS
 
 /* print out some registers */
-static int iw_printregs(wp,pip,lip)
+local int iw_printregs(wp,pip,lip)
 IW		*wp ;
 struct proginfo	*pip ;
 struct levoinfo	*lip ;
@@ -6090,7 +6090,7 @@ struct levoinfo	*lip ;
 
 
 /* initialize the committed registers (where ever they are ?) */
-static int iw_initregs(wp,pip,lip,rfp)
+local int iw_initregs(wp,pip,lip,rfp)
 IW		*wp ;
 struct proginfo	*pip ;
 struct levoinfo	*lip ;
@@ -6113,7 +6113,7 @@ REGFILTER	*rfp ;
 
 #if	F_DEBUG
 
-static int iw_checkregs(wp,pip,lip,rfp)
+local int iw_checkregs(wp,pip,lip,rfp)
 IW		*wp ;
 struct proginfo	*pip ;
 struct levoinfo	*lip ;
@@ -6151,7 +6151,7 @@ REGFILTER	*rfp ;
 
 
 /* get the unused RF for this SG column */
-static int iw_getrfunused(wp,pip,lip,sgci)
+local int iw_getrfunused(wp,pip,lip,sgci)
 IW		*wp ;
 struct proginfo	*pip ;
 struct levoinfo	*lip ;
@@ -6203,7 +6203,7 @@ int		sgci ;
 
 
 /* commit the ASes (not an easy job) */
-static int iw_commitases(wp,pip,lip,ci)
+local int iw_commitases(wp,pip,lip,ci)
 IW		*wp ;
 struct proginfo	*pip ;
 struct levoinfo	*lip ;
@@ -6783,7 +6783,7 @@ struct levoinfo	*lip ;
 
 
 /* find the physical column with the given path starting at 'ci' (if any) */
-static int iw_getpathcol(wp,lip,path,ci)
+local int iw_getpathcol(wp,lip,path,ci)
 IW		*wp ;
 struct levoinfo	*lip ;
 int		path ;
@@ -6816,7 +6816,7 @@ int		ci ;
 
 */
 
-static int iw_getnextcol(wp,lip,path,ci)
+local int iw_getnextcol(wp,lip,path,ci)
 IW		*wp ;
 struct levoinfo	*lip ;
 int		path ;
@@ -6841,7 +6841,7 @@ int		ci ;
 
 
 /* return a bus ID according to the "global" allocation rules ! */
-static int getbusid(lip,which)
+local int getbusid(lip,which)
 struct levoinfo	*lip ;
 int		which ;
 {
