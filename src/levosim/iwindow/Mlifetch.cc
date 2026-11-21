@@ -77,7 +77,7 @@
 #include	<cstdio>
 
 #include	<usystem.h>
-#include	<bio.h>
+#include	<bfile.h>
 #include	<libuc.h>
 
 #include	"localmisc.h"
@@ -105,13 +105,13 @@
 
 /* forward references */
 
-static int	lifetch_fetch(LIFETCH *,struct proginfo *,LSIM *,
+local int	lifetch_fetch(LIFETCH *,struct proginfo *,LSIM *,
 			struct levoinfo *) ;
-static int	lifetch_req_insts(LIFETCH *,int ,struct lifetch_mem *) ;
-static int	lifetch_next_instr(LIFETCH *,LDECODE *) ;
-static int      lifetch_unroll_loop(uint,uint,int,int,LDECODE *, 
+local int	lifetch_req_insts(LIFETCH *,int ,struct lifetch_mem *) ;
+local int	lifetch_next_instr(LIFETCH *,LDECODE *) ;
+local int      lifetch_unroll_loop(uint,uint,int,int,LDECODE *, 
 			LIFETCH *lifp,int *lbindex) ;
-static int	lifetch_sanitycheck(LIFETCH *,struct proginfo *,
+local int	lifetch_sanitycheck(LIFETCH *,struct proginfo *,
 			struct levoinfo *) ;
 
 
@@ -566,7 +566,7 @@ uint	ta ;
 
 
 
-static int lifetch_targetin(lifp,brTA, tt)
+local int lifetch_targetin(lifp,brTA, tt)
 LIFETCH *lifp ;
 uint brTA ;
 int	tt ;
@@ -583,7 +583,7 @@ int	tt ;
 
 
 /* fetch some instructions, decode, and load them */
-static int lifetch_fetch(lifp,pip,mip,lip)
+local int lifetch_fetch(lifp,pip,mip,lip)
 LIFETCH		*lifp ;
 struct proginfo *pip ;
 LSIM		*mip ;
@@ -1258,7 +1258,7 @@ bad:
 
 
 
-static int lifetch_unroll_loop(faddr,instr,from, to, auxbuffer, lifp,lbindex)
+local int lifetch_unroll_loop(faddr,instr,from, to, auxbuffer, lifp,lbindex)
 uint	faddr, instr ;
 int	from, to ;
 LDECODE *auxbuffer ;
@@ -1313,7 +1313,7 @@ int	*lbindex ;
 #ifdef	COMMENT
 
 /* get some instructions into the fetch buffer */
-static int lifetch_req_insts(lifp,addr,memp)
+local int lifetch_req_insts(lifp,addr,memp)
 LIFETCH	*lifp ;
 int	addr ;
 struct lifetch_mem	*memp ;
@@ -1354,7 +1354,7 @@ struct lifetch_mem	*memp ;
 /* end subroutine (lifetch_req_insts) */
 
 
-static int lifetch_next_instr(LIFETCH *lifp,LDECODE *current_instr)
+local int lifetch_next_instr(LIFETCH *lifp,LDECODE *current_instr)
 {
 	int index ;
 
@@ -1377,7 +1377,7 @@ static int lifetch_next_instr(LIFETCH *lifp,LDECODE *current_instr)
 #endif /* COMMENT */
 
 
-static int lifetch_sanitycheck(lifp,pip,lip)
+local int lifetch_sanitycheck(lifp,pip,lip)
 LIFETCH		*lifp ;
 struct proginfo *pip ;
 struct levoinfo	*lip ;
