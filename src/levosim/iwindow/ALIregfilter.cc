@@ -327,28 +327,28 @@ extern int	ctdeci(char *,int,int) ;
 
 /* forward references */
 
-static int regfilter_handleshift(REGFILTER *,struct proginfo *,int) ;
-static int regfilter_readbuses(REGFILTER *,struct proginfo *,BUS *,int,
+local int regfilter_handleshift(REGFILTER *,struct proginfo *,int) ;
+local int regfilter_readbuses(REGFILTER *,struct proginfo *,BUS *,int,
 				int,int,int,int) ;
-static int regfilter_checkgrants(REGFILTER *,struct proginfo *,
+local int regfilter_checkgrants(REGFILTER *,struct proginfo *,
 				LSIM *) ;
-static int regfilter_lookup(REGFILTER *,struct proginfo *,
+local int regfilter_lookup(REGFILTER *,struct proginfo *,
 				struct levoinfo *) ;
-static int regfilter_readupdate(REGFILTER *,struct proginfo *,
+local int regfilter_readupdate(REGFILTER *,struct proginfo *,
 				struct levoinfo *) ;
-static int regfilter_goingempty(REGFILTER *,struct proginfo *) ;
-static int regfilter_requests(REGFILTER *,struct proginfo *) ;
-static int regfilter_fifoshifts(REGFILTER *,struct proginfo *) ;
-static int regfilter_writebuses(REGFILTER *,struct proginfo *) ;
-static int regfilter_checkholds(REGFILTER *,struct proginfo *,
+local int regfilter_goingempty(REGFILTER *,struct proginfo *) ;
+local int regfilter_requests(REGFILTER *,struct proginfo *) ;
+local int regfilter_fifoshifts(REGFILTER *,struct proginfo *) ;
+local int regfilter_writebuses(REGFILTER *,struct proginfo *) ;
+local int regfilter_checkholds(REGFILTER *,struct proginfo *,
 				struct levoinfo *) ;
-static int regfilter_holdbuses(REGFILTER *,struct proginfo *,struct levoinfo *,
+local int regfilter_holdbuses(REGFILTER *,struct proginfo *,struct levoinfo *,
 				BUS *,int,int,int,int) ;
-static int regfilter_calcdone(REGFILTER *,struct proginfo *) ;
-static int regfilter_calcfifocount(REGFILTER *,struct proginfo *) ;
+local int regfilter_calcdone(REGFILTER *,struct proginfo *) ;
+local int regfilter_calcfifocount(REGFILTER *,struct proginfo *) ;
 
 #if	F_DEBUG || F_FPRINTF
-static int mkttbuf(char *,int) ;
+local int mkttbuf(char *,int) ;
 #endif
 
 
@@ -2214,7 +2214,7 @@ REGFILTER	*rfp ;
 
 
 /* read a set of buses into the bus read-registers */
-static int regfilter_readbuses(rfp,pip,buses,m,ri,span,f_up,si)
+local int regfilter_readbuses(rfp,pip,buses,m,ri,span,f_up,si)
 REGFILTER	*rfp ;
 struct proginfo	*pip ;
 BUS		*buses ;
@@ -2281,7 +2281,7 @@ int		si ;			/* bus-read-register store index */
 
 
 /* calculate if we are going to be FIFO-empty after this clock */
-static int regfilter_goingempty(rfp,pip)
+local int regfilter_goingempty(rfp,pip)
 REGFILTER	*rfp ;
 struct proginfo	*pip ;
 {
@@ -2348,7 +2348,7 @@ struct proginfo	*pip ;
 
 
 /* write the output bus */
-static int regfilter_writebuses(rfp,pip)
+local int regfilter_writebuses(rfp,pip)
 REGFILTER	*rfp ;
 struct proginfo	*pip ;
 {
@@ -2629,7 +2629,7 @@ struct proginfo	*pip ;
 
 
 /* do we have a machine shift */
-static int regfilter_handleshift(rfp,pip,totalrows)
+local int regfilter_handleshift(rfp,pip,totalrows)
 REGFILTER	*rfp ;
 struct proginfo	*pip ;
 int		totalrows ;
@@ -2768,7 +2768,7 @@ int		totalrows ;
 
 ****/
 
-static int regfilter_lookup(rfp,pip,lip)
+local int regfilter_lookup(rfp,pip,lip)
 REGFILTER	*rfp ;
 struct proginfo	*pip ;
 struct levoinfo	*lip ;
@@ -2972,7 +2972,7 @@ struct levoinfo	*lip ;
 
 ****/
 
-static int regfilter_readupdate(rfp,pip,lip)
+local int regfilter_readupdate(rfp,pip,lip)
 REGFILTER	*rfp ;
 struct proginfo	*pip ;
 struct levoinfo	*lip ;
@@ -3653,7 +3653,7 @@ struct levoinfo	*lip ;
 
 
 /* make any necessary bus requests */
-static int regfilter_requests(rfp,pip)
+local int regfilter_requests(rfp,pip)
 REGFILTER	*rfp ;
 struct proginfo	*pip ;
 {
@@ -3859,7 +3859,7 @@ struct proginfo	*pip ;
 
 
 /* make any necessary FIFO shift-ins */
-static int regfilter_fifoshifts(rfp,pip)
+local int regfilter_fifoshifts(rfp,pip)
 REGFILTER	*rfp ;
 struct proginfo	*pip ;
 {
@@ -3905,7 +3905,7 @@ struct proginfo	*pip ;
 	to put on the bus if we get a grant.
 */
 
-static int regfilter_checkgrants(rfp,pip,mip)
+local int regfilter_checkgrants(rfp,pip,mip)
 REGFILTER	*rfp ;
 struct proginfo	*pip ;
 LSIM		*mip ;
@@ -4179,7 +4179,7 @@ LSIM		*mip ;
 
 
 /* check if we need to propagate some bus holds */
-static int regfilter_checkholds(rfp,pip,lip)
+local int regfilter_checkholds(rfp,pip,lip)
 REGFILTER	*rfp ;
 struct proginfo	*pip ;
 struct levoinfo	*lip ;
@@ -4257,7 +4257,7 @@ struct levoinfo	*lip ;
 
 
 /* hold some buses */
-static int regfilter_holdbuses(rfp,pip,lip,buses,m,ri,span,f_up)
+local int regfilter_holdbuses(rfp,pip,lip,buses,m,ri,span,f_up)
 REGFILTER	*rfp ;
 struct proginfo	*pip ;
 struct levoinfo	*lip ;
@@ -4280,7 +4280,7 @@ int		f_up ;			/* bus scan direction, FALSE=f TRUE=b */
 
 #if	F_DEBUG || F_FPRINTF
 
-static int mkttbuf(buf,tt)
+local int mkttbuf(buf,tt)
 char	buf[] ;
 int	tt ;
 {
@@ -4303,7 +4303,7 @@ int	tt ;
 
 
 /* miscellaneous processing for calculating commitment-ready information */
-static int regfilter_calcdone(rfp,pip)
+local int regfilter_calcdone(rfp,pip)
 REGFILTER	*rfp ;
 struct proginfo	*pip ;
 {
@@ -4368,7 +4368,7 @@ struct proginfo	*pip ;
 
 
 /* calculate the maxium FIFO count */
-static int regfilter_calcfifocount(rfp,pip)
+local int regfilter_calcfifocount(rfp,pip)
 REGFILTER	*rfp ;
 struct proginfo	*pip ;
 {
