@@ -254,7 +254,7 @@
 	    fprintf(stderr,"IPC=%8.3f\n",ipc) ;
 
 	    fprintf(stderr,"elapsed clocked time=%s\n",
-	        timestr_elapsed(elapsed,timebuf)) ;
+	        strtime_elapsed(elapsed,timebuf)) ;
 
 	    ips = ipc_instrs / ips_elapsed ;
 	    fprintf(stderr,"sim speed IPS=%16.2f\n",ips) ;
@@ -266,7 +266,7 @@
 	        bprintf(&sfile,"IPC=%8.3f\n",ipc) ;
 
 	        bprintf(&sfile,"elapsed clocked time=%s\n",
-	            timestr_elapsed(elapsed,timebuf)) ;
+	            strtime_elapsed(elapsed,timebuf)) ;
 
 	        bprintf(&sfile,"sim speed IPS=%16.2f\n",ips) ;
 
