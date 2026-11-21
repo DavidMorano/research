@@ -69,9 +69,9 @@
 
 /* forward references */
 
-static int lifetch_fetch(LIFETCH *, struct proginfo *, LSIM *, struct levoinfo *) ;
-static int lifetch_sanitycheck(LIFETCH *, struct proginfo *, struct levoinfo *);
-static void p(LIFETCH *lifp,  uint *faddr, int ncpin, int pina, int *cpina, int pouta, int cpouta, int pinv, int *cpinv);
+local int lifetch_fetch(LIFETCH *, struct proginfo *, LSIM *, struct levoinfo *) ;
+local int lifetch_sanitycheck(LIFETCH *, struct proginfo *, struct levoinfo *);
+local void p(LIFETCH *lifp,  uint *faddr, int ncpin, int pina, int *cpina, int pouta, int cpouta, int pinv, int *cpinv);
 
 
 
@@ -1082,7 +1082,7 @@ int lifetch_readtrace(lifp)
 
 
 /* Fetch some instructions, decode, and load them */
-static int lifetch_fetch(lifp, pip, mip, lip)
+local int lifetch_fetch(lifp, pip, mip, lip)
 LIFETCH	*lifp ;
 struct proginfo *pip;
 LSIM   *mip;
@@ -1450,7 +1450,7 @@ return SR_OK ;
 } /* end subroutine (lifetch_fetch) */
   
 
-static int lifetch_sanitycheck(lifp,pip,lip)
+local int lifetch_sanitycheck(lifp,pip,lip)
 LIFETCH		*lifp ;
 struct proginfo *pip ;
 struct levoinfo	*lip ;
@@ -1503,7 +1503,7 @@ struct levoinfo	*lip ;
 }
 /* end subroutine (lifetch_sanitycheck) */
 
-static void p(LIFETCH *lifp, uint *faddr,int ncpin, int pina, int *cpina, int pouta, int cpouta, int pinv, int *cpinv){
+local void p(LIFETCH *lifp, uint *faddr,int ncpin, int pina, int *cpina, int pouta, int cpouta, int pinv, int *cpinv){
   printf("lifetch_p: loading instruction:\n
 lifp->llbp:%p\n
 lifp->index:%i\n
